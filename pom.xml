@@ -35,7 +35,12 @@
 		</dependency>
 
 
-
+	<!-- Spring Boot Mail -->
+	<!-- ChiaWei 忘記密碼用 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 
 
 
@@ -187,10 +192,25 @@
 
 		
 		
+		<!-- ●以下為 Gson 預備使用● -->
+		<!-- ChiaWei WebSocket用 -->
+		
+
+		<!-- Gson -->   <!-- spring-boot 已內建依賴，但預設未下載 -->
+		<dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <!-- <version>2.9.0</version> -->
+        </dependency>
 		
 		
-		
-		
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		    <version>3.2.5</version>
+		</dependency>
+
 		
 		
 		
@@ -224,6 +244,8 @@
 			<artifactId>bootstrap</artifactId>
 			<version>4.2.1</version>
 		</dependency>
+
+
 
 	</dependencies>
 

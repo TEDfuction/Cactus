@@ -1,0 +1,171 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+	.unique{
+	}
+	
+	.error {
+        color: red;
+        position:relative;
+        font-size:13px;
+    }
+	 	
+</style>
+
+</head>
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+	
+<!-- =========================================================================================== -->
+
+
+<!-- 前端sweet alert錯誤判斷用 -->
+<input type="hidden" id="status" th:value="${status}"> 
+
+<!-- WebSocket傳遞參數用 -->
+<input type="hidden" class="memNo" value="0">
+
+
+		<!-- 主欄位 -->
+		<div class="unique">
+			<h3>---發送訊息---</h3>
+			<br>		
+			<br>
+			
+			<form id="noti_form" method="post" th:action="@{sendMessage}" th:object="${notificationVO}">
+			
+				<div class="form-group">
+					<label for="memberId">會員姓名:</label>
+					<select name="memberId" id="memberId">
+						<th:block th:each="memberVO : ${memList}">
+							<option th:value="${memberVO.memberId}" th:text="${memberVO.memberName}"></option>
+						</th:block>
+					</select>
+				</div>
+				<br>
+				
+				<div class="form-group">	
+					<label for="type">通知種類:</label>
+					<select th:field="*{type}" id="type">
+						
+						<option value="0">房務</option>
+						<option value="1">活動</option>
+						<option value="2">商品</option>
+					</select>
+				</div>
+				<br>
+				
+				
+				<div class="form-group">	
+					<label for="title">通知標題:</label>
+					<input type="text" th:field="*{title}" onclick="hideContent('title.errors');">
+					<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error" id="title.errors"></span>
+				</div>
+				<br>
+				
+				
+				<div class="form-group">	
+					<label for="content">通知內容:</label>
+					<input type="text" th:field="*{content}" onclick="hideContent('content.errors');">
+					<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error" id="content.errors"></span>
+				</div>
+				<br>
+				
+			</form>
+			
+				<div class="form-group">	
+					<input type="button" value="發送資料" class="aaa">
+				</div>
+		</div>
+	</div>
+	
+	
+	
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>          
+
+<!-- 前端sweet alert錯誤判斷用 -->                       
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" href="alert/dist/sweetalert.css">
+
+<script>
+
+var status = $("#status").val();
+
+if (status == "failed"){
+	swal("請注意~","有些選項沒有填妥喔~請麻煩再確認一次!","warning")
+	status == "";
+}
+
+</script>
+
+
+
+	
+
+<!-- 清除提示信息 -->
+
+<script type="text/javascript">
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+</script>
+
+
+
+
+<script>
+				
+// ==========================WebSocket Part========================== //
+
+ 		var memNo = $(".memNo").val();
+		var myEndPoint = "/NotificationAlert";
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + window.location.host + myEndPoint + "/" + memNo;
+		
+		var ws ;
+		
+		$(document).ready(function() {
+			
+			//創建Websocket實體
+			
+			ws = new WebSocket(endPointURL);
+			
+			ws.onopen = function(){
+				console.log("websocket建立成功")
+			}
+			
+		});
+		
+		
+// ==========================送出按鈕點擊========================== //
+
+		$("input.aaa").on("click",function(){
+			
+			$("#noti_form").submit();
+			
+			sendNoti();
+		})
+		
+
+// ==========================WebSocket 送消息給後端========================== //
+	function sendNoti(){
+		
+		var jsonObj = {
+			"action" : "send",
+			"notificationId" : "",
+			"memberId" : $("#memberId").val()
+		};
+		console.log(jsonObj);
+		ws.send(JSON.stringify(jsonObj));
+	}
+
+</script>
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
