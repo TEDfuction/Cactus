@@ -1,0 +1,128 @@
+<div th:replace="~{/front_end/member/include/include_top}"></div>
+
+  	<style>
+  		.left_item{
+			text-align:center;
+  		}	
+  		.error{
+  			color:red;
+  		}	
+  		
+  		.unique h2{
+  			margin-bottom:2rem;
+  		}
+  		
+  		.form-group{
+  			margin-bottom:1rem;
+  		}
+  		
+  		.form-box{
+  			width:30%;
+  		}
+  		
+  	
+  	</style>
+</head>
+
+
+
+
+
+
+<body>
+
+<div th:replace="~{/front_end/member/include/include_body}"></div>
+
+
+<!-- =========================================================================================== -->
+ 
+        
+        <!-- 主欄位 -->
+	    <div class="unique">
+	    
+	    	<h2>資料修改</h2>
+	    
+	    
+	    	<form method="post" th:action="@{update}" class="register-form"
+				id="register-form" th:object="${memberVO}" enctype="multipart/form-data">
+					
+				<input type="hidden" name="memberId" th:field="*{memberId}">
+					
+							
+				<div class="form-group">
+					<label for="email"><i class="zmdi zmdi-email"></i>會員信箱:</label>
+					<input type="email" class="form-box" th:field="*{email}" onclick="hideContent('email.errors');" placeholder="請輸入信箱..."><br>
+					<span  th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error" id="email.errors"></span>
+				</div>
+							
+							
+				<div class="form-group">
+					<label for="memberName"><i class="zmdi zmdi-account material-icons-name"></i>會員姓名:</label> 
+					<input type="text" class="form-box" th:field="*{memberName}" onclick="hideContent('memberName.errors');"  placeholder="請輸入姓名..."><br>
+					<span  th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}" class="error" id="memberName.errors"></span>											
+				</div>
+						
+						
+				<div class="form-group">
+					<label for="pass"><i class="zmdi zmdi-lock"></i>會員密碼:</label> 
+					<input type="text" class="form-box" th:field="*{password}" onclick="hideContent('password.errors');" placeholder="請輸入密碼..."><br>
+					<span  th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error" id="password.errors"></span>
+				</div>
+				
+							
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label> -->
+<!-- 				<input type="password" name="rePassword" id="re_pass" placeholder="請再次輸入密碼..."/> -->
+<!-- 			</div> -->
+						
+							
+				<div class="form-group">
+					<label for="birthday"><i class="zmdi zmdi-cake"></i>會員生日:</label>
+					<input type="date" class="form-box" th:field="*{birthday}" onclick="hideContent('birthday.errors');" ><br>
+					<span  th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="error" id="birthday.errors"></span>
+				</div>
+							
+							
+				<div class="form-group">
+					<label for="gender"><i class="zmdi zmdi-male-female"></i>會員性別:</label>
+					<select class="form-box" th:field="*{gender}" id="gender">
+						<option value="0">男</option>
+						<option value="1">女</option>
+						<option value="2">其他</option>
+					</select>
+					<span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error" id="gender.errors"></span>				
+				</div>
+						
+							
+				<div class="form-group">
+					<label for="phone"><i class="zmdi zmdi-phone"></i>會員電話:</label>
+					<input type="text" class="form-box" th:field="*{phone}" onclick="hideContent('phone.errors');" placeholder="請輸入電話..."><br>
+					<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error" id="phone.errors"></span>
+				</div>
+							
+				<div class="form-group">
+					<label for="address"><i class="zmdi zmdi-home"></i>會員地址:</label>
+					<input type="text" class="form-box" th:field="*{address}" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
+					<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span>
+				</div>
+				
+				<div class="form-group">
+								<label for="memberPic"><i class="zmdi zmdi-assignment-account"></i>會員圖片:</label>
+								<input type="file" class="form-box"  th:field="*{memberPic}" onclick="previewImage()" multiple="multiple" />
+<!--  							    <span class="error" th:utext="${errorMessage}" id="memberPic.errors">${errorMessage}</span>  -->
+								
+								
+								<div id="blob_holder"><img th:src="@{/member/ShowPic} + '?memberId=' + ${memberVO.memberId}" width="100px"></div>
+							</div>
+				
+
+							<div class="form-group form-button">
+								<input type="submit" id="signup" class="form-submit" value="更新資料"/>
+							</div>
+							
+						</form>
+	    
+	    	
+        </div>
+        
+<div th:replace="~{/front_end/member/include/include_bottom}"></div>

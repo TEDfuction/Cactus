@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html   xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta>
+<title>會員登入</title>
+
+<!-- Font Icon -->
+<link rel="stylesheet" th:href="@{/fonts/front_end/member/icon/css/material-design-iconic-font.min.css}">
+
+<!-- Main css -->
+<link rel="stylesheet" th:href="@{/css/front_end/member/member.css}">
+
+<style>
+    div.error{
+        color: red;
+        position:relative;
+    }
+</style>
+
+</head>
+
+
+<body>
+
+<input type="hidden" id="status" th:value="${status}">
+
+
+	<div class="main">
+
+		<!-- Sing in  Form -->
+		<section class="sign-in">
+			<div class="container">
+				<div class="signin-content">
+					<div class="signin-image">
+						<figure>
+							<img th:src="@{/img/front_end/member/icons/LOGO.png}" alt="sing up image">
+						</figure>
+						<br>
+						<a th:href="@{/member/memberRegistory}" class="signup-image-link">註冊會員</a>
+						<br>
+						<a th:href="@{/member/forgetPassword}" class="signup-image-link">忘記密碼</a>
+					
+					</div>
+
+					<div class="signin-form">
+						<h2 class="form-title">會員登入</h2>
+						
+						<form method="post" th:action="@{/member/memberLogin}" class="register-form" 
+							id="login-form">
+							
+							<div class="form-group">
+								<label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label> 
+								<input type="email" required name="email" placeholder="請輸入信箱..."><br>
+							</div>
+							
+							<div class="form-group">
+								<label for="password"><i class="zmdi zmdi-lock"></i></label> 
+								<input type="password" required name="password" placeholder="請輸入密碼..."><br>
+							</div>
+									
+
+							<div class="form-group form-button">
+								<input type="submit" name="signin" id="signin" class="form-submit" value="登入" />
+							</div>
+						</form>
+						
+		<!-- 錯誤表列 -->
+		<div class="error" th:utext="${errorMessage}">${errorMessage}</div><br>
+						
+						
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+
+	<!-- JS -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="alert/dist/sweetalert.css"/>
+	
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="@{/js/front_end/member/memberLogin.js}"></script>
+	
+	
+	
+	<script>
+
+		var status = $("#status").val();
+		
+		
+		if(status == "success"){
+			swal("恭喜~","您已成功註冊囉!請輸入信箱和密碼即可登入!","success");
+			status = "";
+		}else if (status == "failed"){
+			swal("錯誤","帳號或密碼錯誤，請再試一次!","error");
+			status = ""; 
+		}else if (status == "wrong"){
+			swal("錯誤!","查無此帳號,請進行註冊!","error");
+			status = "";
+		}else if (status == "changeFinish"){
+			swal("成功!","您的密碼已成功修改,請用新密碼進行登入!","success");
+			status = "";
+		}
+		
+
+	</script>
+	
+	
+</body>
+</html>
