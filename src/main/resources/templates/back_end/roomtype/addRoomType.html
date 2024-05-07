@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Cactus BackEnd</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap"
+          rel="stylesheet">
+    <!-- Tac One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/backend/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="/backend/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/backend/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- 引入 DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- 引入 DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+
+
+<title>員工資料新增 - addEmp.html</title>
+<!--    <head th:insert="~{/back-end/roomorder/included-fragment}"></head>-->
+
+
+
+<style>
+    .expanded-textarea {
+        height: 180px; /* 或根據需求調整 */
+    }
+</style>
+
+<body>
+
+    <!-- Topbar Start 置頂列-->
+    <div class="container-fluid green-bg p-0 wow fadeIn " data-wow-delay="0.1s">
+        <div class="row gx-0 d-none d-lg-flex shadow ">
+
+            <!-- 左側圖標 -->
+            <div class="col-lg-7 px-4 text-start">
+                <img src="/images/LOGO-7.png" height="60" width="60" alt="#"/>
+                <span class="navbar-brand2" href="#">CACTUS</span>
+            </div>
+
+            <!-- 右側文字節點 -->
+            <div class="col-lg-5  text-end">
+
+                <!-- <div class="container-fluid2">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <a class="text-white px-2" href="">加入會員</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div> -->
+                <div class=" d-inline-flex align-items-center   height-1 border-dot">
+                    <!-- <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" href="">日本語 ｜</a> -->
+                    <a class="text-white padding-set " href="">員工姓名</a>
+
+
+                </div>
+                <div class=" d-inline-flex align-items-center  me-2 height-1 border-dot">
+                    <!-- <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" href="">日本語 ｜</a> -->
+                    <a class="text-white px-4 " href="">登出</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Topbar End -->
+    <div class="display-a">
+
+
+        <!-- 側邊欄 -->
+        <div class="main-menu">
+            <!--		top:4rem;-->
+            <!--		bottom:0;-->
+            <!--		height:60rem;-->
+            <!--		left:0;-->
+            <!--		width:180px;-->
+            <!--		overflow:hidden;-->
+            <!--		-webkit-transition:width .2s linear;-->
+            <!--		transition:width .2s linear;-->
+            <!--		-webkit-transform:translateZ(0) scale(1,1);-->
+            <!--		box-shadow: 1px 0 15px rgba(0, 0, 0, 0.07);-->
+            <!--		opacity:1;-->
+
+            <!-- <nav class="main-menu"> -->
+            <ul class="list">
+
+                <li class="border-dot2">
+
+                    <div class="accordion-item2 ">
+
+                        <h2 class="accordion-header" id="headingOne">
+
+                            <button class="accordion-button2 collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fa-solid fa-umbrella-beach padding-set2"></i>
+                                &nbsp;&nbsp;&nbsp;員工管理系統
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
+                             data-bs-parent="#accordionExample">
+
+
+                            <div class="accordion-body2">
+
+                                <ul class="list2">
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+
+                <li class="border-dot2">
+
+
+                    <div class="accordion-item2 ">
+
+                        <h2 class="accordion-header" id="headingTwo">
+
+                            <button class="accordion-button2 collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                <i class="fa-solid fa-umbrella-beach padding-set2"></i>
+                                &nbsp;&nbsp;&nbsp;活動管理系統
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body2">
+                                <ul class="list2">
+                                    <li class="list-set2"><a class="changecolor" href="">活動類別管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">活動管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">活動場次</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">活動圖片管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">活動訂單管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">活動促銷管理</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+
+                <li class="border-dot2">
+
+
+                    <div class="accordion-item2 ">
+
+                        <h2 class="accordion-header" id="headingThree">
+
+                            <button class="accordion-button2 collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                <i class="fa-solid fa-umbrella-beach padding-set2"></i>
+                                &nbsp;&nbsp;&nbsp;商城管理系統
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse " aria-labelledby="headingThree"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body2">
+                                <ul class="list2">
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+
+
+                <li class="border-dot2">
+
+
+                    <div class="accordion-item2 ">
+
+                        <h2 class="accordion-header" id="headingFour">
+
+                            <button class="accordion-button2 collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                <i class="fa-solid fa-umbrella-beach padding-set2"></i>
+                                &nbsp;&nbsp;&nbsp;房務管理系統
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse " aria-labelledby="headingFour"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body2">
+                                <ul class="list2">
+                                    <li class="list-set2"><a class="changecolor" href="">房務訂單管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">房型管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">房間管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                    <li class="list-set2"><a class="changecolor" href="">管理</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+        <!--                表單內容                 -->
+
+        <div align="center" style="display: flex; justify-content: center; flex-direction: column; width: 50%; margin: auto; margin-top: 25px;">
+
+            <h2><span class="badge bg-success" style="text-align: center">新增房型 </span></h2>
+            <a> (<span style="color: red;">*</span>表示為必填欄位)</a>
+
+            <form method="post" th:object="${roomTypeVORequest}" enctype="multipart/form-data" >
+                <div class="mb-3 row " style="margin-top:20px">
+                    <label for="roomTypeId" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型編號:</label>
+                    <div class="col-sm-8 ">
+                        <input type="text" th:field="${roomTypeVORequest.roomTypeId}" name="roomTypeId" id="roomTypeId" placeholder="ex:1001" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypeId')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeId}"></p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypeName" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型名稱:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="roomTypeName" th:field="${roomTypeVORequest.roomTypeName}" id="roomTypeName" placeholder="房型名稱:" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypeName')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeName}"></p></div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypeContent" class="col-sm-4 col-form-label">房型說明:</label>
+                    <div class="col-sm-8">
+                        <textarea name="roomTypeContent" th:field="${roomTypeVORequest.roomTypeContent}" id="roomTypeContent" placeholder="房型說明:" class="form-control expanded-textarea"></textarea>
+                        <p th:if="${#fields.hasErrors('roomTypeContent')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeContent}"></p></div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypePrice" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型價格說明:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="roomTypePrice" th:field="${roomTypeVORequest.roomTypePrice}" id="roomTypePrice" placeholder="ex:30000~50000" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypePrice')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypePrice}"></p></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 d-grid">
+                        <button type="submit" class="btn btn-primary">送出新增</button>
+                    </div>
+                    <div class="col-sm-6 d-grid">
+                        <a class="btn btn-outline-primary" href="/roomtype/listAllRoomType" role="button">取消</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!--            <div>-->
+    <!--                <label>照片:</label>-->
+    <!--                <input type="file" th:field="*{upFiles}" onclick="previewImage()" multiple="multiple"-->
+    <!--                       onchange="hideContent('upFile7s.errors');"/>-->
+    <!--                &lt;!&ndash; 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> &ndash;&gt;-->
+    <!--                <span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span>-->
+    <!--                &lt;!&ndash; 			<h2 id="errorMessage">${errorMessage}</h2>  &ndash;&gt;-->
+    <!--                <div id="blob_holder"></div>-->
+    <!--            </div>-->
+
+</body>
+
+<!-- JavaScript part -->
+<script>
+
+
+</script>
+</html>
