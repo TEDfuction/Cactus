@@ -13,17 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.boot.web.servlet.ServletComponentScan;
+
 //登入過濾器
 
 @WebFilter(filterName = "loginFilter" , 
-		   urlPatterns = { 
-				   		   "/member/memberOnlyWeb" , 
-				   		   "/member/checkNotification",
-				   		   "/member/checkActivityOrderDetail",
-				   		   "/member/checkRoomOrderDetail",
-				   		   "/member/checkProductOrderDetail"
-				   		   })
-
+urlPatterns = { 
+		   		   "/member/memberOnlyWeb" , 
+		   		   "/member/checkNotification",
+		   		   "/member/checkActivityOrderDetail",
+		   		   "/member/checkRoomOrderDetail",
+		   		   "/member/checkProductOrderDetail"
+		   		   })
 public class LoginFilter implements Filter {
 
 	private FilterConfig config;

@@ -88,8 +88,8 @@ public class NotificationAlert {
 					
 					//推播未讀訊息之個數
 					count = notiSvc.getNotiUnread( Integer.valueOf(memberId) );
-					System.out.println("ccccc"+count+"cccccc");
-					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count) );
+					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
+					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count)+ "0" );
 				}
 			}	
 
@@ -106,7 +106,8 @@ public class NotificationAlert {
 			//比對後回傳給會員頁面做更新
 			for(String memberNo : memNos) {
 				if( memberNo.equals(memberId) && sessionsMap.get(memberNo).isOpen() ) {
-					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count) );
+					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
+					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count) + "1" );
 				}
 			}
 		}

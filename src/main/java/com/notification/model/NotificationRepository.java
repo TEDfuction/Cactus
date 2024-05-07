@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface NotificationRepository extends JpaRepository<NotificationVO, Integer> {
 	
-	@Query(value = "from NotificationVO where member_id=?1")
+	@Query(value = "from NotificationVO where member_id=?1 order by time desc")
 	List<NotificationVO> findByMemberIdByOrderByTimeDesc(Integer memberId);
 	
 	
@@ -21,7 +21,7 @@ public interface NotificationRepository extends JpaRepository<NotificationVO, In
 	
 	//更改排序
 	@Modifying
-	List<NotificationVO> findAllByOrderByTimeDesc();
+	List<NotificationVO> getAllByOrderByTimeDesc();
 	
 	
 	//搜尋未讀通知之個數,供WebSocket調用
