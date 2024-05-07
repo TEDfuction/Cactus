@@ -1,0 +1,81 @@
+<div th:replace="~{back_end/include/include_top}"></div>
+
+<style type="text/css">
+	
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 5px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 5px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+<div th:replace="~{back_end/include/include_body}"></div>
+
+<div class="unique">
+
+ <div align="center"> <h2>活動圖片編輯</h2>
+		 <h3><a class="navbar-brand" th:href="@{/activity/select_photo}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+		 
+	<div align="center">
+		<h3><b>所有欄位皆為必填欄位</b></h3>
+		<form th:action="@{update}" method="post" th:object="${photoVO}" enctype="multipart/form-data">
+			<div>
+			<label>活動圖片編號:</label>
+			<input type="text" th:field="*{activityPhotoId}" style="border:0px ; font-weight: bold;" readonly /><br/>
+			</div>
+			
+			<div>
+			<label>活動項目編號:</label>
+			<select th:field="*{activityPh.activityId}">
+				<option th:each="activityPh : ${itemListData}" th:value="${activityPh.activityId}" th:text="${activityPh.activityName}" />
+			</select>
+			<span th:if="${#fields.hasErrors('activityPh.activityId')}" th:errors="*{activityPh.activityId.errors"></span>
+			</div>
+			
+		    <div>
+			<label>圖片:</label>
+			<input type="file" th:field="*{activityPhoto}" onclick="previewImage()" multiple="multiple" />
+            <!-- 可以不修改圖片 <span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
+			<div id="blob_holder"><img th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"></div>
+			</div>
+				
+			
+			<div>
+				<div></div>
+				<div><button type="submit" id="submit"> 送出修改 </button></div>
+				<div></div>
+			</div>		
+		</form>
+	</div>
+	
+<!-- JavaScript part -->
+<script type="text/javascript">
+// //清除提示信息
+// function hideContent(d) {
+//      document.getElementById(d).style.display = "none";
+// }
+
+</script>
+
+<div th:replace="~{back_end/include/include_bottom}"></div>
