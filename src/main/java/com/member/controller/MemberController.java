@@ -18,11 +18,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
 import com.notification.model.NotificationService;
+import com.notification.model.NotificationVO;
 
 @Controller
 //@Validated
@@ -34,6 +38,8 @@ public class MemberController {
 	
 	@Autowired
 	NotificationService notiSvc;
+	
+	Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	
 	
 	
@@ -311,6 +317,9 @@ public class MemberController {
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
 		model.addAttribute("UnreadCount",count);
 		
+		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
+		model.addAttribute("notiList", notiList);
+		
 		model.addAttribute("memberVO", memberVO);
 		
 		return "/front_end/member/checkNotification";
@@ -320,6 +329,23 @@ public class MemberController {
 	
 	
 	
+	
+	
+	@GetMapping("/ajaxUpdateNoti")
+	@ResponseBody
+	public String ajaxUpdateNoti(HttpServletRequest req,ModelMap model) {
+		System.out.println("Enter HERE");
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		
+		MemberVO memberVO = memSvc.findByEmail(email);
+		
+		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
+		
+		String jsonArray = gson.toJson(notiList);
+		System.out.println("CHANGE TO JSON");
+		return jsonArray ;
+	}
 	
 	
 	

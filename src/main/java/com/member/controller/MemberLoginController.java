@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.notification.model.NotificationService;
 
 @Controller
 @Validated
@@ -36,6 +37,9 @@ public class MemberLoginController {
 
 	@Autowired
 	MemberService memSvc;
+	
+	@Autowired
+	NotificationService notiSvc;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -84,13 +88,17 @@ public class MemberLoginController {
 		model.addAttribute("memberVO", memberVO);
 		session.setAttribute("account", email);
 		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
+		model.addAttribute("UnreadCount",count);
+		
 		//檢查有無來源地址,若沒有就到會員專區頁面
 		try {
 			String location = (String) session.getAttribute("location");
 			if (location != null) {
+				session.removeAttribute("location"); // 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 				return "redirect:" + location;
 //				res.sendRedirect(location);
-//				session.removeAttribute("location"); // 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 //				return;
 			}
 		} catch (Exception ignored) {

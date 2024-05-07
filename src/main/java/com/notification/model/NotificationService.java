@@ -72,7 +72,7 @@ public class NotificationService {
 		}
 		
 		public List<NotificationVO> getAll() {
-			return repository.findAllByOrderByTimeDesc();
+			return repository.getAllByOrderByTimeDesc();
 		}
 		
 		public void readMsg(Integer notiId) {

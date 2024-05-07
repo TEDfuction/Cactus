@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.google.gson.annotations.Expose;
 import com.member.model.MemberVO;
 
 @Entity
@@ -24,12 +26,14 @@ public class NotificationVO implements java.io.Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "notification_id",
 			updatable = false, nullable = false)
+    @Expose
 	private Integer notiId;
 		
 	
 	
 	@Column(name = "notification_type",
 			nullable = false)
+    @Expose
 	private Integer type;
 	
 	
@@ -37,23 +41,27 @@ public class NotificationVO implements java.io.Serializable{
 	@Column(name = "notification_time",
 //			columnDefinition = "datetime",
 			insertable = false, updatable = false, nullable = false)
+	@Expose
 	private Timestamp time;
 	
 	
 	@Column(name = "notification_status",
 			insertable = false, nullable = false)
+	@Expose
 	private Integer status;
 	
 	
 	@Column(name = "notification_title",
 			nullable = false)
 	@NotEmpty(message="通知標題: 請勿空白")
+	@Expose
 	private String title;
 	
 	
 	@Column(name = "notification_content",
 			nullable = false)
 	@NotEmpty(message="通知內容: 請勿空白")
+	@Expose
 	private String content;
 	
 	

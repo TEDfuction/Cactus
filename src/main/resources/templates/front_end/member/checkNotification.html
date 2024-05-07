@@ -4,13 +4,34 @@
 
 
 <style>
+
+
+
+    	
+    
+   
+  	
 .left_item {
 	text-align: center;
 }
 
-.unique {
-	text-align: center;
-}
+.unique h2{
+  			margin-bottom:2rem;
+  		}
+
+	div.noti{
+	
+		width:600px;
+		height:65px;	
+	}
+	
+	div.noti p {
+		display:inline-block;
+		margin-left:20px;
+		margin-top:18px;
+		
+		
+	}
 
 .display {
 	font-size: 15px;
@@ -73,10 +94,10 @@
 	<!-- 主欄位 -->
 	<div class="unique">
 
-		<h3>---重要通知---</h3>
+		<h2>重要通知</h3>
 
-
-		<th:block th:each="notiVO : ${memberVO.notificationVO}">
+<div id="container">
+		<th:block th:each="notiVO : ${notiList}">
 
 			<div class="noti">
 				
@@ -92,10 +113,12 @@
 				<p>
 					通知時間:<span th:text="${notiVO.time}"></span>
 				</p>
+				
+				<input class="notiStatus" type="hidden"  th:value="${notiVO.status}" >
+				
 			</div>
 			
 			 <input class="notiId" type="hidden"  th:value="${notiVO.notiId}" >
-			 <input class="notiStatus" type="hidden"  th:value="${notiVO.status}" >
 			
 
 			<div class="lightbox">
@@ -122,7 +145,7 @@
 			<br>
 			<br>
 		</th:block>
-
+</div>
 	</div>
 	
 <div th:replace="~{/front_end/member/include/include_bottom}"></div>

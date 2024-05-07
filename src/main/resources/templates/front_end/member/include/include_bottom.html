@@ -111,51 +111,136 @@
 				console.log("websocket建立成功")
 			}
 			
-			//收到資料，更改通知提示數字
+			//收到資料後觸發
 			ws.onmessage = function(e){
+				
+				//更改通知提示數字
 				var countArea = $("span.red_circle")
-				var unReadCount = JSON.parse(e.data)
+				var data = new String( e.data );
+				
+				var unReadCount = data[0]
+				//WebSocket多送回來的數字，做判斷是否執行AJAX刷新用
+				var xxx = data[1];
+				
 				console.log(unReadCount);
-				
-				
-				if( unReadCount === "0"  ){
-		 			countArea.addClass("-none");
-		 		}else{
-		 			countArea.removeClass("-none");
-		 		}
+				console.log(xxx);
 				
 				countArea.text(unReadCount);
+				
+				//若提示數字為0讓紅框消失
+				if(unReadCount == "0"){
+					countArea.addClass("-none");
+				}else{
+					countArea.removeClass("-none");
+				}
+				
+				
+				if(xxx == "0"){
+					//發請求更新網頁上的資料
+					$.ajax({
+						url:"/member/ajaxUpdateNoti",
+						type:"GET",
+						success:function(data){
+							console.log(data);
+							
+							
+	 						displayData(data);
+							},
+						error:function(xhr,status,error){
+							console.error("Ajax request failed");
+							}
+						})
+				}
+				
+				
 			}
 				
 		});
 
+			
+		
+		
+		function displayData(data){
+			var container = document.getElementById("container");
+			
+			var JSONArray = JSON.parse(data);
+			
+			console.log(JSONArray);
+			
+			var showPanel = "";
+			
+			for(var i=0 ; i<JSONArray.length ; i++){
+				console.log(JSONArray[i]);
+				
+				var noti_type;
+				
+				if(JSONArray[i].type === 0){
+					noti_type = "房務";
+				}else if(JSONArray[i].type === 1){
+					noti_type = "活動";
+				}else{
+					noti_type = "商品";
+				}
+			
+			
+			 showPanel += `
+				<div class="noti">
+				
+					<p>通知種類:<span>${noti_type}</span></p>
+					<p>通知標題:<span>${JSONArray[i].title}</span></p>
+					<p>通知時間:<span>${JSONArray[i].time}</span></p>
+				
+					<input class="notiStatus" type="hidden"  value="${JSONArray[i].status}" >
+				
+				</div>
+			
+				<input class="notiId" type="hidden" value="${JSONArray[i].notiId}" >
+			
+
+				<div class="lightbox">
+					<article>
+						<p>通知種類:<span>${noti_type}</span></p>
+						<p>通知標題:<span>${JSONArray[i].title}</span></p>
+						<p>通知時間:<span>${JSONArray[i].time}</span></p>
+						<p>通知內容:<span>${JSONArray[i].content}</span></p>
+					</article>
+				</div>
+			<br>
+			<br>
+	
+			`;
+			
+
+			}
+			container.innerHTML = showPanel;
+			window.location.reload()
+			console.log("reload success")
+			
+		}
+		
 		
 //通知提醒彈出燈箱
 
 		var noti;
-		var noti_status;
-		var noti_status_val
+
 		
-		$("div.noti").on("click", function() {
+		$(document).on("click","div.noti", function() {
 			// 		console.log(this);
-			$(this).next().next().next("div.lightbox").fadeIn(800);
+			$(this).next().next("div.lightbox").fadeIn(800);
 			
 			noti = $(this).next("input.notiId").val();
 			console.log(noti);
 			
-			noti_status = $(this).next().next("input.notiStatus");
-			noti_status_val = noti_status.val();
-			console.log(noti_status_val);
-			
-// 			changeNotiStatus();
+			this.classList.remove("-on")
+ 			changeNotiStatus();
 
 		});
 
-		$(".lightbox").on("click", function() {
+		$(document).on("click",".lightbox", function() {
 			$(".lightbox").fadeOut(800);
 		});
 
-		$(".lightbox > article").on("click", function(e) {
+		$(document).on("click",".lightbox > article", function(e) {
 			e.stopPropagation();
 		});
 		
@@ -177,7 +262,7 @@
 
 		
 		
-//處理通知出現消失
+//處理通知提示出現消失
 
  		if( $("span.red_circle").text() === "0"  ){
  			$("span.red_circle").addClass("-none");
@@ -186,14 +271,19 @@
  		}
  		
  		
-//處理訊息未讀與已讀之區別		
-			var block = $("div.noti");
-			var status_block = $("input.status");
-			console.log(status_block);
+ 		//處理訊息未讀與已讀之區別		
+		var status_block = $("input.notiStatus");
+		
+		
+		for(let i = 0 ; i < status_block.length ; i++){
+// 				console.log(status_block[1])
+			if(status_block[i].value == 0){
+				status_block[i].closest("div.noti").classList.add("-on")
+			}else{
+				status_block[i].closest("div.noti").classList.remove("-on")
+			}
+		}
 			
-			
-				
-			block.addClass("-on");
 		
 		</script>
 		
