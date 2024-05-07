@@ -17,6 +17,8 @@ public interface RoomTypeService {
 
 //    void updateRTS(Integer roomTypeId, Boolean roomTypeStatus);
 
+    void updateRTS(Integer roomTypeId, Boolean roomTypeStatus);
+
     List<RoomTypeVO> getAllRoomTypes();
 
 
