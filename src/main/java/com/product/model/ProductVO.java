@@ -11,10 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.productcategory.model.ProductCategoryVO;
+import com.shoporderdetail.model.ShopOrderDetailVO;
 
 @Entity
 @Table(name="product")
@@ -50,7 +50,18 @@ public class ProductVO {
 	@Column(name = "product_status", nullable = false)
 	private Boolean productStatus;
 	
+	@OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
+	private Set<ShopOrderDetailVO> shopOrderDetailVO;
+	
 
+
+	public Set<ShopOrderDetailVO> getShopOrderDetailVO() {
+		return shopOrderDetailVO;
+	}
+
+	public void setShopOrderDetailVO(Set<ShopOrderDetailVO> shopOrderDetailVO) {
+		this.shopOrderDetailVO = shopOrderDetailVO;
+	}
 
 	public Integer getProductId() {
 		return productId;
@@ -116,11 +127,11 @@ public class ProductVO {
 	public void setProductStatus(Boolean productStatus) {
 		this.productStatus = productStatus;
 	}
-	
-	@Override
-	public String toString() {
-		return "Emp [productId=" + productId + ", productDescribtion=" + productDescribtion + "]";
-	}
+//	
+//	@Override
+//	public String toString() {
+//		return "Emp [productId=" + productId + ", productDescribtion=" + productDescribtion + "]";
+//	}
 	
 	
 	

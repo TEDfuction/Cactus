@@ -1,29 +1,27 @@
 package com.shoporderdetail.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.shoporderdetail.model.ShopOrderDetailVO.CompositeDetail;
+import com.product.model.ProductVO;
+import com.shoporder.model.ShopOrderVO;
 
 @Entity
 @Table(name = "shop_order_detail")
-@IdClass(CompositeDetail.class)
-public class ShopOrderDetailVO {
+public class ShopOrderDetailVO implements java.io.Serializable{
 	
 	@Id
-	@Column(name = "shop_order_id" , updatable = false)
-	private Integer shopOrderID;
+	@Column(name = "shop_order_detail_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer shopOrderDeatilId;
 	
-	@Id
-	@Column(name = "product_id", updatable = false)
-	private Integer productID;
-	
+
 	@Column(name = "order_quantity", nullable = false)
 	private Integer orderQuantity;
 	
@@ -31,31 +29,27 @@ public class ShopOrderDetailVO {
 	private Integer productAmount;
 	
 	
-	// 特別加上對複合主鍵物件的 getter / setter
-	public CompositeDetail getCompositeKey() {
-		return new CompositeDetail(shopOrderID, productID);
-	}
+	
+	//映射
+	
+	@ManyToOne
+	@JoinColumn(name = "shop_order_id", referencedColumnName = "shop_order_id")
+	private ShopOrderVO shopOrder;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_id", referencedColumnName = "product_id")
+	private ProductVO product;
 
-	public void setCompositeKey(CompositeDetail key) {
-		this.shopOrderID = key.getShopOrderID();
-		this.productID = key.getProductID();
-	}
 	
 	
-	public Integer getShopOrderID() {
-		return shopOrderID;
+	
+	
+	public Integer getShopOrderDeatilId() {
+		return shopOrderDeatilId;
 	}
 
-	public void setShopOrderID(Integer shopOrderID) {
-		this.shopOrderID = shopOrderID;
-	}
-
-	public Integer getProductID() {
-		return productID;
-	}
-
-	public void setProductID(Integer productID) {
-		this.productID = productID;
+	public void setShopOrderDeatilId(Integer shopOrderDeatilId) {
+		this.shopOrderDeatilId = shopOrderDeatilId;
 	}
 
 	public Integer getOrderQuantity() {
@@ -74,59 +68,22 @@ public class ShopOrderDetailVO {
 		this.productAmount = productAmount;
 	}
 
-
-
-
-
-
-	static class CompositeDetail implements Serializable{
-		private static final long serialVersionUID = 1L;
-		
-		private Integer shopOrderID;
-		private Integer productID;
-		
-		public CompositeDetail() {
-			super();
-		}
-		
-		public CompositeDetail(Integer shopOrderID, Integer productID) { 
-			super();
-			this.shopOrderID = shopOrderID;
-			this.productID = productID;
-		}
-
-		public Integer getShopOrderID() {
-			return shopOrderID;
-		}
-
-		public void setShopOrderID(Integer shopOrderID) {
-			this.shopOrderID = shopOrderID;
-		}
-
-		public Integer getProductID() {
-			return productID;
-		}
-
-		public void setProductID(Integer productID) {
-			this.productID = productID;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(productID, shopOrderID);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			CompositeDetail other = (CompositeDetail) obj;
-			return Objects.equals(productID, other.productID) && Objects.equals(shopOrderID, other.shopOrderID);
-		}		
-
+	public ShopOrderVO getShopOrder() {
+		return shopOrder;
 	}
+
+	public void setShopOrder(ShopOrderVO shopOrder) {
+		this.shopOrder = shopOrder;
+	}
+
+	public ProductVO getProduct() {
+		return product;
+	}
+
+	public void setProduct(ProductVO product) {
+		this.product = product;
+	}
+	
+	
+	
 }
