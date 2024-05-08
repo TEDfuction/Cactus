@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +18,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import com.notification.model.NotificationVO;
+import com.shoporder.model.ShopOrderVO;
 
 @Entity
 @Table(name = "member")
@@ -95,11 +95,23 @@ public class MemberVO implements java.io.Serializable{
 //	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
 //	private Set<ActivityOrderVO> activityOrderVO;
 	
-//	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
-//	private Set<ProductOrderVO> productOrderVO;
+	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
+	private Set<ShopOrderVO> shopOrderVO;
 	
 	
 	
+	public Set<ShopOrderVO> getShopOrderVO() {
+		return shopOrderVO;
+	}
+
+
+
+	public void setShopOrderVO(Set<ShopOrderVO> shopOrderVO) {
+		this.shopOrderVO = shopOrderVO;
+	}
+
+
+
 	public MemberVO() { //必需有一個不傳參數建構子(JavaBean基本知識)
 		super();
 		// TODO Auto-generated constructor stub
