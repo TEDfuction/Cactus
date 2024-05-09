@@ -35,12 +35,20 @@ public class IndexController_inSpringBoot {
     private String message;
 	
     private List<String> myList = Arrays.asList("Spring Boot Quickstart 官網 : https://start.spring.io", "IDE 開發工具", "直接使用(匯入)官方的 Maven Spring-Boot-demo Project + pom.xml", "直接使用官方現成的 @SpringBootApplication + SpringBootServletInitializer 組態檔", "依賴注入(DI) HikariDataSource (官方建議的連線池)", "Thymeleaf", "Java WebApp (<font color=red>快速完成 Spring Boot Web MVC</font>)");
-    @GetMapping("/")
+    @GetMapping("/activityPhoto")
     public String index(Model model) {
     	model.addAttribute("message", message);
         model.addAttribute("myList", myList);
-        return "index"; //view
+        return "/front_end/activity/index"; //view
     }
+    @GetMapping("/activityOrder")
+    public String order(Model model) {
+    	model.addAttribute("message", message);
+        model.addAttribute("myList", myList);
+        return "/front_end/activity/order"; //view
+    }
+    
+    
     
     // http://......../hello?name=peter1
     @GetMapping("/hello")

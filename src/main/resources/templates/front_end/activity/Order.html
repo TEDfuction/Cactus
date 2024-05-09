@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Cactus Activity Category HTML</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+<!--     <link th:href="@{/img/front_end/activity/favicon.ico}" rel="icon" > -->
+
+    <!-- Google Web Fonts -->
+    <!-- Noto+Sans+TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Pridi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+   
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/front_end/activity/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/tempusdominus/css/tempusdominus-bootstrap-4.min.css}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/front_end/activity/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/front_end/activity/style.css}" rel="stylesheet">
+ <style>
+   
+</style>
+</head>
+
+<body>
+
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"> -->
+<!-- 		 <div align="center"> <h2>所有圖片資料 - listAllPhoto.html</h2> -->
+<!-- 		 <h3><a class="navbar-brand" th:href="@{/photo/select_photo}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div> -->
+<!-- </nav> -->
+    <!-- Spinner Start  Lodding畫面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/activity/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn sticky-top" data-wow-delay="0.1s" style="visibility: visible; animation-delay:0.2s; animation-name: fadeIn;">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
+                    <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
+                    <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-5 px-2-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" href="">日本語 ｜</a>
+                    <a class="text-white px-2" href="">加入會員</a>
+                    
+                </div>
+                  
+            </div>
+                
+                     
+          </div>
+     </div>
+   
+   
+
+ 
+
+<!-- ==============================活動訂單抓取================================ -->
+<!-- 改間隔 -->
+<div style="margin-top: 20px;"></div>
+
+<th:block th:if="${not #lists.isEmpty(photoListData)}">
+    <div class="accordion container" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item" style="border-radius: 0.5rem;">
+            <h2 class="accordion-header">
+                <button class="accordion-button" style="font-size: 25px;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" >
+                 行程資訊
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                <div class="accordion-body" style="font-size: 20px;" th:text="${photoListData[0].activityPh.activityDescription}" >
+                   
+                </div>
+            </div>
+        </div>
+    
+
+
+<!--改間隔 -->
+      <div style="margin-top: 20px;"></div>
+    
+      <div class="accordion-item" style="border-radius: 0.5rem;">
+        <h2 class="accordion-header">
+          <button class="accordion-button " style="font-size: 25px;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            聯絡資訊
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
+          <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>聯絡資訊</div>
+          <div class="accordion-body" style="font-size: 20px;" th:text="${photoListData[1].activityPh.activityDescription}">
+          </div>
+                 <!-- 活動參加人員 -->
+              <p class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>參加人員</p>
+            
+                 
+                  <!-- 活動參加人員姓名 -->
+              <p class="accordion-body" style="font-size: 20px; margin-left:15px">參加人員姓名*</p>
+                 <!-- 輸入框 -->
+                 <div class="col-auto mx-auto" style="width:95%;"  >
+                    <input type="text" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" style="border-radius: 0.5rem;" >
+                 </div> 
+                 
+                  <!-- 活動參加人員性別 -->
+              <p class="accordion-body" style="font-size: 20px; margin-left:15px">性別</p> 
+                 <div class="form-check form-check-inline" style="font-size: 20px; margin-left:35px">
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+				  <label class="form-check-label" for="inlineRadio1">男</label>
+				</div>
+				<div class="form-check form-check-inline" style="font-size: 20px">
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+				  <label class="form-check-label" for="inlineRadio2">女</label>
+				</div>
+				<div class="form-check form-check-inline" style="font-size: 20px">
+				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" >
+				  <label class="form-check-label" for="inlineRadio3">其他</label>
+				</div>
+                 
+                 
+                  <!-- 活動參加人員身分證字號 -->
+              <p class="accordion-body" style="font-size: 20px; margin-left:15px">身分證字號*</p>
+                 <!-- 輸入框 -->
+                 <div class="col-auto mx-auto" style="width:95%;"  >
+                    <input type="text" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" style=" border-radius: 0.5rem;" >
+                 </div> 
+                 
+                 
+                  <!-- 活動參加人員手機號碼 -->
+              <p class="accordion-body" style="font-size: 20px; margin-left:15px">手機號碼*</p>
+                 <!-- 輸入框 -->
+                 <div class="col-auto mx-auto" style="width:95%" >
+                    <input type="text" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" style=" border-radius: 0.5rem;">
+                 </div> 
+                 
+                 <!-- 信箱 -->
+              <p class="accordion-body" style="font-size: 20px; margin-left:15px">信箱*</p>
+                 <!-- 輸入框 -->
+                 <div class="col-auto mx-auto" style="width:95%" >
+                    <input type="text" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" style=" border-radius: 0.5rem;">
+                 </div> 
+                 
+                 
+                 
+                  
+                  <!-- 個別需求 -->
+              <p class="accordion-body" style="font-size: 25px; margin-left:15px"><i class="bi bi-pause-fill"></i>個別需求</p>
+                  <!-- 個別需求輸入框 -->
+               <div class="form-floating mx-auto" style="width:95%; top: -20px">
+               <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px; border-radius: 0.5rem;" ></textarea>
+                 <label for="floatingTextarea2">Comments</label>
+               </div>
+             
+        </div>
+      </div>
+    
+<!--改間隔 -->
+      <div style="margin-top: 20px;"></div>
+    
+      <div class="accordion-item" style="border-radius: 0.5rem;">
+        <h2 class="accordion-header">
+          <button class="accordion-button  "  style="font-size: 25px;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+            付款資訊
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
+          <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>付款金額</div>
+          <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ photoListData[2].activityPh.activityPrice}"></div>
+          
+        </div> 
+       </div>
+     
+   
+    
+      
+    
+</th:block>
+<!-- ===================================================================== -->
+
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn; top: -100px;">
+      <div style="display: flex; align-items: center;">
+        <a href="/activityPhoto" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="text2-primary2 m-0" style=" font-size:25px">
+             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'總金額-$'+ photoListData[2].activityPh.activityPrice}" >
+            </h1>
+        </a>
+       </div> 
+       
+
+         <a href="\activityPhoto">
+         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"  style=" border-radius: 0.5rem;">
+             <i class="bi bi-caret-right-square-fill" me-2="" style="color: #f2f1f1;color: black; " aria-hidden="true"  >下一步</i>
+         </button>
+         </a>
+        
+        <div class="collapse navbar-collapse"  id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0" > 
+
+            </div> 
+            
+        </div>
+          <!-- 原本輸入內容:Appointment -->
+          
+            <a href="\activityPhoto">
+            <button type="submit" class="btn btn-primary py-2 px-4 d-none d-lg-block" >
+            <i class="bi bi-caret-right-square-fill" me-2="" style="color: #f2f1f1; " aria-hidden="true"  >下一步</i>
+            </button>
+            </a>
+         </div> 
+        
+    </nav>
+       
+
+
+
+
+<!-- ======================================================================= -->
+
+ 
+
+    
+        
+      <!-- 活動項目介紹結束 -->
+
+
+    
+    <!-- Footer Start -->
+    <div>
+      
+    <script
+        src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+        type="module"
+      ></script>
+      <dotlottie-player
+        src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+        background="transparent"
+        speed="0.4"
+        style="max-width: 100%; margin-bottom: -1px"
+        direction="1"
+        playMode="normal"
+        loop
+        autoplay
+      ></dotlottie-player>
+
+    
+    </div>
+    
+    <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        
+        
+
+        
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">最新消息</h3>
+                    <a class="btn btn-link text-primary5" href="">所有公告</a>
+                    <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                    <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                    <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                    <!-- <a class="btn btn-link" href="">Construction</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">房型介紹</h3>
+                    <a class="btn btn-link text-primary5" href="">AAA套房</a>
+                    <a class="btn btn-link text-primary5" href="">BBB套房</a>
+                    <a class="btn btn-link text-primary5" href="">CCC套房</a>
+                    <a class="btn btn-link text-primary5" href="">DDD套房</a>
+                    <!-- <a class="btn btn-link" href="">Support</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">特色活動</h3>
+                    <a class="btn btn-link text-primary5" href="">浮潛</a>
+                    <a class="btn btn-link text-primary5" href="">SUP立槳衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                    <a class="btn btn-link text-primary5" href="">淺灘衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">仙人掌園區參觀</a>
+                </div>
+                <!-- <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Newsletter</h3>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div> -->
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：澎湖縣馬公市時裡200號</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-2345678 #888</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>cactus@gmail.com</p>
+                    <!-- <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+    <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●js  for jquery datatables 用 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/lib/front_end/activity/wow/wow.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/counterup/counterup.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/owlcarousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment-timezone.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
+    
+    
+    
+    
+
+    <!-- Template Javascript -->
+    <script th:src="@{/js/front_end/activity/main.js}"></script>
+
+    <!-- Kit Icon -->
+    <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+    
+    
+    <!-- JqueryTable -->
+ <script type="text/javascript">
+//https://www.linkedin.com/in/atakangk/
+//jQuery time
+
+
+
+
+</script>
+</body>
+
+</html>
+
+
+

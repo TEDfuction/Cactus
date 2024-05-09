@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+
+<title>Insert title here</title>
+</head>
+<body>
+        <a th:href="@{/activityPhoto}">上一頁</a>
+       <div class="activity"> 
+        <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/>
+		<span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/>
+		<span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>
+	   </div>
+</body>
+</html>
