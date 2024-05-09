@@ -45,6 +45,13 @@ public class PhotoController {
 		model.addAttribute("photoVO", photoVO);
 		return "back_end/activity/addPhoto";
 	}
+	@GetMapping("listDetailPhoto")
+	public String listDetailPhoto(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId) {
+		PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+		model.addAttribute("photoVO",photoVO);
+		return "/front_end/activity/listDetailPhoto";
+		
+	}
 
 	/*
 	 * This method will be called on addEmp.html form submission, handling POST request It also validates the user input

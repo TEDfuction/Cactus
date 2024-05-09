@@ -46,6 +46,11 @@ public class PhotoService {
 		return photoRepository.findAll();
 	}
 
+	public PhotoVO findById(Integer activityPhotoId) {
+		Optional<PhotoVO> Optional= photoRepository.findById(activityPhotoId);
+		return Optional.orElse(null);
+	}
+
 //	public List<PhotoVO> getAll(Map<String, String[]> map){
 //		return Photo_Compositegory.getAllPhotoVOs(map, sessionFactory.openSession());
 //	}
