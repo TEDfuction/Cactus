@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -15,18 +15,23 @@
 
 <body>
 
-	<th:block th:each="productVO : ${productList}">
-	
+		
+		<a th:href="@{/product/listAllProduct}">上一頁</a>
+		
 		<div class="product">
 		
-			<div>商品編號:<span th:text="${productVO.productId}"></span></div>
+			<div>商品編號:<span th:text="${productVO.productId}" name="productId"></span></div>
 			<div>商品名稱:<span th:text="${productVO.productName}"></span></div>
 			<div>商品售價:<span th:text="${productVO.productPrice}"></span></div>
 			<div>商品圖片:<img th:src="@{/member/ShowPic} + '?memberId=' + ${productVO.productPhoto}" width="100px"></span></div>
 			
+			<br>
+			<br>
+			<br>
+			
+			<div>商品描述:<span th:text="${productVO.productDescribtion}"></span></div>
 		</div>
 		
-	</th:block>
 
 
 
