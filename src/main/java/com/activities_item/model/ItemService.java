@@ -1,8 +1,11 @@
 package com.activities_item.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.activities.hibernate.util.Item_Compositegory;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

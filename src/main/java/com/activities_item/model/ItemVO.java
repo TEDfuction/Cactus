@@ -4,23 +4,17 @@ package com.activities_item.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.activities_category.model.CategoryVO;
 import com.activities_photo.model.PhotoVO;
+import com.activities_session.model.SessionVO;
 
 
-
-	@Entity
+@Entity
 	@Table(name = "activity_item")
 	public class ItemVO implements java.io.Serializable{
 		private static final long serialVersionUID = 1L;
@@ -33,8 +27,10 @@ import com.activities_photo.model.PhotoVO;
 		@Column(name = "activity_id")
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer activityId;
-		 
-		
+
+		@ManyToOne
+		@JoinColumn(name = "activity_category_id", referencedColumnName = "activity_category_id")
+		private CategoryVO categoryVO;
 
 		//PK一對多
 		@OneToMany(mappedBy = "activityPh", cascade = CascadeType.ALL)
@@ -62,7 +58,9 @@ import com.activities_photo.model.PhotoVO;
 		@Column(name = "activity_state")
 		private Boolean activityState;
 
-		
+		@OneToMany(mappedBy = "itemVO", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+		@OrderBy("activitySessionId")
+		private Set<SessionVO> sessionVOs;
 		
 		public Integer getActivityId() {
 			return activityId;
@@ -119,13 +117,24 @@ import com.activities_photo.model.PhotoVO;
 		public void setActivityState(Boolean activityState) {
 			this.activityState = activityState;
 		}
-		
-		
-		
-		
-		
-		
-		
-	
+
+
+		public CategoryVO getCategoryVO() {
+			return categoryVO;
+		}
+
+		public void setCategoryVO(CategoryVO categoryVO) {
+			this.categoryVO = categoryVO;
+		}
+
+	public Set<SessionVO> getSessionVOs() {
+		return sessionVOs;
 	}
+
+	public void setSessionVOs(Set<SessionVO> sessionVOs) {
+		this.sessionVOs = sessionVOs;
+	}
+}
+
+
 

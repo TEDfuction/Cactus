@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>活動參加人員新增</title>
+
+    <!-- <head th:insert="~{/back_end/category/included-fragment}"></head> -->
+
+    <style type="text/css">
+
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+        input[type=text], input[type=password], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center"> <h2>活動參加人員新增</h2>
+        <h3><a class="navbar-brand" th:href="@{/attendees/select_attendees}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form th:action="@{insert}" method="post" th:object="${attendeesVO}" enctype="multipart/form-data">
+
+        <div>
+            <label>活動訂單編號:</label>
+            <select th:field="*{activityOrderVO.activityOrderId}">
+                <option th:each="activityOrderVO : ${activityOrderListData}" th:value="${activityOrderVO.activityOrderId}" th:text="${activityOrderVO.activityOrderId}" />
+            </select>
+            <span th:if="${#fields.hasErrors('activityOrderVO.activityOrderId')}" th:errors="*{activityOrderVO.activityOrderId}" class="error" id="activityOrderVO.activityOrderId.errors"></span>
+        </div>
+        <div>
+            <label>參加人員姓名:</label>
+            <input type="text" th:field="*{attendeesName}" onclick="hideContent('attendeesName.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('attendeesName')}" th:errors="*{attendeesName}" class="error" id="attendeesName.errors"></span>
+        </div>
+
+        <div>
+            <label>性別:</label>
+            <input type="radio" th:field="*{memberGender}" th:value="0" onclick="hideContent('memberGender.errors');" />男
+            <input type="radio" th:field="*{memberGender}" th:value="1" onclick="hideContent('memberGender.errors');" />女
+            <input type="radio" th:field="*{memberGender}" th:value="2" onclick="hideContent('memberGender.errors');" />其他
+            <span th:if="${#fields.hasErrors('memberGender')}" th:errors="*{memberGender}" class="error" id="memberGender.errors"></span>
+        </div>
+
+        <div>
+            <label>身份證字號:</label>
+            <input type="text" th:field="*{attendeesIdNumber}" onclick="hideContent('attendeesIdNumber.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('attendeesIdNumber')}" th:errors="*{attendeesIdNumber}" class="error" id="attendeesIdNumber.errors"></span>
+        </div>
+
+        <div>
+            <label>手機號碼:</label>
+            <input type="text" th:field="*{attendeesPhone}" onclick="hideContent('attendeesPhone.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('attendeesPhone')}" th:errors="*{attendeesPhone}" class="error" id="attendeesPhone.errors"></span>
+        </div>
+
+        <div>
+            <label>E-mail:</label>
+            <input type="text" th:field="*{attendeesEmail}" onclick="hideContent('attendeesEmail.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('attendeesEmail')}" th:errors="*{attendeesEmail}" class="error" id="attendeesEmail.errors"></span>
+        </div>
+
+        <br>
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit"> 送出新增 </button></div>
+            <div></div>
+        </div>
+    </form>
+
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+
+</script>
+
+</body>
+</html>
