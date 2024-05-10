@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>活動場次修改 </title>
+
+  <style type="text/css">
+
+    button {
+      padding: 5px;
+    }
+    form {
+      display: table;
+    }
+    form div {
+      display: table-row;
+    }
+    label, input, span, select {
+      display: table-cell;
+      margin: 5px;
+      text-align: left;
+    }
+    input[type=text], input[type=password], select, textarea {
+      width: 200px;
+      margin: 5px;
+    }
+    form div div {
+      display: table-cell;
+    }
+    .center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div align="center"> <h2>活動場次編輯</h2>
+  <h3><a class="navbar-brand" th:href="@{/session/select_session}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
+</div>
+
+<div align="center">
+  <h3><b>所有欄位皆為必填欄位</b></h3>
+  <form th:action="@{update}" method="post" th:object="${sessionVO}" enctype="multipart/form-data">
+    <div>
+      <label>活動場次編號:</label>
+      <input type="text" th:field="*{activitySessionId}" style="border:0px ; font-weight: bold;" readonly /><br/>
+
+    </div>
+
+    <div>
+      <label>活動名稱:</label>
+      <select th:field="*{itemVO.activityId}">
+        <option th:each="itemVO : ${itemListData2}" th:value="${itemVO.activityId}" th:text="${itemVO.activityName}" />
+      </select>
+      <span th:if="${#fields.hasErrors('itemVO.activityId')}" th:errors="*{itemVO.activityId}" class="error" id="itemVO.activityId.errors"></span>
+    </div>
+
+    <div>
+      <label>場次日期:</label>
+      <input type="date" th:field="*{activityDate}" onclick="hideContent('activityDate.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('activityDate')}" th:errors="*{activityDate}" class="error" id="activityDate.errors"></span>
+    </div>
+
+<!--    <div>-->
+<!--      <label>時段編號:</label>-->
+<!--      <input type="text" th:field="*{time_PeriodVO.sessionTimePeriodId}">-->
+<!--      <select th:field="*{time_PeriodVO.sessionTimePeriodId}">-->
+<!--        <option th:each="time_PeriodVO : ${time_PeriodListData2}" th:value="${time_PeriodVO.sessionTimePeriodId}" th:text="${time_PeriodVO.sessionTimePeriodId}" />-->
+<!--      </select>-->
+<!--      <span th:if="${#fields.hasErrors('time_PeriodVO.sessionTimePeriodId')}" th:errors="*{time_PeriodVO.sessionTimePeriodId}" class="error" id="time_PeriodVO.sessionTimePeriodId.errors"></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>時段1:</label>-->
+<!--      <input type="time" th:field="*{time_PeriodVO.timePeriod1}" onclick="hideContent('time_PeriodVO.timePeriod1.errors');" /><br/>-->
+<!--      <span  th:if="${#fields.hasErrors('time_PeriodVO.timePeriod1')}" th:errors="*{time_PeriodVO.timePeriod1}" class="error" id="time_PeriodVO.timePeriod1.errors"></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>時段2:</label>-->
+<!--      <input type="time" th:field="*{time_PeriodVO.timePeriod2}" onclick="hideContent('time_PeriodVO.timePeriod2.errors');" /><br/>-->
+<!--      <span  th:if="${#fields.hasErrors('time_PeriodVO.timePeriod2')}" th:errors="*{time_PeriodVO.timePeriod2}" class="error" id="time_PeriodVO.timePeriod2.errors"></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>時段3:</label>-->
+<!--      <input type="time" th:field="*{time_PeriodVO.timePeriod3}" onclick="hideContent('time_PeriodVO.timePeriod3.errors');" /><br/>-->
+<!--      <span  th:if="${#fields.hasErrors('time_PeriodVO.timePeriod3')}" th:errors="*{time_PeriodVO.timePeriod3}" class="error" id="time_PeriodVO.timePeriod3.errors"></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>時段4:</label>-->
+<!--      <input type="time" th:field="*{time_PeriodVO.timePeriod4}" onclick="hideContent('time_PeriodVO.timePeriod4.errors');" /><br/>-->
+<!--      <span  th:if="${#fields.hasErrors('time_PeriodVO.timePeriod4')}" th:errors="*{time_PeriodVO.timePeriod4}" class="error" id="time_PeriodVO.timePeriod4.errors"></span>-->
+<!--    </div>-->
+
+    <div>
+      <label>活動時長:</label>
+      <input type="text" th:field="*{duration}" onclick="hideContent('duration.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="error" id="duration.errors"></span>
+    </div>
+
+    <div>
+      <label>活動地點:</label>
+      <input type="text" th:field="*{activityLocation}" onclick="hideContent('activityLocation.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('activityLocation')}" th:errors="*{activityLocation}" class="error" id="activityLocation.errors"></span>
+    </div>
+
+    <div>
+      <label>活動人數上限:</label>
+      <input type="text" th:field="*{activityMaxPart}" onclick="hideContent('activityMaxPart.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('activityMaxPart')}" th:errors="*{activityMaxPart}" class="error" id="activityMaxPart.errors"></span>
+    </div>
+
+    <div>
+      <label>活動人數下限:</label>
+      <input type="text" th:field="*{activityMinPart}" onclick="hideContent('activityMinPart.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('activityMinPart')}" th:errors="*{activityMinPart}" class="error" id="activityMinPart.errors"></span>
+    </div>
+
+    <div>
+      <label>報名總數:</label>
+      <input type="text" th:field="*{enrollTotal}" onclick="hideContent('enrollTotal.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('enrollTotal')}" th:errors="*{enrollTotal}" class="error" id="enrollTotal.errors"></span>
+    </div>
+
+    <div>
+      <label>開始報名日期:</label>
+      <input type="datetime-local" th:field="*{enrollStarted}" onclick="hideContent('enrollStarted.errors');"  /><br/>
+      <span  th:if="${#fields.hasErrors('enrollStarted')}" th:errors="*{enrollStarted}" class="error" id="enrollStarted.errors"></span>
+    </div>
+
+    <div>
+      <label>結束報名日期:</label>
+      <input type="datetime-local" th:field="*{enrollEnd}" onclick="hideContent('enrollEnd.errors');"  /><br/>
+      <span  th:if="${#fields.hasErrors('enrollEnd')}" th:errors="*{enrollEnd}" class="error" id="enrollEnd.errors"></span>
+    </div>
+
+    <div>
+      <label>活動場次狀態:</label>
+      <select th:field="*{activitySessionState}">
+        <option value="0">正常舉辦</option>
+        <option value="1">取消</option>
+        <option value="2">延期</option>
+      </select>
+      <span th:if="${#fields.hasErrors('activitySessionState')}" th:errors="*{activitySessionState}" class="error" id="activitySessionState.errors"></span>
+    </div>
+
+    <div>
+      <label>備註:</label>
+      <input type="text" th:field="*{activityNote}" onclick="hideContent('activityNote.errors');" /><br/>
+      <span  th:if="${#fields.hasErrors('activityNote')}" th:errors="*{activityNote}" class="error" id="activityNote.errors"></span>
+    </div>
+
+    <div>
+      <div></div>
+      <div><button type="submit" id="submit"> 送出修改 </button></div>
+      <div></div>
+    </div>
+  </form>
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+  //清除提示信息
+  function hideContent(d) {
+    document.getElementById(d).style.display = "none";
+  }
+
+</script>
+
+</body>
+</html>

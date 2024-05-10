@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>所有活動促銷資料 listAllPromotion.html</title>
+
+    <style>
+        label input[type="search"]{
+            margin-bottom :  2rem;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center"> <h2>所有活動促銷 - listAllPromotion.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/promotion/select_promotion}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+<table id="example" class="display" style="width: 100%">
+    <thead >
+    <tr style="background-color:#CCCCFF">
+
+        <th>活動促銷編號</th>
+        <th>活動促銷標題</th>
+        <th>活動促銷說明</th>
+        <th>促銷折扣</th>
+        <th>活動折價</th>
+        <th>促銷開始時間</th>
+        <th>促銷結束時間</th>
+        <th>上 / 下架</th>
+        <th>修改</th>
+        <th>刪除</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <th:block th:each="promotionVO : ${promotionListData}">
+        <tr>
+
+            <td th:text="${promotionVO.promotionId}"></td>
+            <td th:text="${promotionVO.promotionTitle}"></td>
+            <td th:text="${promotionVO.promotionContent}"></td>
+            <td th:text="${promotionVO.promotionDiscount}"></td>
+            <td th:text="${promotionVO.promotionCoupon}"></td>
+            <td th:text="${promotionVO.promotionStarted}"></td>
+            <td th:text="${promotionVO.promotionEnd}"></td>
+            <td th:text="${promotionVO.promotionState ? '上架' : '下架'}"></td>
+            <td>
+                <form method="post" th:action="@{/promotion/getOne_For_Update}" style="margin-bottom: 0px;">
+                    <input type="submit" value="修改">
+                    <input type="hidden" name="promotionId" th:value="${promotionVO.promotionId}"></form>
+
+            </td>
+            <td>
+                <form method="post" th:action="@{/promotion/delete}" style="margin-bottom: 0px;">
+                    <input type="submit" value="刪除">
+                    <input type="hidden" name="promotionId" th:value="${promotionVO.promotionId}"></form>
+
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+
+<!-- ●● jquery datatables 設定 -->
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "lengthMenu": [3 ,5, 10, 20, 50, 100],
+            "searching": true,  //搜尋功能, 預設是開啟
+            "paging": true,     //分頁功能, 預設是開啟
+            "ordering": true,   //排序功能, 預設是開啟
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "infoPostFix": "",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
