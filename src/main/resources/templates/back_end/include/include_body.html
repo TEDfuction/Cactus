@@ -180,12 +180,12 @@
 						<div id="collapseFour" class="accordion-collapse collapse " aria-labelledby="headingFour" data-bs-parent="#accordionExample">
 							<div class="accordion-body2">
 								<ul class="list2">
-									<li class="list-set2"><a class="changecolor" href="">活動類別管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">活動管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">活動場次</a></li>		
+									<li class="list-set2"><a class="changecolor" th:href="@{/category/listAllCategory}">活動類別管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/item/listAllItem}">活動項目管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/session/listAllSession}">活動場次管理</a></li>
 									<li class="list-set2"><a class="changecolor" href="">活動圖片管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">活動訂單管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">活動促銷管理</a></li>	
+									<li class="list-set2"><a class="changecolor" th:href="@{/activityOrder/listAllOrder}">活動訂單管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/promotion/listAllPromotion}">活動促銷管理</a></li>
 								</ul>
 							</div>
 						</div>
