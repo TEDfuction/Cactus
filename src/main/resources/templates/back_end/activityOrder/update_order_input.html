@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>活動訂單修改 </title>
+
+    <style type="text/css">
+
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+        input[type=text], input[type=password], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div align="center"> <h2>活動訂單編輯</h2>
+    <h3><a class="navbar-brand" th:href="@{/activityOrder/select_order}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
+</div>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form th:action="@{update}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
+        <div>
+            <label>活動訂單編號:</label>
+            <input type="text" th:field="*{activityOrderId}" style="border:0px ; font-weight: bold;" readonly /><br/>
+
+        </div>
+        <div>
+            <label>會員編號:</label>
+            <input type="text" th:field="*{memberVO.memberId}"  style="border:0px ; font-weight: bold;" /><br/>
+
+
+        </div>
+        <div>
+            <label>活動場次編號:</label>
+            <input type="text" th:field="*{sessionVO.activitySessionId}" style="border:0px ; font-weight: bold;" /><br/>
+
+        </div>
+        <div>
+            <label>活動促銷編號:</label>
+            <input type="text" th:field="*{promotionVO.promotionId}" style="border:0px ; font-weight: bold;" /><br/>
+
+        </div>
+
+        <div>
+            <label>訂單日期:</label>
+            <input type="date" th:field="*{orderTime}" onclick="hideContent('orderTime.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('orderTime')}" th:errors="*{orderTime}" class="error" id="orderTime.errors"></span>
+        </div>
+
+        <div>
+            <label>報名人數:</label>
+            <input type="text" th:field="*{enrollNumber}" onclick="hideContent('enrollNumber.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('enrollNumber')}" th:errors="*{enrollNumber}" class="error" id="enrollNumber.errors"></span>
+        </div>
+
+        <div>
+            <label>訂單總金額:</label>
+            <input type="text" th:field="*{orderAmount}" onclick="hideContent('orderAmount.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('orderAmount')}" th:errors="*{orderAmount}" class="error" id="orderAmount.errors"></span>
+        </div>
+
+        <div>
+            <label>促銷金額:</label>
+            <input type="text" th:field="*{promotionPrice}" onclick="hideContent('promotionPrice.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionPrice')}" th:errors="*{promotionPrice}" class="error" id="promotionPrice.errors"></span>
+        </div>
+
+        <div>
+            <label>實付金額:</label>
+            <input type="text" th:field="*{payAmount}" onclick="hideContent('payAmount.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('payAmount')}" th:errors="*{payAmount}" class="error" id="payAmount.errors"></span>
+        </div>
+
+        <div>
+            <label>訂單狀態:</label>
+            <select th:field="*{orderState}">
+                <option value="0">已繳費</option>
+                <option value="1">取消訂單</option>
+                <option value="2">完成訂單</option>
+            </select>
+            <span th:if="${#fields.hasErrors('orderState')}" th:errors="*{orderState}" class="error" id="orderState.errors"></span>
+        </div>
+        <div>
+            <label>退款狀態:</label>
+            <select th:field="*{refundState}">
+                <option value="0">無須退款</option>
+                <option value="1">尚未退款</option>
+                <option value="2">退款中</option>
+                <option value="2">完成退款</option>
+            </select>
+            <span th:if="${#fields.hasErrors('refundState')}" th:errors="*{refundState}" class="error" id="refundState.errors"></span>
+        </div>
+
+        <div>
+            <label>備註:</label>
+            <textarea name="orderMemo" th:field="*{orderMemo}" onclick="hideContent('orderMemo.errors');" ></textarea><br/>
+            <span  th:if="${#fields.hasErrors('orderMemo')}" th:errors="*{orderMemo}" class="error" id="orderMemo.errors"></span>
+        </div>
+
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit"> 送出修改 </button></div>
+            <div></div>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+
+</script>
+
+</body>
+</html>

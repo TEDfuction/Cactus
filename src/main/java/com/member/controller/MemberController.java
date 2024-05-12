@@ -334,7 +334,6 @@ public class MemberController {
 	@GetMapping("/ajaxUpdateNoti")
 	@ResponseBody
 	public String ajaxUpdateNoti(HttpServletRequest req,ModelMap model) {
-		System.out.println("Enter HERE");
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
 		
@@ -343,14 +342,13 @@ public class MemberController {
 		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
 		
 		String jsonArray = gson.toJson(notiList);
-		System.out.println("CHANGE TO JSON");
 		return jsonArray ;
 	}
 	
 	
 	
 	
-	// 去除BindingResult中某個欄位的FieldError紀錄(尚未解釋)
+	// 去除BindingResult中某個欄位的FieldError紀錄
 	public BindingResult removeFieldError(
 			MemberVO memberVO, 
 			BindingResult result, 

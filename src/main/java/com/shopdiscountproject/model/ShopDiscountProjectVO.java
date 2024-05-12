@@ -16,7 +16,7 @@ public class ShopDiscountProjectVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "promotion_id")
-	private Integer promotionID;
+	private Integer promotionId;
 	
 	@Column(name = "promotion_title", nullable = false)
 	private String promotionTitle;
@@ -36,12 +36,12 @@ public class ShopDiscountProjectVO {
 	@Column(name = "promotion_end", nullable = false)
 	private Timestamp promotionEnd;
 
-	public Integer getPromotionID() {
-		return promotionID;
+	public Integer getPromotionId() {
+		return promotionId;
 	}
 
-	public void setPromotionID(Integer promotionID) {
-		this.promotionID = promotionID;
+	public void setPromotionId(Integer promotionId) {
+		this.promotionId = promotionId;
 	}
 
 	public String getPromotionTitle() {

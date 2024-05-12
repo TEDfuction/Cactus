@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>活動促銷修改 </title>
+
+    <style type="text/css">
+
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+        input[type=text], input[type=password], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div align="center"> <h2>活動促銷編輯</h2>
+    <h3><a class="navbar-brand" th:href="@{/promotion/select_promotion}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
+</div>
+
+<div align="center">
+    <h3><b>所有欄位皆為必填欄位</b></h3>
+    <form th:action="@{update}" method="post" th:object="${promotionVO}" enctype="multipart/form-data">
+        <div>
+            <label>活動促銷編號:</label>
+            <input type="text" th:field="*{promotionId}" style="border:0px ; font-weight: bold;" readonly /><br/>
+        </div>
+        <div>
+            <label>活動促銷標題:</label>
+            <input type="text" th:field="*{promotionTitle}" onclick="hideContent('promotionTitle.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionTitle')}" th:errors="*{promotionTitle}" class="error" id="promotionTitle.errors"></span>
+        </div>
+        <div>
+            <label>活動促銷說明:</label>
+            <textarea name="promotionContent" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');" ></textarea><br/>
+            <span  th:if="${#fields.hasErrors('promotionContent')}" th:errors="*{promotionContent}" class="error" id="promotionContent.errors"></span>
+        </div>
+
+
+        <div>
+            <label>促銷折扣:</label>
+            <select th:field="*{promotionDiscount}">
+                <option value="1"></option>
+                <option value="0.95">95折</option>
+                <option value="0.9">9折</option>
+                <option value="0.85">85折</option>
+                <option value="0.8">8折</option>
+                <option value="0.75">75折</option>
+                <option value="0.7">7折</option>
+                <option value="0.65">65折</option>
+                <option value="0.6">6折</option>
+                <option value="0.55">55折</option>
+                <option value="0.5">5折</option>
+                <option value="0.45">45折</option>
+                <option value="0.4">4折</option>
+                <option value="0.35">35折</option>
+                <option value="0.3">3折</option>
+                <option value="0.25">25折</option>
+                <option value="0.2">2折</option>
+                <option value="0.15">15折</option>
+                <option value="0.1">1折</option>
+            </select>
+            <span th:if="${#fields.hasErrors('promotionDiscount')}" th:errors="*{promotionDiscount}" class="error" id="promotionDiscount.errors"></span>
+        </div>
+        <div>
+            <label>促銷折價:</label>
+            <input type="text" th:field="*{promotionCoupon}" onclick="hideContent('promotionCoupon.errors');" />元<br/>
+            <span  th:if="${#fields.hasErrors('promotionCoupon')}" th:errors="*{promotionCoupon}" class="error" id="promotionCoupon.errors"></span>
+        </div>
+        <div>
+            <label>促銷開始時間:</label>
+            <input type="date" th:field="*{promotionStarted}" onclick="hideContent('promotionStarted.errors');"  /><br/>
+            <span  th:if="${#fields.hasErrors('promotionStarted')}" th:errors="*{promotionStarted}" class="error" id="promotionStarted.errors"></span>
+        </div>
+        <div>
+            <label>促銷結束時間:</label>
+            <input type="date" th:field="*{promotionEnd}" onclick="hideContent('promotionEnd.errors');"  /><br/>
+            <span  th:if="${#fields.hasErrors('promotionEnd')}" th:errors="*{promotionEnd}" class="error" id="promotionEnd.errors"></span>
+        </div>
+        <div>
+            <label>活動促銷狀態:</label>
+            <select th:field="*{promotionState}">
+                <option value="true">上架</option>
+                <option value="false">下架</option>
+            </select>
+            <span th:if="${#fields.hasErrors('promotionState')}" th:errors="*{promotionState}" class="error" id="promotionState.errors"></span>
+        </div>
+
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit"> 送出修改 </button></div>
+            <div></div>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+</script>
+
+</body>
+</html>

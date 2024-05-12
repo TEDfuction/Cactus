@@ -1,7 +1,9 @@
 package com.shoporder.model;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.productcategory.model.ProductCategoryVO;
+import com.member.model.MemberVO;
 import com.shopdiscountproject.model.ShopDiscountProjectVO;
+import com.shoporderdetail.model.ShopOrderDetailVO;
 
 @Entity
 @Table(name = "shop_order")
@@ -20,75 +24,48 @@ public class ShopOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "shop_order_id")
-	private Integer shopOrderID;
+	private Integer shopOrderId;
 	
-	//還未有MemberVO所以不能執行
-//	@ManyToOne
-//	@JoinColumn(name = "member_id", referencedColumnName = "member_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
-//	private Member member;
-	
-	@Column(name = "member_id")
-	private Integer memberID;
-	
-	@ManyToOne
-	@JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
-	private ShopDiscountProjectVO shopDiscountProjectVO;
-	//	@Column(name = "promotion_id")
-//	private Integer promotionID;
-	
-	@Column(name = "product_discount")
-	private Integer productDiscount;
-	
-	@Column(name = "product_order_date", nullable = false)
+	@Column(name = "product_order_date"
+			,insertable = false, updatable = false, nullable = false)
 	private Timestamp productOrderDate;
 	
 	@Column(name = "product_amount", nullable = false)
 	private Integer productAmount;
 	
+	@Column(name = "payment_method", nullable = false)
+	private Integer paymentMethod;
 	
 	@Column(name = "shipping_method", nullable = false)
-	private Boolean shippingMethod;
+	private Integer shippingMethod;
 	
 	@Column(name = "order_status", nullable = false)
 	private Integer orderStatus;
 	
-//	private String orderName;
-//	
-//	private String orderMobile;
-//	
-//	private String orderAddress;
-
 	
-	public Integer getShopOrderID() {
-		return shopOrderID;
+	
+	
+	
+	
+	//映射
+	
+	@OneToMany(mappedBy = "shopOrder" , cascade = CascadeType.ALL)
+	private Set<ShopOrderDetailVO> shopOrderDetailVO;
+	
+	@ManyToOne
+	@JoinColumn(name = "member_id", referencedColumnName = "member_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
+	private MemberVO member;
+
+//	@ManyToOne
+//	@JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
+//	private ShopDiscountProjectVO shopDiscountProjectVO;
+
+	public Integer getShopOrderId() {
+		return shopOrderId;
 	}
 
-	public void setShopOrderID(Integer shopOrderID) {
-		this.shopOrderID = shopOrderID;
-	}
-
-	public Integer getMemberID() {
-		return memberID;
-	}
-
-	public void setMemberID(Integer memberID) {
-		this.memberID = memberID;
-	}
-
-	public ShopDiscountProjectVO getShopDiscountProjectVO() {
-		return shopDiscountProjectVO;
-	}
-
-	public void setShopDiscountProjectVO(ShopDiscountProjectVO shopDiscountProjectVO) {
-		this.shopDiscountProjectVO = shopDiscountProjectVO;
-	}
-
-	public Integer getProductDiscount() {
-		return productDiscount;
-	}
-
-	public void setProductDiscount(Integer productDiscount) {
-		this.productDiscount = productDiscount;
+	public void setShopOrderId(Integer shopOrderId) {
+		this.shopOrderId = shopOrderId;
 	}
 
 	public Timestamp getProductOrderDate() {
@@ -107,11 +84,19 @@ public class ShopOrderVO {
 		this.productAmount = productAmount;
 	}
 
-	public Boolean getShippingMethod() {
+	public Integer getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(Integer paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public Integer getShippingMethod() {
 		return shippingMethod;
 	}
 
-	public void setShippingMethod(Boolean shippingMethod) {
+	public void setShippingMethod(Integer shippingMethod) {
 		this.shippingMethod = shippingMethod;
 	}
 
@@ -122,5 +107,33 @@ public class ShopOrderVO {
 	public void setOrderStatus(Integer orderStatus) {
 		this.orderStatus = orderStatus;
 	}
+
+	public Set<ShopOrderDetailVO> getShopOrderDetailVO() {
+		return shopOrderDetailVO;
+	}
+
+	public void setShopOrderDetailVO(Set<ShopOrderDetailVO> shopOrderDetailVO) {
+		this.shopOrderDetailVO = shopOrderDetailVO;
+	}
+
+	public MemberVO getMember() {
+		return member;
+	}
+
+	public void setMember(MemberVO member) {
+		this.member = member;
+	}
+
+//	public ShopDiscountProjectVO getShopDiscountProjectVO() {
+//		return shopDiscountProjectVO;
+//	}
+//
+//	public void setShopDiscountProjectVO(ShopDiscountProjectVO shopDiscountProjectVO) {
+//		this.shopDiscountProjectVO = shopDiscountProjectVO;
+//	}
+	
+	
+	
+	
 	
 }

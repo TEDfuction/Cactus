@@ -1,0 +1,117 @@
+<div th:replace="~{back_end/include/include_top}"></div>
+
+
+
+</head>
+
+<body>
+
+<div th:replace="~{back_end/include/include_body}"></div>
+
+<div class="unique">
+
+
+
+		 <div align="center"> <h2>所有圖片資料 - listAllPhoto.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/activity/select_photo}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+
+
+<table  class="center" id="search" style="width: 100%">
+  <thead >
+	<tr style="background-color:#91cecc">
+		<th>活動圖片編號</th>
+		<th>活動項目編號</th>
+		<th>活動項目簡介</th>
+		<th>活動圖片</th>
+		<th>修改</th>
+		<th>刪除</th>
+	</tr>
+  </thead>
+	
+  <tbody>
+		<th:block th:each="photoVO : ${photoListData}">
+			<tr>
+				<td th:text="${photoVO.activityPhotoId}"></td>
+				<td th:text="${photoVO.activityPh.activityId}"></td>
+				<td th:text="${photoVO.activityPh.activityDescription}"></td>
+				<td><img th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"></td>
+<!-- 				<td th:text="${empVO.deptVO.deptno} + '-[' + ${empVO.deptVO.dname} + ']'"></td> -->
+			<td>
+			  <form method="post" th:action="@{/activity/getOne_For_Update}" style="margin-bottom: 0px;">
+			     <input type="submit" value="修改">
+			     <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"></form>
+			
+			</td>
+			<td>
+			  <form method="post" th:action="@{/activity/delete}" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除">
+			     <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"></form>
+			
+			</td>
+			</tr>
+		</th:block>
+  </tbody>
+</table>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●js  for jquery datatables 用 -->
+
+<script type="text/javascript">
+// $(document).ready(function() {
+  
+
+    // 初始化 DataTable 並將下拉選單添加到工具欄中
+    var dataTable = $('#search').DataTable({
+        "lengthMenu": [3 ,5, 10, 20, 50, 100],
+        "searching": true,
+        "paging": true,
+        "ordering": true,
+        "language": {
+            "processing": "處理中...",
+            "loadingRecords": "載入中...",
+            "lengthMenu": "顯示 _MENU_ 筆結果",
+            "zeroRecords": "沒有符合的結果",
+            "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+            "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+            "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+            "infoPostFix": "",
+            "search": "搜尋:",
+            "paginate": {
+                "first": "第一頁",
+                "previous": "上一頁",
+                "next": "下一頁",
+                "last": "最後一頁"
+            },
+            "aria": {
+                "sortAscending":  ": 升冪排列",
+                "sortDescending": ": 降冪排列"
+            }
+        }
+    });
+    
+    var activityNames = ["水上活動", "陸上活動", "花火節"];
+
+     // 創建下拉選單元素
+     var selectActivity = $('<select id="activitySelect"><option value="">所有活動</option></select>');
+
+     // 將活動名稱填充到下拉選單中
+     activityNames.forEach(function(name) {
+         selectActivity.append($('<option></option>').attr('value', name).text(name));
+     });
+      $('#search_filter').prepend(selectActivity);
+
+     // 監聽下拉選單的改變事件
+     $('#activitySelect').on('change', function() {
+         var activityName = $(this).val();
+
+         // 根據選擇的活動名稱篩選 DataTable
+         dataTable.column(1).search(activityName).draw();
+     });
+// });
+</script>
+
+
+<div th:replace="~{back_end/include/include_bottom}"></div>
