@@ -1,7 +1,10 @@
 package com.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.member.model.TaiwanCity;
 import com.notification.model.NotificationService;
 import com.notification.model.NotificationVO;
 
@@ -42,8 +48,39 @@ public class MemberController {
 	Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	
 	
+	@GetMapping("/LoginTest")
+	public String LoginTest(ModelMap model) {
+		return "/front_end/member/TestUse" ;
+	}
 	
 	
+	@GetMapping("/getEnums")
+	@ResponseBody
+	public String getEnums() {
+		
+		List< Map<String,Object> > list = new ArrayList();	
+    	for(TaiwanCity tc : TaiwanCity.values()) {
+    		Map<String,Object> map = new HashMap();
+
+    		map.put("city", tc.getcity());
+    		map.put("towns", tc.getTownships());
+    		
+    		list.add(map);
+    	}
+    	
+//    	System.out.println(list);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+    	try {
+			jsonString = objectMapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+    	
+    	return jsonString;
+		
+	}
 	
 	
 	
@@ -114,11 +151,11 @@ public class MemberController {
 			//類似0201之errorMsg區塊，作錯誤訊息的收集用
 			BindingResult result, 
 			ModelMap model,
-			@RequestParam("memberPic") MultipartFile[] parts) throws IOException {
+			@RequestParam("memberPic") MultipartFile[] parts,
+			@RequestParam("town")String citytown) throws IOException {
 		
 
 		/**** 1.接收請求參數 - 輸入格式的錯誤處理 ****/
-		
 		// 去除BindingResult中圖片上傳欄位的FieldError紀錄 
 		result = removeFieldError(memberVO, result, "memberPic");
 		
@@ -144,6 +181,10 @@ public class MemberController {
 		
 		
 		/**** 2.開始新增資料 ****/
+		System.out.println(citytown);
+		String address = citytown + memberVO.getAddress();
+		System.out.println(address);
+		memberVO.setAddress(address);
 		
 		memSvc.addMember(memberVO);
 
@@ -189,8 +230,15 @@ public class MemberController {
 			@Valid MemberVO memberVO,
 			BindingResult result,
 			ModelMap model,
-			@RequestParam("memberPic") MultipartFile[] parts) throws IOException {
+			@RequestParam("memberPic") MultipartFile[] parts,
+			@RequestParam("town") String citytown
+			) throws IOException {
+			
 		
+		System.out.println(citytown);
+		String address = citytown + memberVO.getAddress();
+		System.out.println(address);
+		memberVO.setAddress(address);
 		
 		
 		//去除BindingResult中upFiles欄位的FieldError紀錄 
