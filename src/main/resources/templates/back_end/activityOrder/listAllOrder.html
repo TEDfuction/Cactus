@@ -1,108 +1,490 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>所有活動訂單資料 listAllOrder.html</title>
+    <div th:replace="~{/back_end/include/include_top}"></div>
+    <title>所有活動訂單資料</title>
 
     <style>
-        label input[type="search"]{
-            margin-bottom :  2rem;
+        label input[type="search"] {
+            margin-bottom: 1.5rem;
         }
+
+        table.dataTable {
+            margin-bottom: 1rem !important;
+        }
+
+        table.dataTable thead th {
+            text-align: center !important;
+        }
+
+        th:first-child {
+            border-top-left-radius: 6px;
+
+        }
+
+        th:last-child {
+            border-top-right-radius: 6px;
+
+        }
+
+        table.dataTable > thead > tr > th {
+            padding-top: 25px !important;
+            padding-bottom: 25px !important;
+        }
+
+        .t-t-2 th:nth-child(1)::before,
+        .t-t-2 th:nth-child(9)::before,
+        .t-t-2 th:nth-child(10)::before {
+            display: none !important;
+        }
+
+        .t-t-2 th:nth-child(1)::after,
+        .t-t-2 th:nth-child(9)::after,
+        .t-t-2 th:nth-child(10)::after {
+            display: none !important;
+        }
+
 
     </style>
 
 </head>
 <body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <input type="hidden" id="success" th:value="${success}">
+    <div>
+        <h2 class="hc-1">所有活動訂單列表</h2>
+    </div>
+    <div class="controls">
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center"> <h2>所有活動訂單 - listAllActivityOrder.html</h2>
-        <h3><a class="navbar-brand" th:href="@{/activityOrder/select_order}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
-</nav>
 
-<table id="example" class="display" style="width: 100%">
-    <thead >
-    <tr style="background-color:#CCCCFF">
+        <table id="example" class="display tr-line tl">
+            <thead class="t-t-1">
+            <tr class="t-t-2">
+                <th class="th-w6 tp-2">訂單內容</th>
+                <th class="th-w6">訂單編號</th>
+                <!--        <th>會員編號[會員姓名]</th>-->
+                <th class="th-w6">場次編號</th>
+                <th class="th-w6">促銷編號</th>
+                <th class="th-w2-3">訂單日期</th>
+                <!--        <th>報名人數</th>-->
+                <!--        <th>訂單總金額</th>-->
+                <!--        <th>促銷金額</th>-->
+                <th>實付金額</th>
+                <th>訂單狀態</th>
+                <th>退款狀態</th>
+                <!--        <th>備註</th>-->
 
-        <th>活動訂單編號</th>
-        <th>會員編號[會員姓名]</th>
-        <th>活動場次編號</th>
-        <th>促銷編號</th>
-        <th>訂單日期</th>
-        <th>報名人數</th>
-        <th>訂單總金額</th>
-        <th>促銷金額</th>
-        <th>實付金額</th>
-        <th>訂單狀態</th>
-        <th>退款狀態</th>
-        <th>備註</th>
-        <th>明細</th>
-        <th>修改</th>
-        <th>刪除</th>
-    </tr>
-    </thead>
+                <th>編輯</th>
+                <th>刪除</th>
+            </tr>
+            </thead>
 
-    <tbody>
-    <th:block th:each="activityOrderVO : ${activityOrderListData}">
-        <tr>
-            <td th:text="${activityOrderVO.activityOrderId}"></td>
-            <td th:text="${activityOrderVO.memberVO.memberId}+ '-[' + ${activityOrderVO.memberVO.memberName} + ']'"></td>
-            <td th:text="${activityOrderVO.sessionVO.activitySessionId}"></td>
-            <td th:text="${activityOrderVO.promotionVO.promotionId}"></td>
-            <td th:text="${activityOrderVO.orderTime}"></td>
-            <td th:text="${activityOrderVO.enrollNumber}"></td>
-            <td th:text="${activityOrderVO.orderAmount}"></td>
-            <td th:text="${activityOrderVO.promotionPrice}"></td>
-            <td th:text="${activityOrderVO.payAmount}"></td>
-            <td th:switch="${activityOrderVO.orderState }">
-                <span th:case="0">已繳費</span>
-                <span th:case="1">取消訂單</span>
-                <span th:case="2">完成訂單</span>
-            </td>
-            <td th:switch="${activityOrderVO.refundState}">
-                <span th:case="0">無須退款</span>
-                <span th:case="1">尚未退款</span>
-                <span th:case="2">退款中</span>
-                <span th:case="3">完成退款</span>
-            </td>
-            <td th:text="${activityOrderVO.orderMemo}"></td>
-            <td>
-                <form method="post" th:action="@{getOne_For_Display2}">
-                    <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}" >
-                    <input type="submit" value="詳細資料">
-                </form><br>
-            </td>
-            <td>
-                <form method="post" th:action="@{/activityOrder/getOne_For_Update}" style="margin-bottom: 0px;">
-                    <input type="submit" value="修改">
-                    <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}"></form>
+            <tbody>
+            <th:block th:each="activityOrderVO : ${activityOrderListData}">
+                <tr>
+                    <td class="th-w4">
+                        <!--                <form method="post" th:action="@{getOne_For_Display2}">-->
+                        <!--                    <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}" >-->
+                        <!--                    <input type="submit" value="查看">-->
+                        <!--                </form><br>-->
+                        <button type="button" class="btn  cu-1 td-1" data-bs-toggle="modal"
+                                th:data-bs-target="'#staticBackdrop'+ ${activityOrderVO.activityOrderId}">查看
 
-            </td>
-            <td>
-                <form method="post" th:action="@{/activityOrder/delete}" style="margin-bottom: 0px;">
-                    <input type="submit" value="刪除">
-                    <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}"></form>
+                        </button>
+                    </td>
+                    <!-- Modal -->
 
-            </td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
+                    <div class="modal fade " id="staticBackdrop"
+                         th:id="'staticBackdrop' + ${activityOrderVO.activityOrderId}"
+                         data-bs-backdrop="static" 　data-bs-keyboard="false" 　tabindex="-1" 　
+                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content cu-1">
+                                <div class="modal-header pw-2">
+                                    <h3 class="modal-title hc-3" id="staticBackdropLabel">活動訂單明細&nbsp;<span
+                                            th:text="${activityOrderVO.activityOrderId}"></span>&nbsp;內容</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body pw-3">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">會員編號 【會員姓名】</h5>
+                                            </div>
+                                            <input type="text" class="form_element3 " name="memberId"
+                                                   th:value="${activityOrderVO.memberVO.memberId} + ' 【' + ${activityOrderVO.memberVO.memberName} + '】'"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">活動場次編號</h5>
+                                            </div>
+                                            <input type="text" class="form_element3 " name="activitySessionId"
+                                                   th:value="${activityOrderVO.sessionVO.activitySessionId} "></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">促銷編號</h5>
+                                            </div>
+                                            <input type="text" class="form_element3" name="promotionId"
+                                                   th:value="${activityOrderVO.promotionVO.promotionId}"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"
+                                                                         style="color: #454a46;"></i>&nbsp;訂單日期</h5>
+                                            </div>
+                                            <input type="text" class="form_element3" name="orderTime"
+                                                   th:value="${activityOrderVO.orderTime}"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">報名人數</h5>
+                                            </div>
+                                            <input type="text" class="form_element3" name="enrollNumber"
+                                                   th:value="${activityOrderVO.enrollNumber} + ' 位'"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">訂單總金額</h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="orderAmount"
+                                                   th:value="${activityOrderVO.orderAmount}"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">促銷金額</h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="promotionPrice"
+                                                   th:value="${activityOrderVO.promotionPrice}"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">實付金額</h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="payAmount"
+                                                   th:value="${activityOrderVO.payAmount}"></input>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">訂單狀態</h5>
+                                            </div>
+                                            <div class="form_element6">
+                                    <span th:switch="${activityOrderVO.orderState}">
+                                        <span th:case="0">已繳費</span>
+                                        <span th:case="1">取消訂單</span>
+                                        <span th:case="2">完成訂單</span>
+                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">退款狀態</h5>
+                                            </div>
+                                            <div class="form_element6">
+                                    <span th:switch="${activityOrderVO.refundState}">
+                                        <span th:case="0">無須退款</span>
+                                        <span th:case="1">尚未退款</span>
+                                        <span th:case="2">退款中</span>
+                                        <span th:case="3">完成退款</span>
+                                    </span>
+                                            </div>
+                                        </div>
 
-<div class="b" th:if="${getOne_For_Display}">
-    <!--使用listOneOrder.html網頁的listOneOrder-div片段-->
-    <div th:insert="~{/back_end/activityOrder/listOneOrder :: listOneOrder-div}"></div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">備註</h5>
+                                            </div>
+
+                                            <textarea type="text" class="textarea_element3 "
+                                                      name="activityInfo"
+                                                      th:text="${activityOrderVO.orderMemo}"></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Modal end-->
+                    <td class="th-w4" th:text="${activityOrderVO.activityOrderId}"></td>
+                    <!--            <td th:text="${activityOrderVO.memberVO.memberId}+ '-[' + ${activityOrderVO.memberVO.memberName} + ']'"></td>-->
+                    <td class="th-w4" th:text="${activityOrderVO.sessionVO.activitySessionId}"></td>
+                    <td class="th-w4" th:text="${activityOrderVO.promotionVO.promotionId}"></td>
+                    <td class="th-w4" th:text="${activityOrderVO.orderTime}"></td>
+                    <!--            <td th:text="${activityOrderVO.enrollNumber}"></td>-->
+                    <!--            <td th:text="${activityOrderVO.orderAmount}"></td>-->
+                    <!--            <td th:text="${activityOrderVO.promotionPrice}"></td>-->
+                    <td class="th-w4" th:text="'$&nbsp;'+ ${activityOrderVO.payAmount}"></td>
+                    <td th:switch="${activityOrderVO.orderState }">
+                        <span th:case="0">已繳費</span>
+                        <span th:case="1">取消訂單</span>
+                        <span th:case="2">完成訂單</span>
+                    </td>
+                    <td th:switch="${activityOrderVO.refundState}">
+                        <span th:case="0">無須退款</span>
+                        <span th:case="1">尚未退款</span>
+                        <span th:case="2">退款中</span>
+                        <span th:case="3">完成退款</span>
+                    </td>
+                    <!--            <td th:text="${activityOrderVO.orderMemo}"></td>-->
+
+                    <td>
+                        <button type="button" class="btn btn-outline-success2 cu-4" data-bs-toggle="modal"
+                                th:data-bs-target="'#staticBackdrop2'+ ${activityOrderVO.activityOrderId}">編輯
+                        </button>
+                        <!--                <form method="post" th:action="@{/activityOrder/getOne_For_Update}" style="margin-bottom: 0px;">-->
+                        <!--                    <input type="submit" value="編輯">-->
+                        <!--                    <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}"></form>-->
+
+                    </td>
+                    <!-- Modal 2 -->
+
+                    <div class="modal fade " id="staticBackdrop2"
+                         th:id="'staticBackdrop2' + ${activityOrderVO.activityOrderId}"
+                         data-bs-backdrop="static" 　data-bs-keyboard="false" 　tabindex="-1" 　
+                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content cu-1">
+                                <div class="modal-header pw-2">
+                                    <h3 class="modal-title hc-3" id="staticBackdropLabel2">編輯活動訂單&nbsp;<span
+                                            th:text="${activityOrderVO.activityOrderId}"></span></h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body pw-1">
+                                    <!--                                <div class="modal-dialog modal-lg">-->
+
+                                    <!--                                        <form id="formTest" th:action="@{update}" method="post" th:object="${categoryVO}" enctype="multipart/form-data">-->
+                                    <form id="formTest-${activityOrderVO.activityOrderId}"
+                                          action="/activityOrder/update"
+                                          method="post">
+
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">活動訂單編號 (不可編輯)</h5>
+                                            </div>
+                                            <input type="text" class="form_element2" name="activityId"
+                                                   th:value="${activityOrderVO.activityOrderId}" readonly></input>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">會員編號 (不可編輯) </h5>
+                                            </div>
+                                            <input type="text" class="form_element2" name="memberVO.memberId"
+                                                   th:value="${activityOrderVO.memberVO.memberId} " readonly></input>
+
+                                        </div>
+
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">活動場次編號 <span class="require_text">(必填)</span>
+                                                </h5>
+                                            </div>
+                                            <select name="sessionVO.activitySessionId" class="selectric" required>
+                                                <option th:each="sessionVO : ${sessionListData}"
+                                                        th:value="${activityOrderVO.sessionVO.activitySessionId}"
+                                                        th:text="${sessionVO.activitySessionId}"/>
+                                            </select>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">活動促銷編號 </h5>
+                                            </div>
+                                            <select name="promotionVO.promotionId" class="selectric" required>
+                                                <option th:each="promotionVO : ${promotionListData}"
+                                                        th:value="${activityOrderVO.promotionVO.promotionId}"
+                                                        th:text="${promotionVO.promotionId}"/>
+                                            </select>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"
+                                                                         style="color: #454a46;"></i>&nbsp;訂單日期
+                                                    <span class="require_text">(必填)</span></h5>
+                                            </div>
+                                            <input type="date" class="form_element6" name="orderTime"
+                                                   th:value="${activityOrderVO.orderTime}" required
+                                                   onclick="hideContent('orderTime.errors');"/>
+                                            <!--                                    <span th:if="${#fields.hasErrors('orderTime')}"-->
+                                            <!--                                          th:errors="${activityOrderVO.orderTime}" class="error"-->
+                                            <!--                                          id="orderTime.errors"></span>-->
+
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">報名人數 <span class="require_text">(必填)</span></h5>
+                                            </div>
+                                            <input type="text" class="form_element6" name="enrollNumber"
+                                                   th:value="${activityOrderVO.enrollNumber}" required
+                                                   onclick="hideContent('activityOrderVO.enrollNumber.errors');"/>
+                                            <!--                                    <span th:if="${#fields.hasErrors('activityOrderVO.enrollNumber')}"-->
+                                            <!--                                          th:errors="${activityOrderVO.enrollNumber}" class="error"-->
+                                            <!--                                          id="enrollNumber.errors"></span>-->
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">訂單總金額 </h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="orderAmount"
+                                                   th:value="${activityOrderVO.orderAmount}"
+                                                   onclick="hideContent('activityOrderVO.orderAmount.errors');"/>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">促銷金額 </h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="promotionPrice"
+                                                   th:value="${activityOrderVO.promotionPrice}"
+                                                   onclick="hideContent('activityOrderVO.promotionPrice.errors');"/>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">實付金額 </h5>
+                                            </div>
+                                            <span class="nt-u2 f-z">NT$&nbsp;</span>
+                                            <input type="text" class="form_element5 nt-u2" name="payAmount"
+                                                   th:value="${activityOrderVO.payAmount}"
+                                                   onclick="hideContent('activityOrderVO.payAmount.errors');"/>
+
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">訂單狀態<span class="require_text">(必填)</span></h5>
+                                            </div>
+                                            <div>
+                                                <select class="selectric2" th:field="*{activityOrderVO.orderState}">
+                                                    <option value="0">已繳費</option>
+                                                    <option value="1">取消訂單</option>
+                                                    <option value="2">完成訂單</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">退款狀態<span class="require_text">(必填)</span></h5>
+                                            </div>
+                                            <div>
+                                                <select class="selectric2" th:field="*{activityOrderVO.refundState}">
+                                                    <option value="0">無須退款</option>
+                                                    <option value="1">尚未退款</option>
+                                                    <option value="2">退款中</option>
+                                                    <option value="2">完成退款</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4-5">
+                                            <div class="mb-4">
+                                                <h5 class="f-w">備註</h5>
+                                            </div>
+
+                                            <textarea type="text" class="textarea_element2 "
+                                                      name="activityInfo"
+                                                      th:text="${activityOrderVO.orderMemo}"></textarea>
+
+                                        </div>
+
+
+                                        <div class="modal-footer b-t-1">
+                                            <button type="button" class="btn btn-secondary cu-3"
+                                                    data-bs-dismiss="modal">取消
+                                            </button>
+                                            <button type="submit" class="btn btn-primary cu-3">儲存變更</button>
+                                            <input type="hidden" id="activityOrderId" name="activityOrderId"
+                                                   th:value="${activityOrderVO.activityOrderId}">
+                                        </div>
+
+
+                                    </form>
+                                    <!--                                    </div>-->
+                                </div>
+
+                                <!--                                 JavaScript part-->
+                                <script type="text/javascript">
+                                    //清除提示信息
+                                    function hideContent(d) {
+                                        document.getElementById(d).innerText = '';
+                                    }
+
+
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Modal End-->
+
+                    <td>
+                        <form method="post" th:action="@{/activityOrder/delete}" style="margin-bottom: 0px;">
+                            <input type="submit" class="btn btn-outline-secondary cu-4" value="刪除">
+                            <input type="hidden" name="activityOrderId" th:value="${activityOrderVO.activityOrderId}">
+                        </form>
+
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script th:inline="javascript">
+    // 在页面加载完成后执行
+    window.onload = function () {
+        /*<![CDATA[*/
+        // 获取隐藏字段的值
+        var successValue = /*[[${success}]]*/ '';
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
-<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+
+        // 如果成功消息存在且不为空，则显示警报框
+        if (successValue && successValue.trim() !== '') {
+            alert(successValue);
+        }
+        /*]]>*/
+    };
+</script>
+<!--<div class="b" th:if="${getOne_For_Display}">-->
+<!--    &lt;!&ndash;使用listOneOrder.html網頁的listOneOrder-div片段&ndash;&gt;-->
+<!--    <div th:insert="~{/back_end/activityOrder/listOneOrder :: listOneOrder-div}"></div>-->
+<!--</div>-->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
+        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+        crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+        crossorigin="anonymous"></script>
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css"/>
+<!--●●css for jquery datatables 用 -->
 
 <!-- ●● jquery datatables 設定 -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#example').DataTable({
-            "lengthMenu": [3 ,5, 10, 20, 50, 100],
+            "lengthMenu": [5, 10, 15, 20, 25, 50, 100],
             "searching": true,  //搜尋功能, 預設是開啟
             "paging": true,     //分頁功能, 預設是開啟
             "ordering": true,   //排序功能, 預設是開啟
@@ -111,7 +493,7 @@
                 "loadingRecords": "載入中...",
                 "lengthMenu": "顯示 _MENU_ 筆結果",
                 "zeroRecords": "沒有符合的結果",
-                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共_TOTAL_筆",
                 "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
                 "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
                 "infoPostFix": "",
@@ -123,7 +505,7 @@
                     "last": "最後一頁"
                 },
                 "aria": {
-                    "sortAscending":  ": 升冪排列",
+                    "sortAscending": ": 升冪排列",
                     "sortDescending": ": 降冪排列"
                 }
             }
