@@ -33,9 +33,11 @@ public class PromotionVO implements Serializable {
     @Column(name = "promotion_coupon")
     private Integer promotionCoupon;
 
+    @NotNull(message = "促銷開始時間必須填寫！")
     @Column(name = "promotion_started")
     private Date promotionStarted;
 
+    @NotNull(message = "促銷結束時間必須填寫！")
     @Column(name = "promotion_end")
     private Date promotionEnd;
 

@@ -5,6 +5,7 @@ package com.activities_item.model;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -38,20 +39,20 @@ import com.activities_session.model.SessionVO;
 		
 		@Column(name = "activity_name")
 		@NotEmpty(message="請勿空白")
-		@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
+		@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,20}$", message = "只能是中、英文字母、數字和_ , 且長度必需在2到20之間")
 		private String activityName;
 		
 		@Column(name = "activity_description")
-		@NotEmpty(message="請勿空白")
+//		@NotEmpty(message="請勿空白")
 		private String activityDescription;
 		
 		@Column(name = "activity_info")
-		@NotEmpty(message="請勿空白")
+//		@NotEmpty(message="請勿空白")
 		private String activityInfo;
 		
 		@Column(name = "activity_price")
 		@NotNull(message="金額: 請勿空白")
-//		@DecimalMin(value = "1", message = "金額: 不能小於{value}")
+		@DecimalMin(value = "1", message = "金額: 不能小於{value}")
 //		@DecimalMax(value = "99999", message = "金額: 不能超過{value}")
 		private Integer activityPrice;
 		

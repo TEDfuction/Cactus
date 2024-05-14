@@ -1,6 +1,7 @@
 package com.activities_item.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +66,8 @@ public class ItemController {
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
 		List<ItemVO> list = itemService.getAll();
 		model.addAttribute("itemListData", list);
-		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/item/listAllItem"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
+		model.addAttribute("success", "新增成功～");
+		return "back_end/item/listAllItem"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
     
 	}
 	
@@ -84,8 +85,8 @@ public class ItemController {
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
 		List<ItemVO> list = itemService.getAll();
 		model.addAttribute("itemListData", list);
-		model.addAttribute("success", "- (刪除成功)");
-		return "back_end/item/listAllItem"; // 刪除完成後轉交listAllItem.html
+		model.addAttribute("success", "刪除成功～");
+		return "redirect:/item/listAllItem"; // 刪除完成後轉交listAllItem.html
 	}
 	
 	/*
@@ -117,34 +118,67 @@ public class ItemController {
 	}
 	
 	
+//	@PostMapping("update")
+//	public String update(@Valid ItemVO itemVO, BindingResult result, ModelMap model) {
+//		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//
+//		if(result.hasErrors()) {
+//			System.out.println("資料不全");
+//			return "back_end/item/update_item_input";
+//		}
+//		/*************************** 2.開始修改資料 *****************************************/
+//		itemService.updateItem(itemVO);
+//		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
+//		model.addAttribute("success", "修改成功～");
+//		List<ItemVO> list = itemService.getAll();
+//		List<CategoryVO> list2 = categoryService.getAll();
+//		model.addAttribute("itemListData", list);
+//		model.addAttribute("categoryListData", list2);
+//		return "back_end/item/listAllItem"; // 修改成功後轉交listOneItem.html
+//
+//	}
+
 	@PostMapping("update")
-	public String update(@Valid ItemVO itemVO, BindingResult result, ModelMap model) {
+	public String update(@Valid ItemVO itemVO, BindingResult result,
+						 @RequestParam("categoryVO.activityCategoryId") Integer categoryId,
+						 ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			System.out.println("資料不全");
 			return "back_end/item/update_item_input";
 		}
+
 		/*************************** 2.開始修改資料 *****************************************/
+		// 设置ItemVO对象的categoryVO.activityCategoryId属性值
+		CategoryVO ctVO = new CategoryVO();
+//				itemVO.getCategoryVO();
+		ctVO.setActivityCategoryId(categoryId);
+		itemVO.setCategoryVO(ctVO);
+
+
 		itemService.updateItem(itemVO);
+
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-		model.addAttribute("success", "- (修改成功)");
-		model.addAttribute("itemVO", itemVO);
-		return "back_end/item/listOneItem"; // 修改成功後轉交listOneItem.html
-		
+		model.addAttribute("success", "修改成功～");
+		List<ItemVO> list = itemService.getAll();
+		List<CategoryVO> list2 = categoryService.getAll();
+		model.addAttribute("itemListData", list);
+		model.addAttribute("categoryListData", list2);
+		return "back_end/item/listAllItem"; // 修改成功後轉交listOneItem.html
 	}
-	
 	/*
      * This method will be called on select_item.html form submission, handling POST request
      *複合查詢
      */
 	
-//	@PostMapping("listItem_ByCompositeQuery")
-//	public String listAllItem(HttpServletRequest req, Model model) {
-//		Map<String, String[]> map = req.getParameterMap();
-//		List<ItemVO> list = itemService.getAll(map);
-//		model.addAttribute("itemListData", list); // for listAllItem.html 第85行用
-//		return "back_end/item/listAllItem";
-//	}
+	@PostMapping("listItem_ByCompositeQuery")
+	public String listAllItem(HttpServletRequest req, Model model) {
+		Map<String, String[]> map = req.getParameterMap();
+		List<ItemVO> list = itemService.getAll(map);
+		model.addAttribute("itemListData", list); // for listAllItem.html 第85行用
+		return "back_end/item/listAllItem";
+	}
+
 	
 }

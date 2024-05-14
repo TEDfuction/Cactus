@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>所有活動參加人員 listAllAttendees.html</title>
+
+    <div th:replace="~{/back_end/include/include_top}"></div>
+    <title>所有活動參加人員</title>
 
     <style>
         label input[type="search"]{
-            margin-bottom :  2rem;
+            margin-bottom :  1.5rem;
         }
+        table.dataTable {
+            margin-bottom: 1rem !important;
+        }
+        table.dataTable thead th {
+            text-align: center !important;
+        }
+        th:first-child {
+            border-top-left-radius: 6px;
+
+        }
+
+        th:last-child {
+            border-top-right-radius: 6px;
+
+        }
+        table.dataTable > thead > tr > th {
+            padding-top: 25px !important;
+            padding-bottom: 25px !important;
+        }
+        .t-t-2 th:nth-child(3)::before,
+        .t-t-2 th:nth-child(9)::before,
+        .t-t-2 th:nth-child(10)::before {
+            display: none !important;
+        }
+
+        .t-t-2 th:nth-child(3)::after,
+        .t-t-2 th:nth-child(9)::after,
+        .t-t-2 th:nth-child(10)::after {
+            display: none !important;
+        }
+
 
     </style>
 
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center"> <h2>所有活動參加人員 - listAllAttendees.html</h2>
-        <h3><a class="navbar-brand" th:href="@{/attendees/select_attendees}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
-</nav>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+<input type="hidden" id="success" th:value="${success}">
+<div>
+    <h2 class="hc-1">所有活動參加人員列表</h2>
+</div>
+<div class="controls">
+    <div class="button-container">
+        <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增參加人員</button>
+        <a id="link" href='addAttendees'></a>
+    </div>
 
-<table id="example" class="display" style="width: 100%">
-    <thead >
-    <tr style="background-color:#CCCCFF">
+<table id="example" class="display tr-line tl">
+    <thead class="t-t-1">
+    <tr class="t-t-2">
 
-        <th>活動參加人員編號</th>
-        <th>活動訂單編號</th>
-        <th>參加人員姓名</th>
+        <th>編號</th>
+        <th>訂單編號</th>
+        <th>人員姓名</th>
         <th>性別</th>
         <th>身分證字號</th>
         <th>手機號碼</th>
@@ -65,10 +103,38 @@
     </th:block>
     </tbody>
 </table>
+</div>
+</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+<script th:inline="javascript">
+    // 在页面加载完成后执行
+    window.onload = function () {
+        /*<![CDATA[*/
+        // 获取隐藏字段的值
+        var successValue = /*[[${success}]]*/ '';
+
+
+        // 如果成功消息存在且不为空，则显示警报框
+        if (successValue && successValue.trim() !== '') {
+            alert(successValue);
+        }
+        /*]]>*/
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
+        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+        crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+        crossorigin="anonymous"></script>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
 <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+
 
 <!-- ●● jquery datatables 設定 -->
 <script>
@@ -102,6 +168,3 @@
         });
     });
 </script>
-
-</body>
-</html>
