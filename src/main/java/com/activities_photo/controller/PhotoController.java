@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.activities_attendees.model.AttendeesService;
+import com.activities_attendees.model.AttendeesVO;
 import com.activities_item.model.ItemService;
 import com.activities_item.model.ItemVO;
+import com.activities_order.model.ActivityOrderService;
+import com.activities_order.model.ActivityOrderVO;
 import com.activities_photo.model.PhotoService;
 import com.activities_photo.model.PhotoVO;
 
@@ -35,6 +40,12 @@ public class PhotoController {
 
 	@Autowired
 	ItemService  itemSvc;
+	
+	@Autowired
+    AttendeesService attendeesService;
+	
+	@Autowired
+    ActivityOrderService activityOrderService;
 
 	/*
 	 * This method will serve as addEmp.html handler.
@@ -45,13 +56,59 @@ public class PhotoController {
 		model.addAttribute("photoVO", photoVO);
 		return "back_end/activity/addPhoto";
 	}
+	// 2先從最初的網頁按下按鈕後可以找出對應 PhotoId的值
 	@GetMapping("listDetailPhoto")
 	public String listDetailPhoto(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId) {
 		PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
 		model.addAttribute("photoVO",photoVO);
 		return "/front_end/activity/listDetailPhoto";
 		
+		
 	}
+	
+	
+	
+	
+	// 3之後找出對應 PhotoId的值
+	@GetMapping("listDetailAddAttendees")
+	public String listDetailAddAttendeesSuc(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId) {
+		
+		PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+		model.addAttribute("photoVO",photoVO);
+		AttendeesVO attendeesVO = new AttendeesVO();
+		List<ActivityOrderVO> list = activityOrderService.getAll();
+        model.addAttribute("activityOrderListData", list);
+        model.addAttribute("attendeesVO", attendeesVO);
+        
+		return "/front_end/activity/listDetailAddAttendees";
+			
+	}
+	
+	// 4確定結果沒問題按送出
+	@GetMapping("confirmAttendees")
+	public String confirmAttendees(ModelMap model, HttpSession session) {
+	    /********************** 3. 從 session 中獲取數據 **************************/
+	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
+	    String activityPhotoId = (String) session.getAttribute("activityPhotoId");
+
+	    /********************** 4.將數據儲存到 model 中，以便在下一頁使用 ************************/
+	    PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
+        model.addAttribute("activityOrderListData", list2);
+		model.addAttribute("photoVO",photoVO);
+	    model.addAttribute("attendeesVO", attendeesVO);
+	    
+	    
+	    return "/front_end/activity/confirmAttendees"; // 返回到下一頁
+	}
+
+	
+	
+
+	
+	
+	
+	
 
 	/*
 	 * This method will be called on addEmp.html form submission, handling POST request It also validates the user input
@@ -87,6 +144,135 @@ public class PhotoController {
 		model.addAttribute("success", "- (新增成功)");
 		return "redirect:/activity/listAllPhoto"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
 	}
+	
+	
+	
+	
+	
+	//3 送出與錯誤處理也要放photoVO 與 attendessVO
+	@PostMapping("insertDetailAddAttendees")
+	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
+	                                       HttpSession session, @RequestParam("activityPhotoId")String activityPhotoId){
+	    
+	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+	    if(result.hasErrors()){
+	        PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+	        model.addAttribute("photoVO",photoVO);
+	        List<ActivityOrderVO> list = activityOrderService.getAll();
+	        model.addAttribute("activityOrderListData", list);
+	        System.out.println("資料有誤"); 
+	        return "front_end/activity/listDetailAddAttendees";
+	    }
+	    
+	    /********************* 2.存儲需要在下一頁使用的數據到 session 中 *********************/
+	    session.setAttribute("attendeesVO", attendeesVO);
+	    session.setAttribute("activityPhotoId", activityPhotoId);
+	    
+	    return "redirect:/activity/confirmAttendees"; // 重定向到下一頁
+	}
+	
+	
+	
+	
+	@PostMapping("success")
+	public String success(ModelMap model, HttpSession session){
+	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
+	    String activityPhotoId = (String) session.getAttribute("activityPhotoId");
+	    
+	    // 开始新增数据
+	    attendeesService.addAttendees(attendeesVO);
+	    
+	    // 查询数据并设置到模型中
+	    PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+	    model.addAttribute("photoVO", photoVO);
+	    List<AttendeesVO> list = attendeesService.getAll();
+	    model.addAttribute("attendeesListData", list);
+	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
+	    model.addAttribute("activityOrderListData", list2);
+	    model.addAttribute("success", "- (新增成功)");
+	    
+	    // 重定向到成功页面
+	    return "redirect:/activity/activityPhoto"; // 重定向到成功页面
+	}
+	
+	
+	
+    @PostMapping("insertOrder")
+    public String insertOrder(@Valid ActivityOrderVO activityOrderVO, BindingResult result, ModelMap model){
+        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+        if(result.hasErrors()){
+            System.out.println("資料有誤");
+            return "back_end/activityOrder/addOrder";
+        }
+        /*************************** 2.開始新增資料 *****************************************/
+        activityOrderService.addOrder(activityOrderVO);
+        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+        List<ActivityOrderVO> list = activityOrderService.getAll();
+        model.addAttribute("attendeesListData", list);
+        model.addAttribute("success", "- (新增成功)");
+        return "redirect:/activityOrder/listAllOrder"; // 新增成功後重導
+    }
+	
+	
+	
+	
+	
+
+	
+	
+	//3 送出與錯誤處理也要放photoVO 與 attendessVO
+//	@PostMapping("insertDetailAddAttendees")
+//    public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
+//    		                         @RequestParam("activityPhotoId")String activityPhotoId){
+//		
+//        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//        if(result.hasErrors()){
+//        	PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+//    		model.addAttribute("photoVO",photoVO);
+//        	List<ActivityOrderVO> list = activityOrderService.getAll();
+//            model.addAttribute("activityOrderListData", list);
+//            System.out.println("資料有誤"); 
+//            return "front_end/activity/listDetailAddAttendees";
+//        }
+//        /*************************** 2.開始新增資料 *****************************************/
+//        attendeesService.addAttendees(attendeesVO);
+//        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+//        PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+//		  model.addAttribute("photoVO",photoVO);
+//        List<AttendeesVO> list = attendeesService.getAll();
+//        model.addAttribute("attendeesListData", list);
+//        List<ActivityOrderVO> list2 = activityOrderService.getAll();
+//        model.addAttribute("activityOrderListData", list2);
+//        model.addAttribute("success", "- (新增成功)");
+//        return "redirect:/activity/listDetailAddAttendees"; // 新增成功後重導
+//    }
+	
+	
+	
+	
+//	@PostMapping("insertAddAttendees")
+//    public String insertaddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model){
+//        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//        if(result.hasErrors()){
+//        	List<ActivityOrderVO> list = activityOrderService.getAll();
+//            model.addAttribute("activityOrderListData", list);
+//            System.out.println("資料有誤"); 
+//            return "front_end/activity/addAttendees";
+//        }
+//        /*************************** 2.開始新增資料 *****************************************/
+//        attendeesService.addAttendees(attendeesVO);
+//        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+//        List<AttendeesVO> list = attendeesService.getAll();
+//        model.addAttribute("attendeesListData", list);
+//
+//        model.addAttribute("success", "- (新增成功)");
+//        return "redirect:/activity/addAttendees"; // 新增成功後重導
+//    }
+	
+	
+	
+	
+	
 
 	/*
 	 * This method will be called on listAllEmp.html form submission, handling POST request
