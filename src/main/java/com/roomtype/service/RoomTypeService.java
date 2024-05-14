@@ -25,4 +25,5 @@ public interface RoomTypeService {
      RoomTypeVO getOneRoomType(Integer roomTypeId);
 
 
+    List<RoomTypeVO> getRTStatus();
 }
