@@ -1,7 +1,6 @@
 package com.roomorder.model;
 
 
-import com.roomorder.model.RoomOrderVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
