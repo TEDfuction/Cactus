@@ -13,6 +13,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.member.model.RecaptchaResponse;
 import com.notification.model.NotificationService;
 
 @Controller
@@ -47,7 +50,8 @@ public class MemberLoginController {
 	private String mailToken;
 	
 	
-	
+	@Value("${google.recaptcha.secret-key}")
+    private String recaptchaSecretKey;
 
 	@GetMapping("/memberLogin")
 	public String memberLogin(Model model) {
@@ -60,52 +64,71 @@ public class MemberLoginController {
 	//練習方法級別驗證
 	@PostMapping("/memberLogin")
 	public String memberLogin(HttpServletRequest req, HttpServletResponse res,
+			
+			@RequestParam("g-recaptcha-response") String captchaResponse,
 
 			@NotEmpty(message = "電子信箱:請勿空白") @RequestParam("email") String email,
 
 			@NotEmpty(message = "會員密碼:請勿空白") @RequestParam("password") String password, 
 			
 			ModelMap model) {
-
-		MemberVO memberVO = memSvc.findByEmail(email);
 		
-		//查無此使用者帳號(信箱)
-		if (memberVO == null) {
-			model.addAttribute("status", "wrong");
-
-			return "/front_end/member/memberLogin";
-		}
 		
-		//帳號密碼輸入錯誤
-		if (!memberVO.getEmail().equals(email) || !memberVO.getPassword().equals(password)) {
-			model.addAttribute("status", "failed");
+		String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + recaptchaSecretKey + "&response=" + captchaResponse;
+        RecaptchaResponse recaptchaResponse = new RestTemplate().postForObject(url, null, RecaptchaResponse.class);
+    	
+        	//機器人驗證有過
+        if (recaptchaResponse.isSuccess()) {
+        	
+        	MemberVO memberVO = memSvc.findByEmail(email);
+    		
+    		//查無此使用者帳號(信箱)
+    		if (memberVO == null) {
+    			model.addAttribute("status", "wrong");
 
-			return "/front_end/member/memberLogin";
-		}
+    			return "/front_end/member/memberLogin";
+    		}
+    		
+    		//帳號密碼輸入錯誤
+    		if (!memberVO.getEmail().equals(email) || !memberVO.getPassword().equals(password)) {
+    			model.addAttribute("status", "failed");
 
-		//驗證通過,將資訊存至session給過濾器做驗證
-		HttpSession session = req.getSession();
-		model.addAttribute("memberVO", memberVO);
-		session.setAttribute("account", email);
+    			return "/front_end/member/memberLogin";
+    		}
+    		
+    		
+        
+    		//驗證通過,將資訊存至session給過濾器做驗證
+    		HttpSession session = req.getSession();
+    		model.addAttribute("memberVO", memberVO);
+    		session.setAttribute("account", email);
+    		
+    		//供WebSocket隨時調用
+    		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
+    		model.addAttribute("UnreadCount",count);
+    		
+    		//檢查有無來源地址,若沒有就到會員專區頁面
+    		try {
+    			String location = (String) session.getAttribute("location");
+    			if (location != null) {
+    				session.removeAttribute("location"); // 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
+    				return "redirect:" + location;
+//    				res.sendRedirect(location);
+//    				return;
+    			}
+    		} catch (Exception ignored) {
+    			ignored.printStackTrace();
+    		}
+
+    		return "/front_end/member/memberOnlyWeb";
+        	
+        	
+        	//機器人驗證沒過
+        } else {
+			model.addAttribute("status", "robot");
+            return "/front_end/member/memberLogin";
+        }
 		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
-		model.addAttribute("UnreadCount",count);
-		
-		//檢查有無來源地址,若沒有就到會員專區頁面
-		try {
-			String location = (String) session.getAttribute("location");
-			if (location != null) {
-				session.removeAttribute("location"); // 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
-				return "redirect:" + location;
-//				res.sendRedirect(location);
-//				return;
-			}
-		} catch (Exception ignored) {
-			ignored.printStackTrace();
-		}
-
-		return "/front_end/member/memberOnlyWeb";
 	}
 
 	

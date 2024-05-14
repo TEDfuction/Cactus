@@ -18,9 +18,17 @@
     .error {
         color: red;
         position:relative;
-        font-size:13px;
+        font-size:12.5px;
     }
+    
+    
+    select.citySelect , select.townSelect{
+    	display:inline-block;
+    	width:45%;
+    
+	}
 </style>
+
 </head>
 
 
@@ -101,7 +109,17 @@
 								<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error" id="phone.errors"></span>
 							</div>
 							
-							<div class="form-group">
+							<div>
+								<select class="citySelect" name="city">
+					    
+								</select>
+								
+								<select class="townSelect" name="town">
+
+								</select>
+							</div>
+							
+							<div class="form-group">    <!--  th:text="${#strings.substring(memberVO.address, 6)}"  -->
 								<label for="address"><i class="zmdi zmdi-home"></i></label><br>
 								<input type="text" th:field="*{address}" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
 								<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span>
@@ -147,7 +165,7 @@
 <!-- JS -->
 
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<link rel="stylesheet" href="alert/dist/sweetalert.css">
+<!-- 	<link rel="stylesheet" href="alert/dist/sweetalert.css"> -->
 	
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script th:src="@{/js/front_end/member/member.js}"></script>
@@ -162,6 +180,8 @@
 <!--    } -->
 <!-- %> -->
 
+
+<!--
 <link rel="stylesheet" type="text/css" th:href="@{/datetimepicker/jquery.datetimepicker.css}" />
 <script th:src="@{/datetimepicker/jquery.js}"></script>
 <script th:src="@{/datetimepicker/jquery.datetimepicker.full.js}"></script>
@@ -190,6 +210,7 @@ $('#birthday').datetimepicker({
  });
  
 </script>
+-->
 
 <script>
 
@@ -255,6 +276,65 @@ function previewfile(file) {
 		document.getElementById('signup').disabled = true;
 	}
 }
+</script>
+
+<script>
+
+
+//第一層選單
+$.ajax({
+    url: "/member/getEnums", // 假設這是你的後端接口路徑
+    method: "GET",
+    dataType: "json",
+    success: function(response) {
+
+        // 將 JSON 物件轉換為 JSON 字串輸出到控制台
+	        console.log(response);
+        
+        $.each(response,function(key,value){
+// 			console.log(key,value)
+			$('.citySelect').append('<option value="'+key+'">'+response[key].city+'</option>')
+		})
+		var taipei_town = response[0].towns;
+		$.each(taipei_town,function(key,value){
+			
+			$('.townSelect').append('<option value="'+response[0].city+taipei_town[key]+'">'+taipei_town[key]+'</option>')
+		})
+       
+    },
+    error: function(xhr, status, error) {
+        console.log("Status:", status);
+        console.log("Error:", error);
+    }
+});
+
+
+//第二層選單
+$(".citySelect").change(function(){
+	cityvalue=$(".citySelect").val();  //取值
+	$(".townSelect").empty(); //清空上次的值
+	
+	$.ajax({
+	    url: "/member/getEnums", // 假設這是你的後端接口路徑
+	    method: "GET",
+	    dataType: "json",
+	    success: function(response) {
+
+	    	eachval=response[cityvalue].towns; //鄉鎮
+			
+			$.each(eachval,function(key,value){
+				$('.townSelect').append('<option value="'+response[cityvalue].city+eachval[key]+'">'+eachval[key]+'</option>')
+			});
+	       
+	    },
+	    error: function(xhr, status, error) {
+	        console.log("Status:", status);
+	        console.log("Error:", error);
+	    }
+	});
+});
+
+
 </script>
 	
 </body>

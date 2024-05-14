@@ -7,6 +7,13 @@
 <meta>
 <title>會員登入</title>
 
+<!--recaptcha checking -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!--Google Login-->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
 <!-- Font Icon -->
 <link rel="stylesheet" th:href="@{/fonts/front_end/member/icon/css/material-design-iconic-font.min.css}">
 
@@ -17,6 +24,15 @@
     div.error{
         color: red;
         position:relative;
+    }
+    
+    img{
+    	width:150px;
+    	height:150px;
+    }
+    .GoogleLogin{
+    margin-top:20px;
+    display:inline-block;
     }
 </style>
 
@@ -60,12 +76,34 @@
 								<label for="password"><i class="zmdi zmdi-lock"></i></label> 
 								<input type="password" required name="password" placeholder="請輸入密碼..."><br>
 							</div>
-									
+							
+								<!--recaptcha checking -->
+							<div class="g-recaptcha" data-sitekey="6Ld4vtgpAAAAAOybigw3b7kBe26B79mrqL5DBQ5Z"></div>
+							
 
 							<div class="form-group form-button">
 								<input type="submit" name="signin" id="signin" class="form-submit" value="登入" />
 							</div>
 						</form>
+						<div class="GoogleLogin">
+							<div id="g_id_onload"
+							     data-client_id="369653514421-uur82nkgqkpfrmire23k39mjogulqb8n.apps.googleusercontent.com"
+							     data-context="signin"
+							     data-ux_mode="popup"
+							     data-login_uri="http://localhost:8080/member/memberOnlyWeb"
+							     data-auto_prompt="false">
+							</div>
+							
+							<div class="g_id_signin"
+							     data-type="standard"
+							     data-shape="pill"
+							     data-theme="filled_blue"
+							     data-text="signin_with"
+							     data-size="medium"
+							     data-locale="en"
+							     data-logo_alignment="left">
+							</div>
+						</div>
 						
 		<!-- 錯誤表列 -->
 		<div class="error" th:utext="${errorMessage}">${errorMessage}</div><br>
@@ -80,11 +118,16 @@
 
 	<!-- JS -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<link rel="stylesheet" href="alert/dist/sweetalert.css"/>
+<!-- 	<link rel="stylesheet" href="alert/dist/sweetalert.css"/> -->
 	
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script src="@{/js/front_end/member/memberLogin.js}"></script>
+	<script th:src="@{/js/front_end/member/memberLogin.js}"></script>
 	
+	<script>
+		function handleCallback(response) {
+	   	 console.log(response);
+		}
+	</script>
 	
 	
 	<script>
@@ -103,6 +146,9 @@
 			status = "";
 		}else if (status == "changeFinish"){
 			swal("成功!","您的密碼已成功修改,請用新密碼進行登入!","success");
+			status = "";
+		}else if (status == "robot"){
+			swal("OhOh!","你這個可惡的機器人!","error");
 			status = "";
 		}
 		
