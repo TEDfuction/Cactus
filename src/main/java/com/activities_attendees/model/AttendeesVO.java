@@ -41,8 +41,7 @@ public class AttendeesVO implements Serializable {
             columnDefinition = "char",
             nullable = false)
     @NotEmpty(message="手機號碼: 請勿空白！")
-    @Pattern(regexp="09\\d{8}")
-    @Size(min = 10, max = 10)
+    @Pattern(regexp="09\\d{8}",message = "手機號碼: 請輸入10位數字，且開頭必須為09")
     private String attendeesPhone;
 
     @Column(name = "attendees_email", nullable = false, unique = true)

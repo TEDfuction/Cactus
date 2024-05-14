@@ -58,8 +58,10 @@ public class CategoryController {
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
 		List<CategoryVO> list = categoryService.getAll();
 		model.addAttribute("categoryListData", list);
-		model.addAttribute("success", "- (新增成功)");
-		return "redirect:/category/listAllCategory"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
+		model.addAttribute("success", "新增成功～");
+		// 在成功消息返回后使用JavaScript的alert方法
+//		model.addAttribute("alertScript", "alert('新增成功');");
+		return "back_end/category/listAllCategory"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
     }
     
 //    public String insert(@Valid CategoryVO categoryVO , BindingResult bindingResult, Model model){
@@ -110,10 +112,11 @@ public class CategoryController {
 		// EmpService empSvc = new EmpService();
 		categoryService.deleteCategory(Integer.valueOf(activityCategoryId));
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
+
 		List<CategoryVO> list = categoryService.getAll();
 		model.addAttribute("categoryListData", list);
-		model.addAttribute("success", "- (刪除成功)");
-		return "back_end/category/listAllCategory"; // 刪除完成後轉交listAllCategory.html
+		model.addAttribute("success", "刪除成功");
+		return "redirect:/category/listAllCategory"; // 刪除完成後轉交listAllCategory.html
 	}
 	
 	/*
@@ -141,14 +144,15 @@ public class CategoryController {
 			System.out.println("資料不全");
 			return "back_end/category/update_category_input";
 		}
+
 		/*************************** 2.開始修改資料 *****************************************/
 		categoryService.updateCategory(categoryVO);
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-		model.addAttribute("success", "- (修改成功)");
-		categoryVO = categoryService.getOneCategory(Integer.valueOf(categoryVO.getActivityCategoryId()));
-		model.addAttribute("categoryVO", categoryVO);
-		return "back_end/category/listOneCategory"; // 修改成功後轉交listOneCategory.html
-		
+		model.addAttribute("success", "修改成功～");
+		List<CategoryVO> list = categoryService.getAll();
+		model.addAttribute("categoryListData", list);
+		return "back_end/category/listAllCategory"; // 修改成功後轉交listOneCategory.html
+
 	}
 	
 	

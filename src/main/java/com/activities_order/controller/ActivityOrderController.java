@@ -84,7 +84,7 @@ public class ActivityOrderController {
         List<ActivityOrderVO> list = activityOrderService.getAll();
         model.addAttribute("activityOrderListData", list);
         model.addAttribute("success", "- (刪除成功)");
-        return "back_end/activityOrder/listAllOrder"; // 刪除完成後轉交listAllOrder.html
+        return "redirect:/activityOrder/listAllOrder"; // 刪除完成後轉交listAllOrder.html
     }
 
     /*
@@ -113,9 +113,10 @@ public class ActivityOrderController {
         /*************************** 2.開始修改資料 *****************************************/
         activityOrderService.updateOrder(activityOrderVO);
         /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-        model.addAttribute("success", "- (修改成功)");
-        model.addAttribute("activityOrderVO", activityOrderVO);
-        return "back_end/activityOrder/listOneOrder"; // 修改成功後轉交listOneOrder.html
+        model.addAttribute("success", "修改成功～");
+        List<ActivityOrderVO> list = activityOrderService.getAll();
+        model.addAttribute("activityOrderListData", list);
+        return "back_end/activityOrder/listAllOrder"; // 修改成功後轉交listOneOrder.html
 
     }
 
@@ -142,30 +143,30 @@ public class ActivityOrderController {
 
     }
 
-//    @ModelAttribute("activityOrderListData")
-//    protected List<ActivityOrderVO> referenceListDataAc(Model model) {
-//        List<ActivityOrderVO> list = activityOrderService.getAll();
-//        return list;
-//    }
-//
-//    @ModelAttribute("memberListData")
-//    protected List<MemberVO> referenceListDataMe(Model model) {
-//        model.addAttribute("memberVO", new MemberVO());
-//        List<MemberVO> list = memberService.getAll();
-//        return list;
-//    }
-//
-//    @ModelAttribute("sessionListData")
-//    protected List<SessionVO> referenceListDataSe(Model model) {
-//        List<SessionVO> list = sessionService.getAll();
-//        return list;
-//    }
-//
-//    @ModelAttribute("promotionListData")
-//    protected List<PromotionVO> referenceListDataPr(Model model) {
-//        List<PromotionVO> list = promotionService.getAll();
-//        return list;
-//    }
+    @ModelAttribute("activityOrderListData")
+    protected List<ActivityOrderVO> referenceListDataAc(Model model) {
+        List<ActivityOrderVO> list = activityOrderService.getAll();
+        return list;
+    }
+
+    @ModelAttribute("memberListData")
+    protected List<MemberVO> referenceListDataMe(Model model) {
+        model.addAttribute("memberVO", new MemberVO());
+        List<MemberVO> list = memberService.getAll();
+        return list;
+    }
+
+    @ModelAttribute("sessionListData")
+    protected List<SessionVO> referenceListDataSe(Model model) {
+        List<SessionVO> list = sessionService.getAll();
+        return list;
+    }
+
+    @ModelAttribute("promotionListData")
+    protected List<PromotionVO> referenceListDataPr(Model model) {
+        List<PromotionVO> list = promotionService.getAll();
+        return list;
+    }
 
 
 

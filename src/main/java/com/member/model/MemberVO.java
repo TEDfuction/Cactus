@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import com.activities_order.model.ActivityOrderVO;
 import com.notification.model.NotificationVO;
 import com.shoporder.model.ShopOrderVO;
 
@@ -92,8 +93,8 @@ public class MemberVO implements java.io.Serializable{
 //	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
 //	private Set<RoomOrderVO> roomOrderVO;
 	
-//	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
-//	private Set<ActivityOrderVO> activityOrderVO;
+	@OneToMany(mappedBy = "memberVO" , cascade = CascadeType.ALL)
+	private Set<ActivityOrderVO> activityOrderVO;
 	
 	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
 	private Set<ShopOrderVO> shopOrderVO;
@@ -189,7 +190,15 @@ public class MemberVO implements java.io.Serializable{
 	public void setMemberPic(byte[] memberPic) {
 		this.memberPic = memberPic;
 	}
-	
+
+	public Set<ActivityOrderVO> getActivityOrderVO() {
+		return activityOrderVO;
+	}
+
+	public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
+		this.activityOrderVO = activityOrderVO;
+	}
+
 	//非框架可直接做此改寫達到簡易轉換
 //	public void setMemberPic(MultipartFile multipartfile) {
 //		try {

@@ -15,8 +15,8 @@ public class ItemService {
 	@Autowired
 	ItemRepository itemRepository;
 	
-//	@Autowired
-//	private SessionFactory sessionFactory;
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	public void addItem(ItemVO itemVO) {
 		itemRepository.save(itemVO);
@@ -37,9 +37,9 @@ public class ItemService {
 
         return itemRepository.findAll();
     }
-//	public List<ItemVO> getAll(Map<String, String[]> map){
-//		return Item_Compositegory.getAllItemVOs(map, sessionFactory.openSession());
-//	}
+	public List<ItemVO> getAll(Map<String, String[]> map){
+		return Item_Compositegory.getAllItemVOs(map, sessionFactory.openSession());
+	}
 	
 
 }
