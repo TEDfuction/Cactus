@@ -3,12 +3,11 @@ package com.activities_category.model;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.activities_item.model.ItemVO;
+import com.activities_photo.model.PhotoVO;
 
 @Entity
 @Table(name = "activity_category")
@@ -30,6 +29,8 @@ public class CategoryVO implements Serializable{
     @OneToMany(mappedBy = "categoryVO" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("activityId")
     private Set<ItemVO> items;
+    
+    
 
     public Integer getActivityCategoryId() {
         return activityCategoryId;
@@ -62,6 +63,8 @@ public class CategoryVO implements Serializable{
     public void setItems(Set<ItemVO> items) {
         this.items = items;
     }
+    
+  
 
     @Override
     public String toString() {
