@@ -20,7 +20,7 @@ public class ProductCategoryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_category_id")
-	private Integer productCategotyId;
+	private Integer productCategoryId;
 	
 	@OneToMany(mappedBy = "productCategoryVOs")
 	private Set<ProductVO> productVOs;
@@ -30,11 +30,11 @@ public class ProductCategoryVO {
 	
 	
 	public Integer getProductCategotyId() {
-		return productCategotyId;
+		return productCategoryId;
 	}
 
 	public void setProductCategotyId(Integer productCategotyId) {
-		this.productCategotyId = productCategotyId;
+		this.productCategoryId = productCategotyId;
 	}
 	
 	
