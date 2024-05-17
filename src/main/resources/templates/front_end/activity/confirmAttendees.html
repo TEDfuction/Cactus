@@ -108,12 +108,28 @@
                   <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/>
 		          <span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/>
 		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>
+		          <!--改間隔 --><!--==================================活動訂單報名人數================================== -->
+     
+      <div style="margin-top: 20px;"></div>
+                 <hr>
+                 <label style="font-size: 20px;">報名人數:</label>
+                   
+                   <input type="text"  readonly id="enrollNumber" class="enrollNumber" name="enrollNumber" style="width: 100px; height: 30px; border-radius:0.5rem; text-align:center;" th:value="${session.activityOrderVO.enrollNumber}" />
+                   
+      <div style="margin-top: 20px;"></div>                 
+                 <div>
+                 <label style="font-size: 20px;">訂單日期:</label>
+                   <input type="date" readonly id="orderTime" class="orderTime" name="orderTime" style=" height: 30px; border-radius:0.5rem; text-align:center;" th:value="${session.activityOrderVO.orderTime}"/><br/>
+                 </div>     
  	              </div>
                 </div>
             </div>
         </div>
         
         
+        
+
+        			
         
     
 
@@ -180,7 +196,9 @@
 				  <input class="form-check-input" type="radio" th:field="*{memberGender}" th:value="2" onclick="hideContent('memberGender.errors');" />其他
 				  <span th:if="${#fields.hasErrors('memberGender')}" th:errors="*{memberGender}" class="error" id="memberGender.errors"></span>
 				</div>
-									
+						
+						
+
 				
 <!--          添加間距 -->
          <div style="margin-top: 20px;"></div>       
@@ -257,7 +275,7 @@
         </h2>
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
           <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>付款金額</div>
-          <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ photoVO.activityPh.activityPrice}" ></div>
+          <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ (photoVO.activityPh.activityPrice) * (session.activityOrderVO.enrollNumber)}" ></div>
           
         </div> 
        </div>
@@ -273,7 +291,7 @@
       <div style="display: flex; align-items: center;">
         <a href="/activity/activityPhoto" class="navbar-brand ms-4 ms-lg-0">
             <h1 class="text2-primary2 m-0" style=" font-size:25px">
-             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'合計/NT$'+ photoVO.activityPh.activityPrice}">
+             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'合計/NT$'+ (photoVO.activityPh.activityPrice) * (session.activityOrderVO.enrollNumber) }">
             </h1>
         </a>
        </div> 
