@@ -1,58 +1,159 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html>
+<div th:replace="~{/front_end/product/include_top}"></div>
 
-<head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Shop Cart</title>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-</head>
+
+<style>
+	a.backProduct{
+		display:block;
+		font-size:1.5rem;
+		margin-left:65px;
+	}
+	
+	.total-price{
+		margin-left:960px;
+		font-size:1.3rem;
+	}
+	
+	button#checkout-button,button#cleanShopCart{
+		font-size:1.3rem;
+	}
+	
+	button#checkout-button{
+		margin-top:10px;
+		margin-left:900px;
+	}
+	
+	button#cleanShopCart{
+		margin-top:10px;
+		margin-left:20px;
+	}
+			
+	
+	
+	div.accordion-item{
+		position: relative;
+		top: 50%;  
+		left: 50%;
+		transform: translate(-50%, 0%);
+		width:88%;
+	}
+	
+	.cartTable th,td{
+		text-align:center;
+	}
+
+
+</style>
+
 
 <body>
 
 
- 				<ul class="navbar-nav ml-auto">
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/shopCart/shopCart}" id="toShopCart">
-                        	<label>購物車在這:</label>
-                            <span class="lnr lnr-cart"></span>
-                        </a>
-                    </li>
-                </ul>
+    <!-- Spinner Start  Lodding畫面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/activity/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+  
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn sticky-top" data-wow-delay="0.1s" style="visibility: visible; animation-delay:0.2s; animation-name: fadeIn;">
+        <div class="row gx-0 d-none d-lg-flex">
+        
+            <div class="col-lg-7 px-5 text-start">
+                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
+                    <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
+                    <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
+                <!-- </div> -->
+            </div>
+            
+            <div class="col-lg-5 px-2-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}">購物車 ｜</a>
+                    <a class="text-white px-2" id="memberCenterLink" th:href="@{/member/memberOnlyWeb}">會員中心 ｜</a>
+                    <a class="text-white px-2" th:href="@{/member/memberLogin}">加入會員</a>
+                    
+                </div>  
+            </div>
+            
+        </div>
+    </div>
+   
 
 
+<!-- -------------------------------------------------------------------- -->
 
+	              
+				
+				<a class="backProduct" th:href="@{/product/listAllProduct}">返回商品選擇頁面</a>
+				
+<br>
 
-<div class="cart-container">
-    <h2>購物車</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>商品編號</th>
-            <th>商品名稱</th>
-            <th>數量</th>
-            <th>價格</th>
-            <th>總價</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody id="tableBody">
-        <!-- 從AJAX動態新增 -->
-
-        </tbody>
-    </table>
-    <div class="total-price">
+<!--==================================聯絡資訊================================== -->
+      <div style="margin-top: 20px;"></div>
+    
+	<div class="accordion-item" style="border-radius: 0.5rem;">
+        
+        <h2 class="accordion-header">
+          <button class="accordion-button " style="font-size: 25px;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            購物車清單
+          </button>
+        </h2>
+        
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
+<!--           <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>聯絡資訊</div> -->
+          
+          
+	         <div class="cart-container"> 
+	         
+		          <table class="cartTable" width="100%" style="table-layout:fixed">
+			        <thead>
+			        <tr>
+			            <th>商品編號</th>
+			            <th>商品名稱</th>
+			            <th>數量</th>
+			            <th>價格</th>
+			            <th>總價</th>
+			            <th>操作</th>
+			        </tr>
+			        </thead>
+			        <tbody id="tableBody">
+			        <!-- 從AJAX動態新增 -->
+			
+			        </tbody>
+			    </table>
+		    
+			</div>
+		
+		</div>
+	</div>
+	
+	<br>
+	<br>
+	
+	
+	<div class="total-price">
         <p>總價: <span id="cart-total"></span></p>
     </div>
+    
     <button id="checkout-button" class="checkout-button">確認下單</button>
     <button id="cleanShopCart" class="checkout-button">清空購物車</button>
-</div>
 
 
+
+
+
+
+
+
+ <div th:replace="~{/front_end/product/include_footer}"></div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <script>
 function getShopCart() {
@@ -220,7 +321,7 @@ function eventButton() {
     const cleanUpButton = document.querySelector('#cleanShopCart');
     cleanUpButton.addEventListener("click", cleanShopCart);
 
-    function cleanShopCart() {
+    function cleanShopCart() {    	
         if (confirm("要清空購物車嗎?")) {
             console.log("準備呼叫AJAX")
             $.ajax({
@@ -228,7 +329,10 @@ function eventButton() {
                 type: 'GET',
                 success: function (response) {
                     console.log("呼叫AJAX成功")
-                    window.location.href = response;
+                    swal("購物車已清空","您的購物車空空如也啦!趕快再去物色其他好貨吧!","success")
+                    .then(function(){
+                        window.location.href = response;
+                    });
                 },
                 error: function (xhr, status, error) {
                     console.error(error);
@@ -249,9 +353,4 @@ checkoutButton.addEventListener('click', () => {
 
 </script>
 
-
-
-
-</body>
-
-</html>
+<div th:replace="~{/front_end/product/include_bottom}"></div>

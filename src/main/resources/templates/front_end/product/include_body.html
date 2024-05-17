@@ -1,0 +1,178 @@
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"> -->
+<!-- 		 <div align="center"> <h2>所有圖片資料 - listAllPhoto.html</h2> -->
+<!-- 		 <h3><a class="navbar-brand" th:href="@{/photo/select_photo}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div> -->
+<!-- </nav> -->
+    <!-- Spinner Start  Lodding畫面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/activity/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+  
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn sticky-top" data-wow-delay="0.1s" style="visibility: visible; animation-delay:0.2s; animation-name: fadeIn;">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
+                    <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
+                    <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-5 px-2-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}">購物車 ｜</a>
+                    <a class="text-white px-2" id="memberCenterLink" th:href="@{/member/memberOnlyWeb}">會員中心 ｜</a>
+                    <a class="text-white px-2" th:href="@{/member/memberLogin}">加入會員</a>
+                    
+                </div>
+                <span class="navbar3 navbar-light ">
+                  <button class="navbar-toggler2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="offcanvas offcanvas-end2  text-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body2">
+                      <ul class="list list-size">
+  
+                        <li class="list-set3 border-line">                                   
+                        <a class="changecolor" href="">
+                        <span class="nav-text fw-medium">最新消息</span>
+                        </a>
+                        </li>   
+
+                            
+                        <li class="border-line">                                 
+                        
+                        <div >
+                            
+                            <h2 class="accordion-header" id="headingOne">
+                               
+                              <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                關於我們&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body3">
+                                <ul class="list2">
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;凱克特司</a></li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;周邊特色</a> </li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;常見問題</a> </li>
+                                </ul>
+                          
+                              </div>
+                            </div>
+                          </div>
+                        
+                        </li> 
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">房型介紹</span>
+                          </a>
+                        </li>
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">特色活動</span>
+                          </a>
+                        </li>  
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">購物商城</span>
+                          </a>
+                        </li>   
+                        <!-- <li class="border-line">                                 
+                          
+                            <div class="accordion-item2 ">
+                                
+                                <h2 class="accordion-header" id="headingOne">
+                                   
+                                  <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    活動管理系統
+                                  </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body2">
+                                    <ul class="list2">
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動類別管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動場次</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動圖片管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動訂單管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動促銷管理</a> </li>
+                                    </ul>
+                              
+                                  </div>
+                                </div>
+                              </div>
+                             
+                        </li> -->
+                        <!-- <div class="roomorder offcanvas-header">
+                          <a class="roomorder-set" href="">
+                            線上訂房
+                        </div> -->
+                     
+                    </div>
+                    
+                    <div class="offcanvas-bottom2"> 
+                      <input type="button" class="roomorder-set" value="線上訂房" onclick="location.href='https://www.youtube.com/'">
+                      <!-- <button class="roomorder-set changecolor">線上訂房</button> -->
+                      <!-- <a class="roomorder-set   " href="">
+                        線上訂房 -->
+                    </div>
+                    
+
+                    
+                  </div>
+                </span>
+                
+                
+                <!-- <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+   
+
+    <!-- 輪播圖 -->
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img th:src="@{/img/front_end/activity/carousel-1.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-3.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-4.jpg}" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- 輪播圖結束 -->
+
+

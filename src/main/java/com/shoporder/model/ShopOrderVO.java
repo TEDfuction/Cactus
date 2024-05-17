@@ -13,9 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.member.model.MemberVO;
-import com.shopdiscountproject.model.ShopDiscountProjectVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
 
 @Entity
@@ -30,17 +30,33 @@ public class ShopOrderVO {
 			,insertable = false, updatable = false, nullable = false)
 	private Timestamp productOrderDate;
 	
-	@Column(name = "product_amount", nullable = false)
-	private Integer productAmount;
+	@NotNull
+	@Column(name = "product_total", nullable = false)
+	private Integer productTotal;
 	
-	@Column(name = "payment_method", nullable = false)
-	private Integer paymentMethod;
 	
-	@Column(name = "shipping_method", nullable = false)
-	private Integer shippingMethod;
-	
+	@NotNull
 	@Column(name = "order_status", nullable = false)
 	private Integer orderStatus;
+	
+	
+	@NotNull
+	@Column(name = "customer_name", nullable = false)
+	private String name;
+	
+	@NotNull
+	@Column(name = "customer_email", nullable = false)
+	private String email;
+	
+	@NotNull
+	@Column(name = "customer_phone", nullable = false)
+	private String phone;
+	
+	@NotNull
+	@Column(name = "customer_address", nullable = false)
+	private String address;
+	
+	
 	
 	
 	
@@ -55,10 +71,6 @@ public class ShopOrderVO {
 	@ManyToOne
 	@JoinColumn(name = "member_id", referencedColumnName = "member_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
 	private MemberVO member;
-
-//	@ManyToOne
-//	@JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
-//	private ShopDiscountProjectVO shopDiscountProjectVO;
 
 	public Integer getShopOrderId() {
 		return shopOrderId;
@@ -76,28 +88,12 @@ public class ShopOrderVO {
 		this.productOrderDate = productOrderDate;
 	}
 
-	public Integer getProductAmount() {
-		return productAmount;
+	public Integer getProductTotal() {
+		return productTotal;
 	}
 
-	public void setProductAmount(Integer productAmount) {
-		this.productAmount = productAmount;
-	}
-
-	public Integer getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(Integer paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-
-	public Integer getShippingMethod() {
-		return shippingMethod;
-	}
-
-	public void setShippingMethod(Integer shippingMethod) {
-		this.shippingMethod = shippingMethod;
+	public void setProductTotal(Integer productTotal) {
+		this.productTotal = productTotal;
 	}
 
 	public Integer getOrderStatus() {
@@ -124,16 +120,37 @@ public class ShopOrderVO {
 		this.member = member;
 	}
 
-//	public ShopDiscountProjectVO getShopDiscountProjectVO() {
-//		return shopDiscountProjectVO;
-//	}
-//
-//	public void setShopDiscountProjectVO(ShopDiscountProjectVO shopDiscountProjectVO) {
-//		this.shopDiscountProjectVO = shopDiscountProjectVO;
-//	}
-	
-	
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	
 	
 }

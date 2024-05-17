@@ -12,8 +12,8 @@ public class ShopOrderService {
 	@Autowired
 	ShopOrderRepository repository;
 	
-	public void addOrder(ShopOrderVO shopOrderVO) {
-		repository.save(shopOrderVO);
+	public ShopOrderVO addOrder(ShopOrderVO shopOrderVO) {
+		return repository.save(shopOrderVO);
 	}
 	
 	public void updateOrder(ShopOrderVO shopOrderVO) {
