@@ -1,15 +1,51 @@
-<div th:replace="~{/front_end/product/include_top}"></div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <title>凱克特司 購物商城</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+<!--     <link th:href="@{/img/front_end/activity/favicon.ico}" rel="icon" > -->
+
+    <!-- Google Web Fonts -->
+    <!-- Noto+Sans+TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Pridi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+   
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/front_end/activity/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/tempusdominus/css/tempusdominus-bootstrap-4.min.css}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/front_end/activity/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/front_end/activity/style.css}" rel="stylesheet">
+    
     
     <style>
     	.cart_btn span{
     		font-size:14px;
     		padding-right: 0.4rem !important;
     		padding-left: 0.4rem !important;
-    	}
-    	
-    	h3.card-title2{
-    		display:none;
     	}
     
     
@@ -18,8 +54,188 @@
 
 <body>
 
-<div th:replace="~{/front_end/product/include_body}"></div>
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"> -->
+<!-- 		 <div align="center"> <h2>所有圖片資料 - listAllPhoto.html</h2> -->
+<!-- 		 <h3><a class="navbar-brand" th:href="@{/photo/select_photo}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div> -->
+<!-- </nav> -->
 
+
+    <!-- Spinner Start  Lodding畫面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/activity/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+  
+  
+  
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn sticky-top" data-wow-delay="0.1s" style="visibility: visible; animation-delay:0.2s; animation-name: fadeIn;">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
+                    <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
+                    <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-5 px-2-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" href="">日本語 ｜</a>
+                    <a class="text-white px-2" href="">加入會員</a>
+                    
+                </div>
+                <span class="navbar3 navbar-light ">
+                  <button class="navbar-toggler2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="offcanvas offcanvas-end2  text-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body2">
+                      <ul class="list list-size">
+  
+                        <li class="list-set3 border-line">                                   
+                        <a class="changecolor" href="">
+                        <span class="nav-text fw-medium">最新消息</span>
+                        </a>
+                        </li>   
+
+                            
+                        <li class="border-line">                                 
+                        
+                        <div >
+                            
+                            <h2 class="accordion-header" id="headingOne">
+                               
+                              <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                關於我們&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body3">
+                                <ul class="list2">
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;凱克特司</a></li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;周邊特色</a> </li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;常見問題</a> </li>
+                                </ul>
+                          
+                              </div>
+                            </div>
+                          </div>
+                        
+                        </li> 
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">房型介紹</span>
+                          </a>
+                        </li>
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">特色活動</span>
+                          </a>
+                        </li>  
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">購物商城</span>
+                          </a>
+                        </li>   
+                        <!-- <li class="border-line">                                 
+                          
+                            <div class="accordion-item2 ">
+                                
+                                <h2 class="accordion-header" id="headingOne">
+                                   
+                                  <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    活動管理系統
+                                  </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body2">
+                                    <ul class="list2">
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動類別管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動場次</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動圖片管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動訂單管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動促銷管理</a> </li>
+                                    </ul>
+                              
+                                  </div>
+                                </div>
+                              </div>
+                             
+                        </li> -->
+                        <!-- <div class="roomorder offcanvas-header">
+                          <a class="roomorder-set" href="">
+                            線上訂房
+                        </div> -->
+                     
+                    </div>
+                    
+                    <div class="offcanvas-bottom2"> 
+                      <input type="button" class="roomorder-set" value="線上訂房" onclick="location.href='https://www.youtube.com/'">
+                      <!-- <button class="roomorder-set changecolor">線上訂房</button> -->
+                      <!-- <a class="roomorder-set   " href="">
+                        線上訂房 -->
+                    </div>
+                    
+
+                    
+                  </div>
+                </span>
+                
+                
+                <!-- <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+   
+
+
+
+    <!-- 輪播圖 -->
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img th:src="@{/img/front_end/activity/carousel-1.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-3.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-4.jpg}" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- 輪播圖結束 -->
 
 
 
@@ -115,11 +331,11 @@
         	<input type="hidden" class="addToCartId" name="productId" th:value="${productVO.productId}"/>
             
             
+            
                 <img class="card-img-top card-h" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" width="100px">
                 
                 
                 <div class="card-body">
-                    <h3 class="card-title2" name="productCate" th:text=${productVO.productCategoryVOs.productCategoryName}></h3>
                     <h4 class="card-title2" th:text="${productVO.productName}"></h4><a th:href="@{'/product/listOneProduct?productId=' + ${productVO.productId} + ''}">查看詳情</a>
                     <p class="card-text multiline-ellipsis" th:text="${productVO.productDescribtion}"></p>
                 </div>
@@ -191,247 +407,167 @@
         </ul>
       </nav>
     
+    
+    
+    
+    <!-- Footer Start -->
+    <div>
+      
+    <script
+        src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+        type="module"
+      ></script>
+      <dotlottie-player
+        src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+        background="transparent"
+        speed="0.4"
+        style="max-width: 100%; margin-bottom: -1px"
+        direction="1"
+        playMode="normal"
+        loop
+        autoplay
+      ></dotlottie-player>
 
- <div th:replace="~{/front_end/product/include_footer}"></div>
+    
+    </div>
+    
+    <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        
+        
+
+        
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">最新消息</h3>
+                    <a class="btn btn-link text-primary5" href="">所有公告</a>
+                    <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                    <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                    <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                    <!-- <a class="btn btn-link" href="">Construction</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">房型介紹</h3>
+                    <a class="btn btn-link text-primary5" href="">AAA套房</a>
+                    <a class="btn btn-link text-primary5" href="">BBB套房</a>
+                    <a class="btn btn-link text-primary5" href="">CCC套房</a>
+                    <a class="btn btn-link text-primary5" href="">DDD套房</a>
+                    <!-- <a class="btn btn-link" href="">Support</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">特色活動</h3>
+                    <a class="btn btn-link text-primary5" href="">浮潛</a>
+                    <a class="btn btn-link text-primary5" href="">SUP立槳衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                    <a class="btn btn-link text-primary5" href="">淺灘衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">仙人掌園區參觀</a>
+                </div>
+                <!-- <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Newsletter</h3>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div> -->
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：澎湖縣馬公市時裡200號</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-2345678 #888</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>cactus@gmail.com</p>
+                    <!-- <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
 
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                   
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+    <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●js  for jquery datatables 用 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/lib/front_end/activity/wow/wow.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/counterup/counterup.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/owlcarousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment-timezone.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
+    
+    
+    
+    
+
+    <!-- Template Javascript -->
+    <script th:src="@{/js/front_end/activity/main.js}"></script>
+
+    <!-- Kit Icon -->
+    <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+    
     
     <!--======按下加入購物車會發出請求傳一個DTO到後端，存到Redis的購物車陣列=========-->
     <script>
-    
-    $(document).ready(function () {
-    	
-    	var session_acount="";
-    	console.log("session_acount =" + session_acount);
-        
-        //查看session是否有存著account值
-        $.ajax({
-            url: '/member/getSessionAccount', 
-            type: 'GET',
-            success: function(response) {
-                
-                session_acount = response;
-                console.log("response Session Account:", session_acount);
-            },
-            error: function(xhr, status, error) {
-                console.error("Error:", error);
-            }
-        });
-    
-        
-        
     jQuery(".cart_btn").click(function addToCart() {
-    	
-    	if ( session_acount!="" ) {
-    		
-    		var productId = jQuery(this).closest(".product-men").find(".addToCartId").val(); // 商品ID
 
-            var cartItem = {
-                productId: productId,
-                quantity: 1,
-            };
-            jQuery.ajax({
-                url: "/shopCart/addOneToCart",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(cartItem),
-                success: function (response) {
-                    alert("商品已添加到購物車！");   
-                },
-                error: function () {
-                    alert("添加商品到購物車失敗！");
+        var productId = jQuery(this).closest(".product-men").find(".addToCartId").val(); // 商品ID
+
+        var cartItem = {
+            productId: productId,
+            quantity: 1,
+        };
+        jQuery.ajax({
+            url: "/shopCart/addOneToCart",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(cartItem),
+            success: function (response) {
+                //有空再換sweet alert啦
+                if (response) {
+                    alert("商品已添加到購物車！");
+                } else {
+                    alert("尚未登入會員，請登入");
+                    window.location.href = '/front_end/member/memberLogin';
                 }
-            });
-
-
-    	
-        } else {// 如果沒有值
-        	
-        	var location = "/product/listAllProduct";
-        	var dataToSend = { location: location };
-
-            //將欲前往頁面存入供跳轉
-            	$.ajax({
-                    url: '/member/setLocation', // 替换成你的后端路由
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(dataToSend),
-                    success: function(response) {
-                        //確認是否儲存成功
-                        console.log("Location setting success", response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error:", error);
-                    }
-                });
-        
-				swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
-                
-				.then(function(){ 
-                    window.location.href = '/member/memberLogin';
-                })
-        }
-    	
-    });
-   });
-	</script>
-
-
-
-
-
-<script>
-   
-//=======================================改良type"search"每六筆呈現搜尋特效版本搜尋结果：6 筆============================================//
-$(document).ready(function() {
-    var itemsPerPage = 6; // 每頁顯示的項目筆數
-    var currentPage = 1; // 當前頁碼
-    var selectedCategory = ""; // 保存當前選中的活動類别
-    var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
-    var searchTimeout;
-
-    $("#searchInput").on("keyup", function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(function() {
-            currentSearchKeyword = $(this).val().toLowerCase();
-            currentPage = 1; // 重置頁碼為1
-            searchItems(currentSearchKeyword, selectedCategory);
-        }.bind(this), 300); // 設置延遲時間為300毫秒（即0.3秒）
-    });
-
-    // 監聽搜索框的清除事件
-    $("#searchInput").on("search", function() {
-        if ($(this).val() === "") { // 搜索框被清空時
-            currentSearchKeyword = ""; // 清空當前搜索關键字
-            currentPage = 1; // 重置頁碼為1
-            searchItems("", selectedCategory); // 恢复到原始狀態
-        }
-    });
-
-    // 绑定a標籤
-    $("#keywordSelect a").on("click", function() {
-        var keyword = $(this).attr("data-value").toLowerCase();
-        selectedCategory = keyword; // 更新當前選中的活動類别
-        currentPage = 1; // 重置頁碼為1
-        searchItems(currentSearchKeyword, selectedCategory);
-
-        // 獲得所選活動類别的结果
-        var selectedText = $(this).text();
-
-        // 改變下拉選單內容
-        $("#navbarScrollingDropdown").text(selectedText);
-    });
-    
-
-    function searchItems(searchKeyword, categoryKeyword) {
-        $("#photoList .col").hide(); // 隱藏所有項目
-
-        var filteredItems = $("#photoList .col").filter(function() {
-            var text = $(this).text().toLowerCase();
-            var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
-                            (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
-            return isVisible;
-        });
-
-        var totalMatches = filteredItems.length;
-        var totalPages = Math.ceil(totalMatches / itemsPerPage);
-        var startIndex = (currentPage - 1) * itemsPerPage;
-        var endIndex = startIndex + itemsPerPage;
-
-        // 限制搜索结果為每頁顯示的項目數量
-        filteredItems = filteredItems.slice(startIndex, endIndex);
-
-        // 更新分頁按鈕
-        updatePagination(totalPages);
-
-        // 顯示當前頁的項目
-        filteredItems.slideDown();
-
-        // 更新匹配结果文本
-        $("#matchCount").text("搜尋结果：" + filteredItems.length + " 筆");
-    }
-
-    // 更新分頁按鈕
-    function updatePagination(totalPages) {
-        // 清空分頁按鈕
-        $("#pagination").empty();
-
-        // 創建分頁按鈕
-        for (var i = 1; i <= totalPages; i++) {
-            var pageBtn = $('<button class="pageBtn">' + i + '</button>');
-            pageBtn.data("page", i);
-            $("#pagination").append(pageBtn);
-        }
-
-        // 綁定分頁按鈕點擊事件
-        $(".pageBtn").off("click").on("click", function() {
-            var clickedPage = $(this).data("page");
-            var targetElementTop = $("h3.display-5.mb-4").offset().top;
-            var offset = 100; // 額外的偏移量，使其向上滾動
-            var currentScrollTop = $(window).scrollTop(); // 當前的滾動位置
-            var scrollTo = Math.max(0, targetElementTop - offset); // 確保不會小於0
-
-            // 如果 scrollTo 比當前的 scrollTop 還小，則向上滾動
-            if (scrollTo < currentScrollTop) {
-                $('html, body').animate({
-                    scrollTop: scrollTo
-                }, 100, function() {
-                    // 向上滾動完成後執行搜索操作
-                    currentPage = clickedPage;
-                    searchItems(currentSearchKeyword, selectedCategory);
-                }); // 持續時間為0.5秒
-            } else {
-                // 如果不需要向上滾動，直接執行搜索操作
-                currentPage = clickedPage;
-                searchItems(currentSearchKeyword, selectedCategory);
+            },
+            error: function () {
+                alert("添加商品到購物車失敗！");
             }
         });
-    }
-
-    // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
-    searchItems("", "");
-});
+    });
 
 </script>
 
 
-
-<div th:replace="~{/front_end/product/include_bottom}"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!---------------------------------  補充部分  --------------------------------------->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <!-- JqueryTable -->
+    <!-- JqueryTable -->
  <script type="text/javascript">
 //  $(document).ready(function() {
 //      $("#searchInput").on("keyup", function() {
@@ -1376,5 +1512,125 @@ $(document).ready(function() {
 //     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
 //     searchItems("", "");
 // });
+//=======================================改良type"search"每六筆呈現搜尋特效版本搜尋结果：6 筆============================================//
+$(document).ready(function() {
+    var itemsPerPage = 6; // 每頁顯示的項目筆數
+    var currentPage = 1; // 當前頁碼
+    var selectedCategory = ""; // 保存當前選中的活動類别
+    var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+    var searchTimeout;
+
+    $("#searchInput").on("keyup", function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            currentSearchKeyword = $(this).val().toLowerCase();
+            currentPage = 1; // 重置頁碼為1
+            searchItems(currentSearchKeyword, selectedCategory);
+        }.bind(this), 300); // 設置延遲時間為300毫秒（即0.3秒）
+    });
+
+    // 監聽搜索框的清除事件
+    $("#searchInput").on("search", function() {
+        if ($(this).val() === "") { // 搜索框被清空時
+            currentSearchKeyword = ""; // 清空當前搜索關键字
+            currentPage = 1; // 重置頁碼為1
+            searchItems("", selectedCategory); // 恢复到原始狀態
+        }
+    });
+
+    // 绑定a標籤
+    $("#keywordSelect a").on("click", function() {
+        var keyword = $(this).attr("data-value").toLowerCase();
+        selectedCategory = keyword; // 更新當前選中的活動類别
+        currentPage = 1; // 重置頁碼為1
+        searchItems(currentSearchKeyword, selectedCategory);
+
+        // 獲得所選活動類别的结果
+        var selectedText = $(this).text();
+
+        // 改變下拉選單內容
+        $("#navbarScrollingDropdown").text(selectedText);
+    });
+    
+
+    function searchItems(searchKeyword, categoryKeyword) {
+        $("#photoList .col").hide(); // 隱藏所有項目
+
+        var filteredItems = $("#photoList .col").filter(function() {
+            var text = $(this).text().toLowerCase();
+            var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+                            (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+            return isVisible;
+        });
+
+        var totalMatches = filteredItems.length;
+        var totalPages = Math.ceil(totalMatches / itemsPerPage);
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        // 限制搜索结果為每頁顯示的項目數量
+        filteredItems = filteredItems.slice(startIndex, endIndex);
+
+        // 更新分頁按鈕
+        updatePagination(totalPages);
+
+        // 顯示當前頁的項目
+        filteredItems.slideDown();
+
+        // 更新匹配结果文本
+        $("#matchCount").text("搜尋结果：" + filteredItems.length + " 筆");
+    }
+
+    // 更新分頁按鈕
+    function updatePagination(totalPages) {
+        // 清空分頁按鈕
+        $("#pagination").empty();
+
+        // 創建分頁按鈕
+        for (var i = 1; i <= totalPages; i++) {
+            var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+            pageBtn.data("page", i);
+            $("#pagination").append(pageBtn);
+        }
+
+        // 綁定分頁按鈕點擊事件
+        $(".pageBtn").off("click").on("click", function() {
+            var clickedPage = $(this).data("page");
+            var targetElementTop = $("h4.display-5.mb-4").offset().top;
+            var offset = 100; // 額外的偏移量，使其向上滾動
+            var currentScrollTop = $(window).scrollTop(); // 當前的滾動位置
+            var scrollTo = Math.max(0, targetElementTop - offset); // 確保不會小於0
+
+            // 如果 scrollTo 比當前的 scrollTop 還小，則向上滾動
+            if (scrollTo < currentScrollTop) {
+                $('html, body').animate({
+                    scrollTop: scrollTo
+                }, 100, function() {
+                    // 向上滾動完成後執行搜索操作
+                    currentPage = clickedPage;
+                    searchItems(currentSearchKeyword, selectedCategory);
+                }); // 持續時間為0.5秒
+            } else {
+                // 如果不需要向上滾動，直接執行搜索操作
+                currentPage = clickedPage;
+                searchItems(currentSearchKeyword, selectedCategory);
+            }
+        });
+    }
+
+    // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+    searchItems("", "");
+});
 
 </script>
+
+
+
+
+
+</body>
+
+</html>
+
+
+
