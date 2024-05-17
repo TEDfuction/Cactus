@@ -246,7 +246,7 @@
 <div class="text-center">
     <a th:href="@{/activity/activityPhoto}" >上一頁</a>
 </div>
-<form>
+<form th:action="@{insertOrder}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
 <div style="margin-top: 100px;"></div>
 <div class="row2 row-cols-1 row-cols-md-3 g-4 justify-content-center" style="display: flex; flex-wrap: wrap;" id="photoList">
 <!-- 卡片 -->
@@ -257,6 +257,10 @@
                 <h4 class="card-title2" th:text="${photoVO.activityPh.activityName}"></h4>
                 <p class="card-text multiline-ellipsis" th:text="${photoVO.activityPh.activityDescription}"></p>
             </div>
+			
+			<input class="actPhotoId" type="hidden" th:value="${photoVO.activityPhotoId}">
+         
+            
             <div class="card-footer2">
                 <span class="nt" >NT$</span><span class="money" th:text="${photoVO.activityPh.activityPrice}" ></span> 起
 <!--                 <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" > -->
@@ -296,7 +300,7 @@
           <!-- 原本輸入內容:Appointment -->
           
             <a th:href="@{'/activity/listDetailAddAttendees?activityPhotoId=' + ${photoVO.activityPhotoId} + ''}">
-            <button type="button" class="btn btn-primary py-2 px-4 d-none d-lg-block" style=" border-radius: 0.5rem;" >
+            <button type="button" id="loginDefault" class="btn btn-primary py-2 px-4 d-none d-lg-block" style=" border-radius: 0.5rem;" >
             <i  me-2="" style="color: #f2f1f1; " aria-hidden="true"  >馬上預定</i>
             </button>
             </a>
@@ -440,6 +444,7 @@
     
     
     
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
 
     <!-- Template Javascript -->
@@ -450,9 +455,69 @@
     
     
     <!-- JqueryTable -->
- <script type="text/javascript">
+ <script>
+    
+    $(document).ready(function () {
+     
+    	var photo_id = $(".actPhotoId").val();
+    	console.log(photo_id);
+    	
+     var session_acount="";
+     console.log("session_acount =" + session_acount);
+        
+        //查看session是否有存著account值
+        $.ajax({
+            url: '/member/getSessionAccount', 
+            type: 'GET',
+            success: function(response) {
+                
+                session_acount = response;
+                console.log("response Session Account:", session_acount);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    
+        
+        
+    jQuery("#loginDefault").click(function addToCart(e) {
+     
+     if ( session_acount!="" ) {
+      
+      
+     
+        } else {// 如果沒有值
+         
+        	e.preventDefault();
+         var location = "/activity/listDetailPhoto?activityPhotoId=" + photo_id;
+         var dataToSend = { location: location };
 
-</script>
+            //將欲前往頁面存入供跳轉
+             $.ajax({
+                    url: '/member/setLocation', // 替换成你的后端路由
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataToSend),
+                    success: function(response) {
+                        //確認是否儲存成功
+                        console.log("Location setting success", response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+        
+    swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+                
+    .then(function(){ 
+                    window.location.href = '/member/memberLogin';
+                })
+        }
+     
+    });
+   });
+ </script>
 </body>
 
 </html>

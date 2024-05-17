@@ -28,6 +28,9 @@ import com.activities_order.model.ActivityOrderService;
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_photo.model.PhotoService;
 import com.activities_photo.model.PhotoVO;
+import com.activities_session.model.SessionVO;
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 
 
 
@@ -46,6 +49,13 @@ public class PhotoController {
 	
 	@Autowired
     ActivityOrderService activityOrderService;
+	
+	@Autowired
+	MemberService memSvc;
+	
+	
+	
+	
 
 	/*
 	 * This method will serve as addEmp.html handler.
@@ -58,7 +68,9 @@ public class PhotoController {
 	}
 	// 2先從最初的網頁按下按鈕後可以找出對應 PhotoId的值
 	@GetMapping("listDetailPhoto")
-	public String listDetailPhoto(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId) {
+	public String listDetailPhoto(ModelMap model,
+			                       @Valid ActivityOrderVO activityOrderVO,
+			                       @RequestParam("activityPhotoId")String activityPhotoId) {
 		PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
 		model.addAttribute("photoVO",photoVO);
 		return "/front_end/activity/listDetailPhoto";
@@ -66,12 +78,23 @@ public class PhotoController {
 		
 	}
 	
+//	@PostMapping("listDetailPhotoPrice")
+//	public String listDetailPhotoPrice(@RequestParam("activityPrice")Integer activityPrice  ,HttpSession session) {
+//		
+//		//Integer total = 0;
+//		session.setAttribute("activityPrice",activityPrice );
+//		return "redirect:/activity/addOrder";
+//	}
+//	
+//	//<span th:value="${session.total}">
+	
 	
 	
 	
 	// 3之後找出對應 PhotoId的值
 	@GetMapping("listDetailAddAttendees")
-	public String listDetailAddAttendeesSuc(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId) {
+	public String listDetailAddAttendeesSuc(ModelMap model,@RequestParam("activityPhotoId")String activityPhotoId
+			                                ) {
 		
 		PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
 		model.addAttribute("photoVO",photoVO);
@@ -79,6 +102,7 @@ public class PhotoController {
 		List<ActivityOrderVO> list = activityOrderService.getAll();
         model.addAttribute("activityOrderListData", list);
         model.addAttribute("attendeesVO", attendeesVO);
+        
         
 		return "/front_end/activity/listDetailAddAttendees";
 			
@@ -105,6 +129,9 @@ public class PhotoController {
 	
 	
 
+	
+	
+	
 	
 	
 	
@@ -152,8 +179,9 @@ public class PhotoController {
 	//3 送出與錯誤處理也要放photoVO 與 attendessVO
 	@PostMapping("insertDetailAddAttendees")
 	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
+			                               @Valid ActivityOrderVO activityOrderVO,
 	                                       HttpSession session, @RequestParam("activityPhotoId")String activityPhotoId){
-	    
+		
 	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 	    if(result.hasErrors()){
 	        PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
@@ -164,26 +192,56 @@ public class PhotoController {
 	        return "front_end/activity/listDetailAddAttendees";
 	    }
 	    
+	    System.out.println(activityOrderVO.getEnrollNumber());
+	    System.out.println(activityOrderVO.getOrderTime());
+	    
 	    /********************* 2.存儲需要在下一頁使用的數據到 session 中 *********************/
 	    session.setAttribute("attendeesVO", attendeesVO);
 	    session.setAttribute("activityPhotoId", activityPhotoId);
-	    
+	    session.setAttribute("activityOrderVO", activityOrderVO);
 	    return "redirect:/activity/confirmAttendees"; // 重定向到下一頁
 	}
 	
 	
 	
-	
+	//5.成功後導向到活動首頁
 	@PostMapping("success")
-	public String success(ModelMap model, HttpSession session){
+	public String success(@Valid ActivityOrderVO activityOrderVO ,ModelMap model, HttpSession session ){
 	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
 	    String activityPhotoId = (String) session.getAttribute("activityPhotoId");
+      
 	    
-	    // 开始新增数据
+	    /********************* 新增資料 *********************/
+	    String email = (String)session.getAttribute("account");
+	    MemberVO xxx = memSvc.findByEmail(email);
+	    SessionVO sessionVO = new SessionVO(); 
+	    sessionVO.setActivitySessionId(11);
+	    activityOrderVO.setMemberVO(xxx);
+	    activityOrderVO.setSessionVO(sessionVO);
 	    attendeesService.addAttendees(attendeesVO);
 	    
-	    // 查询数据并设置到模型中
+	    activityOrderVO.setOrderState(0);
+	    activityOrderVO.setRefundState(0);
+	    /*************************** 計算實付金額 *****************************************/
+	    // 查詢數據設置到模型中
 	    PhotoVO photoVO = photoSvc.findById(Integer.valueOf(activityPhotoId));
+	    // 透過join拿取activityItem的價格資料
+	    Integer activityPrice = photoVO.getActivityPh().getActivityPrice();
+	    // activityOrderVO的人數以及訂單金額
+	    Integer EnrollNumber = activityOrderVO.getEnrollNumber();
+	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
+	    // 如果 promotionPrice 為空，則設為 0
+	    if(promotionPrice == null) {
+	    	promotionPrice = 0;
+	    }
+	    // 活動項目價格*活動訂單人數-活動促銷價格
+	    int OrderAmount = (activityPrice * EnrollNumber)- promotionPrice;
+	    activityOrderVO.setOrderAmount(OrderAmount);
+	    activityOrderVO.setPayAmount(OrderAmount);
+	    activityOrderService.addOrder(activityOrderVO);
+
+	    
+	    /********************* 新增完成,準備轉交  *********************/
 	    model.addAttribute("photoVO", photoVO);
 	    List<AttendeesVO> list = attendeesService.getAll();
 	    model.addAttribute("attendeesListData", list);
@@ -191,27 +249,114 @@ public class PhotoController {
 	    model.addAttribute("activityOrderListData", list2);
 	    model.addAttribute("success", "- (新增成功)");
 	    
-	    // 重定向到成功页面
-	    return "redirect:/activity/activityPhoto"; // 重定向到成功页面
+	    
+	    return "redirect:/activity/activityPhoto"; // 重定向到成功頁面
 	}
 	
 	
 	
-    @PostMapping("insertOrder")
-    public String insertOrder(@Valid ActivityOrderVO activityOrderVO, BindingResult result, ModelMap model){
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-        if(result.hasErrors()){
-            System.out.println("資料有誤");
-            return "back_end/activityOrder/addOrder";
-        }
-        /*************************** 2.開始新增資料 *****************************************/
-        activityOrderService.addOrder(activityOrderVO);
-        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
-        List<ActivityOrderVO> list = activityOrderService.getAll();
-        model.addAttribute("attendeesListData", list);
-        model.addAttribute("success", "- (新增成功)");
-        return "redirect:/activityOrder/listAllOrder"; // 新增成功後重導
-    }
+//    @PostMapping("insertOrder")
+//    public String insertOrder(@Valid ActivityOrderVO activityOrderVO, BindingResult result, ModelMap model){
+//        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//        if(result.hasErrors()){
+//            System.out.println("資料有誤");
+//            return "front_end/activity/addOrder";
+//        }
+//        /*************************** 2.開始新增資料 *****************************************/
+//        activityOrderService.addOrder(activityOrderVO);
+//        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+//        List<ActivityOrderVO> list = activityOrderService.getAll();
+//        model.addAttribute("attendeesListData", list);
+//        model.addAttribute("success", "- (新增成功)");
+//        return "redirect:/activity/listAllOrder"; // 新增成功後重導
+//    }
+//	
+	
+  @PostMapping("insertOrder")
+  public String insertOrder(@Valid ActivityOrderVO activityOrderVO, BindingResult result, ModelMap model){
+      /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+      if(result.hasErrors()){
+          System.out.println("資料有誤");
+          return "front_end/activity/addOrder";
+      }
+      /*************************** 計算實付金額 *****************************************/
+      Integer EnrollNumber = activityOrderVO.getEnrollNumber();
+      Integer OrderAmount = activityOrderVO.getOrderAmount();
+      Integer promotionPrice = activityOrderVO.getPromotionPrice();
+      //如果 promotionPrice 為空，則設為 0
+      if(promotionPrice == null) {
+    	  promotionPrice = 0;
+      }
+      int PaymentAmount = (EnrollNumber * OrderAmount)- promotionPrice;
+      
+      activityOrderVO.setPayAmount(PaymentAmount);
+      /*************************** 2.開始新增資料 *****************************************/
+      activityOrderService.addOrder(activityOrderVO);
+      /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+      List<ActivityOrderVO> list = activityOrderService.getAll();
+      model.addAttribute("attendeesListData", list);
+      model.addAttribute("success", "- (新增成功)");
+      return "redirect:/activityOrder/listAllOrder"; // 新增成功後重導
+  }
+	
+  
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	@PostMapping("insertOrder")
+//	public String insertOrder(@Valid ActivityOrderVO activityOrderVO,
+//			                         ItemVO itemVO,
+//			                         BindingResult result, ModelMap model,
+//			                         
+//			                         @RequestParam("activityId")String activityId){
+//	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//	    if(result.hasErrors()){
+//	        System.out.println("資料有誤");
+//	        return "front_end/activity/addOrder";
+//	    }
+//	    
+//	    /*************************** 2.開始新增資料 *****************************************/
+//	    // 先得到別的其他VO的價格
+//	    
+//	    int price = itemVO.getActivityPrice();
+//	       
+//	    // 從 activityOrderVO 中獲得人數
+//	    int numberOfPeople = activityOrderVO.getEnrollNumber();
+//	    
+//	    // 計算總金額
+//	    int totalAmount = price * numberOfPeople;
+//	    
+//	    // 將總金額設置到 activityOrderVO 中
+//	    activityOrderVO.setOrderAmount(totalAmount);
+//	    
+//	    // 新增訂單
+//	    activityOrderService.addOrder(activityOrderVO);
+//	    
+//	    /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+//	
+//	    List<ActivityOrderVO> list = activityOrderService.getAll();
+//	    model.addAttribute("attendeesListData", list);
+//	    model.addAttribute("success", "- (新增成功)");
+//	    return "redirect:/activity/listAllOrder"; // 新增成功後重導
+//	}
 	
 	
 	

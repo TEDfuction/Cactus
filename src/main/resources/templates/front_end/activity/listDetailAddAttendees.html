@@ -89,9 +89,6 @@
 
         
 
-
-
-
 <div class="accordion container" id="accordionPanelsStayOpenExample">
         <div class="accordion-item" style="border-radius: 0.5rem;"  >
             <h2 class="accordion-header">
@@ -107,7 +104,23 @@
                   <input  type="hidden"  th:value="${photoVO.activityPhotoId}" name="activityPhotoId"/>
                   <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/>
 		          <span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/>
-		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>
+		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>  
+	  
+      <!--改間隔 --><!--==================================活動訂單報名人數================================== -->
+     
+      <div style="margin-top: 20px;"></div>
+                 <hr>
+                 <label style="font-size: 20px;">報名人數:</label>
+                   <button   type="button" name="enrollNumber" class="btn btn-primary rounded-pill px-3 py-2" onclick="updateEnrollNumber(-1)">-</button>
+                   <input    type="text"  id="enrollNumber" class="enrollNumber" name="enrollNumber" style="width: 100px; height: 45px; border-radius:0.5rem; text-align:center;" />
+                   <button   type="button" class="btn btn-primary rounded-pill px-3 py-2"  onclick="updateEnrollNumber(1)" >+</button><label>人</label>
+      <div style="margin-top: 20px;"></div>                 
+                 <div>
+                 <label style="font-size: 20px;">訂單日期:</label>
+                   <input type="date"  id="orderTime" class="orderTime" name="orderTime" style="border-radius:0.5rem; text-align:center;"/><br/>
+                 </div>
+         
+                              	                                 
  	              </div>
                 </div>
             </div>
@@ -229,9 +242,7 @@
                        aria-describedby="passwordHelpBlock" style=" border-radius: 0.5rem;" th:field="*{attendeesEmail}" onclick="hideContent('attendeesEmail.errors');" />
                     <span style="color:red;" th:if="${#fields.hasErrors('attendeesEmail')}" th:errors="*{attendeesEmail}" class="error" id="attendeesEmail.errors"></span>
                  </div> 
-                 
-                  
-                         
+             <div>                    
 <!--                   =====個別需求===== -->
               <p class="accordion-body" style="font-size: 25px; margin-left:15px"><i class="bi bi-pause-fill"></i>個別需求</p>
 <!--                   =====個別需求輸入框===== -->
@@ -240,9 +251,9 @@
                  <label for="floatingTextarea2">Comments</label>
                </div>
 <!--              ----------------------------------------活動訂單------------------------------------------------------ -->
-        </div>
+            </div>
       </div>
-       
+  </div>     
           
          
     
@@ -255,12 +266,22 @@
             付款資訊
           </button>
         </h2>
+        
+        
+        
+        
+        
+        
+        
+        
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
           <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>付款金額</div>
           <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ photoVO.activityPh.activityPrice}" ></div>
           
         </div> 
        </div>
+       
+       
        
    
        
@@ -273,10 +294,11 @@
       <div style="display: flex; align-items: center;">
         <a href="/activity/activityPhoto" class="navbar-brand ms-4 ms-lg-0">
             <h1 class="text2-primary2 m-0" style=" font-size:25px">
-             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'合計/NT$'+ photoVO.activityPh.activityPrice}">
+             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'NT$'+ photoVO.activityPh.activityPrice }">
             </h1>
         </a>
        </div> 
+      
        
 
          
@@ -284,6 +306,7 @@
         <div class="collapse navbar-collapse"  id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0" > </div> 
         </div>
+        
              
 <!--         <a href="/activity/activityPhoto">  type="button"-->
          <button type="submit" class="navbar-toggler me-4" data-bs-toggle="collapse"  style=" border-radius: 0.5rem;">
@@ -299,7 +322,7 @@
             <i class="bi bi-caret-right-square-fill" me-2="" style="color: #f2f1f1; " aria-hidden="true"  >下一步</i>
             </button>
 <!--             </a> -->
-            
+             </div>
 </nav>           
 </div> 
         
@@ -442,6 +465,33 @@
  function hideContent(d) {
      document.getElementById(d).style.display = "none";
  }
+ // 初始設置報名人數和單價
+ let enrollNumber = 0;
+ 
+ // 更新報名人數和訂單總金額
+ function updateEnrollNumber(delta) {
+     enrollNumber += delta;
+     if (enrollNumber < 0) enrollNumber = 0; // 防止報名人數為負數
+     document.getElementById('enrollNumber').value = enrollNumber;
+     updatePaymentAmount();
+ }
+ 
+ document.addEventListener("DOMContentLoaded", function() {
+	    var orderTimeField = document.getElementById("orderTime");
+	    var currentDate = new Date().toISOString().split('T')[0]; // 獲得當前日期
+	    orderTimeField.value = currentDate; // 設定置日期字段的值
+	});
+ 
+ // EnrollNumber初始值為0
+ updateEnrollNumber(1);
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
 //https://www.linkedin.com/in/atakangk/
 //jQuery time
