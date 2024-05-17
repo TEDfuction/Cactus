@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,6 +83,35 @@ public class MemberController {
     	return jsonString;
 		
 	}
+	
+	
+	
+	
+	@GetMapping("/getSessionAccount")
+	@ResponseBody
+	public String getSessionAccount(HttpSession session) {
+		String account = (String)session.getAttribute("account");
+		
+		if(account == null) {
+			return null;
+		}else {
+			return account;
+		}
+	}
+	
+	
+	@PostMapping("/setLocation")
+	@ResponseBody
+	public String setLocation(HttpSession session, @RequestBody Map<String, String> jsonData ) {
+        
+		String location = jsonData.get("location");
+        System.out.println("Received string from frontend: " + location);
+        session.setAttribute("location", location);
+		
+		return location;
+	}
+	
+	
 	
 	
 	
