@@ -31,6 +31,8 @@ import com.activities_photo.model.PhotoVO;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.session_time_period.model.Time_PeriodService;
+import com.session_time_period.model.Time_PeriodVO;
 
 
 
@@ -52,6 +54,9 @@ public class PhotoController {
 	
 	@Autowired
 	MemberService memSvc;
+	
+	@Autowired
+	Time_PeriodService timePerSvc;
 	
 	
 	
@@ -108,7 +113,7 @@ public class PhotoController {
 			
 	}
 	
-	// 4確定結果沒問題按送出
+	// 4確定結果沒問題按送出到第五步
 	@GetMapping("confirmAttendees")
 	public String confirmAttendees(ModelMap model, HttpSession session) {
 	    /********************** 3. 從 session 中獲取數據 **************************/
@@ -176,7 +181,7 @@ public class PhotoController {
 	
 	
 	
-	//3 送出與錯誤處理也要放photoVO 與 attendessVO
+	//3 送出與錯誤處理也要放photoVO 與 attendessVO 和 activityOrderVO
 	@PostMapping("insertDetailAddAttendees")
 	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
 			                               @Valid ActivityOrderVO activityOrderVO,
@@ -218,8 +223,15 @@ public class PhotoController {
 	    sessionVO.setActivitySessionId(11);
 	    activityOrderVO.setMemberVO(xxx);
 	    activityOrderVO.setSessionVO(sessionVO);
+	    
+	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
+	    time_periodVO.setSessionTimePeriodId(3);
+	    
+	    activityOrderVO.setTime_PeriodVO(time_periodVO);
+	    
 	    attendeesService.addAttendees(attendeesVO);
 	    
+	   	    
 	    activityOrderVO.setOrderState(0);
 	    activityOrderVO.setRefundState(0);
 	    /*************************** 計算實付金額 *****************************************/
@@ -247,12 +259,25 @@ public class PhotoController {
 	    model.addAttribute("attendeesListData", list);
 	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
 	    model.addAttribute("activityOrderListData", list2);
+	    // 綠界串流
+	    String ecpayCheckout =  activityOrderService.ecpayCheckout(activityOrderVO,"活動");
+	    // 將數據傳遞給模板
+        model.addAttribute("ecpayCheckout", ecpayCheckout);
 	    model.addAttribute("success", "- (新增成功)");
 	    
 	    
-	    return "redirect:/activity/activityPhoto"; // 重定向到成功頁面
+	    return "front_end/activity/success"; // 重定向到成功頁面
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	
 //    @PostMapping("insertOrder")

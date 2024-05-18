@@ -4,13 +4,18 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.Set;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-
-
+import com.activities_order.model.ActivityOrderVO;
 import com.activities_session.model.SessionVO;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "session_time_period")
@@ -27,7 +32,13 @@ public class Time_PeriodVO implements Serializable{
 	@Column(name = "time_period")
 //	@DateTimeFormat(pattern = "HH:mm")
 	private Time timePeriod;
+	
+	
+	@OneToMany(mappedBy = "time_PeriodVO")
+	 private Set<ActivityOrderVO> activityOrderVO;
 
+
+	
 
 	@ManyToOne
 	@JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
@@ -61,6 +72,16 @@ public class Time_PeriodVO implements Serializable{
 	public void setSessionVO(SessionVO sessionVO) {
 		this.sessionVO = sessionVO;
 	}
+	
+	public Set<ActivityOrderVO> getActivityOrderVO() {
+		return activityOrderVO;
+	}
+
+	public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
+		this.activityOrderVO = activityOrderVO;
+	}
+	
+	
 
 	@Override
 	public String toString() {
