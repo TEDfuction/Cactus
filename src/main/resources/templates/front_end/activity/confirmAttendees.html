@@ -84,8 +84,9 @@
 
 <!-- ==============================活動訂單抓取================================ -->
 <!-- 改間隔 --><!--==================================形成資訊==================================-->
-<form th:action="@{success}" method="post" th:object="${attendeesVO}" enctype="multipart/form-data">
+<form  th:action="@{success}" method="post" th:object="${attendeesVO}" enctype="multipart/form-data">
 <div style="margin-top: 20px;"></div>
+
 
         
 
@@ -254,7 +255,7 @@
               <p class="accordion-body" style="font-size: 25px; margin-left:15px"><i class="bi bi-pause-fill"></i>個別需求</p>
 <!--                   =====個別需求輸入框===== -->
                <div class="form-floating mx-auto" style="width:95%; top: -20px">
-               <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px; border-radius: 0.5rem;" ></textarea>
+               <textarea name="orderMemo"  th:text="${session.activityOrderVO.orderMemo}" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px; border-radius: 0.5rem;" ></textarea>
                  <label for="floatingTextarea2">Comments</label>
                </div>
 <!--              ----------------------------------------活動訂單------------------------------------------------------ -->
@@ -465,7 +466,6 @@
  
 //https://www.linkedin.com/in/atakangk/
 //jQuery time
-
 
 
 
