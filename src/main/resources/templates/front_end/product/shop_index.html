@@ -49,8 +49,9 @@
                     <!-- id="keywordSelect" 下拉選單 -->
                 <ul class="nav-link2 dropdown-menu" aria-labelledby="navbarScrollingDropdown" id="keywordSelect">
                 <li><a class="dropdown-item"  data-value="">全部</a></li>
-                <li><a class="dropdown-item"  data-value="食品類">食品類</a></li>
-                <li><a class="dropdown-item"  data-value="用具類">用具類</a></li>
+                <th:block th:each=" productCategoryVO : ${productCategoryList}">
+	                <li><a class="dropdown-item"  th:data-value="${productCategoryVO.productCategoryName}" th:text="${productCategoryVO.productCategoryName}"></a></li>
+                </th:block>
                 </ul>
                 </div>
               </li>
@@ -190,22 +191,46 @@
           </li>
         </ul>
       </nav>
-    
+
 
  <div th:replace="~{/front_end/product/include_footer}"></div>
 
 
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                   
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                                     
     
     <!--======按下加入購物車會發出請求傳一個DTO到後端，存到Redis的購物車陣列=========-->
     <script>
     
     $(document).ready(function () {
     	
+//     	swal({
+//     		  title:"Test Use!",
+//     		  text:"測試用的，請選擇~",
+//     		  icon: "warning",
+//     		  buttons: {
+// 			      cancel: {
+// 			        text: "取消",
+// 			        visible: true
+// 			      },
+// 			      confirm: {
+// 			        text: "確認",
+// 			        visible: true
+// 			      }
+// 			    }
+//     		}).then(function(confirm){
+//     			if(confirm){
+//     				console.log("YES");
+//     			}else{
+//     				console.log("NO");
+//     			}
+//     		})
+    	
     	var session_acount="";
-    	console.log("session_acount =" + session_acount);
+//     	console.log("session_acount =" + session_acount);
         
         //查看session是否有存著account值
         $.ajax({
@@ -214,7 +239,7 @@
             success: function(response) {
                 
                 session_acount = response;
-                console.log("response Session Account:", session_acount);
+//                 console.log("response Session Account:", session_acount);
             },
             error: function(xhr, status, error) {
                 console.error("Error:", error);
@@ -239,10 +264,10 @@
                 contentType: "application/json",
                 data: JSON.stringify(cartItem),
                 success: function (response) {
-                    alert("商品已添加到購物車！");   
+                	swal("成功!","商品已添加到購物車！","success"); 
                 },
                 error: function () {
-                    alert("添加商品到購物車失敗！");
+                	swal("失敗!","添加商品到購物車失敗！","error"); 
                 }
             });
 
@@ -261,7 +286,7 @@
                     data: JSON.stringify(dataToSend),
                     success: function(response) {
                         //確認是否儲存成功
-                        console.log("Location setting success", response);
+//                         console.log("Location setting success", response);
                     },
                     error: function(xhr, status, error) {
                         console.error("Error:", error);

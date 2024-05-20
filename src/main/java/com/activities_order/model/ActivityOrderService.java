@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.activities.hibernate.util.ActivityOrder_Compositegory;
 import com.activities_item.model.ItemRepository;
+import com.shoporder.model.ShopOrderVO;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
@@ -91,6 +92,11 @@ public class ActivityOrderService {
         return form ;
 
     }
+    
+    //家維新增 == 會員專區用
+    public List<ActivityOrderVO> findByMemberId(Integer memberId){
+		return activityOrderRepository.findByMemberId(memberId);
+	}
 
 
 

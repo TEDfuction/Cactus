@@ -5,6 +5,8 @@
     	#quantity{
     		margin-left:10px;
     		margin-right:50px;
+    		height:30px;
+    		width:77px;
     	}
     
     </style>
@@ -106,7 +108,7 @@
          <div class="collapse navbar-collapse"  id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0" > 
 	            <label for="quantity">數量:</label>
-	            <input type="number" id="quantity" min="1" max="5" value="1">
+	            <input type="number" id="quantity" min="1" value="1">
             </div> 
         </div> 
         
@@ -148,23 +150,23 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
     
     <script>
-	    const quantityInput = document.getElementById("quantity");
-	    quantityInput.addEventListener("change", function () {
-	        var value = parseInt(quantityInput.value);
-	        if (value < 1) {
-	            quantityInput.value = "1";
-	        } else if (value > 5) {
-	            quantityInput.value = "5";
-	            alert("單項商品購買數量不得超過5")
-	        }
-	    });
+// 	    const quantityInput = document.getElementById("quantity");
+// 	    quantityInput.addEventListener("change", function () {
+// 	        var value = parseInt(quantityInput.value);
+// 	        if (value < 1) {
+// 	            quantityInput.value = "1";
+// 	        } else if (value > 5) {
+// 	            quantityInput.value = "5";
+// 	            alert("單項商品購買數量不得超過5")
+// 	        }
+// 	    });
 	    
 	    
 	    
  			$(document).ready(function () {
         	
         	var session_acount="";
-        	console.log("session_acount =" + session_acount);
+//         	console.log("session_acount =" + session_acount);
             
             //查看session是否有存著account值
             $.ajax({
@@ -173,7 +175,7 @@
                 success: function(response) {
                     
                     session_acount = response;
-                    console.log("response Session Account:", session_acount);
+//                     console.log("response Session Account:", session_acount);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error:", error);
@@ -182,7 +184,7 @@
  		
             
 	    var pid = $("input#productId");
-	    console.log(pid.val());
+// 	    console.log(pid.val());
 	    
 	    
 	    // 綁定「加入購物車」按鈕的點擊事件
@@ -205,7 +207,7 @@
                         data: JSON.stringify(dataToSend),
                         success: function(response) {
                             //確認是否儲存成功
-                            console.log("Location setting success", response);
+//                             console.log("Location setting success", response);
                         },
                         error: function(xhr, status, error) {
                             console.error("Error:", error);
@@ -245,10 +247,10 @@
 	            contentType: "application/json",
 	            data: JSON.stringify(cartItem),
 	            success: function (response) {
-	                    alert("商品已添加到購物車！"); 
+                	swal("成功!","商品已添加到購物車！","success"); 
 	            },
 	            error: function () {
-	                alert("添加商品到購物車失敗！");
+                	swal("失敗!","添加商品到購物車失敗！","error"); 
 	            }
 	        });
 	
