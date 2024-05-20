@@ -1,17 +1,19 @@
 package com.member.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.activities_attendees.model.AttendeesVO;
+import com.activities_order.model.ActivityOrderService;
+import com.activities_order.model.ActivityOrderVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -35,6 +40,9 @@ import com.member.model.MemberVO;
 import com.member.model.TaiwanCity;
 import com.notification.model.NotificationService;
 import com.notification.model.NotificationVO;
+import com.shoporder.model.ShopOrderService;
+import com.shoporder.model.ShopOrderVO;
+import com.shoporderdetail.model.ShopOrderDetailVO;
 
 @Controller
 //@Validated
@@ -46,6 +54,12 @@ public class MemberController {
 	
 	@Autowired
 	NotificationService notiSvc;
+	
+	@Autowired
+	ShopOrderService shopOrderSvc;
+	
+	@Autowired
+	ActivityOrderService activityOrderSvc;
 	
 	Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	
@@ -295,6 +309,10 @@ public class MemberController {
 		
 		memSvc.updateMember(memberVO);
 		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount",count);
+		
 		model.addAttribute("memberVO", memberVO);
 		HttpSession session = req.getSession();
 		session.setAttribute("account", memberVO.getEmail());
@@ -305,12 +323,6 @@ public class MemberController {
 	
 	
 
-	
-	
-	
-
-	
-	
 	@GetMapping("/memberOnlyWeb")
 	public String memberOnlyWeb(ModelMap model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -327,6 +339,9 @@ public class MemberController {
 		return "/front_end/member/memberOnlyWeb";
 	}
 
+	
+	
+/*************************************************************************/	
 
 	
 	
@@ -339,13 +354,64 @@ public class MemberController {
 		MemberVO memberVO = memSvc.findByEmail(email);
 		
 		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
 		model.addAttribute("UnreadCount",count);
 		
 		model.addAttribute("memberVO", memberVO);
 		
+		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberVO.getMemberId());
+		
+		if(activityOrderList.isEmpty()) {
+			model.addAttribute("activityOrderList", null);
+			return "/front_end/member/checkActivityOrderDetail";
+		}
+		
+		model.addAttribute("activityOrderList", activityOrderList);
+		
 		return "/front_end/member/checkActivityOrderDetail";
 	}	
+	
+	
+	
+	@PostMapping("/showActivityOrderDetail")  //顯示訂單詳情內容
+	public String showActivityOrderDetail(ModelMap model,
+			@RequestParam("activityOrderId") Integer activityOrderId,
+			HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		ActivityOrderVO activityOrderVO = activityOrderSvc.getOneOrder(activityOrderId);
+		model.addAttribute("activityOrderVO", activityOrderVO);
+		
+		Set<AttendeesVO> attendeesSet = activityOrderVO.getAttendeesVO();
+		model.addAttribute("attendeesSet",attendeesSet);
+		
+		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberId);
+				
+		if(activityOrderList.isEmpty()) {
+			model.addAttribute("activityOrderList", null);
+			return "/front_end/member/checkActivityOrderDetail";
+		}
+		
+		model.addAttribute("activityOrderList", activityOrderList);
+		model.addAttribute("memberVO", memberVO);
+		
+		model.addAttribute("showActivityOrderDetail", "true");
+
+		return "/front_end/member/checkActivityOrderDetail";
+	}
+	
+	
+	
+/*************************************************************************/	
+	
 	
 	
 	@GetMapping("/checkProductOrderDetail")
@@ -362,8 +428,109 @@ public class MemberController {
 		
 		model.addAttribute("memberVO", memberVO);
 		
+		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberVO.getMemberId());
+		
+		if(shopOrderList.isEmpty()) {
+			model.addAttribute("shopOrderList", null);
+			return "/front_end/member/checkProductOrderDetail";
+		}
+		
+		model.addAttribute("shopOrderList", shopOrderList);
+		
 		return "/front_end/member/checkProductOrderDetail";
 	}	
+	
+	@PostMapping("/showShopOrderDetail")  //顯示訂單詳情內容
+	public String showShopOrderDetail(ModelMap model,
+			@RequestParam("shopOrderId") Integer shopOrderId,
+			HttpServletRequest req) {
+		
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		ShopOrderVO shopOrderVO = shopOrderSvc.findById(shopOrderId).get();
+		model.addAttribute("shopOrderVO", shopOrderVO);
+		
+		Set<ShopOrderDetailVO> shopOrderDetailSet = shopOrderVO.getShopOrderDetailVO();
+		model.addAttribute("shopOrderDetailSet",shopOrderDetailSet);
+		
+		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberId);
+				
+		if(shopOrderList.isEmpty()) {
+			model.addAttribute("shopOrderList", null);
+			return "/front_end/member/checkProductOrderDetail";
+		}
+		
+		model.addAttribute("shopOrderList", shopOrderList);
+		model.addAttribute("memberVO", memberVO);
+		
+		model.addAttribute("showShopOrderDetail", "true");
+
+		return "/front_end/member/checkProductOrderDetail";
+	}
+	
+	
+	@PostMapping("/cancelShopOrder")
+	public String cancelShopOrder(ModelMap model,
+			@RequestParam("shopOrderId") Integer shopOrderId,
+			HttpServletRequest req){
+		
+		
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		
+		ShopOrderVO shopOrderVO = shopOrderSvc.findById(shopOrderId).get();
+		shopOrderVO.setOrderStatus(0);
+		shopOrderSvc.updateOrder(shopOrderVO);
+			
+		model.addAttribute("memberVO", memberVO);
+		
+		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberVO.getMemberId());
+		
+		if(shopOrderList.isEmpty()) {
+			model.addAttribute("shopOrderList", null);
+			return "/front_end/member/checkProductOrderDetail";
+		}
+		
+		model.addAttribute("shopOrderList", shopOrderList);
+		
+		Date date = new Date();
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowTime = formatter1.format(date);
+		
+		//發送通知給會員
+		notiSvc.orderCancel(memberId, 2,
+				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		System.out.println("message has send");
+		
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		return "/front_end/member/checkProductOrderDetail";
+
+	}
+	
+	
+	
+/*************************************************************************/	
+	
 	
 	
 	@GetMapping("/checkRoomOrderDetail")
@@ -382,6 +549,12 @@ public class MemberController {
 		
 		return "/front_end/member/checkRoomOrderDetail";
 	}	
+	
+	
+	
+	
+/*************************************************************************/	
+
 	
 	
 	@GetMapping("/checkNotification")
@@ -407,6 +580,7 @@ public class MemberController {
 	
 	
 	
+/*************************************************************************/	
 	
 	
 	

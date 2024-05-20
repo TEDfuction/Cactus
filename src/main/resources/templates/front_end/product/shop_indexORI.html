@@ -336,7 +336,7 @@
                 
                 
                 <div class="card-body">
-                    <h4 class="card-title2" th:text="${productVO.productName}"></h4><a th:href="@{'/product/listOneProduct?productId=' + ${productVO.productId} + ''}">查看詳情</a>
+                    <h4 class="card-title2" th:text="${productVO.productName}"></h4><a th:href="@{'/product/listOneTest/' + ${productVO.productId} + ''}">查看詳情</a>
                     <p class="card-text multiline-ellipsis" th:text="${productVO.productDescribtion}"></p>
                 </div>
                 

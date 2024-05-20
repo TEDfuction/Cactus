@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ShopOrderRepository extends JpaRepository<ShopOrderVO, Integer> {
 	
-	@Query(value = "from ShopOrderVO where member_id=?1")
+	@Query(value = "from ShopOrderVO where member_id=?1 order by product_order_date desc")
 	List<ShopOrderVO> findByMemberId(Integer memberId);
 
 

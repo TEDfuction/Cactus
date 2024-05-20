@@ -162,16 +162,19 @@ function getShopCart() {
         type: 'GET',
         success: function (response) {
             // 在此從後端取得處理成功回應的購物車資料  List<DetailDTO> list
-            console.log(response);
+//             console.log(response);
             const tableBody = document.getElementById("tableBody");
             let html = "";
             if (response && response.length > 0) {
                 // 迭代取出物件  變成
                 response.forEach(item => {
+                	var a_string = "<a href='"  + "/product/listOneProduct/?productId=" + item.productId + "'>商品詳情</a>";
+//                 	console.log(a_string);
+                	
                     html += `<tr>
                                     <td>${item.productId}</td>
-                                    <td>${item.productName}</td>
-                                    <td><input type="number" min="1" max="5" value="${item.quantity}"></td>
+                                    <td>${item.productName} -> ${a_string}</td>
+                                    <td><input type="number" min="1" value="${item.quantity}"></td>
                                     <td>${item.price}</td>
                                     <td class="item-total">${item.quantity * item.price}</td>
                                     <td><button class="remove-button" data-product-id="${item.productId}">移除</button></td>
@@ -218,17 +221,37 @@ function eventButton() {
 
     // 移除商品
     function removeItem(event) {
-        if (confirm("確定移除商品?")) {
-            const currentItem = event.target.closest('tr');
-            currentItem.remove();
-            console.log("remove")
-            updateCartTotal();
-            console.log("update total price")
+    	
+    	swal({
+  		  text:"確定移除商品嗎?",
+  		  icon: "warning",
+  		  buttons: {
+			      cancel: {
+			        text: "取消",
+			        visible: true
+			      },
+			      confirm: {
+			        text: "確認",
+			        visible: true
+			      }
+			    }
+  		}).then(function(confirm){
+  			if(confirm){
+  				const currentItem = event.target.closest('tr');
+//              console.log(event.target.attributes[1].value)
+             currentItem.remove();
+//              console.log("remove")
+             updateCartTotal();
+//              console.log("update total price")
 
-            const productId = $(this).data('product-id');
-            console.log(productId);
-            removeRedisCart(productId);
-        }
+             const productId = Number(event.target.attributes[1].value);
+//              console.log(productId);
+             removeRedisCart(productId);
+  			}else{
+  				console.log("NO");
+  			}
+  		})
+    	
     }
 
 
@@ -270,9 +293,9 @@ function eventButton() {
         const itemTotalElement = itemRow.querySelector('.item-total');
         const itemPriceElement = itemRow.querySelector('td:nth-child(4)');
         const quantity = parseInt(quantityInput.value);
-        console.log(quantity);
+//         console.log(quantity);
         const itemPrice = parseInt(itemPriceElement.textContent);
-        console.log(itemPrice);
+//         console.log(itemPrice);
         const itemTotal = quantity * itemPrice;
         itemTotalElement.textContent = '$' + itemTotal;
     }
@@ -293,7 +316,7 @@ function eventButton() {
             contentType: "application/json",
             data: JSON.stringify(cartItem),
             success: function (response) {
-                console.log(response);
+//                 console.log(response);
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -302,14 +325,14 @@ function eventButton() {
     }
 
     function removeRedisCart(productId) {
-        console.log("call ajax");
+//         console.log("call ajax");
         $.ajax({
             url: '/shopCart/removeOneCartItem',
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify({productId: productId}),
             success: function (response) {
-                console.log(response);
+//                 console.log(response);
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -322,32 +345,69 @@ function eventButton() {
     cleanUpButton.addEventListener("click", cleanShopCart);
 
     function cleanShopCart() {    	
-        if (confirm("要清空購物車嗎?")) {
-            console.log("準備呼叫AJAX")
-            $.ajax({
-                url: '/shopCart/cleanShopCart',
-                type: 'GET',
-                success: function (response) {
-                    console.log("呼叫AJAX成功")
-                    swal("購物車已清空","您的購物車空空如也啦!趕快再去物色其他好貨吧!","success")
-                    .then(function(){
-                        window.location.href = response;
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
+    	swal({
+  		  text:"確定要清空購物車嗎?",
+  		  icon: "warning",
+  		  buttons: {
+		      cancel: {
+			        text: "取消",
+			        visible: true
+			      },
+			      confirm: {
+			        text: "確認",
+			        visible: true
+			      }
+  		  }
+  		}).then(function(confirm){
+  			if(confirm){
+//   				 console.log("準備呼叫AJAX")
+  	            $.ajax({
+  	                url: '/shopCart/cleanShopCart',
+  	                type: 'GET',
+  	                success: function (response) {
+//   	                    console.log("呼叫AJAX成功")
+  	                    swal("購物車已清空","您的購物車空空如也啦!趕快再去物色其他好貨吧!","success")
+  	                    .then(function(){
+  	                        window.location.href = response;
+  	                    });
+  	                },
+  	                error: function (xhr, status, error) {
+  	                    console.error(error);
+  	                }
+  	            });
+  			}else{
+//   				console.log("NO");
+  			}
+  		})
+
     }
 }
 
 const checkoutButton = document.querySelector('#checkout-button');
 // 監聽確認下單按鈕點擊事件
 checkoutButton.addEventListener('click', () => {
-    if (confirm("確認結帳?")) {
-        window.location.href = "/shopCart/CartToCheckout";
-    }
+	
+	swal({
+		  text:"確認要結帳嗎?",
+		  icon: "warning",
+		  buttons:{
+		      cancel: {
+			        text: "取消",
+			        visible: true
+			      },
+			      confirm: {
+			        text: "確認",
+			        visible: true
+			      }
+		  }
+		}).then(function(confirm){
+			if(confirm){
+		        window.location.href = "/shopCart/CartToCheckout";
+			}else{
+// 				console.log("NO");
+			}
+		})
+
 });
 
 
