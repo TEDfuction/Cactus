@@ -15,68 +15,68 @@ import com.activities_session.model.SessionVO;
 public class Time_PeriodVO implements Serializable{
 
 
-	private static final long serialVersionUID = 3110286673838412074L;
+    private static final long serialVersionUID = 3110286673838412074L;
 
-	@Id
-	@Column(name = "session_time_period_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer sessionTimePeriodId;
+    @Id
+    @Column(name = "session_time_period_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sessionTimePeriodId;
 
-	@Column(name = "time_period")
+    @Column(name = "time_period")
 //	@DateTimeFormat(pattern = "HH:mm")
-	private Time timePeriod;
+    private Time timePeriod;
 
 
-	@ManyToOne
-	@JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
-	private SessionVO sessionVO;
+    @ManyToOne
+    @JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
+    private SessionVO sessionVO;
 
-	@OneToMany(mappedBy = "time_PeriodVO")
-	private Set<ActivityOrderVO> activityOrderVO;
+    @OneToMany(mappedBy = "time_PeriodVO")
+    private Set<ActivityOrderVO> activityOrderVO;
 
-	
-	public Time_PeriodVO() {
-		
-	}
 
-	public Integer getSessionTimePeriodId() {
-		return sessionTimePeriodId;
-	}
+    public Time_PeriodVO() {
 
-	public void setSessionTimePeriodId(Integer sessionTimePeriodId) {
-		this.sessionTimePeriodId = sessionTimePeriodId;
-	}
+    }
 
-	public void setTimePeriod(Time timePeriod) {
-		this.timePeriod = timePeriod;
-	}
+    public Integer getSessionTimePeriodId() {
+        return sessionTimePeriodId;
+    }
 
-	public Time getTimePeriod() {
-		return timePeriod;
-	}
+    public void setSessionTimePeriodId(Integer sessionTimePeriodId) {
+        this.sessionTimePeriodId = sessionTimePeriodId;
+    }
 
-	public SessionVO getSessionVO() {
-		return sessionVO;
-	}
+    public void setTimePeriod(Time timePeriod) {
+        this.timePeriod = timePeriod;
+    }
 
-	public void setSessionVO(SessionVO sessionVO) {
-		this.sessionVO = sessionVO;
-	}
+    public Time getTimePeriod() {
+        return timePeriod;
+    }
 
-	public Set<ActivityOrderVO> getActivityOrderVO() {
-		return activityOrderVO;
-	}
+    public SessionVO getSessionVO() {
+        return sessionVO;
+    }
 
-	public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
-		this.activityOrderVO = activityOrderVO;
-	}
+    public void setSessionVO(SessionVO sessionVO) {
+        this.sessionVO = sessionVO;
+    }
 
-	@Override
-	public String toString() {
-		return "Time_PeriodVO{" +
-				"sessionTimePeriodId=" + sessionTimePeriodId +
-				", timePeriod=" + timePeriod +
-				", sessionVO=" + sessionVO +
-				'}';
-	}
+    public Set<ActivityOrderVO> getActivityOrderVO() {
+        return activityOrderVO;
+    }
+
+    public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
+        this.activityOrderVO = activityOrderVO;
+    }
+
+    @Override
+    public String toString() {
+        return "Time_PeriodVO{" +
+                "sessionTimePeriodId=" + sessionTimePeriodId +
+                ", timePeriod=" + timePeriod +
+                ", sessionVO=" + sessionVO +
+                '}';
+    }
 }

@@ -1,551 +1,265 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<div th:replace="~{/front_end/product/include_top}"></div>
 
-<head>
-    <link href="/shop_19/css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
-    <link href="/shop_19/css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>通通給我健起來Give Me Gym Center</title>
-
-    <link href="//fonts.googleapis.com/css?family=Poppins:300,400,400i,500,600,700&display=swap" rel="stylesheet">
-
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="/shop_19/assets/css/style-starter.css">
+    
+    <style>
+    	#quantity{
+    		margin-left:10px;
+    		margin-right:50px;
+    		height:30px;
+    		width:77px;
+    	}
+    
+    </style>
+    
 </head>
 
 <body>
-<!--header-->
-<header id="site-header" class="fixed-top">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg stroke">
-            <h1><a class="navbar-brand" href="/GiveMeGym/index">
-                <span class="lnr lnr-bicycle"></span> Give Me Gym
-            </a></h1>
-            <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
-                    data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
-                <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+
+<div th:replace="~{/front_end/product/include_body}"></div>
+
+
+      <!-- 商品詳情介紹 -->
+
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h5 class="section-title">Product Feature</h5>
+        <h4 class="display-5 mb-4" >商品詳細介紹</h4>
+    </div>
+    
+
+
+<!-- ==============================商品資料展示================================ -->
+
+<!--         <div class="activity"> -->
+<!--         <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"> -->
+<!--         <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/> -->
+<!-- 		<span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/> -->
+<!-- 		<span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/> -->
+<!-- 		<span class="nt" >NT$</span><span class="money" th:text="${photoVO.activityPh.activityPrice}" ></span></span> 起</span> -->
+		
+<!--  	   </div> -->
+
+
+		<div class="text-center">
+			<a th:href="@{/product/listAllProduct}">返回商品選擇頁面</a>
+		</div>
+		
+		
+
+	
+	
+	<div style="margin-top: 100px;"></div>
+	
+	
+	
+	<div class="row2 row-cols-1 row-cols-md-3 g-4 justify-content-center" style="display: flex; flex-wrap: wrap;" id="photoList">
+	
+	
+	<!-- 卡片 -->
+	    <div class="col-md-6 mx-auto" style="margin-bottom:30px;">
+	        <div class="card h-100 space" style="transform: scale(1.1);"> <!-- 將 scale 數值調整為更大的值 -->
+	            
+	            <!-- 商品圖片 -->
+	            <img class="card-img-top card-h" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" width="100px">
+	            
+	            
+	            <div class="card-body">
+	            
+	            	<!-- 商品ID -->
+	                <input type="hidden" id="productId" th:value="${productVO.productId}" style="display: none;">
+	            	
+	            	<!-- 商品名稱 -->
+	                <h4 class="card-title2" th:text="${productVO.productName}" id="productName"></h4>
+	                
+	                <!-- 商品描述 -->
+	                <p id="detail" class="card-text multiline-ellipsis" th:text="${productVO.productDescribtion}"></p>
+	            </div>
+	            
+	            
+	            <div class="card-footer2">
+	                <span class="nt" >NT$</span><span class="money" th:text="${productVO.productPrice}" ></span> 元
+	                
+	                <!-- 商品價格 -->
+	            	<input type="hidden" id="price" th:value="${productVO.productPrice}" style="display: none;">
+	<!--                 <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" > -->
+	<!--                     <a class="text-white px-2 " th:href="@{'/activity/listDetailAddAttendees?activityPhotoId=' + ${photoVO.activityPhotoId} + ''}">詳細介紹</a> -->
+	<!--                 </button> -->
+	                <!-- <small class="text-muted">Last updated 3 mins ago</small> -->
+	            </div>
+	        </div>
+	<!-- 卡片 -->    
+	
+
+
+<!-- ===============================按鈕====================================== -->    
+        
+<div style="margin-top: 70px;"></div>        
+   <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s" 
+     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeIn; top: -100px; width: 103.5%; margin-left: -25px;">
+      
+      
+      <!-- 左側LOGO圖 -->
+      <div style="display: flex; align-items: center;"> 
+		<h1 class="text2-primary2 m-0" style=" font-size:25px">
+			<img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon"/>
+     	</h1>
+     </div>
+            
+            <!-- 分隔用 -->
+         <div class="collapse navbar-collapse"  id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0" > 
+	            <label for="quantity">數量:</label>
+	            <input type="number" id="quantity" min="1" value="1">
+            </div> 
+        </div> 
+        
+        
+          <!-- 右側按鈕 --> 
+            <a href="#">
+            <button type="button" class="btn btn-primary py-2 px-4 d-none d-lg-block add-to-cart" style=" border-radius: 0.5rem;" >
+            <i  me-2="" style="color: #f2f1f1; " aria-hidden="true"  >加入購物車</i>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/GiveMeGym/index">首頁<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item @@about__active">
-                        <a class="nav-link" href="/coach/list">私人教練</a>
-                    </li>
-                    <li class="nav-item @@classes__active">
-                        <a class="nav-link" href="/frontend_course/listAll">團課課程</a>
-                    </li>
-                    <li class="nav-item @@contact__active">
-                        <a class="nav-link" href="/shopAllProduct">線上商城</a>
-                    </li>
-                    <li class="nav-item @@contact__active">
-                        <a class="nav-link" href="/frontend_faq/listAll">常見問題</a>
-                    </li>
-                    <li class="nav-item @@contact__active">
-                        <a class="nav-link" id="memberCenterLink" href="/front_Member/memberData">會員中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shopCart" id="toShopCart">
-                            <span class="lnr lnr-cart"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
-<!--/header-->
-
-<section class="w3l-breadcrumb">
-    <div class="breadcrumb-bg breadcrumb-bg-shop py-5">
-        <div class="container py-lg-5 py-md-3">
-            <h3 class="title-big text-center">商城購物</h3>
-            <p class="mt-3">享受健身樂趣</p>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--==================================================================================-->
-
-
-
-<div class="product-details">
-    <div class="image-container">
-<!--         <img th:if="${not #sets.isEmpty(product.pdImages)}" th:each="image : ${imagePaths}" -->
-<!--              th:src="@{'data:image/jpeg;base64,' + ${image}}" alt="商品圖片" class="active shop"> -->
-<!--         <img th:unless="${not #sets.isEmpty(product.pdImages)}" -->
-<!--              src="/shop_19/images/nopic.jpg" alt="" class="img-responsive"> -->
-        <button class="prev-button"> <</button>
-        <button class="next-button"> ></button>
-    </div>
-    <div class="product-options">
-        <h2 id="productName" th:text="${product.productName}"></h2>
-        <p style="margin-bottom: 20px" th:text="'商品編號：'+${product.productId}"></p>
-        <input type="hidden" id="productId" th:value="${product.productId}" style="display: none;">
-<!--         <p style="margin: 20px 0px 20px 0px" class="product-category" -->
-<!--            th:text="'商品類別：'+${product.category.categoryName}"></p> -->
-        <div style="margin: 20px 0px 20px 0px">
-            <label for="detail">商品細節描述：</label>
-            <p id="detail" th:text="${product.shopOrderDetailVO}" style="width: 600px"></p>
-        </div>
-        <div style="margin: 20px 0px 20px 0px">
-            <label for="quantity">數量:</label>
-            <input type="number" id="quantity" min="1" max="5" value="1">
-        </div>
-        <div class="info-product-price">
-            <label>價錢:</label>
-            <span th:text="'$'+${product.productPrice}"></span>
-            <input type="hidden" id="price" th:value="${product.productPrice}" style="display: none;">
-        </div>
-        <div class="btn-container">
-            <button class="add-to-cart">加入購物車</button>
-        </div>
-    </div>
+            </a>
+            
+         </div> 
+        
+    </nav>
+        
+        
+    
+    
+    
+    
 
 </div>
 
-<!--==================================================================================-->
 
 
 
+<!-- ======================================================================= -->
+
+ 
+    
+ <div th:replace="~{/front_end/product/include_footer}"></div>
+   
+
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<script>
-    const quantityInput = document.getElementById("quantity");
-    quantityInput.addEventListener("change", function () {
-        var value = parseInt(quantityInput.value);
-        if (value < 1) {
-            quantityInput.value = "1";
-        } else if (value > 5) {
-            quantityInput.value = "5";
-            alert("單項商品購買數量不得超過5")
-        }
-    });
-
-    // 綁定「加入購物車」按鈕的點擊事件
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', addToCart);
-    });
-
-
-    // 加入購物車的處理函式
-    function addToCart(event) {
-        // 獲取商品資訊
-        const productId = document.getElementById("productId").value;
-        const productName = document.getElementById("productName").textContent;
-        const price = document.getElementById("price").value;
-        const quantity = document.getElementById("quantity").value;
-
-        var cartItem = {
-            productId: productId,
-            quantity: quantity,
-            productName: productName,
-            price: price
-        };
-
-        jQuery.ajax({
-            url: "/addOneToCart",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(cartItem),
-            success: function (response) {
-                //有空再換sweet alert啦
-                if (response) {
-                    alert("商品已添加到購物車！");
-                } else {
-                    alert("尚未登入會員，請登入");
-                    window.location.href = '/front_Member/login';
-                }
-            },
-            error: function () {
-                alert("添加商品到購物車失敗！");
-            }
-        });
-
-    }
-
-</script>
-<!-- footers 20 -->
-<section class="w3l-footers-20">
-    <div class="footers20">
-        <div class="container">
-            <div class="footers20-content">
-                <div class="d-grid grid-col-4 grids-content">
-                    <div class="column">
-                        <h4>客服專區</h4>
-                        <a>
-                            <p>聯絡我們</p>
-                            <p class="contact-mail mt-1"><span
-                                    class="lnr lnr-envelope"></span>service_business@tibame.com</p>
-                        </a>
-                        <a href="tel:+1-2345-678-11">
-                            <p class="contact-phone mt-2"><span class="lnr lnr-phone-handset"></span>
-                                +1-2345-678-11
-                            </p>
-                        </a>
-                        <a href="/frontend_faq/listAll">
-                            <p> 常見問題</p>
-                        </a>
-                        <a href="/front_Employee/login">
-                            <p>員工中心</p>
-                        </a>
-                    </div>
-                    <div class="column">
-                        <h4>師資團隊</h4>
-                        <a href="/coach/list">
-                            <p class="coach-list mt-2"><span class="lnr lnr-coach-handset"></span> 教練介紹
-                            </p>
-                        </a>
-                        <a href="/frontend_course/listAll">
-                            <p class="classes-list mt-2"><span class="lnr lnr-classes-handset"></span> 團課介紹
-                            </p>
-                        </a>
-                    </div>
-
-                    <div class="column">
-                        <h4>商城</h4>
-                        <a href="/shopAllProduct">
-                            <p>瀏覽商品</p>
-                        </a>
-
-                    </div>
-                    <div class="column">
-                        <h4>營業時間</h4>
-                        <p>We are working on</p>
-                        <p class="mt-1"><span class="lnr lnr-clock"></span> <strong>Mon - Fri</strong> : 7am
-                            to 9pm
-                        </p>
-                        <p class="mt-1"><span class="lnr lnr-clock"></span> <strong>Sat - Sun</strong> : 10
-                            am to 8
-                            pm
-                        </p>
-                        <p class="contact-map mt-2"><span class="lnr lnr-map-marker"></span>場館位置</p>
-
-                        <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.2490359444073!2d121.22244777443302!3d24.957640341363774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346823ea50c732a5%3A0x1b5e6ee66e9fec49!2z57ev6IKyVGliYU1l6ZmE6Kit5Lit5aOi6IG36KiT5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1684388144187!5m2!1szh-TW!2stw"
-                                width="280" height="200" style="border:0;" allowfullscreen="" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-                    </div>
-                </div>
-                <div class="d-grid grid-col-3 grids-content1 bottom-border">
-                    <div class="columns copyright-grid align-self">
-                        <p class="copy-footer-29">© 2023 Workout | Designed by no.7 team</p>
-                    </div>
-                    <div class="columns text-lg-right social-grid">
-                        <ul class="social">
-                            <li><span class="fa fa-facebook" aria-hidden="true"></span></a>
-                            </li>
-                            <li><span class="fa fa-instagram" aria-hidden="true"></span></a>
-                            </li>
-                            <li><span class="fa fa-twitter" aria-hidden="true"></span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- move top -->
-    <button onclick="topFunction()" id="movetop" title="Go to top">
-        &#10548;
-    </button>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+    
     <script>
-        $(document).ready(function () {
-            $('#memberCenterLink').click(function (event) {
-                event.preventDefault(); // 防止點擊連結導致頁面跳轉
-
-                // 檢查Session中是否有值
-                if (sessionStorage.getItem('memberId')) {
-                    // 如果有值，執行頁面跳轉
-                    window.location.href = $(this).attr('href');
-                } else {
-                    // 如果沒有值，執行其他操作或顯示警告訊息
-                    alert('請先登入會員');
-                    window.location.href = '/front_Member/login';
+// 	    const quantityInput = document.getElementById("quantity");
+// 	    quantityInput.addEventListener("change", function () {
+// 	        var value = parseInt(quantityInput.value);
+// 	        if (value < 1) {
+// 	            quantityInput.value = "1";
+// 	        } else if (value > 5) {
+// 	            quantityInput.value = "5";
+// 	            alert("單項商品購買數量不得超過5")
+// 	        }
+// 	    });
+	    
+	    
+	    
+ 			$(document).ready(function () {
+        	
+        	var session_acount="";
+//         	console.log("session_acount =" + session_acount);
+            
+            //查看session是否有存著account值
+            $.ajax({
+                url: '/member/getSessionAccount', 
+                type: 'GET',
+                success: function(response) {
+                    
+                    session_acount = response;
+//                     console.log("response Session Account:", session_acount);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
                 }
             });
+ 		
+            
+	    var pid = $("input#productId");
+// 	    console.log(pid.val());
+	    
+	    
+	    // 綁定「加入購物車」按鈕的點擊事件
+	    $('button.add-to-cart').click(function(){
+	    	
+	    	if ( session_acount!="" ) {
 
-            $('#toShopCart').click(function (event) {
-                event.preventDefault(); // 防止點擊連結導致頁面跳轉
+	    		addToCart();
+	    		
+            } else {// 如果沒有值
+            	
+            	var location = "/product/listOneProduct?productId=" + pid.val();
+            	var dataToSend = { location: location };
 
-                // 檢查Session中是否有值
-                if (sessionStorage.getItem('memberId')) {
-                    // 如果有值，執行頁面跳轉
-                    window.location.href = $(this).attr('href');
-                } else {
-                    // 如果沒有值，執行其他操作或顯示警告訊息
-                    alert('請先登入會員');
-                    window.location.href = '/front_Member/login';
-                }
-            });
-        });
-    </script>
-    <script>
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("movetop").style.display = "block";
-            } else {
-                document.getElementById("movetop").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-    </script>
-    <!-- /move top -->
-</section>
-
-<script>
-    const images = document.querySelectorAll('.image-container img');
-    const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
-    let currentIndex = 0;
-
-    // 初始时只显示第一张图片
-    images.forEach((image, index) => {
-        if (index !== 0) {
-            image.style.display = 'none';
-        }
-    });
-
-    // 切换至下一张图片
-    function nextImage() {
-        images[currentIndex].style.display = 'none';
-        currentIndex = (currentIndex + 1) % images.length;
-        images[currentIndex].style.display = 'block';
-    }
-
-    // 切换至上一张图片
-    function prevImage() {
-        images[currentIndex].style.display = 'none';
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        images[currentIndex].style.display = 'block';
-    }
-
-    // 监听按钮点击事件
-    nextButton.addEventListener('click', nextImage);
-    prevButton.addEventListener('click', prevImage);
-</script>
-
-
-<script src="/shop_19/assets/js/owl.carousel.js"></script>
-<!-- script for banner slider-->
-<script>
-    $(document).ready(function () {
-        $('.owl-one').owlCarousel({
-            loop: true,
-            margin: 0,
-            nav: false,
-            responsiveClass: true,
-            autoplay: false,
-            autoplayTimeout: 5000,
-            autoplaySpeed: 1000,
-            autoplayHoverPause: false,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false
-                },
-                480: {
-                    items: 1,
-                    nav: false
-                },
-                667: {
-                    items: 1,
-                    nav: true
-                },
-                1000: {
-                    items: 1,
-                    nav: true
-                }
-            }
-        })
-    })
-</script>
-<!-- //script -->
-
-<!-- script for tesimonials carousel slider -->
-<script>
-    $(document).ready(function () {
-        $(".owl-two").owlCarousel({
-            loop: true,
-            margin: 20,
-            nav: false,
-            responsiveClass: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false
-                },
-                768: {
-                    items: 2,
-                    nav: false
-                },
-                1000: {
-                    items: 3,
-                    nav: false,
-                    loop: false
-                }
-            }
-        })
-    })
-</script>
-<!-- //script for tesimonials carousel slider -->
-
-<script>
-    $(document).ready(function () {
-        $('.owl-carousel-posts').owlCarousel({
-            loop: true,
-            margin: 0,
-            responsiveClass: true,
-            autoplay: true,
-            autoplayTimeout: 2000,
-            autoplaySpeed: 1000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 2,
-                    nav: false
-                },
-                480: {
-                    items: 3,
-                    nav: true,
-                    margin: 0
-                },
-                736: {
-                    items: 4,
-                    nav: true,
-                    margin: 0
-                },
-                1000: {
-                    items: 5,
-                    nav: true,
-                    margin: 0
-                }
-            }
-        })
-    })
-</script>
-<!-- /slider -->
-
-<!-- script for teams1-->
-<script>
-    $(document).ready(function () {
-        $('.owl-carousel').owlCarousel({
-            loop: true,
-            margin: 0,
-            responsiveClass: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: true
-                },
-                400: {
-                    items: 2,
-                    nav: true,
-                    margin: 20
-                },
-                1000: {
-                    items: 4,
-                    nav: true,
-                    loop: true,
-                    margin: 25
-                }
-            }
-        })
-    })
-</script>
-<!-- //script for teams1-->
+                //將欲前往頁面存入供跳轉
+                	$.ajax({
+                        url: '/member/setLocation', // 替换成你的后端路由
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataToSend),
+                        success: function(response) {
+                            //確認是否儲存成功
+//                             console.log("Location setting success", response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+            
+					swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+                    
+					.then(function(){ 
+                        window.location.href = '/member/memberLogin';
+                    })
+         	
+	        	
+	        }
+	    });
+	    
+	
+	
+	    // 加入購物車的處理函式
+	    function addToCart(event) {
+	        // 獲取商品資訊
+	        const productId = document.getElementById("productId").value;
+	        const productName = document.getElementById("productName").textContent;
+	        const price = document.getElementById("price").value;
+	        const quantity = document.getElementById("quantity").value;
+	
+	        var cartItem = {
+	            productId: productId,
+	            quantity: quantity,
+	            productName: productName,
+	            price: price
+	        };
+	
+	        jQuery.ajax({
+	            url: "/shopCart/addOneToCart",
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify(cartItem),
+	            success: function (response) {
+                	swal("成功!","商品已添加到購物車！","success"); 
+	            },
+	            error: function () {
+                	swal("失敗!","添加商品到購物車失敗！","error"); 
+	            }
+	        });
+	
+	    }
+});
+	</script>
+  
 
 
-<!-- disable body scroll which navbar is in active -->
-<script>
-    $(function () {
-        $('.navbar-toggler').click(function () {
-            $('body').toggleClass('noscroll');
-        })
-    });
-</script>
-<!-- disable body scroll which navbar is in active -->
 
-<!--/MENU-JS-->
-<script>
-    $(window).on("scroll", function () {
-        var scroll = $(window).scrollTop();
+<div th:replace="~{/front_end/product/include_bottom}"></div>
 
-        if (scroll >= 80) {
-            $("#site-header").addClass("nav-fixed");
-        } else {
-            $("#site-header").removeClass("nav-fixed");
-        }
-    });
-
-    //Main navigation Active Class Add Remove
-    $(".navbar-toggler").on("click", function () {
-        $("header").toggleClass("active");
-    });
-    $(document).on("ready", function () {
-        if ($(window).width() > 991) {
-            $("header").removeClass("active");
-        }
-        $(window).on("resize", function () {
-            if ($(window).width() > 991) {
-                $("header").removeClass("active");
-            }
-        });
-    });
-</script>
-<!--//MENU-JS-->
-
-<script src="/shop_19/assets/js/bootstrap.min.js"></script>
-
-
-</body>
-
-</html>

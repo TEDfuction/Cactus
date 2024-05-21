@@ -39,7 +39,7 @@ public class PhotoVO implements Serializable{
 	private ItemVO activityPh;
 	
 	
-	
+
 	public ItemVO getActivityPh() {
 		return activityPh;
 	}

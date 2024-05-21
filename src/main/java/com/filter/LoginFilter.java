@@ -53,6 +53,7 @@ public class LoginFilter implements Filter {
 		//設定重導路徑
 		if (account == null) {
 			session.setAttribute("location", req.getRequestURI());
+//			System.out.println(req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/member/memberLogin");
 			return;
 		} else {

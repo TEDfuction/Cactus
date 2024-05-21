@@ -1,17 +1,21 @@
 package com.cart.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +26,7 @@ import com.cart.model.Cart;
 import com.cart.model.CartService;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
-import com.product.model.ProductService;
+import com.notification.model.NotificationService;
 import com.product.model.ProductServiceImpl;
 import com.product.model.ProductVO;
 import com.shoporder.model.ShopOrderService;
@@ -50,7 +54,8 @@ public class CartController {
 	@Autowired
 	MemberService memSvc;
 
-	private EntityManager entityManager;
+	@Autowired
+	NotificationService notiSvc; 
 
 	@ResponseBody
 	@PostMapping("/addOneToCart")
@@ -133,51 +138,74 @@ public class CartController {
 	}
 
 	@GetMapping("/CartToCheckout")
-	public String cartToCheckout() {
+	public String cartToCheckout(HttpSession session,ModelMap model) {
+		MemberVO memberVO = memSvc.findByEmail((String)session.getAttribute("account"));
+		model.addAttribute("memberVO", memberVO);
 		return "front_end/product/shop_checkout";
 	}
 
-	@Transactional
 	@PostMapping("/checkoutOrder")
-	public ResponseEntity<String> checkoutOrder(@RequestBody ShopOrderVO shopOrdeVO, HttpSession session) {
+	public String checkoutOrder(ShopOrderVO shopOrderVO, HttpSession session,ModelMap model) {
 		
 		//從Session中取得會員資料
 		String email = (String) session.getAttribute("account");
 		Integer memberId = memSvc.findByEmail(email).getMemberId();
 		
 		if (memberId != null) {
-			MemberVO member = memSvc.findByPK(memberId);
+			MemberVO memberVO = memSvc.findByPK(memberId);
 			List<Cart> cart = CartSvc.findAllItem(memberId);
 
-			//????
-			shopOrdeVO.setMember(member);
-			shopOrdeVO.setOrderStatus(1);
+			shopOrderVO.setMember(memberVO);
+			shopOrderVO.setOrderStatus(1);
+			
+			//先將訂單做新增
+			shopOrderSvc.addOrder(shopOrderVO);
+			System.out.println("訂單新增成功");
+
 
 			
-			//新增訂單明細資料
-			Set<ShopOrderDetailVO> orderDetailSet = shopOrdeVO.getShopOrderDetailVO();
-			
+			//成功後再新增訂單明細資料
+			Integer count = 0;
 			if (cart != null) {
 				for (Cart item : cart) {
 					ShopOrderDetailVO shopOrderDetailVO = new ShopOrderDetailVO();
 
-					ProductVO productVO = entityManager.merge(productSvc.findById(item.getProductId()));
-					shopOrderDetailVO.setShopOrder(shopOrdeVO);
+					ProductVO productVO = productSvc.findById(item.getProductId());
+					shopOrderDetailVO.setShopOrder(shopOrderVO);
 					shopOrderDetailVO.setProduct(productVO);
 					shopOrderDetailVO.setOrderQuantity(item.getQuantity());
-					shopOrderDetailVO.setProductAmount(item.getPrice());
+					shopOrderDetailVO.setProductAmount( (item.getQuantity()) * (item.getPrice()) );
 
-					orderDetailSet.add(shopOrderDetailVO);
+					shopOrderDetailSvc.addShopOrderDetail(shopOrderDetailVO);
+					
+					System.out.println("明細新增success");
+					
+					count++;
+
 				}
-			} else {
-				return new ResponseEntity<>("訂單處理失敗", HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+			} 
+			
+			System.out.println("訂單明細資料共新增"+count+"筆");
+			
+			Date date = new Date();
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String nowTime = formatter1.format(date);
+					
+			//發送通知給會員
+			notiSvc.orderSuccess(memberId, 2,
+					"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+nowTime+"成功成立，非常感謝您的支持!!");
 
-			shopOrderSvc.addOrder(shopOrdeVO);
-			CartSvc.cleanAllCart(memberId);
-			return new ResponseEntity<>("訂單處理成功", HttpStatus.OK);
+			System.out.println("message has send");
+			
+			
+			
+//			// 綠界串流
+		    String ecpayCheckout = shopOrderSvc.ecpayCheckout(shopOrderVO.getShopOrderId());
+	        model.addAttribute("ecpayCheckout", ecpayCheckout);
+	        
+	        CartSvc.cleanAllCart(memberId);
 		}
-		return new ResponseEntity<>("訂單處理失敗", HttpStatus.INTERNAL_SERVER_ERROR);
+		return "front_end/product/success";
 	}
 
 	@ResponseBody
@@ -191,6 +219,6 @@ public class CartController {
 		if (memberId != null) {
 			CartSvc.cleanAllCart(memberId);
 		}
-		return "/shopAllProduct";
+		return "/product/listAllProduct";
 	}
 }

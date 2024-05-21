@@ -45,11 +45,14 @@ public class PhotoService {
 		System.out.println("=======================================================");
 		return photoRepository.findAll();
 	}
-
+    // 先從最初的網頁按下按鈕後可以找出對應 PhotoId的值
 	public PhotoVO findById(Integer activityPhotoId) {
 		Optional<PhotoVO> Optional= photoRepository.findById(activityPhotoId);
 		return Optional.orElse(null);
 	}
+	
+	
+	
 
 //	public List<PhotoVO> getAll(Map<String, String[]> map){
 //		return Photo_Compositegory.getAllPhotoVOs(map, sessionFactory.openSession());

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta>
+<title>Test</title>
+</head>
+<body>
+	<h1>Testing LoginDefend Page</h1>
+	
+	
+	<a th:href="@{/shopCart/shopCart}" id="memberCenterLink">購物車</a>	
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	<script>
+
+
+        $(document).ready(function () {
+        	
+        	var session_acount="";
+        	console.log("session_acount =" + session_acount);
+            
+            //查看session是否有存著account值
+            $.ajax({
+                url: '/member/getSessionAccount', 
+                type: 'GET',
+                success: function(response) {
+                    
+                    session_acount = response;
+                    console.log("response Session Account:", session_acount);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+            
+            
+            $('#memberCenterLink').click(function (event) {
+                event.preventDefault(); // 防止點擊連結導致頁面跳轉
+                
+                if ( session_acount!="" ) {
+                    // 如果有值，執行頁面跳轉
+                    window.location.href = $(this).attr('href');
+                } else {// 如果沒有值
+                	
+                	var location = "/member/memberOnlyWeb";
+                	var dataToSend = { location: location };
+
+                    //將欲前往頁面存入供跳轉
+                    	$.ajax({
+                            url: '/member/setLocation', // 替换成你的后端路由
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(dataToSend),
+                            success: function(response) {
+                                //確認是否儲存成功
+                                console.log("Location setting success", response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error:", error);
+                            }
+                        });
+                
+						swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+	                    
+						.then(function(){ 
+	                        window.location.href = '/member/memberLogin';
+	                    })
+                }
+            });
+        });
+
+    </script>
+    
+</body>
+</html>

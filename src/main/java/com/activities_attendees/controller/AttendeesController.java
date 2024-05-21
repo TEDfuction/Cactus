@@ -38,7 +38,8 @@ public class AttendeesController {
         System.out.println("請求轉交");
         return "back_end/attendees/addAttendees";
     }
-
+    
+    
     /*
      * This method will be called on addAttendees.html form submission, handling POST request It also validates the user input
      * 新增
@@ -83,6 +84,23 @@ public class AttendeesController {
         model.addAttribute("success", "新增成功");
         return "back_end/attendees/listAllAttendees";
     }
+    
+//    @PostMapping("insert")
+//    public String insert1(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model){
+//        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//        if(result.hasErrors()){
+//            System.out.println("資料有誤");
+//            return "front_end/activity/activityOrderConfirm";
+//        }
+//        /*************************** 2.開始新增資料 *****************************************/
+//        attendeesService.addAttendees(attendeesVO);
+//        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+//        List<AttendeesVO> list = attendeesService.getAll();
+//        model.addAttribute("attendeesListData", list);
+//
+//        model.addAttribute("success", "- (新增成功)");
+//        return "redirect:/activity/activityOrderConfirm"; // 新增成功後重導
+//    }
 
 
     /*
