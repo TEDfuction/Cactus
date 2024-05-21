@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.product.model.ProductVO;
 
@@ -20,21 +22,23 @@ public class ProductCategoryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_category_id")
+	@NotNull(message="商品類別: 請勿空白")
 	private Integer productCategoryId;
 	
-	@OneToMany(mappedBy = "productCategoryVOs")
+	@OneToMany(mappedBy = "productCategoryVO")
+	@OrderBy("productId asc")//新增的有可能出錯
 	private Set<ProductVO> productVOs;
 	
 	@Column(name = "product_category_name", nullable = false)
 	private String productCategoryName;
 	
 	
-	public Integer getProductCategotyId() {
+	public Integer getProductCategoryId() {
 		return productCategoryId;
 	}
-
-	public void setProductCategotyId(Integer productCategotyId) {
-		this.productCategoryId = productCategotyId;
+	
+	public void setProductCategoryId(Integer productCategoryId) {
+		this.productCategoryId = productCategoryId;
 	}
 	
 	
