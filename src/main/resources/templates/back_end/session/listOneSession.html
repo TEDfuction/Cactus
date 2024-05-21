@@ -1,51 +1,160 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>活動場次 </title>
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+    <title>活動場次明細 </title>
     <style type="text/css">
 
-        span {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            font-weight: bold;
-        }
+
     </style>
 </head>
 <body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <div >
+        <h2 class="hc-2">活動場次編號&nbsp;<span th:text="${sessionVO.activitySessionId}"></span>&nbsp;明細</h2>
+    <!--    <h3><a class="navbar-brand" th:href="@{/session/select_session}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>-->
+    </div>
 
-<div align="center"> <h2>活動場次資料 </h2>
-    <h3><a class="navbar-brand" th:href="@{/session/select_session}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>
+<!--<div  th:fragment="listOneSession-div"> &lt;!&ndash; 此div被select_page.html第158行insert用 &ndash;&gt;-->
+<div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動名稱 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.itemVO.activityName}"></span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">場次日期 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${#dates.format(sessionVO.activityDate, 'yyyy-MM-dd')}"></span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">場次時段 </h4>
+        </div>
+        <div class="form_element9">
+            <span th:each="timePeriod : ${sortedTimePeriods}">
+
+                <span class="timeBlock" th:text="${#dates.format(timePeriod, 'HH:mm')}"></span>
+            </span>
+
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動時長 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.duration}"></span>
+            <span class="nt-u2 f-z">&nbsp;小時</span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">開始報名日期 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${#dates.format(sessionVO.enrollStarted, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">結束報名日期 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${#dates.format(sessionVO.enrollEnd, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動地點 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.activityLocation}"></span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動人數上限 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.activityMaxPart}"></span>
+            <span class="nt-u2 f-z">&nbsp;位</span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動人數下限 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.activityMinPart}"></span>
+            <span class="nt-u2 f-z">&nbsp;位</span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">報名總數 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.enrollTotal}"></span>
+            <span class="nt-u2 f-z">&nbsp;位</span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w">活動場次狀態 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:switch="${sessionVO.activitySessionState}">
+                <span th:case="0">正常舉辦</span>
+                <span th:case="1">取消</span>
+                <span th:case="2">延期</span>
+            </span>
+        </div>
+    </div>
+    <div class="mb-4">
+        <div class="mb-4">
+            <h4 class="f-w2">備註 </h4>
+        </div>
+        <div class="form_element8">
+            <span  th:text="${sessionVO.activityNote}"></span>
+        </div>
+    </div>
+    <div class="btn_area">
+
+        <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/session/listAllSession'">返回</button>
+
+    </div>
+
+
+
+
+<!--    <span>活動地點:</span><span th:text="${sessionVO.activityLocation}"></span><br/>-->
+<!--    <span>活動人數上限:</span><span th:text="${sessionVO.activityMaxPart}"></span><br/>-->
+<!--    <span>活動人數下限:</span><span th:text="${sessionVO.activityMinPart}"></span><br/>-->
+<!--    <span>報名總數:</span><span th:text="${sessionVO.enrollTotal}"></span><br/>-->
+<!--    <span>開始報名日期:</span><span th:text="${#dates.format(sessionVO.enrollStarted, 'yyyy-MM-dd HH:mm')}"></span><br/>-->
+<!--    <span>結束報名日期:</span><span th:text="${#dates.format(sessionVO.enrollEnd, 'yyyy-MM-dd HH:mm')}"></span><br/>-->
+<!--    <span>活動場次狀態:</span><span th:switch="${sessionVO.activitySessionState}">-->
+<!--        <span th:case="0">正常舉辦</span>-->
+<!--        <span th:case="1">取消</span>-->
+<!--        <span th:case="2">延期</span>-->
+<!--    </span><br/>-->
+<!--    <span>備註:</span><span th:text="${sessionVO.activityNote}"></span><br/>-->
+
+
+
+<!--    <ul>-->
+<!--        <li th:each="sessionTimePeriodId : ${timePeriodIdsForSession}">-->
+<!--            Time Period ID: <span th:text="${sessionTimePeriodId}"></span>-->
+<!--        </li>-->
+<!--        <li th:each="timePeriod : ${timePeriodsForSession}">-->
+<!--            Time Period: <span th:text="${#dates.format(timePeriod, 'HH:mm')}"></span>-->
+<!--        </li>-->
+<!--    </ul>-->
 </div>
-
-<div align="center" th:fragment="listOneSession-div"> <!-- 此div被select_page.html第158行insert用 -->
-    <h3><span>查詢結果 :</span></h3>
-    <span>活動場次編號:</span><span th:text="${sessionVO.activitySessionId}"></span><br/>
-    <span>活動名稱:</span><span th:text="${sessionVO.itemVO.activityName}"></span><br/>
-    <span>場次日期:</span><span th:text="${#dates.format(sessionVO.activityDate, 'yyyy-MM-dd')}"></span><br/>
-<!--    <span>場次時段編號:</span><span th:text="${sessionVO.time_PeriodVO.sessionTimePeriodId}"></span><br/>-->
-<!--    <span>場次時段1:</span><span th:text="${#dates.format(sessionVO.time_PeriodVO.timePeriod1, 'HH:mm')}"></span><br/>-->
-<!--    <span>場次時段2:</span><span th:text="${#dates.format(sessionVO.time_PeriodVO.timePeriod2, 'HH:mm')}"></span><br/>-->
-<!--    <span>場次時段3:</span><span th:text="${#dates.format(sessionVO.time_PeriodVO.timePeriod3, 'HH:mm')}"></span><br/>-->
-<!--    <span>場次時段4:</span><span th:text="${#dates.format(sessionVO.time_PeriodVO.timePeriod4, 'HH:mm')}"></span><br/>-->
-    <span>活動地點:</span><span th:text="${sessionVO.activityLocation}"></span><br/>
-    <span>活動人數上限:</span><span th:text="${sessionVO.activityMaxPart}"></span><br/>
-    <span>活動人數下限:</span><span th:text="${sessionVO.activityMinPart}"></span><br/>
-    <span>報名總數:</span><span th:text="${sessionVO.enrollTotal}"></span><br/>
-    <span>開始報名日期:</span><span th:text="${#dates.format(sessionVO.enrollStarted, 'yyyy-MM-dd HH:mm')}"></span><br/>
-    <span>結束報名日期:</span><span th:text="${#dates.format(sessionVO.enrollEnd, 'yyyy-MM-dd HH:mm')}"></span><br/>
-    <span>活動場次狀態:</span><span th:switch="${sessionVO.activitySessionState}">
-        <span th:case="0">正常舉辦</span>
-        <span th:case="1">取消</span>
-        <span th:case="2">延期</span>
-    </span><br/>
-    <span>備註:</span><span th:text="${sessionVO.activityNote}"></span><br/>
-
 </div>
-
-
-</body>
-</html>
+<div th:replace="~{/back_end/include/include_bottom}"></div>

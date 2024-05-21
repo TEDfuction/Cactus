@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class Time_PeriodService {
 
@@ -42,7 +41,9 @@ public class Time_PeriodService {
         return timePeriodRepository.findAll();
     }
 
+    //透過場次編號取得所有的時段
     public List<Time_PeriodVO> getActivitySessionId(Integer activitySessionId){
+        System.out.println(timePeriodRepository.findByActivitySessionId(activitySessionId));
         return timePeriodRepository.findByActivitySessionId(activitySessionId);
     }
 

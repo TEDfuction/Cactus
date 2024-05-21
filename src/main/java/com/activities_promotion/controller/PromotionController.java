@@ -2,7 +2,6 @@ package com.activities_promotion.controller;
 
 import com.activities_promotion.model.PromotionService;
 import com.activities_promotion.model.PromotionVO;
-import com.activities_session.model.SessionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -11,19 +10,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Controller
 @RequestMapping("/promotion")
@@ -51,41 +48,31 @@ public class PromotionController {
      * BindingResult:配合@Valid一起使用，用于接收bean中的校验信息
      */
     @PostMapping("insert")
-    public String insert(@Valid PromotionVO promotionVO, BindingResult result, ModelMap model
+    public String insert(@Validated PromotionVO promotionVO, BindingResult result, ModelMap model
+                            , RedirectAttributes redirectAttributes
                          ){
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-//        result = removeFieldError(promotionVO, result, "promotionStarted");
-//        result = removeFieldError(promotionVO, result, "promotionEnd");
+
         if(result.hasErrors()){
+//            驗證方式： 若屬性存在一個以上的錯誤驗證註解，為避免在驗證皆未通過，使用迴圈輸出完整的錯誤訊息
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            for (int i = 0, length = fieldErrors.size(); i < length; i++) {
+                //依索引值放入個別錯誤
+                FieldError field = fieldErrors.get(i);
+                model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
+                model.addAttribute("promotionVO", promotionVO);
+            }
              System.out.println("資料有誤");
              return "back_end/promotion/addPromotion";
          }
-//        java.sql.Date promotionStartedToDate = null;
-//        java.sql.Date promotionEndToDate = null;
-//
-//        try {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            Date parsedDate1 = dateFormat.parse(promotionStarted);
-//            Date parsedDate2 = dateFormat.parse(promotionEnd);
-//
-//            promotionStartedToDate = new java.sql.Date(parsedDate1.getTime());
-//            promotionEndToDate = new java.sql.Date(parsedDate2.getTime());
-////
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            // 處理轉換異常
-//        }
-//        // set回 promotionVO 對象
-//        promotionVO.setPromotionStarted(promotionStartedToDate);
-//        promotionVO.setPromotionEnd(promotionEndToDate);
+
 
         /*************************** 2.開始新增資料 *****************************************/
         promotionService.addPromotion(promotionVO);
         /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
         List<PromotionVO> list = promotionService.getAll();
         model.addAttribute("promotionListData", list);
-        model.addAttribute("success", "新增成功～");
+        redirectAttributes.addFlashAttribute("success", "新增成功～");
         return "redirect:/promotion/listAllPromotion"; // 新增成功後重導
 
     }
@@ -94,13 +81,14 @@ public class PromotionController {
      * 刪除
      */
     @PostMapping("delete")
-    public String delete(@RequestParam("promotionId")String promotionId, ModelMap model){
+    public String delete(@RequestParam("promotionId")String promotionId
+                            , RedirectAttributes redirectAttributes){
         /*************************** 1.開始刪除資料 *****************************************/
         promotionService.deletePromotion(Integer.valueOf(promotionId));
         /*************************** 2.刪除完成,準備轉交(Send the Success view) **************/
         List<PromotionVO> list = promotionService.getAll();
-        model.addAttribute("promotionListData", list);
-        model.addAttribute("success", "刪除成功");
+//        model.addAttribute("promotionListData", list);
+        redirectAttributes.addFlashAttribute("success", "刪除成功");
         return "redirect:/promotion/listAllPromotion"; // 刪除完成後轉交listAllPromotion.html
 
     }
@@ -120,10 +108,18 @@ public class PromotionController {
         return "back_end/promotion/update_promotion_input"; // 查詢完成後轉交update_promotion_input.html
     }
     @PostMapping("update")
-    public String update(@Valid PromotionVO promotionVO, BindingResult result, ModelMap model) throws IOException {
+    public String update(@Validated PromotionVO promotionVO, BindingResult result, ModelMap model) throws IOException {
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
-        if(result.hasErrors()) {
+        if(result.hasErrors()){
+//            驗證方式： 若屬性存在一個以上的錯誤驗證註解，為避免在驗證皆未通過，使用迴圈輸出完整的錯誤訊息
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            for (int i = 0, length = fieldErrors.size(); i < length; i++) {
+                //依索引值放入個別錯誤
+                FieldError field = fieldErrors.get(i);
+                model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
+                model.addAttribute("promotionVO", promotionVO);
+            }
             System.out.println("資料不全");
             return "back_end/promotion/update_promotion_input";
         }

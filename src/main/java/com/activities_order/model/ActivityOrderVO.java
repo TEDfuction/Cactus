@@ -1,25 +1,14 @@
 package com.activities_order.model;
 
-import java.io.Serializable;
-import java.sql.Date;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.activities_attendees.model.AttendeesVO;
 import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberVO;
 import com.session_time_period.model.Time_PeriodVO;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "activity_order")
@@ -42,16 +31,15 @@ public class ActivityOrderVO implements Serializable {
     private SessionVO sessionVO;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
-    private PromotionVO promotionVO;
-    
-    @ManyToOne
     @JoinColumn(name = "session_time_period_id", referencedColumnName = "session_time_period_id")
     private Time_PeriodVO time_PeriodVO;
 
-   
+    @ManyToOne
+    @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
+    private PromotionVO promotionVO;
 
-	@Column(name = "order_time")
+
+    @Column(name = "order_time")
     private Date orderTime;
 
     @Column(name = "enroll_number")
@@ -185,14 +173,17 @@ public class ActivityOrderVO implements Serializable {
     public void setAttendeesVO(Set<AttendeesVO> attendeesVO) {
         this.attendeesVO = attendeesVO;
     }
-    
+
     public Time_PeriodVO getTime_PeriodVO() {
-		return time_PeriodVO;
-	}
+        return time_PeriodVO;
+    }
 
-	public void setTime_PeriodVO(Time_PeriodVO time_PeriodVO) {
-		this.time_PeriodVO = time_PeriodVO;
-	}
+    public void setTime_PeriodVO(Time_PeriodVO time_PeriodVO) {
+        this.time_PeriodVO = time_PeriodVO;
+    }
 
-    
+    @Override
+    public String toString() {
+        return "ActivityOrderVO: " + activityOrderId;
+    }
 }

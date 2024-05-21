@@ -64,8 +64,8 @@
                 <th class="th-w6 tp-2">訂單內容</th>
                 <th class="th-w6">訂單編號</th>
                 <!--        <th>會員編號[會員姓名]</th>-->
-                <th class="th-w6">場次編號</th>
                 <th class="th-w6">促銷編號</th>
+                <th class="th-w6">場次時段</th>
                 <th class="th-w2-3">訂單日期</th>
                 <!--        <th>報名人數</th>-->
                 <!--        <th>訂單總金額</th>-->
@@ -128,7 +128,7 @@
                                                 <h5 class="f-w">促銷編號</h5>
                                             </div>
                                             <input type="text" class="form_element3" name="promotionId"
-                                                   th:value="${activityOrderVO.promotionVO.promotionId}"></input>
+                                                   th:value="${activityOrderVO.promotionVO.promotionId != null ? activityOrderVO.promotionVO.promotionId : '無'}">
                                         </div>
                                         <div class="mb-4-5">
                                             <div class="mb-4">
@@ -216,8 +216,10 @@
                     <!-- Modal end-->
                     <td class="th-w4" th:text="${activityOrderVO.activityOrderId}"></td>
                     <!--            <td th:text="${activityOrderVO.memberVO.memberId}+ '-[' + ${activityOrderVO.memberVO.memberName} + ']'"></td>-->
-                    <td class="th-w4" th:text="${activityOrderVO.sessionVO.activitySessionId}"></td>
-                    <td class="th-w4" th:text="${activityOrderVO.promotionVO.promotionId}"></td>
+
+                    <td class="th-w4" th:text="${activityOrderVO.promotionVO.promotionId != null ? activityOrderVO.promotionVO.promotionId : ''}" ></td>
+                    <td class="th-w4" th:text="${#dates.format(activityOrderVO.time_PeriodVO.timePeriod, 'HH:mm')}"></td>
+
                     <td class="th-w4" th:text="${activityOrderVO.orderTime}"></td>
                     <!--            <td th:text="${activityOrderVO.enrollNumber}"></td>-->
                     <!--            <td th:text="${activityOrderVO.orderAmount}"></td>-->

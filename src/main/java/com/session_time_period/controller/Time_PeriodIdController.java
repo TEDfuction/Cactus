@@ -1,6 +1,5 @@
 package com.session_time_period.controller;
 
-import com.activities_item.model.ItemVO;
 import com.activities_session.model.SessionService;
 import com.activities_session.model.SessionVO;
 import com.session_time_period.model.Time_PeriodService;
@@ -11,14 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
-import java.util.Set;
-
 @Controller
 @Validated
 @RequestMapping("/timePeriod")

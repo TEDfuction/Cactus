@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>活動項目 </title>
 <style type="text/css">
-	
+
     span {
 		display: inline-block;
 		width: 150px;
@@ -25,7 +25,7 @@
 		<span>活動類別名稱:</span><span th:text="${itemVO.categoryVO.activityCategoryName}"></span><br/>
 		<span>活動名稱:</span><span th:text="${itemVO.activityName}"></span><br/>
 		<span>活動簡述:</span><span th:text="${itemVO.activityDescription}"></span><br/>
-		<span>活動說明:</span><span th:text="${itemVO.activityInfo}"></span><br/>
+		<span>活動說明:</span><span th:utext="${itemVO.activityInfo}"></span><br/>
 		<span>活動價格:</span><span th:text="${itemVO.activityPrice}"></span><br/>
 		<span>活動狀態:</span><span th:text="${itemVO.activityState ? '上架' : '下架'}"></span><br/>
 		

@@ -2,13 +2,10 @@ package com.activities_category.model;
 
 import java.util.*;
 import java.util.Optional;
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.activities_category.model.CategoryRepository;
-import com.activities_category.model.CategoryVO;
 import com.activity.hibernate.util.CompositeQuery.Category_Compositegory;
 
 @Service("categoryService")

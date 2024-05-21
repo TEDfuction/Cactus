@@ -1173,6 +1173,14 @@ h2.hc-1{
     border-radius: 6px;
     line-height: 2;
 }
+.bttn2{
+    /*float: right;*/
+    margin-right: 1rem;
+    width: 7rem;
+    border-radius: 6px;
+    line-height: 2.5;
+    font-size: 0.9rem;
+}
 .cu-1{
     border-radius: 6px;
 }
@@ -1194,8 +1202,29 @@ h2.hc-1{
     font-size: 1.35rem;
 
 }
+.rad{
+    display: block;
+    margin-bottom: 2rem;
+    border: none;
+    background-color:transparent;
+
+    color: #1e1e1e;
+    font-size: 1.25rem;
+}
+.rad-1{
+    margin-left: 1.5rem;
+    margin-right: 0.25rem;
+}
+.rad-2{
+
+    margin-right: 0.25rem;
+}
 .f-w{
     font-weight: bold !important;
+}
+.f-w2{
+    font-weight: bold !important;
+    margin-bottom: 2rem;
 }
 .require_text{
     position: relative;
@@ -1217,11 +1246,12 @@ h2.hc-1{
     width: 80%;
     ackground-color:transparent;
     color: #1e1e1e;
-    font-size: 18px;
+    font-size: 1.35rem;
     background-color:transparent;
     border: 1px solid #c7c5c5;
     border-radius: 4px;
 }
+
 .error{
     font-size: .9em;
     color: #dc3545;
@@ -1321,6 +1351,53 @@ h2.hc-1{
     font-size: 1.35rem;
 
 }
+.form_element7{
+    display: block;
+    width: 35%;
+    border: none;
+    background-color:transparent;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid #c7c5c5;
+    color: #605c5c;
+    font-size: 1.35rem;
+
+}
+.form_element8{
+    display: block;
+    width: 35%;
+    border: none;
+    background-color:transparent;
+    padding-left: 0.25rem;
+    border-bottom: 1px solid #c7c5c5;
+    color: #605c5c;
+    font-size: 1.35rem;
+
+}
+.form_element9{
+    display: block;
+    width: 80%;
+    border: none;
+    background-color:transparent;
+    padding-left: 0.25rem;
+    margin-bottom: 2.5rem;
+    margin-top: 2rem;
+
+    color: #605c5c;
+    font-size: 1.35rem;
+
+}
+.form_element10{
+    display: block;
+    width: 40%;
+    border: none;
+    background-color:transparent;
+    border-bottom: 1px solid #c7c5c5;
+    color: #1e1e1e;
+    font-size: 1.35rem;
+
+}
+
+
 .textarea_element2{
     display: block;
     width: 100%;
@@ -1385,6 +1462,17 @@ h2.hc-1{
     font-size: 1.25rem;
     color: #605c5c;
 }
+.selectric3 {
+    border: 1px solid #c8c9ce;
+    overflow: hidden;
+    z-index: 1;
+    height: 2.5rem;
+    width: 37%;
+    border-radius: 3px;
+    background-color: transparent;
+    font-size: 1.25rem;
+    color: #605c5c;
+}
 .nt-u1{
     display: block;
 
@@ -1408,6 +1496,26 @@ h2.hc-1{
 .tl{
     table-layout: fixed;
 }
+
+.timeBlock{
+    /*display: block;*/
+    border: 1px solid black;
+    padding: 0.5rem 0.7rem;
+    margin-right: 1rem;
+    border-radius: 9px;
+
+}
+.timeBlock2{
+    width: 20%;
+    border: 1px solid black;
+    padding: 0.5rem 0.7rem;
+    margin-right: 1rem;
+    border-radius: 9px;
+    background-color: transparent;
+    font-size: 18px;
+
+}
+
 
  
   

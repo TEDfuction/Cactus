@@ -1,7 +1,5 @@
 package com.session_time_period.controller;
 
-import com.activities_item.model.ItemVO;
-import com.activities_session.model.SessionVO;
 import com.session_time_period.model.Time_PeriodService;
 import com.session_time_period.model.Time_PeriodVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -123,5 +120,4 @@ public class Time_PeriodController {
         List<Time_PeriodVO> list = time_periodService.getAll();
         return list;
     }
-
 }

@@ -4,91 +4,78 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_session.model.SessionVO;
-
 @Entity
 @Table(name = "session_time_period")
 public class Time_PeriodVO implements Serializable{
 
 
-	private static final long serialVersionUID = 3110286673838412074L;
+    private static final long serialVersionUID = 3110286673838412074L;
 
-	@Id
-	@Column(name = "session_time_period_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer sessionTimePeriodId;
+    @Id
+    @Column(name = "session_time_period_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sessionTimePeriodId;
 
-	@Column(name = "time_period")
+    @Column(name = "time_period")
 //	@DateTimeFormat(pattern = "HH:mm")
-	private Time timePeriod;
-	
-	
-	@OneToMany(mappedBy = "time_PeriodVO")
-	 private Set<ActivityOrderVO> activityOrderVO;
+    private Time timePeriod;
 
 
-	
+    @ManyToOne
+    @JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
+    private SessionVO sessionVO;
 
-	@ManyToOne
-	@JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
-	private SessionVO sessionVO;
+    @OneToMany(mappedBy = "time_PeriodVO")
+    private Set<ActivityOrderVO> activityOrderVO;
 
-	
-	public Time_PeriodVO() {
-		
-	}
 
-	public Integer getSessionTimePeriodId() {
-		return sessionTimePeriodId;
-	}
+    public Time_PeriodVO() {
 
-	public void setSessionTimePeriodId(Integer sessionTimePeriodId) {
-		this.sessionTimePeriodId = sessionTimePeriodId;
-	}
+    }
 
-	public void setTimePeriod(Time timePeriod) {
-		this.timePeriod = timePeriod;
-	}
+    public Integer getSessionTimePeriodId() {
+        return sessionTimePeriodId;
+    }
 
-	public Time getTimePeriod() {
-		return timePeriod;
-	}
+    public void setSessionTimePeriodId(Integer sessionTimePeriodId) {
+        this.sessionTimePeriodId = sessionTimePeriodId;
+    }
 
-	public SessionVO getSessionVO() {
-		return sessionVO;
-	}
+    public void setTimePeriod(Time timePeriod) {
+        this.timePeriod = timePeriod;
+    }
 
-	public void setSessionVO(SessionVO sessionVO) {
-		this.sessionVO = sessionVO;
-	}
-	
-	public Set<ActivityOrderVO> getActivityOrderVO() {
-		return activityOrderVO;
-	}
+    public Time getTimePeriod() {
+        return timePeriod;
+    }
 
-	public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
-		this.activityOrderVO = activityOrderVO;
-	}
-	
-	
+    public SessionVO getSessionVO() {
+        return sessionVO;
+    }
 
-	@Override
-	public String toString() {
-		return "Time_PeriodVO{" +
-				"sessionTimePeriodId=" + sessionTimePeriodId +
-				", timePeriod=" + timePeriod +
-				", sessionVO=" + sessionVO +
-				'}';
-	}
+    public void setSessionVO(SessionVO sessionVO) {
+        this.sessionVO = sessionVO;
+    }
+
+    public Set<ActivityOrderVO> getActivityOrderVO() {
+        return activityOrderVO;
+    }
+
+    public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
+        this.activityOrderVO = activityOrderVO;
+    }
+
+    @Override
+    public String toString() {
+        return "Time_PeriodVO{" +
+                "sessionTimePeriodId=" + sessionTimePeriodId +
+                ", timePeriod=" + timePeriod +
+                ", sessionVO=" + sessionVO +
+                '}';
+    }
 }

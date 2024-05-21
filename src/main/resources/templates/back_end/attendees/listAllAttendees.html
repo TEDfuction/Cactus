@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <div th:replace="~{/back_end/include/include_top}"></div>
-    <title>所有活動參加人員</title>
+    <title>活動參加人員資訊</title>
 
     <style>
         label input[type="search"]{
@@ -28,15 +28,13 @@
             padding-top: 25px !important;
             padding-bottom: 25px !important;
         }
-        .t-t-2 th:nth-child(3)::before,
-        .t-t-2 th:nth-child(9)::before,
-        .t-t-2 th:nth-child(10)::before {
+        .t-t-2 th:nth-child(8)::before,
+        .t-t-2 th:nth-child(9)::before {
             display: none !important;
         }
 
-        .t-t-2 th:nth-child(3)::after,
-        .t-t-2 th:nth-child(9)::after,
-        .t-t-2 th:nth-child(10)::after {
+        .t-t-2 th:nth-child(8)::after,
+        .t-t-2 th:nth-child(9)::after {
             display: none !important;
         }
 
@@ -49,11 +47,11 @@
 <div class="unique">
 <input type="hidden" id="success" th:value="${success}">
 <div>
-    <h2 class="hc-1">所有活動參加人員列表</h2>
+    <h2 class="hc-1">活動參加人員資訊</h2>
 </div>
 <div class="controls">
     <div class="button-container">
-        <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增參加人員</button>
+        <button class="btn btn-primary bttn2" onclick="document.getElementById('link').click()">新增參加人員</button>
         <a id="link" href='addAttendees'></a>
     </div>
 
@@ -61,42 +59,45 @@
     <thead class="t-t-1">
     <tr class="t-t-2">
 
-        <th>編號</th>
-        <th>訂單編號</th>
-        <th>人員姓名</th>
-        <th>性別</th>
-        <th>身分證字號</th>
-        <th>手機號碼</th>
+        <th class="th-w6 tp-1">人員編號</th>
+        <th class="th-w6">訂單編號</th>
+        <th class="th-w9">人員姓名</th>
+        <th class="th-w6">性別</th>
+        <th class="th-w2-1">身分證字號</th>
+        <th class="th-w2-1">手機號碼</th>
         <th>E-mail</th>
-        <th>修改</th>
-        <th>刪除</th>
+        <th class="th-w5">編輯</th>
+        <th class="th-w1">刪除</th>
     </tr>
     </thead>
 
     <tbody>
     <th:block th:each="attendeesVO : ${attendeesListData}">
         <tr>
-            <td th:text="${attendeesVO.activityAttendeesId}"></td>
-            <td th:text="${attendeesVO.activityOrderVO.activityOrderId}"></td>
+            <td class="th-w4" th:text="${attendeesVO.activityAttendeesId}"></td>
+            <td class="th-w4" th:text="${attendeesVO.activityOrderVO.activityOrderId}"></td>
             <td th:text="${attendeesVO.attendeesName}"></td>
-            <td th:switch="${attendeesVO.memberGender}">
+            <td class="th-w4" th:switch="${attendeesVO.memberGender}">
                 <span th:case="0">男</span>
                 <span th:case="1">女</span>
                 <span th:case="2">其他</span>
             </td>
             <td th:text="${attendeesVO.attendeesIdNumber}"></td>
-            <td th:text="${attendeesVO.attendeesPhone}"></td>
+            <td class="th-w4" th:text="${attendeesVO.attendeesPhone}"></td>
             <td th:text="${attendeesVO.attendeesEmail}"></td>
             <td>
+
                 <form method="post" th:action="@{/attendees/getOne_For_Update}" style="margin-bottom: 0px;">
-                    <input type="submit" value="修改">
-                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}"></form>
+                    <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
+                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}">
+                </form>
 
             </td>
             <td>
-                <form method="post" th:action="@{/attendees/delete}" style="margin-bottom: 0px;">
-                    <input type="submit" value="刪除">
-                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}"></form>
+                <form method="post" th:action="@{/attendees/delete}" style="margin-bottom: 0px;" onsubmit="return confirmDelete(this);">
+                    <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
+                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}" onclick="confirmDelete(this.form)">
+                </form>
 
             </td>
         </tr>
@@ -106,20 +107,41 @@
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:inline="javascript">
     // 在页面加载完成后执行
-    window.onload = function () {
+    window.onload = function() {
         /*<![CDATA[*/
-        // 获取隐藏字段的值
+        // 獲取隱藏內容的值
         var successValue = /*[[${success}]]*/ '';
 
-
-        // 如果成功消息存在且不为空，则显示警报框
+        // 如果成功消息存在且不為空，則顯示彈框
         if (successValue && successValue.trim() !== '') {
-            alert(successValue);
+            Swal.fire({
+                icon: 'success',
+                title: '成功',
+                text: successValue
+            });
         }
         /*]]>*/
     };
+    function confirmDelete(form) {
+        Swal.fire({
+            title: '確定要刪除嗎？',
+            text: "刪除後，資料不可復原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#35cce7',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的，刪除它！',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false; // 阻止默认表单提交行为
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
         integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
@@ -140,7 +162,7 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            "lengthMenu": [3 ,5, 10, 20, 50, 100],
+            "lengthMenu": [5, 10, 15, 20, 25, 50, 100],
             "searching": true,  //搜尋功能, 預設是開啟
             "paging": true,     //分頁功能, 預設是開啟
             "ordering": true,   //排序功能, 預設是開啟
@@ -149,7 +171,7 @@
                 "loadingRecords": "載入中...",
                 "lengthMenu": "顯示 _MENU_ 筆結果",
                 "zeroRecords": "沒有符合的結果",
-                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共 _TOTAL_ 筆",
                 "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
                 "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
                 "infoPostFix": "",

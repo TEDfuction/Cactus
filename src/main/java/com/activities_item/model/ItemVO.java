@@ -1,18 +1,14 @@
 package com.activities_item.model;
 
-
-
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 import com.activities_category.model.CategoryVO;
 import com.activities_photo.model.PhotoVO;
 import com.activities_session.model.SessionVO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -30,7 +26,9 @@ import com.activities_session.model.SessionVO;
 		private Integer activityId;
 
 		@ManyToOne
+		@JsonManagedReference
 		@JoinColumn(name = "activity_category_id", referencedColumnName = "activity_category_id")
+		@NotNull(message = "活動類別必須擇一")
 		private CategoryVO categoryVO;
 
 		//PK一對多
@@ -38,25 +36,27 @@ import com.activities_session.model.SessionVO;
 		private Set<PhotoVO> aips;
 		
 		@Column(name = "activity_name")
-		@NotEmpty(message="請勿空白")
-		@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,20}$", message = "只能是中、英文字母、數字和_ , 且長度必需在2到20之間")
+		@Size(min = 2, max = 30, message = "名稱長度必須在{min}到{max}之間")
+		@NotEmpty(message="活動名稱請勿空白")
+//		@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,20}$", message = "只能是中、英文字母、數字和_ , 且長度必需在2到20之間")
 		private String activityName;
 		
 		@Column(name = "activity_description")
-//		@NotEmpty(message="請勿空白")
+//		@NotEmpty(message="活動簡述請勿空白")
 		private String activityDescription;
 		
 		@Column(name = "activity_info")
-//		@NotEmpty(message="請勿空白")
+		@NotEmpty(message="活動說明請勿空白")
 		private String activityInfo;
 		
 		@Column(name = "activity_price")
-		@NotNull(message="金額: 請勿空白")
+		@NotNull(message="活動價格 請勿空白")
 		@DecimalMin(value = "1", message = "金額: 不能小於{value}")
 //		@DecimalMax(value = "99999", message = "金額: 不能超過{value}")
 		private Integer activityPrice;
 		
 		@Column(name = "activity_state")
+		@NotNull(message="活動狀態必須選填")
 		private Boolean activityState;
 
 		@OneToMany(mappedBy = "itemVO", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

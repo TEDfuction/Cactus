@@ -19,7 +19,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Digits;
 import java.util.List;
 import java.util.Set;
-
 @Controller
 @Validated
 @RequestMapping("/promotion")
