@@ -18,7 +18,57 @@
 
 	<!-- Kit Icon -->
 	<script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+	
+	<script>
+    
+    $(document).ready(function () {
+ 
+    	var session_admin_acount="";
+        
+        //查看session是否有存著account值
+        $.ajax({
+            url: '/admin/getSessionAdmin', 
+            type: 'GET',
+            success: function(response) {
+                
+                session_admin_acount = response;
+//                 console.log("response Session Account:", session_acount);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    
+        if ( session_admin_acount == "" ){// 如果沒有值
+        	
+        	var admin_location = "/admin/backendAdminIndex";
+        	var dataToSend = { admin_location: admin_location };
 
+            //將欲前往頁面存入供跳轉
+            	$.ajax({
+                    url: '/admin/setAdminLocation', // 替换成你的后端路由
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataToSend),
+                    success: function(response) {
+                        //確認是否儲存成功
+//                         console.log("Location setting success", response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+        
+				swal("請注意","後台的相關功能皆須登入後才可做使用!","warning")
+                
+				.then(function(){ 
+                    window.location.href = '/admin/adminLogin';
+                })
+        }
+    	
+    });
+   });
+	</script>
 
 
 

@@ -70,6 +70,25 @@ public class MemberController {
 	}
 	
 	
+	@GetMapping("/splitAddress")
+	@ResponseBody
+	public String splitAddress(HttpSession session) {
+		String email = (String)session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		String address = memberVO.getAddress();
+		String[] addressSplit = address.split("-");
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("memcity", addressSplit[0]);
+		map.put("memtown", addressSplit[1]);
+		map.put("memroad", addressSplit[2]);
+		
+		String mapJsonString = gson.toJson(map);
+		
+		return mapJsonString ;
+	}
+	
+	
 	@GetMapping("/getEnums")
 	@ResponseBody
 	public String getEnums() {
@@ -276,12 +295,12 @@ public class MemberController {
 			BindingResult result,
 			ModelMap model,
 			@RequestParam("memberPic") MultipartFile[] parts,
-			@RequestParam("town") String citytown
+			@RequestParam("city") String city,
+			@RequestParam("town") String town
 			) throws IOException {
 			
 		
-		System.out.println(citytown);
-		String address = citytown + memberVO.getAddress();
+		String address = city + "-" + town + "-" + memberVO.getAddress();
 		System.out.println(address);
 		memberVO.setAddress(address);
 		
@@ -301,7 +320,9 @@ public class MemberController {
 			memberVO.setMemberPic(b);
 		}
 		
-		
+		if(city == null || town == null) {
+			result.addError(new FieldError("memberVO","city","請選擇完整地址"));
+		}
 		
 		if (result.hasErrors()) {
 			return "front_end/member/UpdateMember";
