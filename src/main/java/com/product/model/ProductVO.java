@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.productcategory.model.ProductCategoryVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
@@ -35,16 +37,19 @@ public class ProductVO {
 	
 	@ManyToOne
 	@JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
-	private ProductCategoryVO productCategoryVOs;
+	private ProductCategoryVO productCategoryVO;
 	//	private Integer productCategoryId;
 	
 	@Column(name = "product_describtion", nullable = false)
+	@NotEmpty(message="商品簡介: 請勿空白")
 	private String productDescribtion;
 	
 	@Column(name = "product_price", nullable = false)
+	@NotNull(message="商品價格: 請勿空白")
 	private Integer productPrice;
 	
 	@Column(name = "product_name", nullable = false)
+	@NotEmpty(message="商品名稱: 請勿空白")
 	private String productName;
 	
 	@Column(name = "product_status", nullable = false)
@@ -88,12 +93,12 @@ public class ProductVO {
 		this.productPhoto = productPhoto;
 	}
 
-	public ProductCategoryVO getProductCategoryVOs() {
-		return productCategoryVOs;
+	public ProductCategoryVO getProductCategoryVO() {
+		return productCategoryVO;
 	}
 
-	public void setProductCategoryVOs(ProductCategoryVO productCategoryVOs) {
-		this.productCategoryVOs = productCategoryVOs;
+	public void setProductCategoryVO(ProductCategoryVO productCategoryVO) {
+		this.productCategoryVO = productCategoryVO;
 	}
 
 	public String getProductDescribtion() {
