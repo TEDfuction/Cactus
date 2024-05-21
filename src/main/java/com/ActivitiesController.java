@@ -81,6 +81,12 @@ public class ActivitiesController {
 	public String selectItem(Model model) {
 		return "back_end/item/select_item";
 	}
+
+	//到前台
+	@GetMapping("/activity/select_item")
+	public String selectItemFront(Model model) {
+		return "front_end/activity/select_item";
+	}
 	
 	@GetMapping("/item/listAllItem")
 	public String listAllItem(Model model) {
@@ -167,6 +173,15 @@ public class ActivitiesController {
 	protected List<ActivityOrderVO> referenceListDataAc(Model model) {
 		model.addAttribute("activityOrderVO", new ActivityOrderVO());
 		List<ActivityOrderVO> list = activityOrderService.getAll();
+
+		// Ensure promotionVO is initialized
+		// 如果為null創建新的新的PromotionVO，並賦值給它
+		for (ActivityOrderVO order : list) {
+			if (order.getPromotionVO() == null) {
+				order.setPromotionVO(new PromotionVO());
+			}
+		}
+
 		return list;
 	}
 
@@ -214,4 +229,19 @@ public class ActivitiesController {
 	}
 
 
+	@GetMapping("/session/selectTime")
+	public String selectTime(Model model) {
+
+		return "back_end/session/selectTime";
+	}
+
+	@GetMapping("/session/selectTime2")
+	public String selectTime2(Model model) {
+
+		return "back_end/session/selectTime2";
+	}
+
+
 }
+
+

@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -25,7 +24,7 @@ public class AttendeesVO implements Serializable {
     private ActivityOrderVO activityOrderVO;
 
     @Column(name = "attendees_name", nullable = false)
-    @NotEmpty(message = "參加人員姓名：請勿空白！")
+    @NotEmpty(message = "參加人員姓名：請勿空白")
     @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9)]{2,10}$", message = "參加人員名稱: 只能是中、英文字母、數字,且長度必需在2到10之間")
     private String attendeesName;
 
@@ -33,20 +32,20 @@ public class AttendeesVO implements Serializable {
     private Integer memberGender;
 
     @Column(name = "attendees_idnumber", nullable = false)
-    @NotEmpty(message = "身分證字號：請勿空白！")
-    @Pattern(regexp = "^[A-Z][1-2][0-9]{8}$", message = "身分證字號: 長度為10，且開頭為大寫英文字母")
+    @NotEmpty(message = "身分證字號：請勿空白")
+    @Pattern(regexp = "^[A-Z][1-2][0-9]{8}$" , message = "長度為10，且開頭為大寫英文字母")
     private String attendeesIdNumber;
 
     @Column(name = "attendees_phone",
             columnDefinition = "char",
             nullable = false)
-    @NotEmpty(message="手機號碼: 請勿空白！")
-    @Pattern(regexp="09\\d{8}",message = "手機號碼: 請輸入10位數字，且開頭必須為09")
+    @NotEmpty(message="手機號碼: 請勿空白")
+    @Pattern(regexp="09\\d{8}", message = "請輸入10位數字，且開頭必須為09")
     private String attendeesPhone;
 
-    @Column(name = "attendees_email", nullable = false, unique = true)
+    @Column(name = "attendees_email", nullable = false )
     @Email
-    @NotEmpty(message = "參加人員信箱：請勿空白！")
+    @NotEmpty(message = "參加人員信箱：請勿空白")
     private String attendeesEmail;
 
     public AttendeesVO(){

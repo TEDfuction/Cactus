@@ -1,7 +1,6 @@
 <div th:replace="~{/back_end/include/include_top}"></div>
 <title>所有活動類別資料</title>
-
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
     label input[type="search"] {
         margin-bottom: 1.5rem;
@@ -40,11 +39,6 @@
         float: right !important;
     }
 
-    /*.dataTables_wrapper .sorting:before,*/
-    /*.dataTables_wrapper .sorting_asc:before,*/
-    /*.dataTables_wrapper .sorting_desc:before {*/
-    /*    display: none !important;*/
-    /*}*/
     .t-t-2 th:nth-child(4)::before,
     .t-t-2 th:nth-child(5)::before {
         display: none !important;
@@ -59,9 +53,6 @@
 </head>
 <body>
 
-<script th:if="${alertScript}">
-    [[${alertScript}]]
-</script>
 
 <div th:replace="~{/back_end/include/include_body}"></div>
 <div class="unique">
@@ -114,9 +105,9 @@
                         </button>
                     </td>
                     <td>
-                        <form method="post" th:action="@{/category/delete}" style="margin-bottom: 0px;">
+                        <form method="post" th:action="@{/category/delete}" style="margin-bottom: 0px;" onsubmit="return confirmDelete(this);">
                             <input type="submit" class="btn btn-outline-secondary cu-1" value="刪除">
-                            <input type="hidden" name="activityCategoryId" th:value="${categoryVO.activityCategoryId}">
+                            <input type="hidden" name="activityCategoryId" th:value="${categoryVO.activityCategoryId}" onclick="confirmDelete(this.form)">
                         </form>
 
                     </td>
@@ -223,22 +214,42 @@
 <!--        }-->
 <!--    };-->
 <!--</script>-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:inline="javascript">
     // 在页面加载完成后执行
     window.onload = function() {
         /*<![CDATA[*/
-        // 获取隐藏字段的值
+        // 獲取隱藏內容的值
         var successValue = /*[[${success}]]*/ '';
 
-
-        // 如果成功消息存在且不为空，则显示警报框
+        // 如果成功消息存在且不為空，則顯示彈框
         if (successValue && successValue.trim() !== '') {
-            alert(successValue);
+            Swal.fire({
+                icon: 'success',
+                title: '成功',
+                text: successValue
+            });
         }
         /*]]>*/
     };
+    function confirmDelete(form) {
+        Swal.fire({
+            title: '確定要刪除嗎？',
+            text: "刪除後，資料不可復原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#35cce7',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的，刪除它！',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false; // 阻止默认表单提交行为
+    }
 </script>
-
 
 
 <script>

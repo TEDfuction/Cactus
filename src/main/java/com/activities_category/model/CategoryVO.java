@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.activities_item.model.ItemVO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "activity_category")
@@ -27,6 +29,7 @@ public class CategoryVO implements Serializable{
     @Column(name = "activity_category_info")
     private String activityCategoryInfo;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "categoryVO" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("activityId")
     private Set<ItemVO> items;

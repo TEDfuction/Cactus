@@ -88,6 +88,14 @@
                 <button type="submit">搜尋</button>
             </form>
         </li>
+        <li>
+            <form method="get" th:action="@{timePeriodsByActivityDate}">
+                <label for="start">活動場次時段:</label>
+                <input type="date" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}"/>
+
+                <button type="submit">搜尋</button>
+            </form>
+        </li>
 
 
 
@@ -102,6 +110,12 @@
 <!--        </li>-->
     </ul>
 </div>
+<ul>
+    <li><h5><a href='selectTime'>test</a> </h5></li>
+</ul>
+<ul>
+    <li><h5><a href='selectTime2'>test2</a> </h5></li>
+</ul>
 
 <ul>
     <li><h5><a href='addSession'>新增活動場次</a> (create a new Activity Item)</h5></li>
@@ -112,6 +126,10 @@
 <div class="b" th:if="${getOne_For_Display}">
    <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
     <div th:insert="~{/back_end/session/listOneSession :: listOneSession-div}"></div>
+</div>
+<div class="b" th:if="${timePeriodsByActivityDate}">
+    <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
+    <div th:insert="~{/back_end/session/selectTime :: selectTime-div}"></div>
 </div>
 
 

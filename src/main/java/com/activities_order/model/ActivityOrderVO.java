@@ -4,6 +4,7 @@ import com.activities_attendees.model.AttendeesVO;
 import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberVO;
+import com.session_time_period.model.Time_PeriodVO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,8 +32,13 @@ public class ActivityOrderVO implements Serializable {
     private SessionVO sessionVO;
 
     @ManyToOne
+    @JoinColumn(name = "session_time_period_id", referencedColumnName = "session_time_period_id")
+    private Time_PeriodVO time_PeriodVO;
+
+    @ManyToOne
     @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
     private PromotionVO promotionVO;
+
 
     @Column(name = "order_time")
     private Date orderTime;
@@ -169,22 +175,16 @@ public class ActivityOrderVO implements Serializable {
         this.attendeesVO = attendeesVO;
     }
 
+    public Time_PeriodVO getTime_PeriodVO() {
+        return time_PeriodVO;
+    }
+
+    public void setTime_PeriodVO(Time_PeriodVO time_PeriodVO) {
+        this.time_PeriodVO = time_PeriodVO;
+    }
+
     @Override
     public String toString() {
-        return "ActivityOrderVO{" +
-                "activityOrderId=" + activityOrderId +
-                ", memberVO=" + memberVO +
-                ", sessionVO=" + sessionVO +
-                ", promotionVO=" + promotionVO +
-                ", orderTime=" + orderTime +
-                ", enrollNumber=" + enrollNumber +
-                ", orderAmount=" + orderAmount +
-                ", promotionPrice=" + promotionPrice +
-                ", payAmount=" + payAmount +
-                ", orderState=" + orderState +
-                ", refundState=" + refundState +
-                ", orderMemo='" + orderMemo + '\'' +
-                ", attendeesVO=" + attendeesVO +
-                '}';
+        return "ActivityOrderVO: " + activityOrderId;
     }
 }

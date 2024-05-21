@@ -3,7 +3,9 @@ package com.activities_promotion.model;
 import com.activities_order.model.ActivityOrderVO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
@@ -20,11 +22,12 @@ public class PromotionVO implements Serializable {
     private Integer promotionId;
 
     @Column(name = "promotion_title")
-    @NotNull(message = "活動促銷標題請勿空白！")
+    @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9()_$&)]{2,30}$", message = "且只能輸入中、英文字母、數字和特殊符號()_&$ , 長度必需在2到30之間")
+    @NotEmpty(message = "活動促銷標題請勿空白")
     private String promotionTitle;
 
     @Column(name = "promotion_content")
-    @NotNull(message = "活動促銷說明請勿空白！")
+    @NotEmpty(message = "活動促銷說明請勿空白")
     private String promotionContent;
 
     @Column(name = "promotion_discount")
@@ -33,14 +36,15 @@ public class PromotionVO implements Serializable {
     @Column(name = "promotion_coupon")
     private Integer promotionCoupon;
 
-    @NotNull(message = "促銷開始時間必須填寫！")
+    @NotNull(message = "促銷開始時間必須填寫")
     @Column(name = "promotion_started")
     private Date promotionStarted;
 
-    @NotNull(message = "促銷結束時間必須填寫！")
+    @NotNull(message = "促銷結束時間必須填寫")
     @Column(name = "promotion_end")
     private Date promotionEnd;
 
+    @NotNull(message = "促銷狀態必須選填")
     @Column(name = "promotion_state")
     private Boolean promotionState;
 

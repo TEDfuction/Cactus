@@ -1,5 +1,8 @@
 package com.activities_session.controller;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +64,16 @@ public class SessionIdController {
 		model.addAttribute("time_PeriodVO", new Time_PeriodVO());
 		List<Time_PeriodVO> list3 = time_PeriodService.getAll();
 		model.addAttribute("timePeriodListData", list3);
-		
+
+
+		Set<Integer> timePeriodIdsForSession = sessionService.getTimePeriodId(Integer.valueOf(activitySessionId));
+		model.addAttribute("timePeriodIdsForSession", timePeriodIdsForSession);
+		Set<Time> timePeriodsForSession = sessionService.getTimePeriods(Integer.valueOf(activitySessionId));
+		List<Time> sortedTimePeriods = new ArrayList<>(timePeriodsForSession); //時段重新排序
+		Collections.sort(sortedTimePeriods);
+
+		model.addAttribute("sortedTimePeriods", sortedTimePeriods);
+
 		if(sessionVO == null) {
 			model.addAttribute("errorMessage", "查無資料");
 			return "back_end/session/select_session";
@@ -71,7 +83,7 @@ public class SessionIdController {
 		model.addAttribute("sessionVO", sessionVO);
 		model.addAttribute("getOne_For_Display", "true");
 		
-		return "back_end/session/select_session"; // 查詢完成後轉交select_session.html由其第158行insert listOneEmp.html內的th:fragment="listOneEmp-div
+		return "back_end/session/listOneSession"; // 查詢完成後轉交select_session.html由其第158行insert listOneEmp.html內的th:fragment="listOneEmp-div
 	}
 
 	@PostMapping("getOne_For_Display2")
@@ -91,13 +103,23 @@ public class SessionIdController {
 		List<Time_PeriodVO> list3 = time_PeriodService.getAll();
 		model.addAttribute("timePeriodListData", list3);
 
+		Set<Integer> timePeriodIdsForSession = sessionService.getTimePeriodId(Integer.valueOf(activitySessionId));
+		model.addAttribute("timePeriodIdsForSession", timePeriodIdsForSession);
+		Set<Time> timePeriodsForSession = sessionService.getTimePeriods(Integer.valueOf(activitySessionId));
+		model.addAttribute("timePeriodsForSession", timePeriodsForSession);
+
+		if(sessionVO == null) {
+			model.addAttribute("errorMessage", "查無資料");
+			return "back_end/session/select_session";
+		}
+
 
 
 		/***************************3.查詢完成,準備轉交(Send the Success view)*****************/
 		model.addAttribute("sessionVO", sessionVO);
 		model.addAttribute("getOne_For_Display", "true");
 
-		return "back_end/session/listAllsession"; // 查詢完成後轉交select_session.html由其第158行insert listOneEmp.html內的th:fragment="listOneEmp-div
+		return "back_end/session/listAllSession"; // 查詢完成後轉交select_session.html由其第158行insert listOneEmp.html內的th:fragment="listOneEmp-div
 	}
 	
 	

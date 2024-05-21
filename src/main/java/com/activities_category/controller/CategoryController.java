@@ -6,6 +6,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.activities_category.model.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.activities_category.model.CategoryVO;
-import com.activities_category.model.CategoryService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -63,42 +64,6 @@ public class CategoryController {
 //		model.addAttribute("alertScript", "alert('新增成功');");
 		return "back_end/category/listAllCategory"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
     }
-    
-//    public String insert(@Valid CategoryVO categoryVO , BindingResult bindingResult, Model model){
-//    	/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-//		// 去除BindingResult中upFiles欄位的FieldError紀錄 --> 見第172行	(沒有圖片錯誤需求)
-//    	if(bindingResult.hasErrors()) {
-//    		// 紀錄驗證錯誤
-//    		List<String> errorMessages = new ArrayList<>();
-//    		
-//    		// 提取所有驗證錯誤的消息
-//    		for(FieldError error : bindingResult.getFieldErrors()) {
-//    			errorMessages.add(error.getDefaultMessage());
-//    		}
-//    		return "back_end/category/addCategory";
-//    	}
-//    	/*************************** 2.開始新增資料 *****************************************/
-//		categoryService.addCategory(categoryVO);
-//		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
-//		List<CategoryVO> list = categoryService.getAll();
-//		model.addAttribute("categoryListData", list);
-//		model.addAttribute("success", "- (新增成功)");
-//		return "redirect:/category/listAllCategory"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
-//    }
-	
-	
-	// 去除BindingResult中某個欄位的FieldError紀錄
-//	public BindingResult removeFieldError(CategoryVO categoryVO, BindingResult result, String removeFieldname) {
-//		List<FieldError> errorListToKeep = result.getFieldErrors().stream()
-//				.filter(fieldname -> !fieldname.getField().equals(removeFieldname))
-//				.collect(Collectors.toList());//將驗證錯誤訊息放到FieldError的List中
-//		result = new BeanPropertyBindingResult(categoryVO, "categoryVO");
-//		//BeanPropertyBindingResult：Spring中，Errors和BindingResult接口的默认实现类，主要给JavaBean对象的绑定错误进行注册和评估。
-//		for(FieldError fieldError : errorListToKeep) {
-//			result.addError(fieldError);
-//		}
-//		return result;
-//	}
 	
 	
 	/*
@@ -106,16 +71,17 @@ public class CategoryController {
 	 * 刪除
 	 */
 	@PostMapping("delete")
-	public String delete(@RequestParam("activityCategoryId") String activityCategoryId, ModelMap model) {
+	public String delete(@RequestParam("activityCategoryId") String activityCategoryId
+															, RedirectAttributes redirectAttributes) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		/*************************** 2.開始刪除資料 *****************************************/
-		// EmpService empSvc = new EmpService();
 		categoryService.deleteCategory(Integer.valueOf(activityCategoryId));
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
 
-		List<CategoryVO> list = categoryService.getAll();
-		model.addAttribute("categoryListData", list);
-		model.addAttribute("success", "刪除成功");
+//		List<CategoryVO> list = categoryService.getAll();
+//		model.addAttribute("categoryListData", list);
+		redirectAttributes.addFlashAttribute("success", "刪除成功");
+//		model.addAttribute("successdelete", "刪除成功");
 		return "redirect:/category/listAllCategory"; // 刪除完成後轉交listAllCategory.html
 	}
 	

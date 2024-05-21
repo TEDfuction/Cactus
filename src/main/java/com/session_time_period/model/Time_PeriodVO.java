@@ -5,12 +5,10 @@ import java.sql.Time;
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 
-
+import com.activities_order.model.ActivityOrderVO;
 import com.activities_session.model.SessionVO;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "session_time_period")
@@ -32,6 +30,9 @@ public class Time_PeriodVO implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "activity_session_id" , referencedColumnName = "activity_session_id")
 	private SessionVO sessionVO;
+
+	@OneToMany(mappedBy = "time_PeriodVO")
+	private Set<ActivityOrderVO> activityOrderVO;
 
 	
 	public Time_PeriodVO() {
@@ -60,6 +61,14 @@ public class Time_PeriodVO implements Serializable{
 
 	public void setSessionVO(SessionVO sessionVO) {
 		this.sessionVO = sessionVO;
+	}
+
+	public Set<ActivityOrderVO> getActivityOrderVO() {
+		return activityOrderVO;
+	}
+
+	public void setActivityOrderVO(Set<ActivityOrderVO> activityOrderVO) {
+		this.activityOrderVO = activityOrderVO;
 	}
 
 	@Override

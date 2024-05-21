@@ -18,7 +18,7 @@
             <div class="mb-4">
                 <h5 class="f-w">活動促銷標題 <span class="require_text">(必填)</span></h5>
             </div>
-            <input type="text" class="form_element" th:field="*{promotionTitle}" onclick="hideContent('activityName.errors');" />
+            <input type="text" class="form_element" th:field="*{promotionTitle}" onclick="hideContent('promotionTitle.errors');" />
             <div th:if="${#fields.hasErrors('promotionTitle')}" class="error" id="promotionTitle.errors">
                 <span th:errors="*{promotionTitle}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -28,7 +28,8 @@
             <div class="mb-4">
                 <h5 class="f-w">活動促銷說明 <span class="require_text">(必填)</span></h5>
             </div>
-            <textarea  class="textarea_element" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');" /></textarea>
+            <input type="text" class="form_element" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');" />
+<!--            <textarea  class="textarea_element" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');" /></textarea>-->
             <div  th:if="${#fields.hasErrors('promotionContent')}"  class="error" id="promotionContent.errors">
                 <span th:errors="*{promotionContent}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -38,8 +39,8 @@
             <div class="mb-4">
                 <h5 class="f-w">促銷折扣</h5>
             </div>
-            <select class="selectric2 " th:field="*{promotionDiscount}" >
-                <option value="1"></option>
+            <select class="selectric3 " th:field="*{promotionDiscount}" >
+                <option value="1">無</option>
                 <option value="0.95">95折</option>
                 <option value="0.9">9折</option>
                 <option value="0.85">85折</option>
@@ -59,6 +60,7 @@
                 <option value="0.15">15折</option>
                 <option value="0.1">1折</option>
             </select>
+            <span>&nbsp;※ 促銷折扣與促銷折價只能擇一使用！</span>
             <div th:if="${#fields.hasErrors('promotionDiscount')}" class="error" id="promotionDiscount.errors">
                 <span th:errors="*{promotionDiscount}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -68,7 +70,9 @@
             <div class="mb-4">
                 <h5 class="f-w">促銷折價 </h5>
             </div>
-            <input type="text" class="form_element" th:field="*{promotionCoupon}"  onclick="hideContent('promotionCoupon.errors');" />
+            <span class="nt-u2 f-z">NT$&nbsp;</span>
+            <input type="text" class="form_element5 nt-u2" th:field="*{promotionCoupon}"  onclick="hideContent('promotionCoupon.errors');" />
+            <span>※ 促銷折扣與促銷折價只能擇一使用！</span>
             <div th:if="${#fields.hasErrors('promotionCoupon')}" class="error" id="promotionCoupon.errors">
                 <span th:errors="*{promotionCoupon}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -78,7 +82,7 @@
             <div class="mb-4">
                 <h5 class="f-w">促銷開始時間 <span class="require_text">(必填)</span></h5>
             </div>
-            <input type="date" class="form_element6" th:field="*{promotionStarted}" required onclick="hideContent('promotionStarted.errors');" />
+            <input type="date" class="form_element6" th:field="*{promotionStarted}" onclick="hideContent('promotionStarted.errors');" />
             <div th:if="${#fields.hasErrors('promotionStarted')}" class="error" id="promotionStarted.errors">
                 <span th:errors="*{promotionStarted}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -88,7 +92,7 @@
             <div class="mb-4">
                 <h5 class="f-w">促銷結束時間 <span class="require_text">(必填)</span></h5>
             </div>
-            <input type="date" class="form_element6" th:field="*{promotionEnd}" required onclick="hideContent('promotionEnd.errors');" />
+            <input type="date" class="form_element6" th:field="*{promotionEnd}"  onclick="hideContent('promotionEnd.errors');" />
             <div th:if="${#fields.hasErrors('promotionEnd')}" class="error" id="promotionEnd.errors">
                 <span th:errors="*{promotionEnd}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -99,6 +103,7 @@
                 <h5 class="f-w">活動促銷狀態 <span class="require_text">(必填)</span></h5>
             </div>
             <select class="selectric2 " th:field="*{promotionState}" >
+                <option value="">請選擇</option>
                 <option value="true">上架</option>
                 <option value="false">下架</option>
             </select>
@@ -111,9 +116,9 @@
         <div>
             <div class="btn_area">
 
-            <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/promotion/listAllPromotion'">返回</button>
-            <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 新增 </button>
-        </div>
+                <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/promotion/listAllPromotion'">返回</button>
+                <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 新增 </button>
+            </div>
         </div>
     </form>
 
@@ -121,6 +126,25 @@
 
 <!-- JavaScript part -->
 <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var promotionDiscountSelect = document.querySelector('select[name="promotionDiscount"]');
+        var promotionCouponInput = document.querySelector('input[name="promotionCoupon"]');
+
+        promotionDiscountSelect.addEventListener('change', function() {
+            if (promotionDiscountSelect.value != "1") {
+                promotionCouponInput.value = "0";
+            }
+        });
+
+        promotionCouponInput.addEventListener('input', function() {
+            if (promotionCouponInput.value > 0) {
+                promotionDiscountSelect.value = "1";
+            }
+        });
+    });
+
+
+
     //清除提示信息
     function hideContent(d) {
         document.getElementById(d).style.display = "none";

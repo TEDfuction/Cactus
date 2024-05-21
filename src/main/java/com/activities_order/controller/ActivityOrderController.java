@@ -38,6 +38,8 @@ public class ActivityOrderController {
     @Autowired
     PromotionService promotionService;
 
+
+
     /*
      * 如要新增時
      * This method will serve as addOrder.html handler.
@@ -142,6 +144,27 @@ public class ActivityOrderController {
         return "back_end/activityOrder/listAllOrder";
 
     }
+
+//    //取得訂單總人數
+//    public Integer getTotalEnrollNumber(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId){
+//        Integer totalEnrollNumber = activityOrderService.getTotalEnrollNumber(sessionTimePeriodId);
+//
+//        return totalEnrollNumber;
+//    }
+//
+//    //取得場次最大參加人數
+//    public Integer getActivityMaxPart(@RequestParam("activitySessionId") Integer activitySessionId){
+//        SessionVO sessionVO = sessionService.getOneSession(activitySessionId);
+//        return  sessionVO.getActivityMaxPart();
+//    }
+//
+//    public Boolean comparePeople(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId,
+//                                 @RequestParam("activitySessionId") Integer activitySessionId) {
+//        Integer totalEnrollNumber = getTotalEnrollNumber(sessionTimePeriodId);
+//        Integer activityMaxPart = getActivityMaxPart(activitySessionId);
+//        //如果訂單總人數>大於場次最大參加人數，得到True，就不要顯示時段
+//        return totalEnrollNumber > activityMaxPart;
+//    }
 
     @ModelAttribute("activityOrderListData")
     protected List<ActivityOrderVO> referenceListDataAc(Model model) {
