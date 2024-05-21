@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
-
 @Entity
 @Table(name = "activity_promotion")
 public class PromotionVO implements Serializable {

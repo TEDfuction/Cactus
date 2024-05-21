@@ -217,7 +217,6 @@ public class SessionVO implements Serializable {
     public void setTime_periodVO(Set<Time_PeriodVO> time_periodVO) {
         this.time_periodVO = time_periodVO;
     }
-
 }
 
 

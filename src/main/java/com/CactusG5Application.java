@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-
 @ServletComponentScan
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.*"},basePackageClasses = {ActivitiesController.class, IndexController_inSpringBoot.class})

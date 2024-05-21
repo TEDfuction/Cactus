@@ -5,7 +5,6 @@ import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberVO;
 import com.session_time_period.model.Time_PeriodVO;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;

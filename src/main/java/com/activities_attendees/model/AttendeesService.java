@@ -53,3 +53,4 @@ public class AttendeesService {
         return attendeesRepository.findByEmail(attendeesEmail);
     }
 }
+

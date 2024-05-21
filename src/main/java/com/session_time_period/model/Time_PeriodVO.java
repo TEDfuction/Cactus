@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_session.model.SessionVO;
-
 @Entity
 @Table(name = "session_time_period")
 public class Time_PeriodVO implements Serializable{

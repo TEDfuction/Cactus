@@ -16,7 +16,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.activities_photo.model.PhotoVO;
-
 public class Photo_Compositegory {
 	
 	public static Predicate getPhoto_For_AnyDB(CriteriaBuilder builder, Root<PhotoVO> root, String columnName, String value) {

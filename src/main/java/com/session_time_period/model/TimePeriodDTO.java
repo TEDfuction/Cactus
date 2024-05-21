@@ -1,7 +1,6 @@
 package com.session_time_period.model;
 
 import java.sql.Time;
-
 public class TimePeriodDTO {
 
     private Integer sessionTimePeriodId;

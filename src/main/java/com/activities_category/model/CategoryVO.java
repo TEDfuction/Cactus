@@ -23,14 +23,14 @@ public class CategoryVO implements Serializable{
     private Integer activityCategoryId;
 
     @Column(name = "activity_category_name")
-    @NotEmpty(message = "瘣餃?憿?迂嚗??輻征??)
-            private String activityCategoryName;
+    @NotEmpty(message = "活動類別名稱：請勿空白")
+    private String activityCategoryName;
 
-            @Column(name = "activity_category_info")
-            private String activityCategoryInfo;
+    @Column(name = "activity_category_info")
+    private String activityCategoryInfo;
 
-            @JsonBackReference
-            @OneToMany(mappedBy = "categoryVO" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
+    @OneToMany(mappedBy = "categoryVO" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("activityId")
     private Set<ItemVO> items;
 

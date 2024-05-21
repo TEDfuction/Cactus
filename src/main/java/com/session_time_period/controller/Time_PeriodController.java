@@ -120,5 +120,4 @@ public class Time_PeriodController {
         List<Time_PeriodVO> list = time_periodService.getAll();
         return list;
     }
-
 }

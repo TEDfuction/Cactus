@@ -18,3 +18,4 @@ public interface AttendeesRepository extends JpaRepository<AttendeesVO, Integer>
     boolean existsByEmailExcludingId(@Param("attendeesEmail") String attendeesEmail, @Param("activityAttendeesId") Integer activityAttendeesId);
 
 }
+
