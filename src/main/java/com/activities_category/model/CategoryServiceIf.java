@@ -3,8 +3,6 @@ package com.activities_category.model;
 import java.util.List;
 import java.util.Map;
 
-import com.activities_category.model.CategoryVO;
-
 public interface CategoryServiceIf {
 	
 	CategoryVO addCategory(CategoryVO categoryVO);

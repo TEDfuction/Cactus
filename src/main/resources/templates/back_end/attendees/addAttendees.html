@@ -1,95 +1,95 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
     <title>活動參加人員新增</title>
 
     <!-- <head th:insert="~{/back_end/category/included-fragment}"></head> -->
 
-    <style type="text/css">
+    <style>
 
-        button {
-            padding: 5px;
-        }
-        form {
-            display: table;
-        }
-        form div {
-            display: table-row;
-        }
-        label, input, span, select {
-            display: table-cell;
-            margin: 5px;
-            text-align: left;
-        }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 5px;
-        }
-        form div div {
-            display: table-cell;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
-        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center"> <h2>活動參加人員新增</h2>
-        <h3><a class="navbar-brand" th:href="@{/attendees/select_attendees}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
-</nav>
-<div align="center">
-    <h3><b>所有欄位皆為必填欄位</b></h3>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <div>
+        <h2 class="hc-2">新增活動參加人員資訊</h2>
+    </div>
+
+
     <form th:action="@{insert}" method="post" th:object="${attendeesVO}" enctype="multipart/form-data">
 
-        <div>
-            <label>活動訂單編號:</label>
-            <select th:field="*{activityOrderVO.activityOrderId}">
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">活動訂單編號 <span class="require_text">(必選)</span></h5>
+            </div>
+            <select class="selectric2" th:field="*{activityOrderVO.activityOrderId}" required>
+                <option value="">
                 <option th:each="activityOrderVO : ${activityOrderListData}" th:value="${activityOrderVO.activityOrderId}" th:text="${activityOrderVO.activityOrderId}" />
             </select>
-            <span th:if="${#fields.hasErrors('activityOrderVO.activityOrderId')}" th:errors="*{activityOrderVO.activityOrderId}" class="error" id="activityOrderVO.activityOrderId.errors"></span>
+            <div th:if="${#fields.hasErrors('activityOrderVO.activityOrderId')}" class="error" id="categoryVO.activityCategoryId.errors">
+                <span th:errors="*{activityOrderVO.activityOrderId}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+
         </div>
-        <div>
-            <label>參加人員姓名:</label>
-            <input type="text" th:field="*{attendeesName}" onclick="hideContent('attendeesName.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('attendeesName')}" th:errors="*{attendeesName}" class="error" id="attendeesName.errors"></span>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">參加人員姓名 <span class="require_text">(必填)</span></h5>
+            </div>
+            <input type="text" class="form_element" th:field="*{attendeesName}" onclick="hideContent('attendeesName.errors');" />
+            <div th:if="${#fields.hasErrors('attendeesName')}" class="error" id="attendeesName.errors">
+                <span th:errors="*{attendeesName}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">性別 </h5>
+            </div>
+            <div class="rad">
+            <input class="rad-2" type="radio" th:field="*{memberGender}" th:value="0" onclick="hideContent('memberGender.errors');" />男
+            <input class="rad-1" type="radio" th:field="*{memberGender}" th:value="1" onclick="hideContent('memberGender.errors');" />女
+            <input class="rad-1" type="radio" th:field="*{memberGender}" th:value="2" onclick="hideContent('memberGender.errors');" />其他
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">身份證字號 <span class="require_text">(必填)</span></h5>
+            </div>
+            <input type="text" class="form_element" th:field="*{attendeesIdNumber}" onclick="hideContent('attendeesIdNumber.errors');" />
+            <div th:if="${#fields.hasErrors('attendeesIdNumber')}" class="error" id="attendeesIdNumber.errors">
+                <span th:errors="*{attendeesIdNumber}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">手機號碼 <span class="require_text">(必填)</span></h5>
+            </div>
+            <input type="text" class="form_element" th:field="*{attendeesPhone}" onclick="hideContent('attendeesPhone.errors');" />
+            <div th:if="${#fields.hasErrors('attendeesPhone')}" class="error" id="attendeesPhone.errors">
+                <span th:errors="*{attendeesPhone}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">E-mail <span class="require_text">(必填)</span></h5>
+            </div>
+            <input type="text" class="form_element" th:field="*{attendeesEmail}" onclick="hideContent('attendeesEmail.errors');" />
+            <div th:if="${#fields.hasErrors('attendeesEmail')}" class="error" id="attendeesEmail.errors">
+                <span th:errors="*{attendeesEmail}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
         </div>
 
-        <div>
-            <label>性別:</label>
-            <input type="radio" th:field="*{memberGender}" th:value="0" onclick="hideContent('memberGender.errors');" />男
-            <input type="radio" th:field="*{memberGender}" th:value="1" onclick="hideContent('memberGender.errors');" />女
-            <input type="radio" th:field="*{memberGender}" th:value="2" onclick="hideContent('memberGender.errors');" />其他
-            <span th:if="${#fields.hasErrors('memberGender')}" th:errors="*{memberGender}" class="error" id="memberGender.errors"></span>
-        </div>
-
-        <div>
-            <label>身份證字號:</label>
-            <input type="text" th:field="*{attendeesIdNumber}" onclick="hideContent('attendeesIdNumber.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('attendeesIdNumber')}" th:errors="*{attendeesIdNumber}" class="error" id="attendeesIdNumber.errors"></span>
-        </div>
-
-        <div>
-            <label>手機號碼:</label>
-            <input type="text" th:field="*{attendeesPhone}" onclick="hideContent('attendeesPhone.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('attendeesPhone')}" th:errors="*{attendeesPhone}" class="error" id="attendeesPhone.errors"></span>
-        </div>
-
-        <div>
-            <label>E-mail:</label>
-            <input type="text" th:field="*{attendeesEmail}" onclick="hideContent('attendeesEmail.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('attendeesEmail')}" th:errors="*{attendeesEmail}" class="error" id="attendeesEmail.errors"></span>
-        </div>
 
         <br>
         <div>
-            <div></div>
-            <div><button type="submit" id="submit"> 送出新增 </button></div>
-            <div></div>
+            <div class="btn_area">
+
+                <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/attendees/listAllAttendees'">返回</button>
+                <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 新增 </button>
+            </div>
         </div>
     </form>
 
@@ -103,6 +103,4 @@
     }
 
 </script>
-
-</body>
-</html>
+<div th:replace="~{/back_end/include/include_bottom}"></div>

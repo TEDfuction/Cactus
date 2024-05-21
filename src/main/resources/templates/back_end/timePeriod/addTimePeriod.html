@@ -46,26 +46,26 @@
     <h3><b>所有欄位皆為必填欄位</b></h3>
     <form th:action="@{insert}" method="post" th:object="${time_periodVO}" enctype="multipart/form-data">
 
-        <div>
-            <label>場次時段1:</label>
-            <input type="time" th:field="*{timePeriod1}" onclick="hideContent('timePeriod1.errors');" required/><br/>
-            <span  th:if="${#fields.hasErrors('timePeriod1')}" th:errors="*{timePeriod1}" class="error" id="timePeriod1.errors"></span>
-        </div>
-        <div>
-            <label>場次時段2:</label>
-            <input type="time" th:field="*{timePeriod2}" onclick="hideContent('timePeriod2.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('timePeriod2')}" th:errors="*{timePeriod2}" class="error" id="timePeriod2.errors"></span>
-        </div>
-        <div>
-            <label>場次時段3:</label>
-            <input type="time" th:field="*{timePeriod3}" onclick="hideContent('timePeriod3.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('timePeriod3')}" th:errors="*{timePeriod3}" class="error" id="timePeriod3.errors"></span>
-        </div>
-        <div>
-            <label>場次時段4:</label>
-            <input type="time" th:field="*{timePeriod4}" onclick="hideContent('timePeriod4.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('timePeriod4')}" th:errors="*{timePeriod4}" class="error" id="timePeriod4.errors"></span>
-        </div>
+<!--        <div>-->
+<!--            <label>場次時段1:</label>-->
+<!--            <input type="time" th:field="*{timePeriod1}" onclick="hideContent('timePeriod1.errors');" required/><br/>-->
+<!--            <span  th:if="${#fields.hasErrors('timePeriod1')}" th:errors="*{timePeriod1}" class="error" id="timePeriod1.errors"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>場次時段2:</label>-->
+<!--            <input type="time" th:field="*{timePeriod2}" onclick="hideContent('timePeriod2.errors');" /><br/>-->
+<!--            <span  th:if="${#fields.hasErrors('timePeriod2')}" th:errors="*{timePeriod2}" class="error" id="timePeriod2.errors"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>場次時段3:</label>-->
+<!--            <input type="time" th:field="*{timePeriod3}" onclick="hideContent('timePeriod3.errors');" /><br/>-->
+<!--            <span  th:if="${#fields.hasErrors('timePeriod3')}" th:errors="*{timePeriod3}" class="error" id="timePeriod3.errors"></span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label>場次時段4:</label>-->
+<!--            <input type="time" th:field="*{timePeriod4}" onclick="hideContent('timePeriod4.errors');" /><br/>-->
+<!--            <span  th:if="${#fields.hasErrors('timePeriod4')}" th:errors="*{timePeriod4}" class="error" id="timePeriod4.errors"></span>-->
+<!--        </div>-->
         <br>
         <div>
             <div></div>

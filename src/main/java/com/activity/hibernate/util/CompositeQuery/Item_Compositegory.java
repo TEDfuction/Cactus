@@ -17,7 +17,6 @@ import org.hibernate.Transaction;
 import com.activities_category.model.CategoryVO;
 import com.activities_item.model.ItemVO;
 
-
 public class Item_Compositegory {
 	
 	public static Predicate getItem_For_AnyDB(CriteriaBuilder builder, Root<ItemVO> root, String columnName, String value){

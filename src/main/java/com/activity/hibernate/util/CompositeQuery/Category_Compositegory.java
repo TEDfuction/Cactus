@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.activities_category.model.CategoryVO;
-
 public class Category_Compositegory {
 	
 	public static Predicate getCategory_For_AnyDB(CriteriaBuilder builder, Root<CategoryVO> root, String columnName, String value){

@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-
 public interface PromotionRepository extends JpaRepository<PromotionVO, Integer> {
 
     @Transactional

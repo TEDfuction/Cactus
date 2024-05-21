@@ -17,7 +17,6 @@ import org.hibernate.Transaction;
 
 import com.activities_item.model.ItemVO;
 import com.activities_session.model.SessionVO;
-
 public class Session_Compositegory {
 	
 	public static Predicate getSession_For_AnyDB(CriteriaBuilder builder, Root<SessionVO> root, String columnName, String value){

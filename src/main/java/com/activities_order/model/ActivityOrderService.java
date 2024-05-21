@@ -26,7 +26,7 @@ public class ActivityOrderService {
 
     @Autowired
     private SessionFactory sessionFactory;
-    
+
     @Autowired
     private ItemRepository itemRepository;
 
@@ -59,14 +59,17 @@ public class ActivityOrderService {
     public List<ActivityOrderVO> getAll(Map<String, String[]> map){
         return ActivityOrder_Compositegory.getAllOrders(map,sessionFactory.openSession());
     }
-    
+    public List<ActivityOrderVO> getTotalEnrollNumber(Integer sessionTimePeriodId){
+        return  activityOrderRepository.findTotalEnrollNumber(sessionTimePeriodId);
+    }
+
     //------------------------------綠界金流方法---------------------------------//
     public String ecpayCheckout(ActivityOrderVO activityOrderVO,String paymentDescription) {
 
-          	
+
     	AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
-      
+
         // 訂單號碼(規定大小寫英文+數字)
         obj.setMerchantTradeNo( "Member"  + activityOrderVO.getActivityOrderId() + "test" );
         // 交易時間(先把毫秒部分切掉)
@@ -87,17 +90,16 @@ public class ActivityOrderService {
 
         // 付款完後把付款狀態改為 1 (已付款)
         activityOrderVO.setOrderState(0);
-        
+
        System.out.println("aaa"+ form);
         return form ;
 
     }
-    
+
     //家維新增 == 會員專區用
     public List<ActivityOrderVO> findByMemberId(Integer memberId){
 		return activityOrderRepository.findByMemberId(memberId);
 	}
-
 
 
 }
