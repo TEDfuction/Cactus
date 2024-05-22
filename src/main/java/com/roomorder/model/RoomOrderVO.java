@@ -1,6 +1,5 @@
 package com.roomorder.model;
 
-import com.room.model.RoomPromotionVO;
 import com.member.model.MemberVO;
 
 import javax.persistence.*;

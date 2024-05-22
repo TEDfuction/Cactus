@@ -1,35 +1,49 @@
-package com.room.model;
+package com.roompromotion.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "room_promotion", schema = "cactus")
-public class RoomPromotionVO {
+@Table(name = "room_promotion")
+public class RoomPromotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "promotion_id", nullable = false)
     private Integer promotionId;
 
+    @Size(max = 40)
+    @NotEmpty(message = "促銷標題:請勿空白")
     @Column(name = "promotion_title", nullable = false, length = 40)
     private String promotionTitle;
 
+    @Size(max = 1000)
+    @NotEmpty(message = "促銷敘述:請勿空白")
     @Column(name = "promotion_content", nullable = false, length = 1000)
     private String promotionContent;
 
+    @NotNull
     @Column(name = "promotion_state", nullable = false)
     private Byte promotionState;
 
+    @NotNull(message = "促銷折扣:請勿空白")
     @Column(name = "promotion_discount", nullable = false)
     private Double promotionDiscount;
 
-    @Convert(disableConversion = true)
+    @NotNull(message = "請選擇促銷開始時間")
     @Column(name = "promotion_started", nullable = false)
     private LocalDate promotionStarted;
 
-    @Convert(disableConversion = true)
+    @NotNull(message = "請選擇促銷結束時間")
     @Column(name = "promotion_end", nullable = false)
     private LocalDate promotionEnd;
+
+    public RoomPromotion() {
+        super();
+    }
 
     public Integer getPromotionId() {
         return promotionId;
