@@ -7,6 +7,8 @@ import com.activities_session.model.SessionService;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.session_time_period.model.Time_PeriodService;
+import com.session_time_period.model.Time_PeriodVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -36,6 +39,9 @@ public class ActivityOrderController {
 
     @Autowired
     PromotionService promotionService;
+
+    @Autowired
+    Time_PeriodService time_periodService;
 
 
 
@@ -78,13 +84,14 @@ public class ActivityOrderController {
      * 刪除
      */
     @PostMapping("delete")
-    public String delete(@RequestParam("activityOrderId") String activityOrderId, ModelMap model){
+    public String delete(@RequestParam("activityOrderId") String activityOrderId
+                            , RedirectAttributes redirectAttributes){
         /*************************** 1.開始刪除資料 *****************************************/
         activityOrderService.deleteOrder(Integer.valueOf(activityOrderId));
         /*************************** 2.刪除完成,準備轉交(Send the Success view) **************/
-        List<ActivityOrderVO> list = activityOrderService.getAll();
-        model.addAttribute("activityOrderListData", list);
-        model.addAttribute("success", "- (刪除成功)");
+//        List<ActivityOrderVO> list = activityOrderService.getAll();
+//        model.addAttribute("activityOrderListData", list);
+        redirectAttributes.addFlashAttribute("success", "刪除成功");
         return "redirect:/activityOrder/listAllOrder"; // 刪除完成後轉交listAllOrder.html
     }
 
@@ -97,14 +104,43 @@ public class ActivityOrderController {
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
         /*************************** 2.開始查詢資料 *****************************************/
         ActivityOrderVO activityOrderVO = activityOrderService.getOneOrder(Integer.valueOf(activityOrderId));
+
+        // 取得 itemVO 的 activityPrice
+        Integer activityPrice = null;
+        if (activityOrderVO.getSessionVO() != null && activityOrderVO.getSessionVO().getItemVO() != null) {
+            activityPrice = activityOrderVO.getSessionVO().getItemVO().getActivityPrice();
+            System.out.println("activityPrice=" + activityPrice);
+
+            // 計算 orderAmount
+            if (activityOrderVO.getEnrollNumber() != null) {
+                activityOrderVO.setOrderAmount(activityPrice * activityOrderVO.getEnrollNumber());
+            }
+        }
+
+        // 計算預設的訂單總金額
+        Integer enrollNumber = activityOrderVO.getEnrollNumber(); // 假設已經有報名人數
+        Integer defaultOrderAmount = activityPrice * enrollNumber;
+
+        // 根據 activitySessionId 取得所有 sessionTimePeriodId
+        List<Time_PeriodVO> timePeriods = time_periodService.getActivitySessionId(activityOrderVO.getSessionVO().getActivitySessionId());
+
+
         /*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
         model.addAttribute("activityOrderVO", activityOrderVO);
+        model.addAttribute("activityPrice", activityPrice);
+        model.addAttribute("defaultOrderAmount", defaultOrderAmount);
+        model.addAttribute("timePeriods", timePeriods); // 將 timePeriods 傳遞到前端
         System.out.println("修改開始");
         return "back_end/activityOrder/update_order_input"; // 查詢完成後轉交update_order_input.html
 
     }
     @PostMapping("update")
-    public String update(@Valid ActivityOrderVO activityOrderVO,BindingResult result, ModelMap model){
+    public String update(@Valid @ModelAttribute ActivityOrderVO activityOrderVO,BindingResult result,
+                         @RequestParam("memberVO.memberId") Integer memberId,
+                         @RequestParam("sessionVO.activitySessionId") Integer activitySessionId,
+                         @RequestParam("time_PeriodVO.sessionTimePeriodId") Integer sessionTimePeriodId,
+                         @RequestParam("promotionVO.promotionId") Integer promotionId,
+                         ModelMap model){
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
         if(result.hasErrors()) {
@@ -112,11 +148,29 @@ public class ActivityOrderController {
             return "back_end/activityOrder/update_order_input";
         }
         /*************************** 2.開始修改資料 *****************************************/
+        MemberVO memberVO = new MemberVO();
+        memberVO.setMemberId(memberId);
+        activityOrderVO.setMemberVO(memberVO);
+
+        SessionVO sessionVO = new SessionVO();
+        sessionVO.setActivitySessionId(activitySessionId);
+        activityOrderVO.setSessionVO(sessionVO);
+
+        Time_PeriodVO time_PeriodVO = new Time_PeriodVO();
+        time_PeriodVO.setSessionTimePeriodId(sessionTimePeriodId);
+        activityOrderVO.setTime_PeriodVO(time_PeriodVO);
+
+
+        if (activityOrderVO.getPromotionVO() == null) {
+            activityOrderVO.setPromotionVO(new PromotionVO());
+        }
+        activityOrderVO.getPromotionVO().setPromotionId(promotionId);
+
+
         activityOrderService.updateOrder(activityOrderVO);
         /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
         model.addAttribute("success", "修改成功～");
-        List<ActivityOrderVO> list = activityOrderService.getAll();
-        model.addAttribute("activityOrderListData", list);
+
         return "back_end/activityOrder/listAllOrder"; // 修改成功後轉交listOneOrder.html
 
     }
@@ -187,6 +241,13 @@ public class ActivityOrderController {
     @ModelAttribute("promotionListData")
     protected List<PromotionVO> referenceListDataPr(Model model) {
         List<PromotionVO> list = promotionService.getAll();
+        return list;
+    }
+
+    @ModelAttribute("timePeriodListData") // 下拉選單、SHOW跑出DB已有的值 for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+    protected List<Time_PeriodVO> referenceListData_Time(Model model){
+        model.addAttribute("time_PeriodVO", new Time_PeriodVO());
+        List<Time_PeriodVO> list = time_periodService.getAll();
         return list;
     }
 

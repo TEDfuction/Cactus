@@ -55,10 +55,6 @@ public class ItemControllerFrontEnd {
         model.addAttribute("itemListData", list);
         model.addAttribute("sessionVOs", itemVO.getSessionVOs());
 
-        model.addAttribute("categoryVO", new CategoryVO());
-        List<CategoryVO> list2 = categoryService.getAll();
-        model.addAttribute("categoryListData2", list2);
-
         model.addAttribute("sessionVO", new SessionVO());
         List<SessionVO> list3 = sessionService.getAll();
         model.addAttribute("sessionListData", list3);
