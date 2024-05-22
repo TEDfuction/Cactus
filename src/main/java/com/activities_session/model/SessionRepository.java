@@ -41,6 +41,10 @@ public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
     @Modifying
     List<SessionVO> findByItemVO_ActivityId(Integer activityId);
 
+    @Transactional
+    @Modifying
+    List<SessionVO> findAllByActivitySessionId(Integer activitySessionId);
+
 
 
 

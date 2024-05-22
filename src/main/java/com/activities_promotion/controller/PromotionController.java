@@ -86,7 +86,7 @@ public class PromotionController {
         /*************************** 1.開始刪除資料 *****************************************/
         promotionService.deletePromotion(Integer.valueOf(promotionId));
         /*************************** 2.刪除完成,準備轉交(Send the Success view) **************/
-        List<PromotionVO> list = promotionService.getAll();
+//        List<PromotionVO> list = promotionService.getAll();
 //        model.addAttribute("promotionListData", list);
         redirectAttributes.addFlashAttribute("success", "刪除成功");
         return "redirect:/promotion/listAllPromotion"; // 刪除完成後轉交listAllPromotion.html

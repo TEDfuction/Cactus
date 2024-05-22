@@ -24,13 +24,14 @@
 <body>
 <div th:replace="~{/back_end/include/include_body}"></div>
 <div class="unique">
-    <div>
-        <h2 class="hc-2">編輯活動項目&nbsp;<span th:text="${itemVO.activityId}"></span></h2>
-    </div>
+    <form th:action="@{update}" method="post" th:object="${itemVO}" enctype="multipart/form-data">
+        <div>
+            <h2 class="hc-2">編輯活動項目&nbsp;<span th:text="${itemVO.activityId}" th:field="*{activityId}" name="activityId"></span></h2>
+            <input type="hidden" th:field="*{activityId}" />
+        </div>
 
-    <div>
+        <div>
 
-        <form th:action="@{update}" method="post" th:object="${itemVO}" enctype="multipart/form-data">
 
             <div class="mb-4">
                 <div class="mb-4">
@@ -75,7 +76,7 @@
                 <div class="mb-4">
                     <h5 class="f-w">活動說明<span class="require_text">(必填)</span></h5>
                 </div>
-                <textarea height th:field="*{activityInfo}" onclick="hideContent('activityInfo.errors');"/></textarea>
+                <textarea th:field="*{activityInfo}" onclick="hideContent('activityInfo.errors');"/></textarea>
                 <div th:if="${#fields.hasErrors('activityInfo')}" class="error" id="activityInfo.errors">
                     <span th:errors="*{activityInfo}"></span>
                     <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -120,8 +121,9 @@
                 </div>
 
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+
 </div>
 
 <!-- JavaScript part -->

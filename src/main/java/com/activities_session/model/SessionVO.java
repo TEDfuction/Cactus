@@ -32,7 +32,7 @@ public class SessionVO implements Serializable {
     private ItemVO itemVO;
 
     @Column(name = "activity_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "場次日期請勿空白")
     private Date activityDate;
 
