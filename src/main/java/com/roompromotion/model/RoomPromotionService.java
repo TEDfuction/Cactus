@@ -3,6 +3,7 @@ package com.roompromotion.model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,30 +11,32 @@ import java.util.Optional;
 public class RoomPromotionService {
 
     @Autowired
-    RoomPromotionRepository repository;
+    RoomPromotionRepository roomPromotionRepository;
 
     public void addRoomPromotion(RoomPromotion roomPromotion){
-        repository.save(roomPromotion);
+        roomPromotionRepository.save(roomPromotion);
     }
 
     public void updateRoomPromotion(RoomPromotion roomPromotion){
-        repository.save(roomPromotion);
+        roomPromotionRepository.save(roomPromotion);
     }
 
     public void deleteRoomPromotion(Integer promotionId){
-        if (repository.existsById(promotionId))
-            repository.deleteById(promotionId);
+        if (roomPromotionRepository.existsById(promotionId))
+            roomPromotionRepository.deleteById(promotionId);
     }
 
     public List<RoomPromotion> getAll(){
-        return repository.findAll();
+        return roomPromotionRepository.findAll();
     }
 
     public RoomPromotion findByPK(Integer promotionId){
-        Optional<RoomPromotion> optional = repository.findById(promotionId);
+        Optional<RoomPromotion> optional = roomPromotionRepository.findById(promotionId);
         return optional.orElse(null);
     }
 
 
-
+    public List<String> findByCheckInDate(LocalDate selectCheckIn) {
+        return roomPromotionRepository.findBySelectCheckIn(selectCheckIn);
+    }
 }
