@@ -1,7 +1,7 @@
 package com.roomorder.model;
 
-import com.room.model.RoomPromotionVO;
 import com.member.model.MemberVO;
+import com.roompromotion.model.RoomPromotionVO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
