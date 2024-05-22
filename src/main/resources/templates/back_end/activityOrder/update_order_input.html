@@ -1,142 +1,262 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>活動訂單修改 </title>
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+    <title>活動訂單編輯 </title>
 
-    <style type="text/css">
+    <style >
 
-        button {
-            padding: 5px;
-        }
-        form {
-            display: table;
-        }
-        form div {
-            display: table-row;
-        }
-        label, input, span, select {
-            display: table-cell;
-            margin: 5px;
-            text-align: left;
-        }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 5px;
-        }
-        form div div {
-            display: table-cell;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
-        }
     </style>
 </head>
 <body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+<!--    <div>-->
+<!--        <h2 class="hc-2">編輯活動訂單&nbsp;</h2>-->
+<!--    </div>-->
 
-<div align="center"> <h2>活動訂單編輯</h2>
-    <h3><a class="navbar-brand" th:href="@{/activityOrder/select_order}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
-</div>
 
-<div align="center">
-    <h3><b>所有欄位皆為必填欄位</b></h3>
+<div >
+
     <form th:action="@{update}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
+
         <div>
-            <label>活動訂單編號:</label>
-            <input type="text" th:field="*{activityOrderId}" style="border:0px ; font-weight: bold;" readonly /><br/>
-
-        </div>
-        <div>
-            <label>會員編號:</label>
-            <input type="text" th:field="*{memberVO.memberId}"  style="border:0px ; font-weight: bold;" /><br/>
-
-
-        </div>
-        <div>
-            <label>活動場次編號:</label>
-            <input type="text" th:field="*{sessionVO.activitySessionId}" style="border:0px ; font-weight: bold;" /><br/>
-
-        </div>
-        <div>
-            <label>活動促銷編號:</label>
-            <input type="text" th:field="*{promotionVO.promotionId}" style="border:0px ; font-weight: bold;" /><br/>
-
+            <h2 class="hc-2">編輯活動項目&nbsp;<span th:text="${activityOrderVO.activityOrderId}" th:field="*{activityOrderId}" name="activityOrderId"></span></h2>
+            <input type="hidden" th:field="*{activityOrderId}" />
         </div>
 
         <div>
-            <label>訂單日期:</label>
-            <input type="date" th:field="*{orderTime}" onclick="hideContent('orderTime.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('orderTime')}" th:errors="*{orderTime}" class="error" id="orderTime.errors"></span>
+            <select th:field="*{promotionVO.promotionId}" name="promotionVO.promotionId" hidden>
+                <option th:each="promotionVO : ${promotionListData}" th:value="${promotionVO.promotionId}" th:text="${promotionVO.promotionId}" />
+            </select>
+            <span th:if="${#fields.hasErrors('promotionVO.promotionId')}" th:errors="*{promotionVO.promotionId}" class="error" id="promotionVO.promotionId.errors"></span>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">會員編號 <span class="require_text">(必填)</span></h5>
+            </div>
+            <select class="selectric2" th:field="*{memberVO.memberId}">
+                <option value="">請選擇</option>
+                <option th:each="memberVO : ${memberListData}"
+                        th:value="${memberVO.memberId}"
+                        th:text="${memberVO.memberId}"/>
+            </select>
+            <div th:if="${#fields.hasErrors('memberVO.memberId')}"
+                 class="error"
+                 id="memberVO.memberId.errors">
+                <span th:errors="*{memberVO.memberId}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+
         </div>
 
-        <div>
-            <label>報名人數:</label>
-            <input type="text" th:field="*{enrollNumber}" onclick="hideContent('enrollNumber.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('enrollNumber')}" th:errors="*{enrollNumber}" class="error" id="enrollNumber.errors"></span>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">訂單日期 <span class="require_text">(必填)</span></h5>
+            </div>
+            <input type="date" class="form_element6" th:field="*{orderTime}"  onclick="hideContent('orderTime.errors');" />
+            <div th:if="${#fields.hasErrors('orderTime')}" class="error" id="aorderTime.errors">
+                <span th:errors="*{orderTime}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
         </div>
-
-        <div>
-            <label>訂單總金額:</label>
-            <input type="text" th:field="*{orderAmount}" onclick="hideContent('orderAmount.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('orderAmount')}" th:errors="*{orderAmount}" class="error" id="orderAmount.errors"></span>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">活動場次日期 <span >(不可編輯)</span></h5>
+            </div>
+<!--            <select class="selectric2" th:field="*{sessionVO.activitySessionId}">-->
+<!--                <option th:each="sessionVO : ${sessionListData}"-->
+<!--                        th:value="${sessionVO.activitySessionId}"-->
+<!--                        th:text="${sessionVO.activityDate}"/>-->
+<!--            </select>-->
+            <input type="text" class="form_element6" readonly th:value="*{sessionVO.activityDate}"
+                   onclick="hideContent('sessionVO.activityDate.errors');"/>
+            <input type="hidden" th:field="*{sessionVO.activitySessionId}"/>
+            <div th:if="${#fields.hasErrors('sessionVO.activityDate')}" class="error" id="sessionVO.activityDate.errors">
+                <span th:errors="*{sessionVO.activityDate}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
         </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">場次時段 <span>(不可編輯)</span></h5>
+            </div>
 
-        <div>
-            <label>促銷金額:</label>
-            <input type="text" th:field="*{promotionPrice}" onclick="hideContent('promotionPrice.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('promotionPrice')}" th:errors="*{promotionPrice}" class="error" id="promotionPrice.errors"></span>
+            <select class="selectric2" th:field="*{time_PeriodVO.sessionTimePeriodId}"  disabled>
+                <option value="">請選擇</option>
+                <option th:each="time_PeriodVO : ${timePeriodListData}"
+                        th:value="${time_PeriodVO.sessionTimePeriodId}"
+                        th:text="${time_PeriodVO.timePeriod}" readonly/>
+            </select>
+            <div th:if="${#fields.hasErrors('time_PeriodVO.sessionTimePeriodId')}"
+                 class="error"
+                 id="time_PeriodVO.timePeriod.errors">
+                <span th:errors="*{time_PeriodVO.sessionTimePeriodId}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+
         </div>
-
-        <div>
-            <label>實付金額:</label>
-            <input type="text" th:field="*{payAmount}" onclick="hideContent('payAmount.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('payAmount')}" th:errors="*{payAmount}" class="error" id="payAmount.errors"></span>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">報名人數<span class="require_text">(必填)</span> </h5>
+            </div>
+            <input type="text" class="form_element7 nt-u2 enrollNumber" th:field="*{enrollNumber}"
+                   oninput="calculateOrderAmount();" onclick="hideContent('enrollNumber.errors');" />
+            <div th:if="${#fields.hasErrors('enrollNumber')}" class="error" id="enrollNumber.errors">
+                <span th:errors="*{enrollNumber}" ></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
         </div>
-
-        <div>
-            <label>訂單狀態:</label>
-            <select th:field="*{orderState}">
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">訂單總金額 <span>(不可編輯)</span></h5>
+            </div>
+            <span class="nt-u2 f-z">NT$&nbsp;</span>
+            <!-- 使用 th:value="${defaultOrderAmount}" 來設置預設值 -->
+            <input type="text" class="form_element5 nt-u2 orderAmount" th:field="*{orderAmount}"
+                   th:value="${defaultOrderAmount}" readonly onclick="hideContent('orderAmount.errors');"/>
+            <div th:if="${#fields.hasErrors('orderAmount')}" class="error" id="orderAmount.errors">
+                <span th:errors="*{orderAmount}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">促銷金額 <span>(不可編輯)</span></h5>
+            </div>
+            <span class="nt-u2 f-z">NT$&nbsp;</span>
+            <input type="text" class="form_element5 nt-u2 promotionPrice" th:field="*{promotionPrice}" readonly
+                   onclick="hideContent('promotionPrice.errors');"/>
+            <div th:if="${#fields.hasErrors('promotionPrice')}" class="error" id="promotionPrice.errors">
+                <span th:errors="*{promotionPrice}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">實付金額 <span>(不可編輯)</span></h5>
+            </div>
+            <span class="nt-u2 f-z">NT$&nbsp;</span>
+            <input type="text" class="form_element5 nt-u2 payAmount" th:field="*{payAmount}" readonly
+                   onclick="hideContent('payAmount.errors');"/>
+            <div th:if="${#fields.hasErrors('payAmount')}" class="error" id="payAmount.errors">
+                <span th:errors="*{payAmount}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">訂單狀態 <span class="require_text">(必填)</span></h5>
+            </div>
+            <select class="selectric2 " th:field="*{orderState}">
+                <option value="">請選擇</option>
                 <option value="0">已繳費</option>
                 <option value="1">取消訂單</option>
                 <option value="2">完成訂單</option>
             </select>
-            <span th:if="${#fields.hasErrors('orderState')}" th:errors="*{orderState}" class="error" id="orderState.errors"></span>
+            <div th:if="${#fields.hasErrors('orderState')}" class="error" id="orderState.errors">
+                <span th:errors="*{orderState}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
         </div>
-        <div>
-            <label>退款狀態:</label>
-            <select th:field="*{refundState}">
+        <div class="mb-4">
+            <div class="mb-4">
+                <h5 class="f-w">退款狀態 <span class="require_text">(必填)</span></h5>
+            </div>
+            <select class="selectric2 " th:field="*{refundState}">
+                <option value="">請選擇</option>
                 <option value="0">無須退款</option>
                 <option value="1">尚未退款</option>
                 <option value="2">退款中</option>
                 <option value="2">完成退款</option>
             </select>
-            <span th:if="${#fields.hasErrors('refundState')}" th:errors="*{refundState}" class="error" id="refundState.errors"></span>
+            <div th:if="${#fields.hasErrors('refundState')}" class="error" id="refundState.errors">
+                <span th:errors="*{refundState}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="mb-4">
+                <h5 class="f-w">備註</h5>
+            </div>
+            <textarea class="textarea_element" th:field="*{orderMemo}" onclick="hideContent('orderMemo.errors');"/></textarea>
+            <div th:if="${#fields.hasErrors('orderMemo')}" class="error" id="orderMemo.errors">
+                <span th:errors="*{orderMemo}"></span>
+                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+            </div>
+        </div>
+        <input type="hidden" class="activityPrice" th:value="${activityPrice}" />
+        <br>
+        <div>
+            <div class="btn_area">
+
+                <button type="button" class="btn btn-secondary cu-2"
+                        onclick="window.location.href='/activityOrder/listAllOrder'">返回
+                </button>
+                <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 編輯完成</button>
+            </div>
+
         </div>
 
-        <div>
-            <label>備註:</label>
-            <textarea name="orderMemo" th:field="*{orderMemo}" onclick="hideContent('orderMemo.errors');" ></textarea><br/>
-            <span  th:if="${#fields.hasErrors('orderMemo')}" th:errors="*{orderMemo}" class="error" id="orderMemo.errors"></span>
-        </div>
 
-        <div>
-            <div></div>
-            <div><button type="submit" id="submit"> 送出修改 </button></div>
-            <div></div>
-        </div>
     </form>
 </div>
+    </div>
 
 <!-- JavaScript part -->
 <script type="text/javascript">
-    //清除提示信息
+    // 清除提示信息
     function hideContent(d) {
         document.getElementById(d).style.display = "none";
     }
 
-</script>
+    function calculateOrderAmount() {
+        var enrollNumberInput = document.querySelector(".enrollNumber").value;
+        var activityPriceInput = document.querySelector(".activityPrice").value;
+        var orderAmountInput = document.querySelector(".orderAmount");
 
-</body>
-</html>
+        // Parse the input values to integers
+        var enrollNumber = parseInt(enrollNumberInput);
+        var activityPrice = parseFloat(activityPriceInput);
+
+        // Validate the parsed numbers and calculate the order amount
+        if (!isNaN(enrollNumber) && !isNaN(activityPrice)) {
+            var orderAmount = enrollNumber * activityPrice;
+            orderAmountInput.value = Math.round(orderAmount); // 四捨五入為最接近的整數
+        } else {
+            orderAmountInput.value = ''; // 如果輸入無效，清空訂單金額
+        }
+
+        // 同時計算實付金額
+        calculatePayAmount();
+    }
+
+    function calculatePayAmount() {
+        var orderAmountInput = document.querySelector(".orderAmount").value;
+        var promotionPriceInput = document.querySelector(".promotionPrice").value;
+        var payAmountInput = document.querySelector(".payAmount");
+
+        // Parse the input values to float
+        var orderAmount = parseFloat(orderAmountInput);
+        var promotionPrice = parseFloat(promotionPriceInput);
+
+        // 如果促銷金額為空，設置默認值為0
+        if (isNaN(promotionPrice)) {
+            promotionPrice = 0;
+        }
+
+        // Validate the parsed numbers and calculate the pay amount
+        if (!isNaN(orderAmount)) {
+            var payAmount = orderAmount - promotionPrice;
+            payAmountInput.value = Math.round(payAmount); // 確保值為整數
+        } else {
+            payAmountInput.value = ''; // 如果訂單總金額無效，清空實付金額
+        }
+    }
+
+    // Initialize the calculation on page load
+    window.addEventListener('DOMContentLoaded', (event) => {
+        calculatePayAmount();
+    });
+
+
+
+</script>
+    <div th:replace="~{/back_end/include/include_bottom}"></div>
