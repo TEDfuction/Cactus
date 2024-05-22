@@ -302,7 +302,11 @@
 <!-- <div id="pagination"></div> -->
 
 <!-- ==============================活動圖片資料抓取================================ -->
-<div class="row2 row-cols-1 row-cols-md-3 g-4" style="display: flex ; flex-wrap: wrap;" id="photoList">
+
+                
+                
+                
+  <div class="row2 row-cols-1 row-cols-md-3 g-4" style="display: flex ; flex-wrap: wrap;" id="photoList">
     <th:block th:each="photoVO : ${photoListData}">
         <div class="col" style="margin-bottom:30px;">
             <div class="card h-100 space ">
@@ -312,13 +316,38 @@
                     <p class="card-text multiline-ellipsis" th:text="${photoVO.activityPh.activityDescription}"></p>
                 </div>
                 <div class="card-footer2">
+                
                     <span class="nt" >NT$</span><span class="money" th:text="${photoVO.activityPh.activityPrice}" ></span></span> 起</span>
+                     
 <!--                     <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${photoVO.activityPhotoId}" >詳細介紹</button> -->
-               <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" >
-               <a class="text-white px-2 " th:href="@{'/activity/listDetailPhoto?activityPhotoId=' + ${photoVO.activityPhotoId} + ''}">詳細介紹</a>
-               </button>
-                    <!-- <small class="text-muted">Last updated 3 mins ago</small> -->
+<!--                <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" > -->
+               <!-- 把值帶到下個頁面listDetailPhoto -->
+               <form th:action="@{/activity/listDetailPhoto} " method="post" >
+                 <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"> 
+                 <input type="hidden" name="activityId" th:value="${photoVO.activityPh.activityId}"> 
+                 <input type="submit"  value="詳細介紹" class="btn btn-primary border-radius" >
+               </form> 
+<!--                <a class="text-white px-2 " th:href="@{'/activity/listDetailPhoto?activityPhotoId=' + ${photoVO.activityPhotoId} + ''}">詳細介紹</a> -->
+<!--                </button> -->
+<!--                     <small class="text-muted">Last updated 3 mins ago</small> -->
                 </div>
+                
+               
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
 
                 
