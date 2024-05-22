@@ -279,20 +279,20 @@ public class ProductController {
 	/*******************************************************************/
 		
 		
-		@GetMapping("/listAllTest")
-		public String listAllTest(ModelMap model) {
-			List<ProductVO> list = productSvc.getAll();
-			model.addAttribute("productList", list);
-			return "/front_end/product/shop_indexORI";
-		}
-
-	    @GetMapping("/listOneTest/{productId}")
-	    public String listOneTest(@PathVariable Integer productId, ModelMap model) {
-	    	System.out.println("aaa");
-	        ProductVO productVO = productSvc.findById(productId);
-	        model.addAttribute("productVO", productVO);
-	        return "/front_end/product/shop_singleORI";
-	    }
+//		@GetMapping("/listAllTest")
+//		public String listAllTest(ModelMap model) {
+//			List<ProductVO> list = productSvc.getAll();
+//			model.addAttribute("productList", list);
+//			return "/front_end/product/shop_indexORI";
+//		}
+//
+//	    @GetMapping("/listOneTest/{productId}")
+//	    public String listOneTest(@PathVariable Integer productId, ModelMap model) {
+//	    	System.out.println("aaa");
+//	        ProductVO productVO = productSvc.findById(productId);
+//	        model.addAttribute("productVO", productVO);
+//	        return "/front_end/product/shop_singleORI";
+//	    }
 		
 		
 }

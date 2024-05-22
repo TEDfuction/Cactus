@@ -109,6 +109,9 @@
 <!-- ==============================商品展示================================ -->
 <div class="row2 row-cols-1 row-cols-md-3 g-4" style="display: flex ; flex-wrap: wrap;" id="photoList">
     <th:block th:each="productVO : ${productList}">
+    
+    	<th:block th:if="${productVO.productStatus}">
+    	
         <div class="col" style="margin-bottom:30px;">
         	
             <div class="card h-100 space  product-men">
@@ -120,7 +123,7 @@
                 
                 
                 <div class="card-body">
-                    <h3 class="card-title2" name="productCate" th:text=${productVO.productCategoryVOs.productCategoryName}></h3>
+                    <h3 class="card-title2" name="productCate" th:text=${productVO.productCategoryVO.productCategoryName}></h3>
                     <h4 class="card-title2" th:text="${productVO.productName}"></h4><a th:href="@{'/product/listOneProduct?productId=' + ${productVO.productId} + ''}">查看詳情</a>
                     <p class="card-text multiline-ellipsis" th:text="${productVO.productDescribtion}"></p>
                 </div>
@@ -165,6 +168,7 @@
                 
             </div>
         </div>
+        </th:block>
     </th:block>
   
 </div>

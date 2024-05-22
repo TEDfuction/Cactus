@@ -111,6 +111,16 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/shopOrder/showOneShopOrder",
 				   "/shopOrder/orderDetailFromShowAll",
 				   "/shopOrder/orderDetailFromShowOne",
+				   
+				   "/product/historyProduct",
+				   "/product/select_page",
+				   "/product/listAllProduct1",
+				   "/product/addProduct",
+				   "/product/insert",
+				   "/product/getOne_For_Update",
+				   "/product/update",
+				   "/product/listProducts_ByCompositeQuery",
+				   "/product/getOne_For_Display"
 		   		   		})
 public class AdminFilter implements Filter {
 

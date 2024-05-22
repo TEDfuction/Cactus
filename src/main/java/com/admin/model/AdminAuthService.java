@@ -23,11 +23,15 @@ public class AdminAuthService {
 		return repository.findAll();
 	}
 	
-	public List<AdminAuthorizationVO> findByAdminId(Integer adminId){
+	public List<AdminAuthVO> findByAdminId(Integer adminId){
 		return repository.findByAdminId(adminId);
 	}
 	
-	public List<AdminVO> findByAdminAuthorizationId(Integer adminAuthorizationId){
+	public List<AdminAuthVO> findByAdminAuthorizationId(Integer adminAuthorizationId){
 		return repository.findByAdminAuthorizationId(adminAuthorizationId);
+	}
+	
+	public void emptyAuth(Integer adminId) {
+		repository.emptyAuth(adminId);
 	}
 }
