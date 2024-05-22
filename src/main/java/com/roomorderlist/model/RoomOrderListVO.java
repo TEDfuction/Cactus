@@ -18,7 +18,7 @@ public class RoomOrderListVO {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "room_Id", nullable = false)
     private RoomVO room;
 
     @NotNull
@@ -29,7 +29,7 @@ public class RoomOrderListVO {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
-    private RoomTypeVO roomType;
+    private RoomTypeVO roomTypeVO;
 
     public Integer getRoomOrderListId() {
         return roomOrderListId;
@@ -56,10 +56,10 @@ public class RoomOrderListVO {
     }
 
     public RoomTypeVO getRoomType() {
-        return roomType;
+        return roomTypeVO;
     }
 
     public void setRoomType(RoomTypeVO roomType) {
-        this.roomType = roomType;
+        this.roomTypeVO = roomTypeVO;
     }
 }

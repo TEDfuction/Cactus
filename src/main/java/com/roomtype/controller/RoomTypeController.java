@@ -1,12 +1,5 @@
 package com.roomtype.controller;
 
-import com.controller.roomtype.dao.RoomTypeDao;
-import com.controller.roomtype.dto.RoomTypeStatus;
-import com.controller.roomtype.dto.RoomTypeUpdate;
-import com.controller.roomtype.dto.RoomTypeVORequest;
-import com.controller.roomtype.model.RoomTypeVO;
-import com.controller.roomtype.service.impl.RoomTypeImpl;
-import com.controller.roomtypepic.dao.RoomTypePicDao;
 import com.roomtype.dto.RoomTypeStatus;
 import com.roomtype.dto.RoomTypeUpdate;
 import com.roomtype.dto.RoomTypeVORequest;
@@ -164,7 +157,7 @@ public class RoomTypeController {
             return "redirect:/error-page"; // or some error handling
         }
         model.addAttribute("roomTypePicVO", roomTypePicRepository);
-        return "front_end/roomtype/roomTypeFront";
+        return "front_end/room/roomTypeFront";
 
     }
 

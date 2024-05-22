@@ -1,8 +1,8 @@
 package com.roomtype.service;
 
-import com.controller.roomtype.dto.RoomTypeUpdate;
-import com.controller.roomtype.dto.RoomTypeVORequest;
-import com.controller.roomtype.model.RoomTypeVO;
+
+import com.roomtype.dto.RoomTypeUpdate;
+import com.roomtype.dto.RoomTypeVORequest;
 import com.roomtype.model.RoomTypeVO;
 
 import java.util.Date;
@@ -15,6 +15,7 @@ public interface RoomTypeService {
 
 
     void addRoomType(RoomTypeVORequest roomTypeVORequest);
+
     void updateRoomType(RoomTypeUpdate roomtypeUpdate);
 
 //    void updateRTS(Integer roomTypeId, Boolean roomTypeStatus);
@@ -23,7 +24,7 @@ public interface RoomTypeService {
 
     RoomTypeVO getRoomTypeById(Integer roomTypeId);
 
-     RoomTypeVO getOneRoomType(Integer roomTypeId);
+    RoomTypeVO getOneRoomType(Integer roomTypeId);
 
     List<RoomTypeVO> getRTStatus();
 
