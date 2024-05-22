@@ -3,8 +3,7 @@ package com.roomtype.model;
 
 import com.room.model.RoomVO;
 import com.roomorderlist.model.RoomOrderListVO;
-import com.roomschedule.model.RoomScheduleVO;
-import com.roomtypepic.model.RoomTypePicVO;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

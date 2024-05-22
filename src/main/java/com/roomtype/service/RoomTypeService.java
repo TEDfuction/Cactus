@@ -3,6 +3,7 @@ package com.roomtype.service;
 import com.controller.roomtype.dto.RoomTypeUpdate;
 import com.controller.roomtype.dto.RoomTypeVORequest;
 import com.controller.roomtype.model.RoomTypeVO;
+import com.roomtype.model.RoomTypeVO;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ public interface RoomTypeService {
 
     List<RoomTypeVO> getAllRoomTypes();
 
+    RoomTypeVO getRoomTypeById(Integer roomTypeId);
 
      RoomTypeVO getOneRoomType(Integer roomTypeId);
 

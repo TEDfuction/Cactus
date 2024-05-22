@@ -2,11 +2,7 @@ package com.room.controller;
 
 import com.room.model.RoomVO;
 import com.room.model.RoomService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,6 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Controller
@@ -36,11 +37,11 @@ public class RoomIdController {
 
         if(room == null){
             model.addAttribute("errorMessage","查無資料");
-            return "/room/roomSearch";
+            return "back_end/room/roomSearch";
         }
 
         model.addAttribute("room", room);
-        return "/room/roomIdSearch";
+        return "back_end/room/roomIdSearch";
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
@@ -53,7 +54,7 @@ public class RoomIdController {
         }
 
         String message = strBuilder.toString();
-        return new ModelAndView("room/roomSearch", "errorMessage", "請修正以下錯誤:<br>"+message);
+        return new ModelAndView("back_end/room/roomSearch", "errorMessage", "請修正以下錯誤:<br>"+message);
     }
 
 }

@@ -1,12 +1,8 @@
 package com.roompromotion.controller;
 
-import com.roompromotion.model.RoomPromotion;
+import com.roompromotion.model.RoomPromotionVO;
 import com.roompromotion.model.RoomPromotionService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +12,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Controller
@@ -33,18 +34,18 @@ public class RoomPromotionIdController {
             @RequestParam("roomPromotionId") String promotionId,
             ModelMap model){
 
-        RoomPromotion roomPromotion =  roomPromotionService.findByPK(Integer.valueOf(promotionId));
+        RoomPromotionVO roomPromotion =  roomPromotionService.findByPK(Integer.valueOf(promotionId));
 
 //        List<RoomPromotion> list = roomPromotionService.getAll();
 //        model.addAttribute("promotionListData", list);
 
         if(roomPromotion == null){
             model.addAttribute("errorMessage","查無資料");
-            return "/roomPromotion/roomPromotionSearch";
+            return "back_end/roomPromotion/roomPromotionSearch";
         }
 
         model.addAttribute("promotion" , roomPromotion);
-        return "/roomPromotion/roomPromotionIdSearch";
+        return "back_end/roomPromotion/roomPromotionIdSearch";
     }
     @ExceptionHandler(value = { ConstraintViolationException.class })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -56,6 +57,6 @@ public class RoomPromotionIdController {
         }
 
         String message = strBuilder.toString();
-        return new ModelAndView("roomPromotion/roomPromotionSearch", "errorMessage", "請修正以下錯誤:<br>"+message);
+        return new ModelAndView("back_end/roomPromotion/roomPromotionSearch", "errorMessage", "請修正以下錯誤:<br>"+message);
     }
 }

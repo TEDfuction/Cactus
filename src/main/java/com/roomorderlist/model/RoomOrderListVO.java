@@ -1,10 +1,12 @@
 package com.roomorderlist.model;
 
 import com.room.model.RoomVO;
-import com.roomOrder.model.RoomOrder;
-import com.roomType.model.RoomType;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.roomorder.model.RoomOrderVO;
+import com.roomtype.model.RoomTypeVO;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 
 @Entity
 @Table(name = "room_order_list")
@@ -22,12 +24,12 @@ public class RoomOrderListVO {
     @NotNull
     @OneToOne (fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_order_id", nullable = false)
-    private RoomOrder roomOrder;
+    private RoomOrderVO roomOrder;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
-    private RoomType roomType;
+    private RoomTypeVO roomType;
 
     public Integer getRoomOrderListId() {
         return roomOrderListId;
@@ -45,20 +47,19 @@ public class RoomOrderListVO {
         this.room = room;
     }
 
-    public RoomOrder getRoomOrder() {
+    public RoomOrderVO getRoomOrder() {
         return roomOrder;
     }
 
-    public void setRoomOrder(RoomOrder roomOrder) {
+    public void setRoomOrder(RoomOrderVO roomOrder) {
         this.roomOrder = roomOrder;
     }
 
-    public RoomType getRoomType() {
+    public RoomTypeVO getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(RoomTypeVO roomType) {
         this.roomType = roomType;
     }
-
 }

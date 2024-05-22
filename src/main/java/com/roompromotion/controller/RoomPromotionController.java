@@ -1,9 +1,9 @@
 package com.roompromotion.controller;
 
 
-import com.roompromotion.model.RoomPromotion;
+import com.roompromotion.model.RoomPromotionVO;
 import com.roompromotion.model.RoomPromotionService;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -26,7 +27,7 @@ public class RoomPromotionController {
     RoomPromotionService roomPromotionService;
 
     @GetMapping("/searchRoomPromotion")
-    public String searchPage() { return "/roomPromotion/roomPromotionSearch"; }
+    public String searchPage() { return "back_end/roomPromotion/roomPromotionSearch"; }
 
 
 
@@ -34,67 +35,67 @@ public class RoomPromotionController {
     @GetMapping("/getAllRoomPromotion")
     public String getAll(ModelMap model){
 
-        List<RoomPromotion> roomPromotions = roomPromotionService.getAll();
+        List<RoomPromotionVO> roomPromotions = roomPromotionService.getAll();
 
         model.addAttribute("roomPromotions", roomPromotions);
 
-        return "roomPromotion/showAllRoomPromotions";
+        return "back_end/roomPromotion/showAllRoomPromotions";
     }
 
     @GetMapping("/addRoomPromotion")
     public String addPromotion(ModelMap model) {
-        RoomPromotion roomPromotion  = new RoomPromotion();
+        RoomPromotionVO roomPromotion  = new RoomPromotionVO();
 
         model.addAttribute("roomPromotion", roomPromotion);
-        return "/roomPromotion/addRoomPromotion";
+        return "back_end/roomPromotion/addRoomPromotion";
     }
 
 
     @PostMapping("/insertRoomPromotion")
     public String insert(
-            @Valid RoomPromotion roomPromotion,
+            @Valid RoomPromotionVO roomPromotion,
             BindingResult result,
             ModelMap model){
         if (result.hasErrors()) {
             model.addAttribute("promotionStarted", roomPromotion.getPromotionStarted());
             model.addAttribute("promotionEnd", roomPromotion.getPromotionEnd());
-            return "/roomPromotion/addRoomPromotion";
+            return "back_end/roomPromotion/addRoomPromotion";
         }
 
         roomPromotionService.addRoomPromotion(roomPromotion);
 
-        List<RoomPromotion> list = roomPromotionService.getAll();
+        List<RoomPromotionVO> list = roomPromotionService.getAll();
         model.addAttribute("roomPromotions", list);
 
         model.addAttribute("status" , "success");
-        return "roomPromotion/showAllRoomPromotions";
+        return "back_end/roomPromotion/showAllRoomPromotions";
 
     }
 
     @PostMapping("/getOneRoomPromotionUpdate")
     public String getOnePromotionUpdate(@RequestParam("promotionId") String promotionId, ModelMap model) {
 
-        RoomPromotion roomPromotion = roomPromotionService.findByPK(Integer.valueOf(promotionId));
+        RoomPromotionVO roomPromotion = roomPromotionService.findByPK(Integer.valueOf(promotionId));
         model.addAttribute("roomPromotion", roomPromotion);
-        return "roomPromotion/updateRoomPromotion";
+        return "back_end/roomPromotion/updateRoomPromotion";
     }
 
 
     @PostMapping("/updateRoomPromotion")
-    public String updateRoomPromotion(@Valid RoomPromotion roomPromotion,
+    public String updateRoomPromotion(@Valid RoomPromotionVO roomPromotion,
                                   BindingResult result,
                                   ModelMap model){
 
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
-            return "roomPromotion/showAllRoomPromotions";
+            return "back_end/roomPromotion/showAllRoomPromotions";
         }
         roomPromotionService.updateRoomPromotion(roomPromotion);
 
         model.addAttribute("status" , "success");
         roomPromotion = roomPromotionService.findByPK(roomPromotion.getPromotionId());
         model.addAttribute("promotion" , roomPromotion);
-        return "roomPromotion/roomPromotionIdSearch";
+        return "back_end/roomPromotion/roomPromotionIdSearch";
     }
 
 //    @GetMapping("/deletePromotion")

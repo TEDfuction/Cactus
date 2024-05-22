@@ -1,9 +1,11 @@
 package com.room.model;
 
-import com.roomType.model.RoomType;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
+import com.roomtype.model.RoomTypeVO;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "room")
@@ -16,7 +18,7 @@ public class RoomVO {
 //    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
-    private RoomType roomType;
+    private RoomTypeVO roomTypeVO;
 
     @NotNull(message = "住客人數:請勿空白")
     @Column(name = "room_guest_amount", nullable = false)
@@ -46,12 +48,12 @@ public class RoomVO {
         this.roomId = roomId;
     }
 
-    public RoomType getRoomType() {
-        return roomType;
+    public RoomTypeVO getRoomTypeVO() {
+        return roomTypeVO;
     }
 
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
+    public void setRoomTypeVO(RoomTypeVO roomTypeVO) {
+        this.roomTypeVO = roomTypeVO;
     }
 
     public Integer getRoomGuestAmount() {

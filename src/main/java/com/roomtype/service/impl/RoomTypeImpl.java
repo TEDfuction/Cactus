@@ -1,13 +1,10 @@
 package com.roomtype.service.impl;
 
 
-import com.controller.room.dao.RoomDao;
-import com.controller.room.model.RoomVO;
-import com.controller.roomtype.dto.RoomTypeUpdate;
-import com.controller.roomtype.dto.RoomTypeVORequest;
-import com.controller.roomtype.model.RoomTypeRepository;
-import com.controller.roomtype.model.RoomTypeVO;
-import com.controller.roomtype.service.RoomTypeService;
+
+import com.roomtype.model.RoomTypeRepository;
+import com.roomtype.model.RoomTypeVO;
+import com.roomtype.service.RoomTypeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,12 +16,16 @@ import java.util.*;
 public class RoomTypeImpl implements RoomTypeService {
 
     @Autowired
-    private RoomTypeRepository roomTypeDao;
+    private RoomTypeRepository roomTyperepository;
 
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private RoomDao roomDao;
+
+
+    @Override
+    public RoomTypeVO getRoomTypeById(Integer roomTypeId) {
+        return roomTyperepository.getById(roomTypeId);
+    }
 
 
     @Override
@@ -33,6 +34,9 @@ public class RoomTypeImpl implements RoomTypeService {
         modelMapper.map(roomTypeVORequest, roomTypeVO);
         roomTypeDao.save(roomTypeVO);
     }
+
+
+
 
     @Override
     public RoomTypeVO getOneRoomType(Integer roomTypeId) {

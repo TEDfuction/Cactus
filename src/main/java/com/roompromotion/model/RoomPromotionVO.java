@@ -1,15 +1,15 @@
 package com.roompromotion.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "room_promotion")
-public class RoomPromotion {
+public class RoomPromotionVO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "promotion_id", nullable = false)
@@ -41,7 +41,7 @@ public class RoomPromotion {
     @Column(name = "promotion_end", nullable = false)
     private LocalDate promotionEnd;
 
-    public RoomPromotion() {
+    public RoomPromotionVO() {
         super();
     }
 

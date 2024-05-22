@@ -3,9 +3,10 @@ package com.room.controller;
 
 import com.room.model.RoomVO;
 import com.room.model.RoomService;
-import com.roomType.model.RoomType;
-import com.roomType.model.RoomTypeService;
-import jakarta.validation.Valid;
+
+import com.roomtype.model.RoomTypeRepository;
+import com.roomtype.model.RoomTypeVO;
+import com.roomtype.service.impl.RoomTypeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,11 +26,13 @@ public class RoomController {
     @Autowired
     RoomService roomService;
     @Autowired
-    RoomTypeService roomTypeService;
+    RoomTypeImpl roomTypeImpl;
+    @Autowired
+    private RoomTypeRepository roomTypeRepository;
 
     @GetMapping("/searchRoom")
     public String searchPage() {
-        return "/room/roomSearch";
+        return "back_end/room/roomSearch";
     }
 
 
@@ -39,17 +43,17 @@ public class RoomController {
 
         model.addAttribute("rooms", rooms);
 
-        return "/room/showAllRoom";
+        return "back_end/room/showAllRoom";
     }
 
     @GetMapping("/addRoom")
     public String addRoom(ModelMap model) {
         RoomVO room = new RoomVO();
-        List<RoomType> roomType = roomTypeService.getAll();
+        List<RoomTypeVO> roomType = roomTypeRepository.findAll();
 
         model.addAttribute("roomTypeListData", roomType);
         model.addAttribute("room", room);
-        return "/room/addRoom";
+        return "back_end/room/addRoom";
     }
 
     @PostMapping("/insertRoom")
@@ -59,9 +63,9 @@ public class RoomController {
             ModelMap model){
 
         if (result.hasErrors()) {
-            List<RoomType> roomType = roomTypeService.getAll();
+            List<RoomTypeVO> roomType = roomTypeRepository.findAll();
             model.addAttribute("roomTypeListData", roomType);
-            return "/room/addRoom";
+            return "back_end/room/addRoom";
         }
 
         roomService.addRoom(room);
@@ -77,7 +81,7 @@ public class RoomController {
 
         RoomVO room = roomService.findByPK(Integer.valueOf(roomId));
         model.addAttribute("room", room);
-        return "/room/updateRoom";
+        return "back_end/room/updateRoom";
     }
 
     @PostMapping("/updateRoom")
@@ -87,19 +91,19 @@ public class RoomController {
             @RequestParam("roomTypeId") Integer roomTypeId,
             ModelMap model) {
 
-        RoomType roomType = roomTypeService.getById(roomTypeId);
-        room.setRoomType(roomType);
+        RoomTypeVO roomTypeVO = roomTypeImpl.getRoomTypeById(roomTypeId);
+        room.setRoomTypeVO(roomTypeVO);
 
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
-            return "/room/updateRoom";
+            return "back_end/room/updateRoom";
         }
 
         roomService.updateRoom(room);
 
         room = roomService.findByPK(room.getRoomId());
         model.addAttribute("room", room);
-        return "/room/roomIdSearch";
+        return "back_end/room/roomIdSearch";
 
     }
 
@@ -113,7 +117,7 @@ public class RoomController {
 
         List<RoomVO> rooms = roomService.getAll();
         model.addAttribute("rooms", rooms);
-        return "/room/showAllRoom";
+        return "back_end/room/showAllRoom";
     }
 
 }

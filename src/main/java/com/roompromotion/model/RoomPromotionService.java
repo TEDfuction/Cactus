@@ -13,11 +13,11 @@ public class RoomPromotionService {
     @Autowired
     RoomPromotionRepository roomPromotionRepository;
 
-    public void addRoomPromotion(RoomPromotion roomPromotion){
+    public void addRoomPromotion(RoomPromotionVO roomPromotion){
         roomPromotionRepository.save(roomPromotion);
     }
 
-    public void updateRoomPromotion(RoomPromotion roomPromotion){
+    public void updateRoomPromotion(RoomPromotionVO roomPromotion){
         roomPromotionRepository.save(roomPromotion);
     }
 
@@ -26,12 +26,12 @@ public class RoomPromotionService {
             roomPromotionRepository.deleteById(promotionId);
     }
 
-    public List<RoomPromotion> getAll(){
+    public List<RoomPromotionVO> getAll(){
         return roomPromotionRepository.findAll();
     }
 
-    public RoomPromotion findByPK(Integer promotionId){
-        Optional<RoomPromotion> optional = roomPromotionRepository.findById(promotionId);
+    public RoomPromotionVO findByPK(Integer promotionId){
+        Optional<RoomPromotionVO> optional = roomPromotionRepository.findById(promotionId);
         return optional.orElse(null);
     }
 
