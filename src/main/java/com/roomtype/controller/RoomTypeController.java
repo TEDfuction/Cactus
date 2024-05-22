@@ -6,7 +6,9 @@ import com.roomtype.dto.RoomTypeVORequest;
 import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.impl.RoomTypeImpl;
+import com.roomtypepic.model.RoomTypePicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,10 @@ public class RoomTypeController {
 
     @Autowired
     private RoomTypeRepository roomTypeRepository;
+
+    @Autowired
+    private RoomTypePicRepository roomTypePicRepository;
+
 
 
     // 獲取所有活動
@@ -111,7 +119,6 @@ public class RoomTypeController {
         return "back_end/roomtype/listAllRoomType";
     }
 
-
     @PostMapping("/updateRoomTypeForm")
     public String updateRoomTypeForm(@RequestParam("roomTypeId") Integer roomTypeId,
                                      @Valid @ModelAttribute RoomTypeUpdate roomTypeUpdate,
@@ -145,11 +152,52 @@ public class RoomTypeController {
     public String getByRTFront(Model model) {
         List<RoomTypeVO> listAllRTFront = roomTypeImpl.getRTStatus();
         model.addAttribute("listAllRTFront", listAllRTFront);
-
-        
-        return "/front_end/roomtype/roomTypeFront";
+        if (roomTypePicRepository == null) {
+            // Handle the case where roomTypePicVO is not found
+            return "redirect:/error-page"; // or some error handling
+        }
+        model.addAttribute("roomTypePicVO", roomTypePicRepository);
+        return "front_end/room/roomTypeFront";
 
     }
 
+    @PostMapping("/selectRoomType")
+    public String selectRoomType(@RequestParam("roomTypeName") String roomTypeName,
+                                 @RequestParam("selectCheckIn") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkInDate,
+                                 @RequestParam("selectCheckOut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkOutDate,
+                                 @RequestParam(value = "roomGuestAmount", required = false) Integer roomGuestAmount,
+                                 @Valid @ModelAttribute RoomTypeVO roomTypeVO,
+                                 BindingResult result, Model model) {
+
+        List<Object[]> getSelect = roomTypeImpl.getAvailableRoomTypes(roomTypeName, checkInDate, checkOutDate, roomGuestAmount);
+        model.addAttribute("selectRoom", getSelect);
+
+        return "front_end/room/roomFront";
+    }
+
+    @GetMapping("/getRoomGuestAmounts")
+    @ResponseBody
+    public List<Integer> getRoomGuestAmounts(@RequestParam("roomTypeName") String roomTypeName) {
+        Optional<RoomTypeVO> roomTypeOptional = roomTypeImpl.getRoomTypeIdByName(roomTypeName);
+        if (roomTypeOptional.isPresent()) {
+            Integer roomTypeId = roomTypeOptional.get().getRoomTypeId();
+            return roomTypeImpl.getRoomGuestAmounts(roomTypeId);
+        }
+        return new ArrayList<>();
+    }
+
+    @PostMapping("/selectRoom")
+    public String selectRoom(@RequestParam("roomTypeName") String roomTypeName,
+                                 @RequestParam("selectCheckIn") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkInDate,
+                                 @RequestParam("selectCheckOut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkOutDate,
+                                 @RequestParam(value = "roomGuestAmount", required = false) Integer roomGuestAmount,
+                                 @Valid @ModelAttribute RoomTypeVO roomTypeVO,
+                                 BindingResult result, Model model) {
+
+        List<Object[]> getSelect = roomTypeImpl.getAvailableRoomTypes(roomTypeName, checkInDate, checkOutDate, roomGuestAmount);
+        model.addAttribute("select", getSelect);
+
+        return "front_end/room/roomFront";
+    }
 
 }
