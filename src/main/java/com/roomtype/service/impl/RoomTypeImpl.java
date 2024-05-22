@@ -2,6 +2,10 @@ package com.roomtype.service.impl;
 
 
 
+import com.room.model.RoomRepository;
+import com.room.model.RoomVO;
+import com.roomtype.dto.RoomTypeUpdate;
+import com.roomtype.dto.RoomTypeVORequest;
 import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.RoomTypeService;
@@ -18,6 +22,10 @@ public class RoomTypeImpl implements RoomTypeService {
     @Autowired
     private RoomTypeRepository roomTyperepository;
 
+
+    @Autowired
+    private RoomRepository roomRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -32,7 +40,7 @@ public class RoomTypeImpl implements RoomTypeService {
     public void addRoomType(RoomTypeVORequest roomTypeVORequest) {
         RoomTypeVO roomTypeVO = new RoomTypeVO();
         modelMapper.map(roomTypeVORequest, roomTypeVO);
-        roomTypeDao.save(roomTypeVO);
+        roomTyperepository.save(roomTypeVO);
     }
 
 
@@ -40,7 +48,7 @@ public class RoomTypeImpl implements RoomTypeService {
 
     @Override
     public RoomTypeVO getOneRoomType(Integer roomTypeId) {
-        Optional<RoomTypeVO> optional = roomTypeDao.findById(roomTypeId);
+        Optional<RoomTypeVO> optional = roomTyperepository.findById(roomTypeId);
         return null;
     }
 
@@ -50,7 +58,7 @@ public class RoomTypeImpl implements RoomTypeService {
         RoomTypeVO roomTypeVO = new RoomTypeVO();
         modelMapper.map(roomtypeUpdate, roomTypeVO);
 
-        roomTypeDao.save(roomTypeVO);
+        roomTyperepository.save(roomTypeVO);
     }
 
 //    @Override
@@ -69,7 +77,7 @@ public class RoomTypeImpl implements RoomTypeService {
     @Override
     public List<RoomTypeVO> getRTStatus() {
 
-        List<RoomTypeVO> getall = roomTypeDao.findAll();
+        List<RoomTypeVO> getall = roomTyperepository.findAll();
         List<RoomTypeVO> list = new ArrayList<>();
 //        List<List<RoomTypePicVO>> roomTypePic = new ArrayList<>();
         for (RoomTypeVO r : getall) {
@@ -96,7 +104,7 @@ public class RoomTypeImpl implements RoomTypeService {
         System.out.println("checkOutDate: " + adjustedCheckOutDate);
         System.out.println("roomGuestAmount: " + roomGuestAmount);
 
-        List<Object[]> availableRooms = roomTypeDao.findAvailableRoomTypes(roomTypeName, checkInDate, checkOutDate, roomGuestAmount);
+        List<Object[]> availableRooms = roomTyperepository.findAvailableRoomTypes(roomTypeName, checkInDate, checkOutDate, roomGuestAmount);
 
         // 打印查詢結果
         for (Object[] room : availableRooms) {
@@ -108,13 +116,13 @@ public class RoomTypeImpl implements RoomTypeService {
 
     @Override
     public Optional<RoomTypeVO> getRoomTypeIdByName(String roomTypeName) {
-        return roomTypeDao.findByRoomTypeName(roomTypeName);
+        return roomTyperepository.findByRoomTypeName(roomTypeName);
     }
 
     @Override
     public List<Integer> getRoomGuestAmounts(Integer roomTypeId) {
         List<Integer> guestAmounts = new ArrayList<>();
-        List<RoomVO> rooms = roomDao.findByRoomTypeId(roomTypeId);
+        List<RoomVO> rooms = roomRepository.findByRoomTypeId(roomTypeId);
         for (RoomVO room : rooms) {
             guestAmounts.add(room.getRoomGuestAmount());
         }
