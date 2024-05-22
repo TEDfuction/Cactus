@@ -29,20 +29,20 @@
 			<div>
 			<label>活動項目編號</label>
 			<select th:field="*{activityPh.activityId}">
-				<option th:each="activityPh : ${itemListData}" th:value="${activityPh.activityId}" th:text="${activityPh.activityId}" />
-			</select>
-			<span th:if="${#fields.hasErrors('activityPh.activityId')}" th:errors="*{activityPh.activityId.errors"></span>
-			</div>
-			
-			
-			
-			<div>
-			<label>活動項目名稱</label>
-			<select th:field="*{activityPh.activityId}">
 				<option th:each="activityPh : ${itemListData}" th:value="${activityPh.activityId}" th:text="${activityPh.activityName}" />
 			</select>
 			<span th:if="${#fields.hasErrors('activityPh.activityId')}" th:errors="*{activityPh.activityId.errors"></span>
 			</div>
+			
+			
+			
+<!-- 			<div> -->
+<!-- 			<label>活動項目名稱</label> -->
+<!-- 			<select th:field="*{activityPh.activityId}"> -->
+<!-- 				<option th:each="activityPh : ${itemListData}" th:value="${activityPh.activityId}" th:text="${activityPh.activityName}" /> -->
+<!-- 			</select> -->
+<!-- 			<span th:if="${#fields.hasErrors('activityPh.activityId')}" th:errors="*{activityPh.activityId.errors"></span> -->
+<!-- 			</div> -->
 			
 			
 <!-- 			<div> -->
