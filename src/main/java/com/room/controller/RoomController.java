@@ -1,7 +1,7 @@
 package com.room.controller;
 
 
-import com.room.model.Room;
+import com.room.model.RoomVO;
 import com.room.model.RoomService;
 import com.roomType.model.RoomType;
 import com.roomType.model.RoomTypeService;
@@ -35,7 +35,7 @@ public class RoomController {
     @GetMapping("/getAllRoom")
     public String getAll(ModelMap model) {
 
-        List<Room> rooms = roomService.getAll();
+        List<RoomVO> rooms = roomService.getAll();
 
         model.addAttribute("rooms", rooms);
 
@@ -44,7 +44,7 @@ public class RoomController {
 
     @GetMapping("/addRoom")
     public String addRoom(ModelMap model) {
-        Room room = new Room();
+        RoomVO room = new RoomVO();
         List<RoomType> roomType = roomTypeService.getAll();
 
         model.addAttribute("roomTypeListData", roomType);
@@ -54,7 +54,7 @@ public class RoomController {
 
     @PostMapping("/insertRoom")
     public String insert(
-            @Valid Room room,
+            @Valid RoomVO room,
             BindingResult result,
             ModelMap model){
 
@@ -66,7 +66,7 @@ public class RoomController {
 
         roomService.addRoom(room);
 
-        List<Room> rooms = roomService.getAll();
+        List<RoomVO> rooms = roomService.getAll();
         model.addAttribute("rooms", rooms);
         return "redirect:/room/getAllRoom";
 
@@ -75,14 +75,14 @@ public class RoomController {
     @PostMapping("/getOneRoomUpdate")
     public String getOneRoomUpdate(@RequestParam("roomId") String roomId, ModelMap model) {
 
-        Room room = roomService.findByPK(Integer.valueOf(roomId));
+        RoomVO room = roomService.findByPK(Integer.valueOf(roomId));
         model.addAttribute("room", room);
         return "/room/updateRoom";
     }
 
     @PostMapping("/updateRoom")
     public String updateRoom(
-            @Valid Room room,
+            @Valid RoomVO room,
             BindingResult result,
             @RequestParam("roomTypeId") Integer roomTypeId,
             ModelMap model) {
@@ -107,11 +107,11 @@ public class RoomController {
     public String updateRoomSaleStatus(@RequestParam("roomId") String roomId,ModelMap model,
                                        @RequestParam("roomSaleStatus")Byte roomSaleStatus){
 
-        Room room = roomService.findByPK(Integer.valueOf(roomId));
+        RoomVO room = roomService.findByPK(Integer.valueOf(roomId));
         room.setRoomSaleStatus(roomSaleStatus);
         roomService.updateRoom(room);
 
-        List<Room> rooms = roomService.getAll();
+        List<RoomVO> rooms = roomService.getAll();
         model.addAttribute("rooms", rooms);
         return "/room/showAllRoom";
     }

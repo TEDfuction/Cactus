@@ -1,6 +1,6 @@
 package com.roomorderlist.model;
 
-import com.room.model.Room;
+import com.room.model.RoomVO;
 import com.roomOrder.model.RoomOrder;
 import com.roomType.model.RoomType;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "room_order_list")
-public class RoomOrderList {
+public class RoomOrderListVO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_order_list_id", nullable = false)
@@ -17,7 +17,7 @@ public class RoomOrderList {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    private RoomVO room;
 
     @NotNull
     @OneToOne (fetch = FetchType.LAZY, optional = false)
@@ -37,11 +37,11 @@ public class RoomOrderList {
         this.roomOrderListId = roomOrderListId;
     }
 
-    public Room getRoom() {
+    public RoomVO getRoom() {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(RoomVO room) {
         this.room = room;
     }
 

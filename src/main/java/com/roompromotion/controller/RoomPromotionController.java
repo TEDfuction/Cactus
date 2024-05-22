@@ -6,6 +6,7 @@ import com.roompromotion.model.RoomPromotionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Controller
@@ -103,7 +106,20 @@ public class RoomPromotionController {
 //        return "/member/showAllPromotions";
 //    }
 
+    @PostMapping("/OrderList")
+    public String getRoomPromotion(@RequestParam("selectCheckIn") String selectCheckInStr, Model model) {
+        try {
+            LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
+            List<String> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
 
+            model.addAttribute("getRoomPromotion", getRoomPromotion);
 
+            return "/front_end/roomorder/roomOrderFront";  // 確保這個路徑正確
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Invalid date format.");
+            return "index";  // 當日期解析出錯時，返回到主頁面
+        }
+    }
 
 }

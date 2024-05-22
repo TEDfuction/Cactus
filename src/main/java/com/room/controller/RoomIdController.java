@@ -1,6 +1,6 @@
 package com.room.controller;
 
-import com.room.model.Room;
+import com.room.model.RoomVO;
 import com.room.model.RoomService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -32,7 +32,7 @@ public class RoomIdController {
             @RequestParam("roomId") String roomId,
             Model model){
 
-        Room room = roomService.findByPK(Integer.valueOf(roomId));
+        RoomVO room = roomService.findByPK(Integer.valueOf(roomId));
 
         if(room == null){
             model.addAttribute("errorMessage","查無資料");

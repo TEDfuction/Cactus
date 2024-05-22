@@ -12,11 +12,11 @@ public class RoomService {
     @Autowired
     RoomRepository repository;
 
-    public void addRoom(Room room){
+    public void addRoom(RoomVO room){
         repository.save(room);
     }
 
-    public void updateRoom(Room room){
+    public void updateRoom(RoomVO room){
         repository.save(room);
     }
 
@@ -25,12 +25,12 @@ public class RoomService {
             repository.deleteById(roomId);
     }
 
-    public List<Room> getAll(){
+    public List<RoomVO> getAll(){
         return repository.findAll();
     }
 
-    public Room findByPK(Integer roomId){
-        Optional<Room> optional = repository.findById(roomId);
+    public RoomVO findByPK(Integer roomId){
+        Optional<RoomVO> optional = repository.findById(roomId);
         return optional.orElse(null);
     }
 
