@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -46,7 +48,7 @@ public class RoomPromotionController {
     public String addPromotion(ModelMap model) {
         RoomPromotionVO roomPromotion  = new RoomPromotionVO();
 
-        model.addAttribute("roomPromotion", roomPromotion);
+        model.addAttribute("promotionVO", roomPromotion);
         return "back_end/roomPromotion/addRoomPromotion";
     }
 
@@ -57,18 +59,15 @@ public class RoomPromotionController {
             BindingResult result,
             ModelMap model){
         if (result.hasErrors()) {
+            model.addAttribute("promotionVO", roomPromotion);
             model.addAttribute("promotionStarted", roomPromotion.getPromotionStarted());
             model.addAttribute("promotionEnd", roomPromotion.getPromotionEnd());
             return "back_end/roomPromotion/addRoomPromotion";
         }
-
         roomPromotionService.addRoomPromotion(roomPromotion);
+        model.addAttribute("promotionVO", roomPromotion);
 
-        List<RoomPromotionVO> list = roomPromotionService.getAll();
-        model.addAttribute("roomPromotions", list);
-
-        model.addAttribute("status" , "success");
-        return "back_end/roomPromotion/showAllRoomPromotions";
+        return "back_end/roomPromotion/roomPromotionIdSearch";
 
     }
 
@@ -82,7 +81,9 @@ public class RoomPromotionController {
 
 
     @PostMapping("/updateRoomPromotion")
-    public String updateRoomPromotion(@Valid RoomPromotionVO roomPromotion,
+    public String updateRoomPromotion(
+            @RequestParam("promotionId") Integer promotionId,
+            @Valid RoomPromotionVO roomPromotion,
                                   BindingResult result,
                                   ModelMap model){
 
@@ -92,9 +93,8 @@ public class RoomPromotionController {
         }
         roomPromotionService.updateRoomPromotion(roomPromotion);
 
-        model.addAttribute("status" , "success");
-        roomPromotion = roomPromotionService.findByPK(roomPromotion.getPromotionId());
-        model.addAttribute("promotion" , roomPromotion);
+        roomPromotion = roomPromotionService.findByPK(promotionId);
+        model.addAttribute("promotionVO" , roomPromotion);
         return "back_end/roomPromotion/roomPromotionIdSearch";
     }
 

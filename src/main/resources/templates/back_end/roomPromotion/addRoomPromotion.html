@@ -12,13 +12,12 @@
 <div class="unique">
 
     <div align="center"> <h2>房間促銷新增</h2>
-        <h3><a class="navbar-brand" th:href="@{/roomPromotion/searchRoomPromotion}">回查詢頁</a></h3></div>
-
+        <h3><a class="navbar-brand" th:href="@{/roomPromotion/getAllRoomPromotion}">回查詢頁</a></h3></div>
 
 <div align="center">
 
 
-    <form th:action="@{insertRoomPromotion}" method="post" th:object="${roomPromotion}">
+    <form th:action="@{insertRoomPromotion}" method="post" th:object="${promotionVO}">
 
 
 
