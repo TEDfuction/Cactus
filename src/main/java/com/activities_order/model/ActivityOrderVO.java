@@ -6,6 +6,7 @@ import com.activities_session.model.SessionVO;
 import com.member.model.MemberVO;
 import com.session_time_period.model.Time_PeriodVO;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
@@ -40,9 +41,11 @@ public class ActivityOrderVO implements Serializable {
 
 
     @Column(name = "order_time")
+    @NotNull(message = "訂單日期請勿空白")
     private Date orderTime;
 
     @Column(name = "enroll_number")
+    @NotNull(message = "報名人數請勿空白")
     private Integer enrollNumber;
 
     @Column(name = "order_amount")
@@ -55,9 +58,11 @@ public class ActivityOrderVO implements Serializable {
     private  Integer payAmount;
 
     @Column(name = "order_state")
+    @NotNull(message = "訂單狀態必須選擇")
     private Integer orderState;
 
     @Column(name = "refund_state")
+    @NotNull(message = "退款狀態必須選擇")
     private Integer refundState;
 
     @Column(name = "order_memo")

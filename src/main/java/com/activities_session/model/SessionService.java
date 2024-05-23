@@ -8,6 +8,8 @@ import com.session_time_period.model.Time_PeriodVO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @Service
 public class SessionService {
 	
@@ -22,7 +24,7 @@ public class SessionService {
 		return sessionRepository.save(sessionVO);
 	}
 	
-	public SessionVO updateSession(SessionVO sessionVO) {
+	public SessionVO updateSession(SessionVO sessionVO ) {
 
 		return sessionRepository.save(sessionVO);
 	}
@@ -102,6 +104,10 @@ public class SessionService {
 	//透過activityId取得所有的日期
 	public List<SessionVO> getSessionsByActivityId(Integer activityId) {
 		return sessionRepository.findByItemVO_ActivityId(activityId);
+	}
+
+	public List<SessionVO> getAllByActivitySessionId(Integer activitySessionId){
+		return  sessionRepository.findAllByActivitySessionId(activitySessionId);
 	}
 
 
