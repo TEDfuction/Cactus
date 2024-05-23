@@ -58,11 +58,11 @@ public class ActivityOrderVO implements Serializable {
     private  Integer payAmount;
 
     @Column(name = "order_state")
-    @NotNull(message = "訂單狀態必須選擇")
+    //@NotNull(message = "訂單狀態必須選擇")
     private Integer orderState;
 
     @Column(name = "refund_state")
-    @NotNull(message = "退款狀態必須選擇")
+    //@NotNull(message = "退款狀態必須選擇")
     private Integer refundState;
 
     @Column(name = "order_memo")

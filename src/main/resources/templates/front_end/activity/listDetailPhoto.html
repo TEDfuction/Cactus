@@ -144,8 +144,9 @@
 <body>
 <div class="pad">
     <div class="pad2">
-        <div class="location"><img th:src="@{/img/activities/icons/map-pin.svg}">&nbsp;澎湖縣</div>
+        <div class="location"><img th:src="@{/img/front_end/activity/location.png}"  style="height: 25px;">&nbsp;澎湖縣</div>
         <div class="topic" th:text="${itemVO.activityName}"></div>
+        
     </div>
     <hr>
     <div class="checkTo">
@@ -157,13 +158,13 @@
     <div id="carouselExampleFade" class="carousel slide carousel-fade " data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
             <div class="carousel-item">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
             <div class="carousel-item">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -220,7 +221,7 @@
     <div>
         <form id="searchForm">
             <label for="activityDate"></label>
-            <input type="date" class="datechoose" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}"/>
+            <input type="text" class="datechoose" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}" />
             &nbsp;&nbsp;<i class="fa-solid fa-pen fa-lg" style="color: #060e6d;"></i>
         </form>
         <div id="timePeriodResults"></div>
