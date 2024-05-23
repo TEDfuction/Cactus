@@ -39,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <!-- 引入 DataTables JS -->
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <!-- ●●js  for jquery datatables 用 -->
+    <link rel="stylesheet" th:href="@{/css/back_end/style.css}"/>
 
 </head>
 
@@ -47,7 +47,7 @@
 
     .table-responsive {
         background-color: white;
-        border: 1px solid #e0e0e0; /* 淡灰色边框 */
+        border: 1px solid lightgrey; /* 淡灰色边框 */
         border-radius: 0.5rem; /* 圆角 */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 轻微的阴影 */
         width: 800px
@@ -246,19 +246,19 @@
     <!-- 主欄位 -->
     <div class="table-responsive"
          style="display: flex; flex-direction: column; align-items: center; height: 80vh; margin: 30px 130px;">
-        <div style="margin-top: 20px"><h3>房務訂單管理</h3></div>
+        <div style="margin-top: 30px"><h3>房務訂單管理</h3></div>
         <div style="text-align: center; width: 100%;">
-            <div style="flex-grow: 1; text-align: left; margin: 25px 0 0 40px;">
-                <h4>訂單查詢:</h4>
+            <div style="flex-grow: 1; text-align: left; margin: 10px 0 0 40px;">
+                <h4 style="margin: 10px ">訂單查詢:</h4>
                 <div class="form-container" style="display: flex; flex-direction:
-                 column; align-items: center; justify-content: space-evenly; height: 60vh;">
+                 column; align-items: center; justify-content: space-evenly; height: 50vh; ">
                     <ul>
                         <li>
-                            <h5><a th:href="@{/roomorder/listAllRoomOrder}">房務訂單清單</a><br><br></h5>
+                            <h5><a th:href="@{/roomOrder/listAllRoomOrder}">房務訂單清單</a><br><br></h5>
                         </li>
 
                         <li>
-                            <form method="post" th:action="@{/roomorder/findOneRoomOrder}">
+                            <form method="post" th:action="@{/roomOrder/findOneRoomOrder}">
                                 <div>
                                     <label for="memberId">輸入會員編號:</label>
                                     <input type="text" id="memberId" name="memberId" >
@@ -270,7 +270,7 @@
 
 
                         <li>
-                            <form method="post" th:action="@{/roomorder/findDateRO}">
+                            <form method="post" th:action="@{/roomOrder/findDateRO}">
                                 選擇入住日期:
                                 <label for="startDateRO">
                                     <input type="date" id="startDateRO" name="start" th:value="${start}" />
@@ -285,7 +285,7 @@
                         </li>
 
                         <li>
-                            <form method="post" th:action="@{/roomorder/findOrderDateRO}">
+                            <form method="post" th:action="@{/roomOrder/findOrderDateRO}">
                                 選擇訂單日期:
                                 <label for="ROstart">
                                     <input type="date" id="ROstart" name="ROstart" th:value="${ROstart}" />

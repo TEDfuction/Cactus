@@ -17,7 +17,7 @@
 
   <form th:action="@{update}" method="post" th:object="${sessionVO}" enctype="multipart/form-data">
 
-
+<input type="text" hidden th:value="${sessionVO.activitySessionId}" name="activitySessionId">
     <div class="mb-4">
       <div class="mb-4">
         <h5 class="f-w">活動名稱 <span class="require_text">(必填)</span></h5>
@@ -42,32 +42,19 @@
         <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
       </div>
     </div>
-    <div th:each="timePeriod : ${timePeriods}">
-      <!-- 显示时间段 -->
-      <p th:text="${timePeriod.timePeriod}"></p>
-    </div>
-<!--    <th:block  th:object="${time_PeriodVO}" >-->
-<!--      <div class="mb-4">-->
-<!--        <div class="mb-4">-->
-<!--          <h5 class="f-w">場次時段 </h5>-->
-<!--        </div >-->
-<!--        <div class="form_element9">-->
-<!--                <span>-->
-<!--                <input type="time" class="timeBlock2"  name="timePeriod1"  />-->
-<!--                </span>-->
-<!--          <span>-->
-<!--                <input type="time" class="timeBlock2"  name="timePeriod2"  />-->
-<!--                </span>-->
 
-<!--          <span>-->
-<!--                <input type="time" class="timeBlock2"  name="timePeriod3"  />-->
-<!--                </span>-->
-<!--          <span>-->
-<!--                <input type="time" class="timeBlock2"  name="timePeriod4"  />-->
-<!--                </span>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </th:block>-->
+    <!-- 使用Thymeleaf动态渲染输入框 -->
+
+      <div class="mb-4">
+        <div class="mb-4">
+          <h5 class="f-w">場次時段</h5>
+        </div>
+        <th:block th:each="timePeriod, iterStat : ${timePeriods}">
+        <!-- 使用Thymeleaf动态生成输入框的名称和值 -->
+        <input type="time" class="timeBlock2" th:name="'timePeriod' + ${iterStat.count}" th:value="${timePeriod.timePeriod}" />
+        </th:block>
+      </div>
+
 
     <div class="mb-4">
       <div class="mb-4">
@@ -84,7 +71,7 @@
       <div class="mb-4">
         <h5 class="f-w">開始報名日期 <span class="require_text">(必填)</span></h5>
       </div>
-      <input type="datetime-local" class="form_element6" th:field="*{enrollStarted}"  onclick="hideContent('enrollStarted.errors');" />
+      <input type="datetime-local" class="form_element6 start" th:field="*{enrollStarted}"  onclick="hideContent('enrollStarted.errors');" />
       <div th:if="${#fields.hasErrors('enrollStarted')}" class="error" id="enrollStarted.errors">
         <span th:errors="*{enrollStarted}" ></span>
         <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -95,7 +82,7 @@
       <div class="mb-4">
         <h5 class="f-w">結束報名日期 <span class="require_text">(必填)</span></h5>
       </div>
-      <input type="datetime-local" class="form_element6" th:field="*{enrollEnd}"  onclick="hideContent('enrollEnd.errors');" />
+      <input type="datetime-local" class="form_element6 end" th:field="*{enrollEnd}"  onclick="hideContent('enrollEnd.errors');" />
       <div th:if="${#fields.hasErrors('enrollEnd')}" class="error" id="enrollEnd.errors">
         <span th:errors="*{enrollEnd}" ></span>
         <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -171,72 +158,6 @@
       </div>
     </div>
 
-<!--    <div>-->
-<!--      <label>場次日期:</label>-->
-<!--      <input type="date" th:field="*{activityDate}" onclick="hideContent('activityDate.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('activityDate')}" th:errors="*{activityDate}" class="error" id="activityDate.errors"></span>-->
-<!--    </div>-->
-
-
-
-<!--    <div>-->
-<!--      <label>活動時長:</label>-->
-<!--      <input type="text" th:field="*{duration}" onclick="hideContent('duration.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="error" id="duration.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>活動地點:</label>-->
-<!--      <input type="text" th:field="*{activityLocation}" onclick="hideContent('activityLocation.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('activityLocation')}" th:errors="*{activityLocation}" class="error" id="activityLocation.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>活動人數上限:</label>-->
-<!--      <input type="text" th:field="*{activityMaxPart}" onclick="hideContent('activityMaxPart.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('activityMaxPart')}" th:errors="*{activityMaxPart}" class="error" id="activityMaxPart.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>活動人數下限:</label>-->
-<!--      <input type="text" th:field="*{activityMinPart}" onclick="hideContent('activityMinPart.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('activityMinPart')}" th:errors="*{activityMinPart}" class="error" id="activityMinPart.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>報名總數:</label>-->
-<!--      <input type="text" th:field="*{enrollTotal}" onclick="hideContent('enrollTotal.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('enrollTotal')}" th:errors="*{enrollTotal}" class="error" id="enrollTotal.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>開始報名日期:</label>-->
-<!--      <input type="datetime-local" th:field="*{enrollStarted}" onclick="hideContent('enrollStarted.errors');"  /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('enrollStarted')}" th:errors="*{enrollStarted}" class="error" id="enrollStarted.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>結束報名日期:</label>-->
-<!--      <input type="datetime-local" th:field="*{enrollEnd}" onclick="hideContent('enrollEnd.errors');"  /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('enrollEnd')}" th:errors="*{enrollEnd}" class="error" id="enrollEnd.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>活動場次狀態:</label>-->
-<!--      <select th:field="*{activitySessionState}">-->
-<!--        <option value="0">正常舉辦</option>-->
-<!--        <option value="1">取消</option>-->
-<!--        <option value="2">延期</option>-->
-<!--      </select>-->
-<!--      <span th:if="${#fields.hasErrors('activitySessionState')}" th:errors="*{activitySessionState}" class="error" id="activitySessionState.errors"></span>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <label>備註:</label>-->
-<!--      <input type="text" th:field="*{activityNote}" onclick="hideContent('activityNote.errors');" /><br/>-->
-<!--      <span  th:if="${#fields.hasErrors('activityNote')}" th:errors="*{activityNote}" class="error" id="activityNote.errors"></span>-->
-<!--    </div>-->
-
     <br>
     <div>
       <div class="btn_area">
@@ -258,6 +179,23 @@
   function hideContent(d) {
     document.getElementById(d).style.display = "none";
   }
+
+
+  var startInput = document.querySelector(".start");
+  var endInput = document.querySelector(".end");
+
+  // 輸入好開始報名日期以後，設定结束報名日期可以選的日期為開始報名日期的後一天
+  startInput.addEventListener("change", function() {
+    //獲取開始報名時間的值
+    var enrollStartedValue = new Date(this.value);
+
+    // 計算结束報名日期為開始報名日期的後一天
+    var enrollEndedValue = new Date(enrollStartedValue);
+    enrollEndedValue.setDate(enrollStartedValue.getDate() + 1);
+
+    // 结束報名日期的最小值設置为開始報名日期的後一天
+    endInput.min = enrollEndedValue.toISOString().slice(0, 16);
+  });
 
 </script>
 <div th:replace="~{/back_end/include/include_bottom}"></div>

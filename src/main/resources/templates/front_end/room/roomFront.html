@@ -28,17 +28,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <link href="/js/room/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/js/room/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/js/room/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/front_end/bootstrap.min.css" rel="stylesheet">
+    <link href="/js/room/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
-    <!--    ICON-->
-    <link href="/your-path-to-uicons/css/uicons-rounded-regular.css" rel="stylesheet">
+    <link th:href="@{/css/front_end/room/style.css}" rel="stylesheet">
+
 
 </head>
 
@@ -62,7 +60,7 @@
         max-width: 1300px;
     }
 
-    #room-checkOut, #room-checkIn, roomch {
+    #room-checkOut, #room-checkIn {
         border: 1px solid #f98267;
         padding: 8px 30px;
         margin-right: 30px;
@@ -287,7 +285,7 @@
     <div>
         <hr class="col-lg-12" style="height: 2px; color: gray">
         <div class="booking-form">
-            <form class="dateFormFst" th:action="@{/roomtype/selectRoomType}" method="post">
+            <form class="dateFormFst" th:action="@{/roomType/selectRoomType}" method="post">
                 <select class="form-control roomType-select" name="roomTypeName">
                     <option disabled selected>選擇房型</option>
                     <option th:value="${roomTypeName}"></option>
@@ -346,26 +344,26 @@
                         <span class="arrow"></span>
                     </h1>
                     <div class="hotel-details" style="margin-top: 16px;margin-left: 10px; font-size: 16px; color: #666;">
-                        <span id="PageRTBed">
+                        <span class="PageRTBed">
                             <span th:text="${roomTypeVO[3] / 2} + ' 張特大雙人床'"></span>
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3] / 2)}">
-                                <img src="/img/icons/double-bed.png" class="bed-icon" alt="Double Bed">
+                                <img src="//img/front_end/room/double-bed.png" class="bed-icon" alt="Double Bed">
                             </span>
                             <span th:if="${roomTypeVO[3] % 2 != 0}">
-                                <img src="/img/icons/single-bed.png" class="bed-icon" alt="Single Bed">
+                                <img src="//img/front_end/room/single-bed.png" class="bed-icon" alt="Single Bed">
                             </span>
                         </span>
                         <span class="separator">|</span>
-                        <span id="roomGuestAmount">
+                        <span class="roomGuestAmount">
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3])}">
-                                <img src="/img/icons/peoplecount.png" style="width: 15px;height: 15px" alt="Guest">
+                                <img src="//img/front_end/room/peoplecount.png" style="width: 15px;height: 15px" alt="Guest">
                             </span>
                         </span>
                         <span class="separator">|</span><br>
-                        <div id="PageRTSize">
-                            <span th:if="${roomTypeVO[3] == 2}">Size: 55~60 ㎡</span>
-                            <span th:if="${roomTypeVO[3] == 4}">Size: 80~90 ㎡</span>
-                            <span th:if="${roomTypeVO[3] == 6}">Size: 140~150 ㎡</span>
+                        <div class="PageRTSize">
+                            Size:<span th:if="${roomTypeVO[3] == 2}">55~60 ㎡</span>
+                            <span th:if="${roomTypeVO[3] == 4}">80~90 ㎡</span>
+                            <span th:if="${roomTypeVO[3] == 6}">140~150 ㎡</span>
                         </div>
                         <div style="margin-top: 10px; font-size: 12px">
                             <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;浴缸&淋浴
@@ -375,8 +373,13 @@
                         </div>
                         <span th:text="'NT ' + ${roomTypeVO[2]} + ' $'" id="roomPrice" class="roomPrice"></span><br>
                         <div>
-                            <form class="dateFormSec"  id="dateFormSec" th:action="@{/room/OrderList}" method="POST">
-                                <input type="hidden" id="selectCheckIn" name="selectCheckIn" value="selectCheckIn">
+                            <form class="dateFormSec" id="dateFormSec" th:action="@{/roomPromotion/OrderList}" method="POST" onsubmit="storeRoomData(this); return true;">
+                                <input type="hidden" name="roomTypeName" id="hiddenRoomTypeName">
+                                <input type="hidden" name="roomGuestAmount" id="hiddenRoomGuestAmount">
+                                <input type="hidden" name="roomSize" id="hiddenRoomSize">
+                                <input type="hidden" name="roomPrice" id="hiddenRoomPrice">
+                                <input type="hidden" name="selectCheckIn" id="selectCheckIn">
+                                <input type="hidden" name="selectCheckOut" id="selectCheckOut">
                                 <input type="submit" class="room-button" value="預定房間">
                             </form>
                         </div>
@@ -555,11 +558,62 @@
             });
         });
 
-
         // $(".room-button").click(function(){
         //     $("form#dateFormSec").submit();
         // })
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkIn = document.getElementById('room-checkIn');
+            const checkOut = document.getElementById('room-checkOut');
+            const today = getLocalDate(new Date());
+
+            checkIn.min = today;
+            checkOut.min = checkIn.value ? getNextDay(checkIn.value) : getNextDay(today);
+
+            checkIn.addEventListener('change', function() {
+                checkOut.min = getNextDay(checkIn.value);
+                if (checkOut.value <= checkIn.value) {
+                    checkOut.value = getNextDay(checkIn.value);
+                }
+            });
+        });
+        function getNextDay(dateStr) {
+            const date = new Date(dateStr);
+            date.setDate(date.getDate() + 1);
+            return getLocalDate(date);
+        }
+        function getLocalDate(date) {
+            const offset = 8; // 台灣是UTC+8
+            date.setHours(date.getHours() + offset - date.getTimezoneOffset() / 60);
+            return date.toISOString().split('T')[0];
+        }
+
+        function storeRoomData(form) {
+            const roomIntro = form.closest('.roomIntro');
+            const roomTypeName = roomIntro.querySelector('.roomTypeName').textContent;
+            const roomGuestAmount = roomIntro.querySelector('.roomGuestAmount').textContent.match(/\d+/)[0];
+            const roomSize = roomIntro.querySelector('.PageRTSize').textContent;
+            const checkInDate = document.getElementById('selectCheckIn').value;
+            const checkOutDate = document.getElementById('selectCheckOut').value;
+            const roomPrice = roomIntro.querySelector('.roomPrice').textContent;
+
+            // 設置隱藏字段的值
+            document.getElementById('hiddenRoomTypeName').value = roomTypeName;
+            document.getElementById('hiddenRoomGuestAmount').value = roomGuestAmount;
+            document.getElementById('hiddenRoomSize').value = roomSize;
+            document.getElementById('hiddenRoomPrice').value = roomPrice;
+            document.getElementById('selectCheckIn').value = checkInDate;
+            document.getElementById('selectCheckOut').value = checkOutDate;
+
+            console.log('RoomTypeName:', roomTypeName);
+            console.log('RoomGuestAmount:', roomGuestAmount);
+            console.log('RoomSize:', roomSize);
+            console.log('Check-inDate:', checkInDate);
+            console.log('Check-outDate:', checkOutDate);
+            console.log('RoomPrice:', roomPrice);
+
+            return true; // 允許表單提交
+        }
 
 
     </script>
@@ -567,15 +621,15 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/wow/wow.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/counterup/counterup.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/js/room/lib/wow/wow.min.js"></script>
+    <script src="/js/room/lib/easing/easing.min.js"></script>
+    <script src="/js/room/lib/waypoints/waypoints.min.js"></script>
+    <script src="/js/room/lib/counterup/counterup.min.js"></script>
+    <script src="/js/room/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
+    <script src="/js/room/main.js"></script>
     <!-- Kit Icon -->
     <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
 

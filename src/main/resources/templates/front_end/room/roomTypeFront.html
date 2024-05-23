@@ -28,15 +28,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <link href="/js/room/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/js/room/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/js/room/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/front_end/bootstrap.min.css" rel="stylesheet">
+    <link href="/js/room/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet">
+    <link th:href="@{/css/front_end/room/style.css}" rel="stylesheet">
+
 
 </head>
 
@@ -131,171 +131,12 @@
 </style>
 
 
-    <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="//icons/icon-12.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
-
-
-    <!-- Topbar Start -->
-    <div class="container-fluid green-bg p-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="row gx-0 d-none d-lg-flex">
-            <div class="col-lg-7 px-5 text-start">
-                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
-                <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
-                <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
-                <!-- </div> -->
-            </div>
-            <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2" href="">English ｜</a>
-                    <a class="text-white px-2" href="">日本語 ｜</a>
-                    <a class="text-white px-2" href="">加入會員</a>
-
-                </div>
-                <!-- <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
-                </div> -->
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="text2-primary2 m-0"><img class="me-1" src="/img/icons/LOGO.png" alt="Icon"><img class="me-3"
-                                                                                                       src="//member/cactus_name2.png"
-                                                                                                       alt="Name"></h1>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!-- 原本輸入內容:Home -->
-
-                <a href="index.html" class="nav-item nav-link active">最新消息</a>
-                <div class="nav-item dropdown">
-                    <!-- 原本輸入內容:Pages -->
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
-                    <div class="dropdown-menu border-0 m-0">
-                        <a href="feature.html" class="dropdown-item">凱克特司</a>
-                        <a href="project.html" class="dropdown-item">周邊特色</a>
-                        <a href="team.html" class="dropdown-item">常見問題</a>
-                        <!-- <a href="appointment.html" class="dropdown-item">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a> -->
-                    </div>
-                </div>
-                <!-- 原本輸入內容:About，要改成下拉式選單 -->
-                <a href="about.html" class="nav-item nav-link">房型介紹</a>
-                <div class="dropdown-menu border-0 m-0">
-                    <!-- <a href="feature.html" class="dropdown-item">緣起</a>
-                    <a href="project.html" class="dropdown-item">特色設施</a>
-                    <a href="testimonial.html" class="dropdown-item">交通資訊</a>
-
-                    <a href="team.html" class="dropdown-item">周邊景點</a>
-                    <a href="appointment.html" class="dropdown-item">周邊美食</a>
-
-                    <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
-                </div>
-                <!-- 原本輸入內容:Services -->
-                <a href="service.html" class="nav-item nav-link">特色活動</a>
-
-                <!-- 原本輸入內容:Contact -->
-                <a href="contact.html" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping" me-2
-                                                                    style="color: #01b2a6;"></i> 購物商城</a>
-            </div>
-            <!-- 原本輸入內容:Appointment -->
-            <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
-                                                                              style="color: #f2f1f1;"></i> 線上訂房</a>
-
-        </div>
-    </nav>
-
-    <!-- Navbar End -->
-
-
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="owl-carousel header-carousel position-relative">
-            <!--            第一張圖-->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-1.jpg'>">
-                <img class="img-fluid" src="/img/front_end/member/carousel-1.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
-                                <a href="" class="btn btn-primary py-3  px-5 animated slideInLeft">Read More</a> -->
-                                <!-- 圖片後續作連結  -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--            第二張圖-->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-2.jpg'>">
-                <img class="img-fluid" src="/img/front_end/member/carousel-2.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-6">
-                                <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
-                                <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
-                                <!-- 圖片後續作連結  -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--            第三張圖-->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-3.jpg'>">
-                <img class="img-fluid" src="/img/front_end/member/carousel-3.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
-                                <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
-                                <!-- 圖片後續作連結  -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--            第四張圖-->
-            <div class="owl-carousel-item position-relative" data-dot="<im  g src='img/carousel-4.jpg'>">
-                <img class="img-fluid" src="/img/front_end/member/carousel-4.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
-                                <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
-                                <!-- 圖片後續作連結  -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+    <div th:replace="~{/front_end/product/include_body}"></div>
     <!-- Carousel End -->
 
-
-
-
     <div class="hero" >
+
         <div class="container">
             <div class="row align-items-center">
                 <div class="row col-lg-2">
@@ -311,7 +152,7 @@
                     <div class="intro-wrap">
                         <div class="row">
                             <div class="col-12">
-                                <form class="form" id="selectroom" action="/roomtype/selectRoomType" method="post" onsubmit="saveData()">
+                                <form class="form" id="selectroom" action="/roomType/selectRoomType" method="post" onsubmit="saveData()">
                                     <div class="row mb-4">
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
                                             <label>
@@ -322,7 +163,8 @@
                                             </label>
                                         </div>
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                            <input type="date" class="form-control selectRoom" name="selectCheckIn" id="selectCheckIn" th:value="${selectCheckIn}">
+                                            <input type="date" class="form-control selectRoom" name="selectCheckIn"
+                                                   id="selectCheckIn" th:value="${selectCheckIn}" onchange="updateCheckoutMinDate()">
                                         </div>
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
                                             <input type="date" class="form-control selectRoom" name="selectCheckOut" id="selectCheckOut" th:value="${selectCheckOut}">
@@ -366,37 +208,37 @@
                     <img th:src="@{/roompic/DBGifReader} + '?roomTypeId=' + ${roomTypeVO.roomTypeId}" style= "width: 600px;height: 345px">
                     <div class="RT-facilities">
                         <div>
-                            <img src="/img/icons/swimming.png">
+                            <img src="//img/icons/swimming.png">
                             <span>室外游泳池</span>
                         </div>
                         <div>
-                            <img src="/img/icons/massage.png">
+                            <img src="//img/icons/massage.png">
                             <span>SPA會館</span>
                         </div>
 
                         <div>
-                            <img src="/img/icons/wine-glasses.png">
+                            <img src="//img/icons/wine-glasses.png">
                             <span>酒吧</span>
                         </div>
                         <div>
-                            <img src="/img/icons/breakfast.png">
+                            <img src="//img/icons/breakfast.png">
                             <span>早餐</span>
                         </div><br>
                         &emsp;
                         <div>
-                            <img src="/img/icons/shuttle.png">
+                            <img src="//img/icons/shuttle.png">
                             <span>機場接駁車</span>
                         </div>
                         <div>
-                            <img src="/img/icons/beach-chair.png">
+                            <img src="//img/icons/beach-chair.png">
                             <span>私人海灘區</span>
                         </div>
                         <div>
-                            <img src="/img/icons/tv-monitor.png">
+                            <img src="//img/icons/tv-monitor.png">
                             <span>平面電視</span>
                         </div>
                         <div>
-                            <img src="/img/icons/wifi.png">
+                            <img src="//img/icons/wifi.png">
                             <span>無線網路</span>
                         </div>
                     </div>
@@ -518,7 +360,7 @@
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
+</body>
 
     <script>
         $(function () {
@@ -560,11 +402,11 @@
 
             function changeImg(weatherDescription) {
                 if (weatherDescription === '多雲時晴' || weatherDescription === '晴時多雲' || '晴') {
-                    return '<img src="/img/icons/sun.png" alt="sun-cloudy" width="50" height="50">';
+                    return '<img src="/img/front_end/room/sun.png" alt="sun-cloudy" width="50" height="50">';
                 } else if (weatherDescription === '多雲' || weatherDescription === '陰時多雲' || weatherDescription === '多雲時陰') {
-                    return '<img src="/img/icons/cloudy.png" alt="cloudy" width="50" height="50">';
+                    return '<img src="/img/front_end/room/cloudy.png" alt="cloudy" width="50" height="50">';
                 } else {
-                    return '<img src="/img/icons/raining.png" alt="rainy" width="50" height="50">';
+                    return '<img src="/img/front_end/room/raining.png" alt="rainy" width="50" height="50">';
                 }
             }
         }
@@ -575,7 +417,7 @@
                 if (selectedRoomType) {
                     $.ajax({
                         type: 'GET',
-                        url: '/roomtype/getRoomGuestAmounts',
+                        url: '/roomType/getRoomGuestAmounts',
                         data: { roomTypeName: selectedRoomType },
                         success: function(response) {
                             $('#selectRoomAmount').empty(); // Clear existing options
@@ -613,22 +455,72 @@
             sessionStorage.setItem('roomGuestAmount', roomGuestAmount);
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkIn = document.getElementById('selectCheckIn');
+            const checkOut = document.getElementById('selectCheckOut');
+            const today = getTodayDate(); // 獲取台灣當地的今日日期
+
+            checkIn.value = today;
+            checkIn.min = today;
+
+            checkOut.min = getNextDay(today);
+
+            checkIn.addEventListener('change', function() {
+                checkOut.min = getNextDay(checkIn.value);
+                if (checkOut.value <= checkIn.value) {
+                    checkOut.value = getNextDay(checkIn.value);
+                }
+            });
+        });
+
+        // 獲取台灣當地的今日日期
+        function getTodayDate() {
+            const now = new Date();
+            now.setHours(now.getHours() + 8 - now.getTimezoneOffset() / 60);
+            return formatDate(now);
+        }
+
+        // 獲取指定日期的次日
+        function getNextDay(dateStr) {
+            const date = new Date(dateStr);
+            date.setDate(date.getDate() + 1);
+            return formatDate(date);
+        }
+
+        // 格式化日期為YYYY-MM-DD
+        function formatDate(date) {
+            let month = '' + (date.getMonth() + 1),
+                day = '' + date.getDate(),
+                year = date.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+
+
+
+
     </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/wow/wow.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/counterup/counterup.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/js/room/lib/wow/wow.min.js"></script>
+    <script src="/js/room/lib/easing/easing.min.js"></script>
+    <script src="/js/room/lib/waypoints/waypoints.min.js"></script>
+    <script src="/js/room/lib/counterup/counterup.min.js"></script>
+    <script src="/js/room/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
+    <script src="/js/room/main.js"></script>
     <!-- Kit Icon -->
     <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
 
-</body>
+
 </html>
