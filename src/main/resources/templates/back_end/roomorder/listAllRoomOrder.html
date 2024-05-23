@@ -39,7 +39,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 	<!-- 引入 DataTables JS -->
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>           <!-- ●●js  for jquery datatables 用 -->
-
+	<link rel="stylesheet" th:href="@{/css/back_end/style.css}"/>
 
 </head>
 
@@ -309,7 +309,7 @@
 				<th:block th:each="roomOrderVO : ${allRoomOrder}" class="descriptions">
 					<tr>
 						<td th:text="${roomOrderVO.roomOrderId}"></td>
-						<td th:text="${roomOrderVO.memberVO.memberId}"></td>
+						<td th:text="${roomOrderVO.memberId.memberId}"></td>
 						<td th:text="${roomOrderVO.checkInDate}"></td>
 						<td th:text="${roomOrderVO.checkOutDate}"></td>
 						<td th:text="${roomOrderVO.promotionId.promotionId}"></td>

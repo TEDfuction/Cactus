@@ -28,7 +28,7 @@ public interface RoomTypeRepository extends JpaRepository<RoomTypeVO, Integer> {
             "    SELECT 1 FROM ROOM_SCHEDULE rs " +
             "    WHERE rs.ROOM_TYPE_ID = rt.ROOM_TYPE_ID " +
             "    AND rs.ROOM_SCHEDULE_DATE BETWEEN :checkInDate AND :checkOutDate" +
-            "    AND (:roomGuestAmount IS NULL OR rs.ROOM_GUEST_AMOUNT <= :roomGuestAmount)" +
+            "    AND (:roomGuestAmount IS NULL OR rs.ROOM_SCHEDULE_AMOUNT <= :roomGuestAmount)" +
             ") " +
             "AND (:roomGuestAmount IS NULL OR r.ROOM_GUEST_AMOUNT <= :roomGuestAmount)", nativeQuery = true)
     List<Object[]> findAvailableRoomTypes(@Param("roomTypeName") String roomTypeName,

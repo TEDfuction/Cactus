@@ -108,18 +108,34 @@ public class RoomPromotionController {
 //    }
 
     @PostMapping("/OrderList")
-    public String getRoomPromotion(@RequestParam("selectCheckIn") String selectCheckInStr, Model model) {
+    public String getRoomPromotion(
+            @RequestParam("roomTypeName") String roomTypeName,
+            @RequestParam("roomGuestAmount") String roomGuestAmount,
+            @RequestParam("roomSize") String roomSize,
+            @RequestParam("roomPrice") String roomPrice,
+            @RequestParam("selectCheckIn") String selectCheckInStr,
+            @RequestParam("selectCheckOut") String selectCheckOutStr,
+            Model model) {
+
         try {
             LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
             List<String> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
 
+            // 將查詢結果和其他參數添加到模型中
+            model.addAttribute("roomTypeName", roomTypeName);
+            model.addAttribute("roomGuestAmount", roomGuestAmount);
+            model.addAttribute("roomSize", roomSize);
+            model.addAttribute("roomPrice", roomPrice);
+            model.addAttribute("selectCheckIn", selectCheckInStr);
+            model.addAttribute("selectCheckOut", selectCheckOutStr);
             model.addAttribute("getRoomPromotion", getRoomPromotion);
+            System.out.println(roomTypeName);
 
-            return "/front_end/roomorder/roomOrderFront";  // 確保這個路徑正確
+            return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             model.addAttribute("errorMessage", "Invalid date format.");
-            return "index";  // 當日期解析出錯時，返回到主頁面
+            return "/front_end/room/roomTypeFront";  // 當日期解析出錯時，返回到主頁面
         }
     }
 

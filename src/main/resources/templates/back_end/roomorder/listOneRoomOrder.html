@@ -39,6 +39,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 	<!-- 引入 DataTables JS -->
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>           <!-- ●●js  for jquery datatables 用 -->
+	<link rel="stylesheet" th:href="@{/css/back_end/style.css}"/>
 
 
 </head>
@@ -308,7 +309,7 @@
 				<tbody class="table-light text-nowrap">
 				<tr th:each="roomOrderVO : ${selectSearch}">
 					<td th:text="${roomOrderVO.roomOrderId}"></td>
-					<td th:text="${roomOrderVO.memberVO.memberId}"></td>
+					<td th:text="${roomOrderVO.memberId.memberId}"></td>
 					<td th:text="${roomOrderVO.checkInDate}"></td>
 					<td th:text="${roomOrderVO.checkOutDate}"></td>
 					<td th:text="${roomOrderVO.promotionId.promotionId}"></td>
@@ -327,10 +328,10 @@
 						</button>
 					</td>
 					<td>
-						<form method="post" action="/roomorder/updateROStatus">
-							<input type="hidden" name="roomTypeStatus" th:value="${!roomOrderVO.roomOrderStatus}" />
-							<input type="hidden" name="roomTypeId" th:value="${roomOrderVO.roomOrderId}" />
-							<button type="submit" class="btn btn-outline-dark btn-sm">更換訂單狀態</button>
+						<form method="post" th:action="@{/roomOrder/updateRTS}">
+							<input type="hidden" name="roomOrderStatus" th:value="${!roomOrderVO.roomOrderStatus}" />
+							<input type="hidden" name="roomOrderId" th:value="${roomOrderVO.roomOrderId}" />
+							<button type="submit" class="btn btn-outline-dark btn-sm" onclick="submitForm(update)">更換訂單狀態</button>
 						</form>
 					</td>
 				</tr>
@@ -417,15 +418,14 @@
 	});
 
 
-	function submitForm(ROStatus) {
-		var ROStatusChange = confirm("確定要更改房型上下架嗎?");
-		if (ROStatusChange) {
+	function submitForm(update) {
+		var confirmChange = confirm("確定要更改房型上下架嗎?");
+		if (confirmChange) {
 			document.getElementById("updateForm").submit();
 		} else {
-			ROStatus.preventDefault();
+			update.preventDefault();
 		}
 	}
-
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
