@@ -105,10 +105,16 @@
                   <a th:href="@{/activity/activityPhoto}">上一頁</a>
                   <div class="activity"> 
                  
-                  <input  type="hidden"  th:value="${photoVO.activityPhotoId}" name="activityPhotoId"/>
-                  <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/>
-		          <span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/>
-		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>
+<!--                   <input  type="hidden"  th:value="${photoVO.activityPhotoId}" name="activityPhotoId"/> -->
+<!--                   <span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/> -->
+<!-- 		          <span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/> -->
+<!-- 		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/> -->
+                  <input type="hidden" th:value="${itemVO.activityId}" name="activityId"/>
+                  <input type="hidden" th:value="${itemVO.sessionVOs[0].activitySessionId}" name="sessionId">
+                  
+                    <span>活動名稱:</span><span th:text="${itemVO.activityName}"></span><br/>  
+		            <span>活動地點:</span><span th:text="${itemVO.sessionVOs[0].activityLocation}"></span><br/>
+		            <span>場次日期:</span><span th:text="${itemVO.sessionVOs[0].activityDate}"></span><br/>
 		          <!--改間隔 --><!--==================================活動訂單報名人數================================== -->
      
       <div style="margin-top: 20px;"></div>
@@ -149,19 +155,19 @@
         
        
         
-          <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>聯絡資訊</div>
+<!--           <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>聯絡資訊</div> -->
           
-          <div class="accordion-body" style="font-size: 20px;" ></div>
+<!--           <div class="accordion-body" style="font-size: 20px;" ></div> -->
           
 <!--           ----------------------------------------活動訂單------------------------------------------------------ -->
-              <p class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>活動訂單</p>
+<!--               <p class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>活動訂單</p> -->
 <!--                   =====活動訂單編號===== -->
-              <span class="accordion-body" style="font-size: 20px; margin-left:15px; padding-right:0;">活動訂單編號</span> 
+<!--               <span class="accordion-body" style="font-size: 20px; margin-left:15px; padding-right:0;">活動訂單編號</span>  -->
               
 <!--        添加間距 -->
        <div style="margin-top: 20px;"></div>     
 <!--                  =====活動訂單輸入框===== -->
-                 <div class="col-auto mx-auto"   style="width:95%;"   >
+                 <div class="col-auto mx-auto"   style="width:95%; display:none;"   >
                     <select th:disabled="true" th:field="*{activityOrderVO.activityOrderId}" class="form-select" aria-label="Default select example" style="border-radius: 0.5rem;" >
                     <option  th:each="activityOrderVO : ${activityOrderListData}" th:value="${activityOrderVO.activityOrderId}" th:text="${activityOrderVO.activityOrderId}" />
                     </select>
@@ -170,7 +176,7 @@
           
         
 <!--                  活動參加人員 -->
-              <p class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>參加人員</p>
+              <p class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>聯絡資訊</p>
 <!--                   =====活動參加人員姓名===== -->
               <span class="accordion-body" style="font-size: 20px; margin-left:15px; padding-right:0;">參加人員姓名</span> 
              
@@ -276,7 +282,7 @@
         </h2>
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
           <div class="accordion-body" style="font-size: 25px;"><i class="bi bi-pause-fill"></i>付款金額</div>
-          <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ (photoVO.activityPh.activityPrice) * (session.activityOrderVO.enrollNumber)}" ></div>
+          <div class="accordion-body" style="font-size: 20px;" th:text="${'全額付款-$'+ (itemVO.activityPrice) * (session.activityOrderVO.enrollNumber)}" ></div>
           
         </div> 
        </div>
@@ -292,7 +298,7 @@
       <div style="display: flex; align-items: center;">
         <a href="/activity/activityPhoto" class="navbar-brand ms-4 ms-lg-0">
             <h1 class="text2-primary2 m-0" style=" font-size:25px">
-             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'合計/NT$'+ (photoVO.activityPh.activityPrice) * (session.activityOrderVO.enrollNumber) }">
+             <img class="me-1" th:src="@{/img/front_end/activity/icons/LOGO.png}" alt="Icon" th:text="${'合計/NT$'+ (itemVO.activityPrice) * (session.activityOrderVO.enrollNumber) }">
             </h1>
         </a>
        </div> 

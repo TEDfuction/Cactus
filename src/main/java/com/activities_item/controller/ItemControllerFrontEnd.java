@@ -55,10 +55,6 @@ public class ItemControllerFrontEnd {
         model.addAttribute("itemListData", list);
         model.addAttribute("sessionVOs", itemVO.getSessionVOs());
 
-        model.addAttribute("categoryVO", new CategoryVO());
-        List<CategoryVO> list2 = categoryService.getAll();
-        model.addAttribute("categoryListData2", list2);
-
         model.addAttribute("sessionVO", new SessionVO());
         List<SessionVO> list3 = sessionService.getAll();
         model.addAttribute("sessionListData", list3);
@@ -72,7 +68,7 @@ public class ItemControllerFrontEnd {
         return "front_end/activity/listOneItem";
     }
 
-
+}
 
 //    @ModelAttribute("itemListData") // 下拉選單、SHOW跑出DB已有的值 for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
 //    protected List<ItemVO> referenceListData2(Model model){
@@ -88,92 +84,92 @@ public class ItemControllerFrontEnd {
 //        return list;
 //    }
 
-    //透過活動日期找場次時段
-    @GetMapping("/timePeriodsByActivityDate")
-    @ResponseBody
-    public List<TimePeriodDTO> getTimePeriodsByActivityDate(HttpServletRequest req, HttpServletResponse res) {
-
-        //activityDate先轉為sql.Date
-        Date actDate = java.sql.Date.valueOf(req.getParameter("activityDate"));
-//		System.out.println(actDate);
-        //得到所有的時段
-        List<Time_PeriodVO> list =  sessionService.getTimePeriodsByActivityDate(actDate);
-//		System.out.println(list.size());
-
-        Iterator<Time_PeriodVO> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            Time_PeriodVO tpVO = iterator.next();
-            Integer sessionTimePeriodId = tpVO.getSessionTimePeriodId();
-
-            //透過Time_PeriodVO取得所有場次Id
-            SessionVO sessionVO = tpVO.getSessionVO();
-            Integer activitySessionId = sessionVO.getActivitySessionId();
-
-//			System.out.println("tpid" + sessionTimePeriodId);
-//			System.out.println("sessID" + activitySessionId);
-
-            //透過comparePeople方法做比較，TRUE的話移除list裡面的元素
-            if (comparePeople(sessionTimePeriodId, activitySessionId)) {
-                iterator.remove();  // 使用 iterator remove()方法移除元素
-            }
-        }
-
-        //回傳JSON格式到前端
-        List<TimePeriodDTO> dtos = new ArrayList<>();
-        for (Time_PeriodVO vo : list) {
-            TimePeriodDTO dto = new TimePeriodDTO();
-            dto.setSessionTimePeriodId(vo.getSessionTimePeriodId());
-            dto.setTimePeriod(vo.getTimePeriod());
-            dtos.add(dto);
-        }
-        return dtos;
-    }
-    //取得訂單總人數
-    public Integer getTotalEnrollNumber(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId){
-        List<ActivityOrderVO> list = activityOrderService.getTotalEnrollNumber(sessionTimePeriodId);
-        Integer totalEnrollNumber = 0;
-
-        for(ActivityOrderVO orderVO : list){
-            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
-            totalEnrollNumber += orderVO.getEnrollNumber();
-        }
-        return totalEnrollNumber;
-    }
-
-    //取得場次最大參加人數
-    public Integer getActivityMaxPart(@RequestParam("activitySessionId") Integer activitySessionId){
-        SessionVO sessionVO = sessionService.getOneSession(activitySessionId);
-        return  sessionVO.getActivityMaxPart();
-    }
-
-    //比較訂單總人數、場次最大參加人數
-    public Boolean comparePeople(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId,
-                                 @RequestParam("activitySessionId") Integer activitySessionId) {
-        //透過時段Id取得訂單總人數
-        Integer totalEnrollNumber = getTotalEnrollNumber(sessionTimePeriodId);
-        //System.out.println(totalEnrollNumber);
-
-        //透過場次Id取得場次最大參加人數
-        Integer activityMaxPart = getActivityMaxPart(activitySessionId);
-        //System.out.println(activityMaxPart);
-
-        //如果訂單總人數>=場次最大參加人數，得到True，就不要顯示時段
-        if(totalEnrollNumber >= activityMaxPart){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    //取得所有已建立的活動日期
-    @GetMapping("/availableDates")
-    @ResponseBody
-    public List<String> getAvailableDates() {
-        List<Date> availableDates = sessionService.getAvailableDates();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return availableDates.stream()
-                .map(sdf::format)
-                .collect(Collectors.toList());
-    }
-
-}
+//    //透過活動日期找場次時段
+//    @GetMapping("/timePeriodsByActivityDate")
+//    @ResponseBody
+//    public List<TimePeriodDTO> getTimePeriodsByActivityDate(HttpServletRequest req, HttpServletResponse res) {
+//
+//        //activityDate先轉為sql.Date
+//        Date actDate = java.sql.Date.valueOf(req.getParameter("activityDate"));
+////		System.out.println(actDate);
+//        //得到所有的時段
+//        List<Time_PeriodVO> list =  sessionService.getTimePeriodsByActivityDate(actDate);
+////		System.out.println(list.size());
+//
+//        Iterator<Time_PeriodVO> iterator = list.iterator();
+//        while (iterator.hasNext()) {
+//            Time_PeriodVO tpVO = iterator.next();
+//            Integer sessionTimePeriodId = tpVO.getSessionTimePeriodId();
+//
+//            //透過Time_PeriodVO取得所有場次Id
+//            SessionVO sessionVO = tpVO.getSessionVO();
+//            Integer activitySessionId = sessionVO.getActivitySessionId();
+//
+////			System.out.println("tpid" + sessionTimePeriodId);
+////			System.out.println("sessID" + activitySessionId);
+//
+//            //透過comparePeople方法做比較，TRUE的話移除list裡面的元素
+//            if (comparePeople(sessionTimePeriodId, activitySessionId)) {
+//                iterator.remove();  // 使用 iterator remove()方法移除元素
+//            }
+//        }
+//
+//        //回傳JSON格式到前端
+//        List<TimePeriodDTO> dtos = new ArrayList<>();
+//        for (Time_PeriodVO vo : list) {
+//            TimePeriodDTO dto = new TimePeriodDTO();
+//            dto.setSessionTimePeriodId(vo.getSessionTimePeriodId());
+//            dto.setTimePeriod(vo.getTimePeriod());
+//            dtos.add(dto);
+//        }
+//        return dtos;
+//    }
+//    //取得訂單總人數
+//    public Integer getTotalEnrollNumber(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId){
+//        List<ActivityOrderVO> list = activityOrderService.getTotalEnrollNumber(sessionTimePeriodId);
+//        Integer totalEnrollNumber = 0;
+//
+//        for(ActivityOrderVO orderVO : list){
+//            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
+//            totalEnrollNumber += orderVO.getEnrollNumber();
+//        }
+//        return totalEnrollNumber;
+//    }
+//
+//    //取得場次最大參加人數
+//    public Integer getActivityMaxPart(@RequestParam("activitySessionId") Integer activitySessionId){
+//        SessionVO sessionVO = sessionService.getOneSession(activitySessionId);
+//        return  sessionVO.getActivityMaxPart();
+//    }
+//
+//    //比較訂單總人數、場次最大參加人數
+//    public Boolean comparePeople(@RequestParam("sessionTimePeriodId") Integer sessionTimePeriodId,
+//                                 @RequestParam("activitySessionId") Integer activitySessionId) {
+//        //透過時段Id取得訂單總人數
+//        Integer totalEnrollNumber = getTotalEnrollNumber(sessionTimePeriodId);
+//        //System.out.println(totalEnrollNumber);
+//
+//        //透過場次Id取得場次最大參加人數
+//        Integer activityMaxPart = getActivityMaxPart(activitySessionId);
+//        //System.out.println(activityMaxPart);
+//
+//        //如果訂單總人數>=場次最大參加人數，得到True，就不要顯示時段
+//        if(totalEnrollNumber >= activityMaxPart){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
+//
+//    //取得所有已建立的活動日期
+//    @GetMapping("/availableDates")
+//    @ResponseBody
+//    public List<String> getAvailableDates() {
+//        List<Date> availableDates = sessionService.getAvailableDates();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        return availableDates.stream()
+//                .map(sdf::format)
+//                .collect(Collectors.toList());
+//    }
+//
+//}

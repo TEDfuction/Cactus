@@ -159,8 +159,16 @@ public class SessionController {
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
         /*************************** 2.開始查詢資料 *****************************************/
         SessionVO sessionVO = sessionService.getOneSession(Integer.valueOf(activitySessionId));
+
+
         List<Time_PeriodVO> timePeriodVOList = time_PeriodService.getActivitySessionId(Integer.valueOf(activitySessionId));
-        System.out.println(timePeriodVOList);
+        System.out.println("timePeriodVOList=" + timePeriodVOList);
+
+        //頁面上固定會有四個時段欄位，如果有空的欄位(沒填時段的值)，則添加新的時段對象到timePeriodVOList
+        int numOfEmptyTimePeriods = 4 - timePeriodVOList.size();
+        for (int i = 0; i < numOfEmptyTimePeriods; i++) {
+            timePeriodVOList.add(new Time_PeriodVO());
+        }
 
         // 将List<Time_PeriodVO>轉換為Set<Time_PeriodVO>
 //        Set<Time_PeriodVO> timePeriodSet = new HashSet<>(timePeriodVOList);
@@ -202,29 +210,19 @@ public class SessionController {
 
         /*************************** 2.開始修改資料 *****************************************/
 
-//        SessionVO sessionNew = sessionService.addSession(sessionVO);
-
+        //先更新場次
         SessionVO sessionUpdate =  sessionService.updateSession(sessionVO);
         System.out.println("場次編輯成功");
 
-        //成功後再新增場次時段，有四個時段要放進去
-        List<String> tpsVO = new ArrayList<>();
-        tpsVO.add(timePeriod1);
-        tpsVO.add(timePeriod2);
-        tpsVO.add(timePeriod3);
-        tpsVO.add(timePeriod4);
+        // 透過更新好的場次ID取得所有的時段
+        List<Time_PeriodVO> timePeriods = time_PeriodService.getActivitySessionId(sessionUpdate.getActivitySessionId());
 
-        for (String timePeriods : tpsVO) {
-            if (timePeriods == null || timePeriods.isEmpty()) {
+        // 四個時段參數集合起來
+        List<String> newTimePeriods = Arrays.asList(timePeriod1, timePeriod2, timePeriod3, timePeriod4);
 
-            } else {
-                Time time = stringToSqlTimeConverter.convert(timePeriods);
-                Time_PeriodVO tpVO = new Time_PeriodVO();
-                tpVO.setTimePeriod(time);
-                tpVO.setSessionVO(sessionUpdate);//FK 場次新增完的結果
-                time_PeriodService.updateTimePeriod(tpVO);
-            }
-        }
+        // updateTimePeriod方法更新時段
+        updateTimePeriod(timePeriods, sessionUpdate, newTimePeriods);
+
         /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
         model.addAttribute("success", "修改成功～");
         List<SessionVO> list = sessionService.getAll();
@@ -232,6 +230,72 @@ public class SessionController {
         return "back_end/session/listAllSession";
 
     }
+
+
+    /*
+    * timePeriods：表示已存在的時段列表，透過場次ID關連到到特定的SessionVO。
+    * sessionUpdate：更新好的SessionVO
+    * timePeriodStrings：從表單接收的時間字符串列表（四個）
+    */
+    private void updateTimePeriod(List<Time_PeriodVO> timePeriods, SessionVO sessionUpdate, List<String> timePeriodStrings) {
+        int index = 0;
+        int maxTimePeriods = 4; // 可編輯的時段做多4個
+
+        // 更新表單現有的時段
+        for (String timePeriodString : timePeriodStrings) {
+            //如果欄位值不為空的情況，轉換為Time型別
+            if (timePeriodString != null && !timePeriodString.isEmpty()) {
+                Time time = stringToSqlTimeConverter.convert(timePeriodString);
+                if (index < maxTimePeriods) {
+                    if (index < timePeriods.size()) {
+                        // 依索引值，更新現有的時段
+                        Time_PeriodVO timePeriod = timePeriods.get(index);
+                        timePeriod.setTimePeriod(time);
+                        timePeriod.setSessionVO(sessionUpdate);
+                        time_PeriodService.updateTimePeriod(timePeriod);
+                    } else {
+                        // 不超過現有的時段數量，創建新的時段
+                        Time_PeriodVO tpVO = new Time_PeriodVO();
+                        tpVO.setTimePeriod(time);
+                        tpVO.setSessionVO(sessionUpdate);
+                        time_PeriodService.updateTimePeriod(tpVO);
+                    }
+                    index++;
+                }
+            }
+        }
+        // 如果新的時間數量少於現有的時段，則删除多餘的時段
+        if (index < timePeriods.size()) {
+            for (int i = index; i < timePeriods.size(); i++) {
+                time_PeriodService.deleteTimePeriod(timePeriods.get(i).getSessionTimePeriodId());
+            }
+        }
+    }
+
+    // 更新或创建新的时段
+//    private void updateTimePeriod(List<Time_PeriodVO> timePeriods, SessionVO sessionUpdate, String timePeriodString) {
+//        if (timePeriodString != null && !timePeriodString.isEmpty()) {
+//            Time time = stringToSqlTimeConverter.convert(timePeriodString);
+//            // 检查时段是否已经存在
+//            boolean timePeriodExists = false;
+//            for (Time_PeriodVO timePeriod : timePeriods) {
+//                if (Objects.equals(timePeriod.getTimePeriod(), time)) {
+//                    timePeriodExists = true;
+//                    // 如果找到匹配的时段，则更新该时段的相关信息
+//                    timePeriod.setSessionVO(sessionUpdate);
+//                    time_PeriodService.updateTimePeriod(timePeriod);
+//                    break;
+//                }
+//            }
+//            // 如果时段不存在，则创建新的时段
+//            if (!timePeriodExists) {
+//                Time_PeriodVO tpVO = new Time_PeriodVO();
+//                tpVO.setTimePeriod(time);
+//                tpVO.setSessionVO(sessionUpdate);
+//                time_PeriodService.updateTimePeriod(tpVO);
+//            }
+//        }
+//    }
 
     /*
      * This method will be called on select_session.html form submission, handling POST request

@@ -20,7 +20,7 @@
 
 			<!-- 左側圖標 -->
 			<div class="col-lg-7 px-4 text-start">
-				<img th:src="@{/img/back_end/LOGO-7.png}"/>
+				<a th:href="@{/admin/backendAdminIndex}"><img th:src="@{/img/back_end/LOGO-7.png}"/></a>
 				<span class="navbar-brand2" href="#">CACTUS</span>
 				<!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
 				<!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
@@ -42,7 +42,7 @@
 				<div class=" d-inline-flex align-items-center   height-1 border-dot">
 					<!-- <a class="text-white px-2" href="">English ｜</a>
                     <a class="text-white px-2" href="">日本語 ｜</a> -->
-					<a class="text-white padding-set " href="">員工姓名</a>
+					<a class="text-white padding-set " th:href="@{/admin/adminUpdate}" th:text="${session.adminVO.adminName}"></a>
 
 
 				</div>
@@ -50,7 +50,7 @@
 					class=" d-inline-flex align-items-center  me-2 height-1 border-dot">
 					<!-- <a class="text-white px-2" href="">English ｜</a>
                     <a class="text-white px-2" href="">日本語 ｜</a> -->
-					<a class="text-white px-4 " href="">登出</a>
+					<a class="text-white px-4 " th:href="@{/admin/adminLogout}">登出</a>
 
 
 				</div>
@@ -79,7 +79,7 @@
 			<ul class="list">
  
                 
-                <li class="border-dot2">
+                <li class="border-dot2 memberSystem">
 
 					<div class="accordion-item2 ">
 
@@ -106,7 +106,7 @@
 <!------------------------------------------------------------------------------------------->
                 
                 
-                <li class="border-dot2">
+                <li class="border-dot2 notiSystem">
                 
 					<div class="accordion-item2 ">
 
@@ -135,7 +135,7 @@
 <!------------------------------------------------------------------------------------------->
                 
                 
-				<li class="border-dot2">
+				<li class="border-dot2 adminSystem">
 				
 					<div class="accordion-item2 ">
 
@@ -149,11 +149,8 @@
 						<div id="collapseThree" class="accordion-collapse collapse "aria-labelledby="headingThree" data-bs-parent="#accordionExample">
 							<div class="accordion-body2">
 								<ul class="list2">
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/adminAuth/listAllAdmin}">員工資料管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/adminAuth/authSetting}">員工權限管理</a></li>
 								</ul>
 							</div>
 						</div>
@@ -166,7 +163,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2">
+				<li class="border-dot2 activitySystem">
 
 					<div class="accordion-item2 ">
 
@@ -183,9 +180,10 @@
 									<li class="list-set2"><a class="changecolor" th:href="@{/category/listAllCategory}">活動類別管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/item/listAllItem}">活動項目管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/session/listAllSession}">活動場次管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">活動圖片管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/activity/addPhoto}">活動圖片管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/activityOrder/listAllOrder}">活動訂單管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/promotion/listAllPromotion}">活動促銷管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/attendees/listAllAttendees}">參加人員資訊</a></li>
 								</ul>
 							</div>
 						</div>
@@ -198,7 +196,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2">
+				<li class="border-dot2 productSystem">
 
 					<div class="accordion-item2 ">
 
@@ -213,10 +211,9 @@
 							<div class="accordion-body2">
 								<ul class="list2">
 									<li class="list-set2"><a class="changecolor" th:href="@{/shopOrder/shopOrderSearch}">商城訂單管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/product/listAllProduct1}">商品上架管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/product/historyProduct}">商品下架管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/admin/backendAdminIndex}">商品類別管理</a></li>
 								</ul>
 							</div>
 						</div>
@@ -229,7 +226,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2">
+				<li class="border-dot2 roomSystem">
 
 					<div class="accordion-item2 ">
 

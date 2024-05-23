@@ -104,21 +104,23 @@
 					
 				<!-- ajax動態新增的縣市與鄉鎮市區下拉式選單 -->	
 				
-				<select class="citySelect" name="city">
+				<select id="citySelect" class="citySelect" name="city">
 				    
 				</select>
 				
-				<select class="townSelect" name="town">
+				<select id="townSelect" class="townSelect" name="town">
 				
 				</select>
+				
+<!-- 				<span th:if="${#fields.hasErrors('city')}" class="error"></span> -->
 					
 							
 							
 							
 				<div class="form-group">   <!--  th:text="${#strings.substring(memberVO.address, 6)}"  -->
 					<label for="address"><i class="zmdi zmdi-home"></i>會員地址:</label>
-					<input type="text" class="form-box" id="address" name="address" th:value="${#strings.substring(memberVO.address, 6)}" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
-					<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span>
+					<input type="text" class="form-box" id="address" name="address" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
+<!-- 					<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span> -->
 				</div>
 				
 				
@@ -155,25 +157,75 @@
        
 		//第一層選單
 		$.ajax({
-		    url: "/member/getEnums", // 假設這是你的後端接口路徑
+		    url: "/member/getEnums", 
 		    method: "GET",
 		    dataType: "json",
+		    Async:false,
 		    success: function(response) {
 
 		        // 將 JSON 物件轉換為 JSON 字串輸出到控制台
-		        console.log(response);
+// 		        console.log(response);
 		        
-		        $.each(response,function(key,value){
-// 					console.log(key,value)
-					$('.citySelect').append('<option value="'+key+'">'+response[key].city+'</option>')
-				});
+		        var zip1 =[];
+		        var zip2 =[];
 		        
-		        var taipei_town = response[0].towns;
-				$.each(taipei_town,function(key,value){
-					
-					$('.townSelect').append('<option value="'+response[0].city+taipei_town[key]+'">'+taipei_town[key]+'</option>')
-				})
-		       
+		        for(var i in response){
+		        	zip1[i] = response[i].city
+		        }
+
+		        for(var i in response){
+		        	zip2[response[i].city] = response[i].towns;        
+		        }
+// 		        console.log(zip2["新北市"]);
+
+				
+// 		      //初始化
+		      
+		      	init_address();
+		      	dbAdressData(zip2);
+		      
+		        function init_address(){
+		            	
+		            var zone1 = document.getElementById('citySelect');
+		            var zone2 = document.getElementById('townSelect');
+		            
+		            zone1.options.add(first());
+		        	  zone2.options.add(first());
+		            
+		            //市
+		        	for(var i in zip1){
+		                o=document.createElement('option');
+		                o.text=zip1[i];
+		                o.value=zip1[i];
+		                zone1.options.add(o);
+		        	}
+		            
+		            //區
+		        	zone1.onchange=function(){
+		        	   
+		               
+		        		zone2.innerHTML='';
+		        		zone2.options.add(first());
+		                
+		        		if(this.selectedIndex>0){
+		            		for(var i in zip2[this.value]){                
+		            			o=document.createElement('option');
+		                        o.text = zip2[this.value][i];
+		            			o.value = zip2[this.value][i];
+		            			zone2.options.add(o);
+		            		}
+		                }
+		        	};
+		            
+		        }
+
+		        //第一個選項
+		        function first(){
+		        	var o=document.createElement('option');
+		        	o.text='請選擇';
+		        	o.value="";
+		        	return o;
+		        }
 		    },
 		    error: function(xhr, status, error) {
 		        console.log("Status:", status);
@@ -181,38 +233,50 @@
 		    }
 		});
 
-		
-		//第二層選單
-		$(".citySelect").change(function(){
-			cityvalue=$(".citySelect").val();  //取值
-			$(".townSelect").empty(); //清空上次的值
-			
-			$.ajax({
-			    url: "/member/getEnums", // 假設這是你的後端接口路徑
-			    method: "GET",
-			    dataType: "json",
-			    success: function(response) {
 
-			    	eachval=response[cityvalue].towns; //鄉鎮
-					
-					$.each(eachval,function(key,value){
-						$('.townSelect').append('<option value="'+response[cityvalue].city+eachval[key]+'">'+eachval[key]+'</option>')
-					});
-			       
-			    },
-			    error: function(xhr, status, error) {
-			        console.log("Status:", status);
-			        console.log("Error:", error);
-			    }
-			});
+	    //將資料庫的資料代入欄位
+	    function dbAdressData(zip2){
+	    
+		$.ajax({
+		    url: "/member/splitAddress", 
+		    method: "GET",
+		    dataType: "json",
+		    success: function(response) {
+
+		        // 將 JSON 物件轉換為 JSON 字串輸出到控制台
+// 		        console.log(response);
+		        
+		        var memcity = response.memcity;
+		        var memtown = response.memtown;
+		        var memroad = response.memroad;
+		        
+		        console.log(memcity);
+		        console.log(memtown);
+		        console.log(memroad);
+		        console.log(zip2[memcity]);
+
+				$("#citySelect").val(memcity);
+				for ( var i in zip2[memcity]) {
+					o = document.createElement('option');
+					o.text = zip2[memcity][i];
+					o.value = zip2[memcity][i];
+					document.getElementById('townSelect').options.add(o);
+				}
+				$("#townSelect").val(memtown);
+				$("#address").val(memroad);
+				
+		        
+   
+		    },
+		    error: function(xhr, status, error) {
+		        console.log("Status:", status);
+		        console.log("Error:", error);
+		    }
 		});
-	  	
-
-
 	     
-	     
-		
+	 }	
 		</script>
+		
         
         
 		

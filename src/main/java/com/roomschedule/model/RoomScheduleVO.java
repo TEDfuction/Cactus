@@ -1,5 +1,4 @@
-package com.room.model;
-
+package com.roomschedule.model;
 
 import com.roomtype.model.RoomTypeVO;
 
