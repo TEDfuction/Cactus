@@ -37,14 +37,14 @@
         <!-- 商品价格 -->
         <div class="mb-3">
             <label for="productPrice" class="form-label">商品價格</label>
-            <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="请輸入商品價格">
+            <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="請輸入商品價格">
         	<span  th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
         </div>
 
         <!-- 商品名称 -->
         <div class="mb-3">
             <label for="productName" class="form-label">商品名稱</label>
-            <input type="text" class="form-control" id="productName" th:field="*{productName}" placeholder="请輸入商品名稱">
+            <input type="text" class="form-control" id="productName" th:field="*{productName}" placeholder="請輸入商品名稱">
         	<span  th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
         </div>
 
