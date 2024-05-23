@@ -35,7 +35,7 @@ import com.notification.model.NotificationService;
 
 @Controller
 @Validated
-@RequestMapping("member")
+@RequestMapping("/member")
 public class MemberLoginController {
 
 	@Autowired
