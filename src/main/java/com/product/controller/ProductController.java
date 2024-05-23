@@ -254,7 +254,7 @@ public class ProductController {
 		
 		
 
-		@GetMapping("listAllProduct")
+		@GetMapping("/listAllProduct")
 		public String listAllProduct(ModelMap model) {
 			
 			List<ProductVO> list1 = productSvc.getAll();
@@ -265,7 +265,7 @@ public class ProductController {
 			return "/front_end/product/shop_index" ;
 		}
 		
-		@GetMapping("listOneProduct")
+		@GetMapping("/listOneProduct")
 		public String listOneProduct(ModelMap model,
 				@RequestParam("productId") String productId) {
 			ProductVO productVO = productSvc.findById( Integer.valueOf(productId) );

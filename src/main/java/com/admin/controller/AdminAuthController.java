@@ -4,17 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.admin.model.AdminAuthService;
 import com.admin.model.AdminAuthVO;
@@ -122,9 +130,12 @@ public class AdminAuthController {
 		
 		//先刪除所有權限
 		
-		adminAuthSvc.emptyAuth(adminId);
-		System.out.println("刪除成功");
-		
+		List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
+
+		if(!list.isEmpty()) {
+			adminAuthSvc.emptyAuth(adminId);
+			System.out.println("刪除成功");
+		}
 		
 		//設定權限
 		Integer count = 0;
@@ -158,4 +169,29 @@ public class AdminAuthController {
 		
 		return "/back_end/admin/authSetting";
 	}
+	
+	
+	
+	//捕捉MissingServletRequestParameterException做處理
+		@ExceptionHandler(value = { MissingServletRequestParameterException.class })
+		public ModelAndView handleError(
+				HttpServletRequest req,
+				ConstraintViolationException e,
+				Model model) {
+			
+			//將錯誤訊息收集
+		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+		    
+		    StringBuilder strBuilder = new StringBuilder();
+		    
+		    for (ConstraintViolation<?> errorSet : violations ) {
+		    	//把錯誤訊息串接 
+		    	strBuilder.append(errorSet.getMessage() + "<br>");
+		    }
+		    
+			String message = strBuilder.toString();
+		    return new ModelAndView("back_end/adminAuth/authSetting", "errorMessage", "請修正以下錯誤:<br>"+message);
+		}
+	
+	
 }
