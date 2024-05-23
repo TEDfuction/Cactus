@@ -252,7 +252,8 @@ public class PhotoController {
 	//5.成功後導向到活動首頁
 	@PostMapping("success")
 	public String success(@Valid ActivityOrderVO activityOrderVO ,ModelMap model, HttpSession session,
-			               @RequestParam("sessionId")Integer sessionId){
+			              @RequestParam("sessionId")Integer sessionId
+			              ) {
 	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
 	    Integer activityId = (Integer) session.getAttribute("activityId");
       
@@ -266,7 +267,7 @@ public class PhotoController {
 	    
 	    SessionVO sessionVO = sessionService.getOneSession(sessionId) ;
 	     
-	    
+	    //Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId);
 	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
 	    time_periodVO.setSessionTimePeriodId(3);
 	    
