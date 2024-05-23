@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.activities_attendees.model.AttendeesVO;
 import com.activities_order.model.ActivityOrderService;
@@ -67,6 +68,25 @@ public class MemberController {
 	@GetMapping("/LoginTest")
 	public String LoginTest(ModelMap model) {
 		return "/front_end/member/TestUse" ;
+	}
+	
+	
+	@GetMapping("/splitAddress")
+	@ResponseBody
+	public String splitAddress(HttpSession session) {
+		String email = (String)session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		String address = memberVO.getAddress();
+		String[] addressSplit = address.split("-");
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("memcity", addressSplit[0]);
+		map.put("memtown", addressSplit[1]);
+		map.put("memroad", addressSplit[2]);
+		
+		String mapJsonString = gson.toJson(map);
+		
+		return mapJsonString ;
 	}
 	
 	
@@ -197,7 +217,8 @@ public class MemberController {
 			BindingResult result, 
 			ModelMap model,
 			@RequestParam("memberPic") MultipartFile[] parts,
-			@RequestParam("town")String citytown) throws IOException {
+			@RequestParam("city")String city,
+			@RequestParam("town")String town) throws IOException {
 		
 
 		/**** 1.接收請求參數 - 輸入格式的錯誤處理 ****/
@@ -212,6 +233,7 @@ public class MemberController {
 			}
 		}
 		
+		
 		//錯誤訊息內容集合
 //		for (ObjectError object :result.getAllErrors()) {
 //			System.out.println(object.toString());
@@ -224,10 +246,26 @@ public class MemberController {
 			return "/front_end/member/memberRegistory";
 		}
 		
+		if (StringUtils.isEmpty(city) || StringUtils.isEmpty(town)) {
+			model.addAttribute("status", "addressEmpty");
+			return "/front_end/member/memberRegistory";
+        }
+		
+		List<MemberVO> list = memSvc.getAll();
+		for(MemberVO dbMemberVO : list) {
+			String dbEmail = dbMemberVO.getEmail();
+			String inputEmail = memberVO.getEmail();
+			
+			if(dbEmail.equals(inputEmail)) {
+				model.addAttribute("status", "sameEmail");
+				return "/front_end/member/memberRegistory";
+			}
+			
+		}
+		
 		
 		/**** 2.開始新增資料 ****/
-		System.out.println(citytown);
-		String address = citytown + memberVO.getAddress();
+		String address = city + "-" + town + "-" + memberVO.getAddress();
 		System.out.println(address);
 		memberVO.setAddress(address);
 		
@@ -276,12 +314,12 @@ public class MemberController {
 			BindingResult result,
 			ModelMap model,
 			@RequestParam("memberPic") MultipartFile[] parts,
-			@RequestParam("town") String citytown
+			@RequestParam("city") String city,
+			@RequestParam("town") String town
 			) throws IOException {
 			
 		
-		System.out.println(citytown);
-		String address = citytown + memberVO.getAddress();
+		String address = city + "-" + town + "-" + memberVO.getAddress();
 		System.out.println(address);
 		memberVO.setAddress(address);
 		
@@ -301,7 +339,9 @@ public class MemberController {
 			memberVO.setMemberPic(b);
 		}
 		
-		
+		if(city == null || town == null) {
+			result.addError(new FieldError("memberVO","city","請選擇完整地址"));
+		}
 		
 		if (result.hasErrors()) {
 			return "front_end/member/UpdateMember";

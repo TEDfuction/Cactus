@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.product.model.ProductVO;
@@ -22,7 +23,7 @@ public class ProductCategoryVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_category_id")
-	@NotNull(message="商品類別: 請勿空白")
+//	@NotNull(message="商品編號: 請勿空白")
 	private Integer productCategoryId;
 	
 	@OneToMany(mappedBy = "productCategoryVO")
@@ -30,6 +31,7 @@ public class ProductCategoryVO {
 	private Set<ProductVO> productVOs;
 	
 	@Column(name = "product_category_name", nullable = false)
+	@NotEmpty(message="類別名稱: 請勿空白")
 	private String productCategoryName;
 	
 	

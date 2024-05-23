@@ -35,13 +35,13 @@
         <form method="post" th:action="@{listProducts_ByCompositeQuery}">
 
           輸入商品編號: 
-          <input type="text" name="productId" value="1" class="form-control"><br>
+          <input type="text" name="productId" class="form-control"><br>
           
           輸入商品名稱: 
-          <input type="text" name="productName" value="澎湖" class="form-control"><br>
+          <input type="text" name="productName" class="form-control"><br>
           
           選擇類別: 
-          <select class="form-select">
+           <select class="form-select" name="productCategoryId">
             <option th:each="productCategoryVO : ${productCategoryListData}" th:value="${productCategoryVO.productCategoryId}" th:text="${productCategoryVO.productCategoryName}"></option>
           </select><br>
           
@@ -88,7 +88,7 @@
 				<td th:text="${productVO.productStatus}"></td>
 				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td>
 			<td>
-			  <form method="post" th:action="@{/product/getOne_For_Update}" style="margin-bottom: 0px;">
+			  <form method="post" th:action="@{/product/getOnehistory_For_Update}" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
 			     <input type="hidden" name="productId" th:value="${productVO.productId}"></form>
 			

@@ -70,8 +70,12 @@
         </div>
 
         <!-- 提交按钮 -->
-        <div class="mb-3">
+        <div class="mb-3" th:if="${getOne_For_Update}">
             <button type="submit" class="btn btn-primary" id="submit">送出新增</button>
+        </div>
+        
+         <div class="mb-3" th:if="${getOnehistory_For_Update}">
+            <button type="submit" class="btn btn-primary" id="submit">送出修改</button>
         </div>
     </form>
 </div>

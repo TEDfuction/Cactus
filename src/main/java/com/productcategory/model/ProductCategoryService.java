@@ -20,9 +20,15 @@ public class ProductCategoryService {
 		repository.save(productCategoryVO);
 	}
 
-//	public void deleteProductCategory(Integer deptno) {
-//		if (repository.existsById(deptno))
-//			repository.deleteById(deptno);
+	public void deleteByProductCategory(Integer productCategoryId) {
+		if (repository.existsById(productCategoryId))
+			repository.deleteById(productCategoryId);
+	}
+	
+//	public void deleteEmp(Integer empno) {
+//		if (repository.existsById(empno))
+//			repository.deleteByEmpno(empno);
+////		    repository.deleteById(empno);
 //	}
 
 

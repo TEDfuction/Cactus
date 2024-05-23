@@ -43,7 +43,7 @@ list-type-ulli, .socials {
   font-weight: 400;
   src: url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.eot");
   /* IE9 Compat Modes */
-  src: local("Poppins Italic"), local("Poppins-Italic"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-italic.ttf") format("truetype"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.svg#Poppins") format("svg");
+  src: local("Poppins Italic"), local("Poppins-Italic"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.eot?#iefix") format("embedded-opentype"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.woff2") format("woff2"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.woff") format("woff"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.ttf") format("truetype"), url("/fonts/front_end/member/poppins/poppins-v5-latin-italic.svg#Poppins") format("svg");
   /* Legacy iOS */ }
 /* poppins-500 - latin */
 @font-face {
