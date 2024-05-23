@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/roomtype")
+@RequestMapping("/roomType")
 public class RoomTypeController {
 
 
@@ -57,12 +57,12 @@ public class RoomTypeController {
         try {
             RoomTypeVO roomTypeVO = roomTypeRepository.findById(roomTypeId).orElse(null);
             if (roomTypeVO == null) {
-                return "redirect:back_end/roomtype/listAllRoomType";
+                return "redirect:back_end/roomType/listAllRoomType";
             }
             model.addAttribute("roomTypeVO", roomTypeVO);
 
             if (result.hasErrors()) {
-                return "back_end/roomtype/listAllRoomType";
+                return "back_end/roomType/listAllRoomType";
             }
 
             // Toggle room type status
@@ -73,7 +73,7 @@ public class RoomTypeController {
         } catch (Exception ex) {
             System.out.println("Exception: " + ex.getMessage());
         }
-        return "redirect:/roomtype/listAllRoomType";
+        return "redirect:/roomType/listAllRoomType";
     }
 
 
@@ -127,14 +127,14 @@ public class RoomTypeController {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("status", "error");
             redirectAttributes.addFlashAttribute("message", "驗證錯誤");
-            return "redirect:/back_end/roomtype/listAllRoomType"; // 假設有一個顯示錯誤的頁面
+            return "redirect:/back_end/roomType/listAllRoomType"; // 假設有一個顯示錯誤的頁面
         }
 
         RoomTypeVO roomTypeVO = roomTypeRepository.findById(roomTypeId).orElse(null);
         if (roomTypeVO == null) {
             redirectAttributes.addFlashAttribute("status", "error");
             redirectAttributes.addFlashAttribute("message", "找不到指定的房型");
-            return "redirect:/back_end/roomtype/listAllRoomType"; // 假設有一個顯示「未找到」的頁面
+            return "redirect:/back_end/roomType/listAllRoomType"; // 假設有一個顯示「未找到」的頁面
         }
 
 
@@ -145,7 +145,7 @@ public class RoomTypeController {
 
         redirectAttributes.addFlashAttribute("status", "success");
         redirectAttributes.addFlashAttribute("message", "資料已更新");
-        return "redirect:/roomtype/listAllRoomType"; // 成功後重定向到另一個 URL
+        return "redirect:/roomType/listAllRoomType"; // 成功後重定向到另一個 URL
     }
 
     @GetMapping("/roomTypeFront")
