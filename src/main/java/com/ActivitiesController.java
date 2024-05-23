@@ -53,11 +53,6 @@ public class ActivitiesController {
 	AttendeesService attendeesService;
 	
 
-
-	@GetMapping("/")
-	public String index(Model model) {
-		return "activity_management";
-	}
 	
 	@GetMapping("/category/select_category")
 	public String selectCategory(Model model) {
