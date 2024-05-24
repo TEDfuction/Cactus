@@ -62,6 +62,9 @@
 		<th>類別名稱</th>
 		<th>修改</th>
 <!-- 		<th th:if="${productCategoryListDataPro}">刪除</th> -->
+		<th>刪除</th>
+<!-- 		<th>VOs size:</th> -->
+<!-- 		<th>Is empty:</th> -->
 	</tr>
   </thead>
 	
@@ -83,6 +86,16 @@
 <!-- 			     <input type="submit" value="刪除"> -->
 <!-- 			     <input type="hidden" name="productCategoryId" th:value="${productCategoryVO.productCategoryId}"></form>		 -->
 <!-- 			</td> -->
+			
+			<td>
+			  <form method="post" th:action="@{/product/delete}" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除" th:disabled="${!productCategoryVO.productVOs.empty}">
+			     <input type="hidden" name="productCategoryId" th:value="${productCategoryVO.productCategoryId}"></form>		
+			</td>
+			
+<!-- 			<td th:text="'VOs size: ' + ${productCategoryVO.productVOs.size()}"></td> -->
+<!-- 			<td th:text="'Is empty: ' + ${productCategoryVO.productVOs.empty}"></td> -->
+			
 		
 
 
