@@ -35,6 +35,8 @@ import com.activities_order.model.ActivityOrderService;
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_photo.model.PhotoService;
 import com.activities_photo.model.PhotoVO;
+import com.activities_promotion.model.PromotionService;
+import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionService;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberService;
@@ -70,6 +72,9 @@ public class PhotoController {
 	
 	@Autowired
     Time_PeriodService time_periodService;
+	
+	@Autowired
+    PromotionService promotionService;
 	
 	
 	
@@ -275,14 +280,43 @@ public class PhotoController {
 	    MemberVO xxx = memSvc.findByEmail(email);
 	    
 //	    SessionVO sessionVO = new SessionVO(); 
-//	    sessionVO.setActivitySessionId(11);
-	    
+//	    sessionVO.setActivitySessionId(11);    
 	    SessionVO sessionVO = sessionService.getOneSession(sessionId) ;
 	     
         Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
 //	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
 //	    time_periodVO.setSessionTimePeriodId(3);
-	    
+        
+        //取得活動日期
+        java.util.Date  sessiondate = sessionVO.getActivityDate() ;
+        System.out.println("sessiondate"+sessiondate);
+        List<PromotionVO> list3 = promotionService.getAll();
+        
+        Double promotionDiscount = 1.0;
+        Integer promotionCoupon = 0;
+        Integer promotionId = null;
+	    for(PromotionVO promotion : list3) {
+	    	java.util.Date  promotionStart = promotion.getPromotionStarted();
+	    	System.out.println("promotionStart"+promotionStart);
+	    	java.util.Date  promotionEnd = promotion.getPromotionEnd();
+	    	System.out.println("promotionEnd"+promotionEnd);
+	    	
+	    	if((sessiondate.after(promotionStart) || sessiondate.equals(promotionStart)) && (sessiondate.before(promotionEnd) || sessiondate.equals(promotionEnd))) {
+	    		System.out.println("aaaaaa");
+	    		promotionDiscount = promotion.getPromotionDiscount();
+	    		promotionCoupon = promotion.getPromotionCoupon();
+	    		promotionId = promotion.getPromotionId();
+	    	}else{
+	    		promotionDiscount = 1.0;
+	    		promotionCoupon =0;
+	    	}
+	    		
+	    }
+	    System.out.println("promotionDiscount"+promotionDiscount);
+	    System.out.println("promotionCoupon"+promotionCoupon);
+	    System.out.println("promotionId"+promotionId);
+        
+        
 	    activityOrderVO.setMemberVO(xxx);
 	    activityOrderVO.setSessionVO(sessionVO);
 	    attendeesService.addAttendees(attendeesVO);
@@ -297,17 +331,24 @@ public class PhotoController {
 	    Integer activityPrice = itemVO.getActivityPrice();
 	    // activityOrderVO的人數以及訂單金額
 	    Integer EnrollNumber = activityOrderVO.getEnrollNumber();
-	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
-	    // 如果 promotionPrice 為空，則設為 0
-	    if(promotionPrice == null) {
-	    	promotionPrice = 0;
-	    }
+//	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
+//	    // 如果 promotionPrice 為空，則設為 0
+//	    if(promotionPrice == null) {
+//	    	promotionPrice = 0;
+//	    }
 	    // 活動項目價格*活動訂單人數-活動促銷價格
-	    int OrderAmount = (activityPrice * EnrollNumber)- promotionPrice;
-	    activityOrderVO.setOrderAmount(OrderAmount);
-	    activityOrderVO.setPayAmount(OrderAmount);
+	    Double OrderAmount = (promotionDiscount*(activityPrice * EnrollNumber))- promotionCoupon;
+	    System.out.println("OrderAmount"+OrderAmount);
+	    
+	    activityOrderVO.setOrderAmount(activityPrice * EnrollNumber);
+	    activityOrderVO.setPayAmount(OrderAmount.intValue());
+	    if(promotionId != null) {
+		    activityOrderVO.setPromotionVO(promotionService.getOnePromotion(promotionId));
+	    }
+	    Integer promotionPrice = (activityPrice * EnrollNumber) - (OrderAmount.intValue());
+	    activityOrderVO.setPromotionPrice(promotionPrice);
 	    activityOrderService.addOrder(activityOrderVO);
-
+          
 	    
 	    /********************* 新增完成,準備轉交  *********************/
 	    model.addAttribute("itemVO", itemVO);
