@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>One-on-One Chat Room</title>
+</head>
+<body>
+<div id="chat-container">
+    <div id="chat-messages">
+        <div class="message" th:each="message : ${chatHistory}">
+            <span th:text="${message.sender}"></span>:
+            <span th:text="${message.content}"></span>
+        </div>
+    </div>
+    <form id="chat-form" th:action="@{/chat/send}" method="post">
+        <input type="hidden" name="sender" th:value="${sender}" />
+        <input type="hidden" name="receiver" th:value="${receiver}" />
+        <input type="text" id="message-input" name="content" placeholder="Type your message..." required />
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<!-- 引入SockJS和STOMP的JavaScript库 -->
+<script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+
+<script th:inline="javascript">
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/chat');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages', function(response) {
+                showMessage(JSON.parse(response.body));
+            });
+        });
+    }
+
+    function showMessage(message) {
+        var messageDiv = document.createElement('div');
+        messageDiv.innerHTML = '<b>' + message.sender + '</b>: ' + message.content;
+        document.getElementById('chat-messages').appendChild(messageDiv);
+    }
+
+    document.getElementById('chat-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var form = event.target;
+        var formData = new FormData(form);
+        var messageContent = formData.get('content').trim();
+        if (messageContent && stompClient) {
+            var message = {
+                sender: formData.get('sender'),
+                receiver: formData.get('receiver'),
+                content: messageContent
+            };
+            stompClient.send("/app/chat.send", {}, JSON.stringify(message));
+            formData.set('content', '');
+        }
+    });
+
+    connect();
+</script>
+</body>
+</html>

@@ -122,14 +122,14 @@ public class ActivityOrderController {
         Integer defaultOrderAmount = activityPrice * enrollNumber;
 
         // 根據 activitySessionId 取得所有 sessionTimePeriodId
-        List<Time_PeriodVO> timePeriods = time_periodService.getActivitySessionId(activityOrderVO.getSessionVO().getActivitySessionId());
+//        List<Time_PeriodVO> timePeriods = time_periodService.getActivitySessionId(activityOrderVO.getSessionVO().getActivitySessionId());
 
 
         /*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
         model.addAttribute("activityOrderVO", activityOrderVO);
         model.addAttribute("activityPrice", activityPrice);
         model.addAttribute("defaultOrderAmount", defaultOrderAmount);
-        model.addAttribute("timePeriods", timePeriods); // 將 timePeriods 傳遞到前端
+//        model.addAttribute("timePeriods", timePeriods); // 將 timePeriods 傳遞到前端
         System.out.println("修改開始");
         return "back_end/activityOrder/update_order_input"; // 查詢完成後轉交update_order_input.html
 

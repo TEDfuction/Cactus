@@ -2,10 +2,7 @@ package com.activities_photo.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.activities_attendees.model.AttendeesService;
@@ -252,8 +244,8 @@ public class PhotoController {
 	        return "front_end/activity/listDetailAddAttendees";
 	    }
 	    
-	    System.out.println(activityOrderVO.getEnrollNumber());
-	    System.out.println(activityOrderVO.getOrderTime());
+//	    System.out.println(activityOrderVO.getEnrollNumber());
+//	    System.out.println(activityOrderVO.getOrderTime());
 	    
 	    /********************* 2.存儲需要在下一頁使用的數據到 session 中 *********************/
 	    ItemVO itemVO = itemSvc.getOneItem(activityId); // 獲得itemVO对象
@@ -363,13 +355,30 @@ public class PhotoController {
         model.addAttribute("ecpayCheckout", ecpayCheckout);
 	    return "front_end/activity/success"; // 重定向到成功頁面
 	}
-	
+
+	//ajax
+	//透過活動id找場次日期
+	@GetMapping("/activityDatesByActivityId")
+	@ResponseBody
+	public List<Date> getActivityDatesByActivityId(String activityId) {
+
+//		System.out.println(activityId);
+
+		List<Date> activityDates = sessionService.getAllDate(Integer.valueOf(activityId));
+
+//		System.out.println(activityDates);
+		return activityDates;
+	}
+
+
 	
 //ajax
 	//透過活動日期找場次時段
     @GetMapping("/timePeriodsByActivityDate")
     @ResponseBody
     public List<TimePeriodDTO> getTimePeriodsByActivityDate(HttpServletRequest req, HttpServletResponse res) {
+
+//		sessionService.getActivityDatesByActivityId(Integer activityId)
 
         //activityDate先轉為sql.Date
         Date actDate = java.sql.Date.valueOf(req.getParameter("activityDate"));
@@ -412,7 +421,7 @@ public class PhotoController {
         Integer totalEnrollNumber = 0;
 
         for(ActivityOrderVO orderVO : list){
-            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
+//            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
             totalEnrollNumber += orderVO.getEnrollNumber();
         }
         return totalEnrollNumber;
@@ -435,6 +444,8 @@ public class PhotoController {
         Integer activityMaxPart = getActivityMaxPart(activitySessionId);
         //System.out.println(activityMaxPart);
 
+		Integer remainingSpots = activityMaxPart - totalEnrollNumber;
+
         //如果訂單總人數>=場次最大參加人數，得到True，就不要顯示時段
         if(totalEnrollNumber >= activityMaxPart){
             return true;
@@ -442,6 +453,8 @@ public class PhotoController {
             return false;
         }
     }
+
+
 
     //取得所有已建立的活動日期
     @GetMapping("/availableDates")
