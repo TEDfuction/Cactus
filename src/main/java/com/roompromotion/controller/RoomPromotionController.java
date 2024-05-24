@@ -1,6 +1,8 @@
 package com.roompromotion.controller;
 
 
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 import com.roompromotion.model.RoomPromotionVO;
 import com.roompromotion.model.RoomPromotionService;
 
@@ -9,11 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -25,6 +25,9 @@ public class RoomPromotionController {
 
     @Autowired
     RoomPromotionService roomPromotionService;
+
+    @Autowired
+    MemberService memSvc;
 
     @GetMapping("/searchRoomPromotion")
     public String searchPage() { return "back_end/roomPromotion/roomPromotionSearch"; }
@@ -115,12 +118,13 @@ public class RoomPromotionController {
             @RequestParam("roomPrice") String roomPrice,
             @RequestParam("selectCheckIn") String selectCheckInStr,
             @RequestParam("selectCheckOut") String selectCheckOutStr,
-            Model model) {
+            Model model, HttpSession httpSession) {
 
         try {
             LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
-            List<String> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
-
+            List<RoomPromotionVO> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
+//            httpSession.setAttribute("roomTypeName", roomTypeName);
+//            System.out.println(httpSession.getAttribute(roomTypeName));
             // 將查詢結果和其他參數添加到模型中
             model.addAttribute("roomTypeName", roomTypeName);
             model.addAttribute("roomGuestAmount", roomGuestAmount);
@@ -128,8 +132,14 @@ public class RoomPromotionController {
             model.addAttribute("roomPrice", roomPrice);
             model.addAttribute("selectCheckIn", selectCheckInStr);
             model.addAttribute("selectCheckOut", selectCheckOutStr);
-            model.addAttribute("getRoomPromotion", getRoomPromotion);
             System.out.println(roomTypeName);
+
+            String email = (String)httpSession.getAttribute("account");
+
+            MemberVO memberVO = memSvc.findByEmail(email);
+            model.addAttribute("memberVO",memberVO);
+            model.addAttribute("roomPromotionVO",getRoomPromotion);
+
 
             return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
         } catch (DateTimeParseException e) {

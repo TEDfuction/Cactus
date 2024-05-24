@@ -102,8 +102,6 @@ public class RoomTypeController {
         roomTypeVO.setRoomTypePrice(roomTypeVORequest.getRoomTypePrice());
         roomTypeVO.setRoomTypeStatus(Boolean.TRUE);
 
-        roomTypeRepository.save(roomTypeVO);
-
         return "redirect:/back_end/roomtype/listAllRoomType";
     }
 
