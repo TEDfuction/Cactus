@@ -69,9 +69,17 @@ public class ActivityOrderService {
 
     	AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
+        
+        
+        
+      //將訂單時間(當前時間)轉為字串放入，以避免編號重複的問題
+      Date date = new Date();
+      SimpleDateFormat formatter1 = new SimpleDateFormat("yyyyMMddHHmmss");
+      String orderDateString = formatter1.format(date);	
+        
 
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( "Member"  + activityOrderVO.getActivityOrderId() + "test" );
+        obj.setMerchantTradeNo( orderDateString + activityOrderVO.getActivityOrderId());
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(activityOrderVO.getOrderTime()) );
