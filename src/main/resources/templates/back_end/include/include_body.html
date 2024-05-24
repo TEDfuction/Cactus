@@ -43,7 +43,7 @@
 					<!-- <a class="text-white px-2" href="">English ｜</a>
                     <a class="text-white px-2" href="">日本語 ｜</a> -->
 					<a class="text-white padding-set " th:href="@{/admin/adminUpdate}" th:text="${session.adminVO.adminName}"></a>
-
+					<input type="hidden" class="sessionadminId" th:value="${session.adminVO.adminId}"/>
 
 				</div>
 				<div
@@ -79,7 +79,7 @@
 			<ul class="list">
  
                 
-                <li class="border-dot2 memberSystem">
+                <li class="border-dot2 memberSystem asidenone">
 
 					<div class="accordion-item2 ">
 
@@ -106,7 +106,7 @@
 <!------------------------------------------------------------------------------------------->
                 
                 
-                <li class="border-dot2 notiSystem">
+                <li class="border-dot2 notiSystem asidenone">
                 
 					<div class="accordion-item2 ">
 
@@ -135,7 +135,7 @@
 <!------------------------------------------------------------------------------------------->
                 
                 
-				<li class="border-dot2 adminSystem">
+				<li class="border-dot2 adminSystem asidenone">
 				
 					<div class="accordion-item2 ">
 
@@ -163,7 +163,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2 activitySystem">
+				<li class="border-dot2 activitySystem asidenone">
 
 					<div class="accordion-item2 ">
 
@@ -196,7 +196,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2 productSystem">
+				<li class="border-dot2 productSystem asidenone">
 
 					<div class="accordion-item2 ">
 
@@ -213,7 +213,7 @@
 									<li class="list-set2"><a class="changecolor" th:href="@{/shopOrder/shopOrderSearch}">商城訂單管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/product/listAllProduct1}">商品上架管理</a></li>
 									<li class="list-set2"><a class="changecolor" th:href="@{/product/historyProduct}">商品下架管理</a></li>
-									<li class="list-set2"><a class="changecolor" th:href="@{/admin/backendAdminIndex}">商品類別管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/product/listAllProductCategory}">商品類別管理</a></li>
 								</ul>
 							</div>
 						</div>
@@ -226,7 +226,7 @@
 <!------------------------------------------------------------------------------------------->
 
 
-				<li class="border-dot2 roomSystem">
+				<li class="border-dot2 roomSystem asidenone">
 
 					<div class="accordion-item2 ">
 

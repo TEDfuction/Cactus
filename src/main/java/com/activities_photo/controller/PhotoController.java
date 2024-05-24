@@ -35,6 +35,8 @@ import com.activities_order.model.ActivityOrderService;
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_photo.model.PhotoService;
 import com.activities_photo.model.PhotoVO;
+import com.activities_promotion.model.PromotionService;
+import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionService;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberService;
@@ -71,6 +73,9 @@ public class PhotoController {
 	@Autowired
     Time_PeriodService time_periodService;
 	
+	@Autowired
+    PromotionService promotionService;
+	
 	
 	
 
@@ -90,7 +95,6 @@ public class PhotoController {
 		public String listDetailPhoto(ModelMap model,
 				                       @RequestParam("activityId")Integer activityId,
 				                       @RequestParam("activityPhotoId")String activityPhotoId
-				                      
 				                     
 				                        ) {
 			model.addAttribute("sessionVO", new SessionVO());
@@ -136,13 +140,17 @@ public class PhotoController {
 		@GetMapping("listDetailAddAttendees")
 		public String listDetailAddAttendeesSuc(ModelMap model,
 				                               @RequestParam("activityId")Integer activityId,
-				                               @RequestParam("activityPhotoId")String activityPhotoId
-				                                ) {
-			
+				                               @RequestParam("activityPhotoId")String activityPhotoId,
+						                       @RequestParam("sessionTimePeriodId")Integer timePeriodId
+                                
+				) {
 			model.addAttribute("sessionVO", new SessionVO());
 	        List<SessionVO> list = sessionService.getAll();
 	        model.addAttribute("sessionListData", list);
 			/*************************** 2.開始查詢資料 *****************************************/
+	        
+	        Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId); 
+	        model.addAttribute("time_periodVO", time_periodVO);
 	        ItemVO itemVO = itemSvc.getOneItem(activityId);  
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
@@ -167,12 +175,15 @@ public class PhotoController {
 	    /********************** 3. 從 session 中獲取數據 **************************/
 	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
 	    ItemVO itemVO = (ItemVO) session.getAttribute("itemVO"); 
-
+	    Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
+	    Integer time_period = time_periodVO.getSessionTimePeriodId();
+	    Time_PeriodVO time_periodVOnew = time_periodService.getOneTimePeriod(time_period);
 	    /********************** 4.將數據儲存到 model 中，以便在下一頁使用 ************************/
 	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
         model.addAttribute("activityOrderListData", list2);
 	    model.addAttribute("attendeesVO", attendeesVO);
 	    model.addAttribute("itemVO", itemVO);
+	    model.addAttribute("time_periodVO", time_periodVOnew);
 	    
 	    return "/front_end/activity/confirmAttendees"; // 返回到下一頁
 	}
@@ -223,13 +234,18 @@ public class PhotoController {
 	@PostMapping("insertDetailAddAttendees")
 	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
 			                               @Valid ActivityOrderVO activityOrderVO,
-	                                       HttpSession session, @RequestParam("activityId")Integer activityId){
+			                               @Valid Time_PeriodVO  time_periodVO,
+	                                       HttpSession session, 
+	                                       @RequestParam("activityId")Integer activityId,
+	                                       @RequestParam("sessionTimePeriodId") Integer timePeriodId){
 		
 	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 	    if(result.hasErrors()){
 	    	ItemVO itemVO = itemSvc.getOneItem(activityId);  
+	    	Time_PeriodVO time_periodVO2 = time_periodService.getOneTimePeriod(timePeriodId);
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
+	        model.addAttribute("time_periodVO", time_periodVO2);
 	        List<ActivityOrderVO> list = activityOrderService.getAll();
 	        model.addAttribute("activityOrderListData", list);
 	        System.out.println("資料有誤"); 
@@ -245,6 +261,7 @@ public class PhotoController {
 	    session.setAttribute("attendeesVO", attendeesVO);
 	    session.setAttribute("activityId", activityId);
 	    session.setAttribute("activityOrderVO", activityOrderVO);
+	    session.setAttribute("time_periodVO", time_periodVO);
 	    return "redirect:/activity/confirmAttendees"; // 重定向到下一頁
 	}
 		
@@ -263,14 +280,43 @@ public class PhotoController {
 	    MemberVO xxx = memSvc.findByEmail(email);
 	    
 //	    SessionVO sessionVO = new SessionVO(); 
-//	    sessionVO.setActivitySessionId(11);
-	    
+//	    sessionVO.setActivitySessionId(11);    
 	    SessionVO sessionVO = sessionService.getOneSession(sessionId) ;
 	     
-	    //Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId);
-	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
-	    time_periodVO.setSessionTimePeriodId(3);
-	    
+        Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
+//	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
+//	    time_periodVO.setSessionTimePeriodId(3);
+        
+        //取得活動日期
+        java.util.Date  sessiondate = sessionVO.getActivityDate() ;
+        System.out.println("sessiondate"+sessiondate);
+        List<PromotionVO> list3 = promotionService.getAll();
+        
+        Double promotionDiscount = 1.0;
+        Integer promotionCoupon = 0;
+        Integer promotionId = null;
+	    for(PromotionVO promotion : list3) {
+	    	java.util.Date  promotionStart = promotion.getPromotionStarted();
+	    	System.out.println("promotionStart"+promotionStart);
+	    	java.util.Date  promotionEnd = promotion.getPromotionEnd();
+	    	System.out.println("promotionEnd"+promotionEnd);
+	    	
+	    	if((sessiondate.after(promotionStart) || sessiondate.equals(promotionStart)) && (sessiondate.before(promotionEnd) || sessiondate.equals(promotionEnd))) {
+	    		System.out.println("aaaaaa");
+	    		promotionDiscount = promotion.getPromotionDiscount();
+	    		promotionCoupon = promotion.getPromotionCoupon();
+	    		promotionId = promotion.getPromotionId();
+	    	}else{
+	    		promotionDiscount = 1.0;
+	    		promotionCoupon =0;
+	    	}
+	    		
+	    }
+	    System.out.println("promotionDiscount"+promotionDiscount);
+	    System.out.println("promotionCoupon"+promotionCoupon);
+	    System.out.println("promotionId"+promotionId);
+        
+        
 	    activityOrderVO.setMemberVO(xxx);
 	    activityOrderVO.setSessionVO(sessionVO);
 	    attendeesService.addAttendees(attendeesVO);
@@ -285,17 +331,24 @@ public class PhotoController {
 	    Integer activityPrice = itemVO.getActivityPrice();
 	    // activityOrderVO的人數以及訂單金額
 	    Integer EnrollNumber = activityOrderVO.getEnrollNumber();
-	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
-	    // 如果 promotionPrice 為空，則設為 0
-	    if(promotionPrice == null) {
-	    	promotionPrice = 0;
-	    }
+//	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
+//	    // 如果 promotionPrice 為空，則設為 0
+//	    if(promotionPrice == null) {
+//	    	promotionPrice = 0;
+//	    }
 	    // 活動項目價格*活動訂單人數-活動促銷價格
-	    int OrderAmount = (activityPrice * EnrollNumber)- promotionPrice;
-	    activityOrderVO.setOrderAmount(OrderAmount);
-	    activityOrderVO.setPayAmount(OrderAmount);
+	    Double OrderAmount = (promotionDiscount*(activityPrice * EnrollNumber))- promotionCoupon;
+	    System.out.println("OrderAmount"+OrderAmount);
+	    
+	    activityOrderVO.setOrderAmount(activityPrice * EnrollNumber);
+	    activityOrderVO.setPayAmount(OrderAmount.intValue());
+	    if(promotionId != null) {
+		    activityOrderVO.setPromotionVO(promotionService.getOnePromotion(promotionId));
+	    }
+	    Integer promotionPrice = (activityPrice * EnrollNumber) - (OrderAmount.intValue());
+	    activityOrderVO.setPromotionPrice(promotionPrice);
 	    activityOrderService.addOrder(activityOrderVO);
-
+          
 	    
 	    /********************* 新增完成,準備轉交  *********************/
 	    model.addAttribute("itemVO", itemVO);
@@ -306,7 +359,7 @@ public class PhotoController {
 	    model.addAttribute("success", "- (新增成功)");
 	    
 	    // 綠界串流
-	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO,"活動");
+	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO);
         model.addAttribute("ecpayCheckout", ecpayCheckout);
 	    return "front_end/activity/success"; // 重定向到成功頁面
 	}
