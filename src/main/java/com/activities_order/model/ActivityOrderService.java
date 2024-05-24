@@ -64,12 +64,21 @@ public class ActivityOrderService {
     }
 
     //------------------------------綠界金流方法---------------------------------//
-    public String ecpayCheckout(ActivityOrderVO activityOrderVO,String paymentDescription) {
+    public String ecpayCheckout(ActivityOrderVO activityOrderVO) {
 
 
     	AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         
+       String paymentDescription = activityOrderVO.getSessionVO().getItemVO().getActivityName();
+       
+//       String singleProductDetail = new StringBuilder(paymentDescription)
+//				.append(activityOrderVO.getEnrollNumber().toString())
+//				.append("X")
+//				.append(activityOrderVO.getSessionVO().getItemVO().getActivityPrice().toString())
+//				.append("=$")
+//				.append(activityOrderVO.getEnrollNumber()* activityOrderVO.getSessionVO().getItemVO().getActivityPrice() )
+//				.toString();
         
         
       //將訂單時間(當前時間)轉為字串放入，以避免編號重複的問題
