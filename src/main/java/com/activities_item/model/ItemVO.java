@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		@ManyToOne
 		@JsonManagedReference
 		@JoinColumn(name = "activity_category_id", referencedColumnName = "activity_category_id")
-		@NotNull(message = "活動類別必須擇一")
+		@NotNull
 		private CategoryVO categoryVO;
 
 		//PK一對多
