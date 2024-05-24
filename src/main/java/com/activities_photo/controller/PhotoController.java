@@ -90,7 +90,6 @@ public class PhotoController {
 		public String listDetailPhoto(ModelMap model,
 				                       @RequestParam("activityId")Integer activityId,
 				                       @RequestParam("activityPhotoId")String activityPhotoId
-				                      
 				                     
 				                        ) {
 			model.addAttribute("sessionVO", new SessionVO());
@@ -136,13 +135,17 @@ public class PhotoController {
 		@GetMapping("listDetailAddAttendees")
 		public String listDetailAddAttendeesSuc(ModelMap model,
 				                               @RequestParam("activityId")Integer activityId,
-				                               @RequestParam("activityPhotoId")String activityPhotoId
-				                                ) {
-			
+				                               @RequestParam("activityPhotoId")String activityPhotoId,
+						                       @RequestParam("sessionTimePeriodId")Integer timePeriodId
+                                
+				) {
 			model.addAttribute("sessionVO", new SessionVO());
 	        List<SessionVO> list = sessionService.getAll();
 	        model.addAttribute("sessionListData", list);
 			/*************************** 2.開始查詢資料 *****************************************/
+	        
+	        Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId); 
+	        model.addAttribute("time_periodVO", time_periodVO);
 	        ItemVO itemVO = itemSvc.getOneItem(activityId);  
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
@@ -167,12 +170,15 @@ public class PhotoController {
 	    /********************** 3. 從 session 中獲取數據 **************************/
 	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
 	    ItemVO itemVO = (ItemVO) session.getAttribute("itemVO"); 
-
+	    Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
+	    Integer time_period = time_periodVO.getSessionTimePeriodId();
+	    Time_PeriodVO time_periodVOnew = time_periodService.getOneTimePeriod(time_period);
 	    /********************** 4.將數據儲存到 model 中，以便在下一頁使用 ************************/
 	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
         model.addAttribute("activityOrderListData", list2);
 	    model.addAttribute("attendeesVO", attendeesVO);
 	    model.addAttribute("itemVO", itemVO);
+	    model.addAttribute("time_periodVO", time_periodVOnew);
 	    
 	    return "/front_end/activity/confirmAttendees"; // 返回到下一頁
 	}
@@ -223,13 +229,18 @@ public class PhotoController {
 	@PostMapping("insertDetailAddAttendees")
 	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
 			                               @Valid ActivityOrderVO activityOrderVO,
-	                                       HttpSession session, @RequestParam("activityId")Integer activityId){
+			                               @Valid Time_PeriodVO  time_periodVO,
+	                                       HttpSession session, 
+	                                       @RequestParam("activityId")Integer activityId,
+	                                       @RequestParam("sessionTimePeriodId") Integer timePeriodId){
 		
 	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 	    if(result.hasErrors()){
 	    	ItemVO itemVO = itemSvc.getOneItem(activityId);  
+	    	Time_PeriodVO time_periodVO2 = time_periodService.getOneTimePeriod(timePeriodId);
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
+	        model.addAttribute("time_periodVO", time_periodVO2);
 	        List<ActivityOrderVO> list = activityOrderService.getAll();
 	        model.addAttribute("activityOrderListData", list);
 	        System.out.println("資料有誤"); 
@@ -245,6 +256,7 @@ public class PhotoController {
 	    session.setAttribute("attendeesVO", attendeesVO);
 	    session.setAttribute("activityId", activityId);
 	    session.setAttribute("activityOrderVO", activityOrderVO);
+	    session.setAttribute("time_periodVO", time_periodVO);
 	    return "redirect:/activity/confirmAttendees"; // 重定向到下一頁
 	}
 		
@@ -267,9 +279,9 @@ public class PhotoController {
 	    
 	    SessionVO sessionVO = sessionService.getOneSession(sessionId) ;
 	     
-	    //Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId);
-	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
-	    time_periodVO.setSessionTimePeriodId(3);
+        Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
+//	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
+//	    time_periodVO.setSessionTimePeriodId(3);
 	    
 	    activityOrderVO.setMemberVO(xxx);
 	    activityOrderVO.setSessionVO(sessionVO);
