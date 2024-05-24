@@ -39,4 +39,8 @@ public class RoomPromotionService {
     public List<RoomPromotionVO> findByCheckInDate(LocalDate selectCheckIn) {
         return roomPromotionRepository.findBySelectCheckIn(selectCheckIn);
     }
+
+    public Integer getByPromotionTitle(String promotionTitle){
+        return roomPromotionRepository.findByPromotionTitle(promotionTitle);
+    }
 }

@@ -381,6 +381,7 @@
                                 <input type="hidden" name="roomPrice" th:value="${roomTypeVO[2]}" id="hiddenRoomPrice">
                                 <input type="hidden" name="selectCheckIn" id="selectCheckIn">
                                 <input type="hidden" name="selectCheckOut" id="selectCheckOut">
+                                <input type="hidden" name="roomTypeId" th:value="${roomTypeVO[1]}">
                                 <button type="button" class="room-button roomFormButton">預定房間</button>
                             </form>
                         </div>
@@ -590,11 +591,13 @@
             // 如果有保存的日期，更新日期輸入框
             if (checkInDate) {
                 document.getElementById('room-checkIn').value = checkInDate;
-                document.getElementById('selectCheckIn').value = checkInDate;
+                $(document).find('input#selectCheckIn').val(checkInDate)
+                // document.querySelectorAll('input#selectCheckIn').value = checkInDate;
             }
             if (checkOutDate) {
                 document.getElementById('room-checkOut').value = checkOutDate;
-                document.getElementById('selectCheckOut').value = checkOutDate;
+                $(document).find('input#selectCheckOut').val(checkOutDate);
+                // document.querySelectorAll('input#selectCheckOut').value = checkOutDate;
             }
 
             // 如果有保存的人數，更新下拉選單

@@ -13,5 +13,7 @@ public interface RoomPromotionRepository extends JpaRepository<RoomPromotionVO, 
             "WHERE :selectCheckIn BETWEEN rp.promotion_started AND rp.promotion_end " +
             "AND rp.promotion_state = 1", nativeQuery = true)
     List<RoomPromotionVO> findBySelectCheckIn(@Param("selectCheckIn") LocalDate selectCheckIn);
+
+    Integer findByPromotionTitle(@Param("promotionTitle")String promotionTitle);
 }
 

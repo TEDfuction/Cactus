@@ -247,9 +247,11 @@
     <!-- Navbar End -->
 
     <div class="RO-container">
-        <div id="orderRoomType" class="reservation-header">
-            <h3 th:text="${roomTypeName}"></h3>
-        </div>
+        <form th:action="@{/roomOrder/roomOrderTotalList}" method="post">
+            <div id="orderRoomType" class="reservation-header">
+                <h3 th:text="${roomTypeName}"></h3>
+                <input type="hidden" th:value="${roomTypeName}" name="roomTypeName">
+            </div>
         <div class="reservation-options">
             <div class="room-info" >
                 <h5>輸入訂購人資料</h5>
@@ -260,7 +262,7 @@
                     </div>
                     <div style=" margin-top: 18px;">
                         <span >電子信箱:&nbsp;&emsp;</span>
-                        <input type="email" th:value="${memberVO.getEmail()}">
+                        <input type="email" th:value="${memberVO.getEmail()}" name="emails">
                     </div>
                     <div style=" margin-top: 18px; height: 30px">
                         <span >請輸入電話:&nbsp;</span>
@@ -269,10 +271,12 @@
                     <div class="ROdetail-container">
                         <div class="ROdetail-left">
                             <div id="orderCount">
-                                <span th:text="'入住人數: ' + ${roomGuestAmount} +  ' 位'"></span>
+                                入住人數:<span th:text="${roomGuestAmount}" name="roomGuestAmount" ></span>位
+                                <input type="hidden" th:value="${roomGuestAmount}" name="roomGuestAmount">
                             </div>
                             <div id="orderSize">
-                                <span th:text="'Size: ' + ${roomSize}"></span>
+                                Size: <span th:text="${roomSize}" name="roomSize"></span>
+                                <input type="hidden" th:value="${roomSize}" name="roomSize">
                             </div>
                         </div>
                         <div class="ROdetail-right">
@@ -290,11 +294,11 @@
                                 <div >
                                     <select class="btn btn-outline-dark" style="margin-left: 20px; width: 300px; background: white; color: black" id="roomDiscount" th:onchange="updateDiscountRight()">
                                         <option>當季優惠活動</option>
-                                        <th:block th:each="roomPromotionVO : ${roomPromotionVO}">
+                                        <th:block th:each="roomPromotionVO : ${roomPromotionVO}" >
                                             <option th:text="${#strings.length(roomPromotionVO.getPromotionTitle()) > 20 ?
                                             #strings.substring(roomPromotionVO.getPromotionTitle(), 0, 20) + '...' :
                                             roomPromotionVO.getPromotionTitle()}"
-                                                    th:value="${roomPromotionVO.getPromotionDiscount()}"></option>
+                                                    th:value="${roomPromotionVO.getPromotionDiscount()}" name=" "></option>
                                         </th:block>
                                     </select>
                                 </div>
@@ -318,16 +322,22 @@
             <div class="charges-container">
                 <h4>Room charge</h4>
                     <ul>
-                        <li><span>CheckIn日期:</span><span th:text="${selectCheckIn}"></span></li>
-                        <li><span>CheckOut日期:</span><span th:text="${selectCheckOut}"></span></li>
-                        <li><span>訂單金額</span><span id="roomAmount" th:text="${roomPrice}"></span></li>
+                        <li><span>CheckIn日期:</span><span th:text="${selectCheckIn}" name="selectCheckIn"></span></li>
+                        <li><span>CheckOut日期:</span><span th:text="${selectCheckOut}" name="selectCheckOut"></span></li>
+                        <li><span>訂單金額</span><span id="roomAmount" th:text="${roomPrice}">
+                            <input type="hidden" th:value="${roomPrice}" name="roomPrice">
+                        </span></li>
                         <li><strong>折扣優惠</strong>&ensp;&nbsp;&ensp;&ensp;<span id="discountRight" ></span></li>
-                        <li><span>折扣金額</span>&nbsp<span id="promotionPrice"></span>TW</li>
+                        <li><span>折扣金額</span>&nbsp<span id="promotionPrice" name="promotionPrice">
+                            <input type="hidden" th:value="${roomSize}" name="roomSize">
+                        </span>TW</li>
                         <li><strong>合計金額</strong>&nbsp<span id="payAmount"></span>TW</li>
+                        <li><span ></span></li>
+                        <input type="submit" id="modify-search" value="送出訂單">
                     </ul>
-
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
         <!-- Room Information Section -->
@@ -440,7 +450,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Footer End -->
 
