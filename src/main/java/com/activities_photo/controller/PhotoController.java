@@ -359,7 +359,7 @@ public class PhotoController {
 	    model.addAttribute("success", "- (新增成功)");
 	    
 	    // 綠界串流
-	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO,"活動");
+	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO);
         model.addAttribute("ecpayCheckout", ecpayCheckout);
 	    return "front_end/activity/success"; // 重定向到成功頁面
 	}
