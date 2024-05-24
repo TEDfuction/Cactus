@@ -13,6 +13,8 @@
 	.unique div.chooseAdmin{
 		font-size:1.2rem;
 	}
+	
+	
 </style>
 </head>
 <body>
@@ -31,6 +33,9 @@
 		<h3>--員工權限設定--</h3>
 	
 	 	<br>
+	 	<div>
+	 		<span th:value="errorMessage"></span>
+	 	</div>
 	 	<br>
 	 	
 	 	
@@ -38,9 +43,11 @@
 	 	
 	 	
 			<div class="chooseAdmin">
+			
 				<label>請選擇要設定權限的員工--></label>
 				<select name="adminId" class="adminId">
 					<th:blocK th:each="adminVO : ${adminList}">
+					
 						<!--不可對自己設定權限 -->
 						<th:blocK th:if="${session.adminVO.adminId} != ${adminVO.adminId}">
 							<!--不可對停權帳號設定 -->
@@ -48,8 +55,10 @@
 								<option th:value="${adminVO.adminId}" th:text="${adminVO.adminName}"></option>
 							</th:blocK>
 						</th:blocK>
+						
 					</th:blocK>
 				</select>
+				
 			</div>
 			
 			<br>
@@ -93,10 +102,13 @@
 	<script>
 	var status = $("#status").val();
 	
-// 	if(status == "sameID"){
-// 		swal("錯誤","您無法對自己的權限進行修改!","error")
-// 		status == "";
-// 	}
+	if(status == "successAuth"){
+		swal("成功","您已修改此員工之權限!","success")
+		status == "";
+	}else if(status == "confirmAuth"){
+		swal("請確認","該員工本就沒有任何權限，請進行確認","warning")
+		status == "";
+	}
 </script>	
 
 <script>
