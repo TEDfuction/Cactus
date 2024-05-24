@@ -35,7 +35,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/category/getOne_For_Update",
 				   "/category/update",
 				   "/category/listCategory_ByCompositeQuery",
-				   "/category/listAllCategory",
 
 				   "/item/addItem",
 				   "/item/insert",
@@ -44,7 +43,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/item/update",
 				   "/item/listItem_ByCompositeQuery",
 				   "/item/getOne_For_Display",
-				   "/item/listAllItem",
 
 				   "/activityOrder/addOrder",
 				   "/activityOrder/insert",
@@ -55,8 +53,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/activityOrder/getOrderTimeBetween",
 				   "/activityOrder/getOne_For_Display",
 				   "/activityOrder/getOne_For_Display2",
-				   "/activityOrder/listAllOrder",
-				   "/promotion/listAllPromotion",
 
 				   "/activity/addPhoto",
 				   "/activity/insert",
@@ -83,44 +79,73 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/session/getOne_For_Update",
 				   "/session/update",
 				   "/session/sessionBetweenDates",
-				   "/session/listAllSession",
+				   
+				   "/timePeriod/getOne_For_Display2",
+				   "/timePeriod/addTimePeriod",
+				   "/timePeriod/insert",
 
 				   "/admin/backendAdminIndex",
 				   "/admin/adminUpdate",
+
+				   "/adminAuth/listAllAdmin",
+				   "/adminAuth/changeAdminStatus/",
+				   "/adminAuth/authSetting/",
 
 				   "/member/memberSearch",
 				   "/member/findByName",
 
 				   "/notification/showAllMessage",
-				   "/notification/sendMessage",
-
-				   "/roomorder/listAllRoomOrder",
-
-				   "/roomtype/listAllRoomType",
-				   "/roomtype/updateRTS",
-				   "/roomtype/addRoomType",
-				   "/roomtype/getOneRoomType",
-				   "/roomtype/updateRoomTypeForm",
-
-				   "/timePeriod/getOne_For_Display2",
-				   "/timePeriod/addTimePeriod",
-				   "/timePeriod/insert",
+				   "/notification/sendMessage",				  
 
 				   "/shopOrder/shopOrderSearch",
 				   "/shopOrder/showAllShopOrder",
 				   "/shopOrder/showOneShopOrder",
 				   "/shopOrder/orderDetailFromShowAll",
 				   "/shopOrder/orderDetailFromShowOne",
-				   
+
+				   "/product/listAllProductCategory",
 				   "/product/historyProduct",
 				   "/product/select_page",
 				   "/product/listAllProduct1",
 				   "/product/addProduct",
+				   "/product/addProductCategory",
 				   "/product/insert",
+				   "/product/insertCategory",
 				   "/product/getOne_For_Update",
+				   "/product/getOneCategory_For_Update",
+				   "/product/getOnehistory_For_Update",
 				   "/product/update",
+				   "/product/updateCategory",
+				   "/product/delete",
 				   "/product/listProducts_ByCompositeQuery",
-				   "/product/getOne_For_Display"
+
+				   "/roomPromotion/findRoomPromotionById",
+				   "/roomPromotion/searchRoomPromotion",
+				   "/roomPromotion/getAllRoomPromotion",
+				   "/roomPromotion/addRoomPromotion",
+				   "/roomPromotion/insertRoomPromotion",
+				   "/roomPromotion/getOneRoomPromotionUpdate",
+				   "/roomPromotion/updateRoomPromotion",
+
+				   "/roomOrder/listAllRoomOrder",
+				   "/roomOrder/findOneRoomOrder",
+				   "/roomOrder/findDateRO",
+				   "/roomOrder/selectRO",
+				   "/roomOrder/updateRTS",
+				   
+				   "/roomtype/listAllRoomType",
+				   "/roomtype/updateRTS",
+				   "/roomtype/addRoomType",
+				   "/roomtype/getOneRoomType",
+				   "/roomtype/updateRoomTypeForm",
+
+				   "/room/findRoomById",
+				   "/room/getAllRoom",
+				   "/room/addRoom",
+				   "/room/insertRoom",
+				   "/room/getOneRoomUpdate",
+				   "/room/updateRoom",
+				   "/room/updateRoomSaleStatus"
 		   		   		})
 public class AdminFilter implements Filter {
 
