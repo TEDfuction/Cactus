@@ -111,10 +111,12 @@
 <!-- 		          <span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/> -->
                   <input type="hidden" th:value="${itemVO.activityId}" name="activityId"/>
                   <input type="hidden" th:value="${itemVO.sessionVOs[0].activitySessionId}" name="sessionId">
-                  
+                  <input type="hidden"  th:value="${time_periodVO.sessionTimePeriodId}" name="sessionTimePeriodId"/>
+<!--                   <input type="text" th:value="${itemVO.sessionVOs[0].time_periodVO[0].sessionTimePeriodId}" name="timePeriodId"> -->
                     <span>活動名稱:</span><span th:text="${itemVO.activityName}"></span><br/>  
 		            <span>活動地點:</span><span th:text="${itemVO.sessionVOs[0].activityLocation}"></span><br/>
 		            <span>場次日期:</span><span th:text="${itemVO.sessionVOs[0].activityDate}"></span><br/>
+		            <span>場次時間:</span><span th:text="${time_periodVO.timePeriod}"></span><br/>
 		          <!--改間隔 --><!--==================================活動訂單報名人數================================== -->
      
       <div style="margin-top: 20px;"></div>

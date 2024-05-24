@@ -144,8 +144,9 @@
 <body>
 <div class="pad">
     <div class="pad2">
-        <div class="location"><img th:src="@{/img/activities/icons/map-pin.svg}">&nbsp;澎湖縣</div>
+        <div class="location"><img th:src="@{/img/front_end/activity/location.png}"  style="height: 25px;">&nbsp;澎湖縣</div>
         <div class="topic" th:text="${itemVO.activityName}"></div>
+        
     </div>
     <hr>
     <div class="checkTo">
@@ -157,13 +158,13 @@
     <div id="carouselExampleFade" class="carousel slide carousel-fade " data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
             <div class="carousel-item">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
             <div class="carousel-item">
-                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px" style="height: 550px;">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -217,12 +218,18 @@
     <div class="one-col">
     <h4 class="menu-to">日期</h4>
     </div>
+<form th:action="@{/activity/listDetailAddAttendees} " method="GET" id="itemId" >
+          <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"> 
+                 <input type="hidden" name="activityId" id="activityId" class="activityId" th:value="${photoVO.activityPh.activityId}">
     <div>
         <form id="searchForm">
             <label for="activityDate"></label>
-            <input type="date" class="datechoose" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}"/>
+            <input type="text" class="datechoose" id="activityDate"  th:value="${sessionVO.activityDate}" />
             &nbsp;&nbsp;<i class="fa-solid fa-pen fa-lg" style="color: #060e6d;"></i>
         </form>
+        
+        
+        
         <div id="timePeriodResults"></div>
     </div>
 
@@ -236,13 +243,13 @@
 <!--         <a id="link" href=''></a> -->
          
              <!-- 把值帶到下個頁面listDetailAddAttendees -->
-             <form th:action="@{/activity/listDetailAddAttendees} " method="GET" id="itemId" >
-                 <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"> 
-                 <input type="hidden" name="activityId" th:value="${photoVO.activityPh.activityId}"> 
+           
+<!--                  <input type="text" name="timePeriod" th:value="${photoVO.activityPh.sessionVOs[0].time_PeriodVO[0].sessionTimePeriodId}"> -->
+                 
                  <button type="button" class="btn btn-primary border-radius"  id="loginDefault">立即預訂</button>
-              </form> 
 <!--         </button> -->
     </div>
+</form> 
 
 </div>
 
@@ -456,7 +463,7 @@
                                         var formattedTime = new Date('1970-01-01T' + timePeriodObj.timePeriod).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                                         // 創建radio
-                                        var radioButton = $('<input type="radio" class="radio-1" name="timePeriod" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
+                                        var radioButton = $('<input type="radio" class="radio-1" name="sessionTimePeriodId" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
                                         // 創建label標籤用於顯示時段
                                         var label = $('<label></label>').attr("for", timePeriodObj.sessionTimePeriodId).text(formattedTime);
                                         // 将radio和label標籤添加到列表中

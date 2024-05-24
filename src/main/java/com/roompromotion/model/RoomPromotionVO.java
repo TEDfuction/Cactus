@@ -1,11 +1,14 @@
 package com.roompromotion.model;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "room_promotion")
@@ -33,10 +36,12 @@ public class RoomPromotionVO {
     @Column(name = "promotion_discount", nullable = false)
     private Double promotionDiscount;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "請選擇促銷開始時間")
     @Column(name = "promotion_started", nullable = false)
     private LocalDate promotionStarted;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "請選擇促銷結束時間")
     @Column(name = "promotion_end", nullable = false)
     private LocalDate promotionEnd;

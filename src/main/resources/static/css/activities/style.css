@@ -1362,6 +1362,18 @@ h2.hc-1{
     font-size: 1.35rem;
 
 }
+.form_element7-1{
+    display: block;
+    width: 12%;
+    border: none;
+    background-color:transparent;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid #c7c5c5;
+    color: #605c5c;
+    font-size: 1.35rem;
+    text-align: center;
+
+}
 .form_element8{
     display: block;
     width: 35%;
@@ -1536,6 +1548,13 @@ h2.hc-1{
     background-color: transparent;
     font-size: 18px;
 
+}
+.numberbtn{
+    font-weight: 800;
+    font-size: large;
+    border-radius: 4px !important;
+    transition: .5s;
+    width: 3rem;
 }
 
 

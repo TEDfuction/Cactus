@@ -63,11 +63,10 @@
 <!-- 主欄位 -->
 <div class="unique">
     <div>
-        <h3>---搜尋的房間資料結果---</h3>
 
         <br>
-        <h3><a class="navbar-brand" th:href="@{/room/searchRoom}">回查詢頁</a></h3></div>
-    <br>
+        <h3><a class="navbar-brand" th:href="@{/room/getAllRoom}">回查詢頁</a></h3></div>
+        <br>
 
     <table  id="xxx" class="display">
         <thead>
@@ -81,6 +80,7 @@
             <th>房間狀態</th>
             <th>房間價格</th>
             <th>修改</th>
+            <th>更改房間狀態</th>
 
         </tr>
         </thead>
@@ -89,15 +89,15 @@
 
         <tr>
 
-            <td th:text="${room.roomId}"></td>
+            <td th:text="${roomVO.roomId}"></td>
 
-            <td th:text="${room.roomType.roomTypeName}"></td>
+            <td th:text="${roomVO.roomTypeVO.roomTypeName}"></td>
 
-            <td th:text="${room.roomGuestAmount}"></td>
+            <td th:text="${roomVO.roomGuestAmount}"></td>
 
             <td>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                        th:data-updateRoomGuestName="${room.roomGuestName}"
+                        th:data-updateRoomGuestName="${roomVO.roomGuestName}"
                         onclick="fillFormContent(this.getAttribute('data-updateRoomGuestName'));">
                     房客名單詳細
                 </button>
@@ -126,25 +126,105 @@
             </div>
 
             <td>
-                <span th:if="${room.roomStatus} eq 0" class="badge bg-danger">下架</span>
-                <span th:if="${room.roomStatus} eq 1" class="badge bg-success">上架</span>
+                <span th:if="${roomVO.roomStatus} eq 0" class="badge bg-danger">下架</span>
+                <span th:if="${roomVO.roomStatus} eq 1" class="badge bg-success">上架</span>
             </td>
 
             <td>
-                <span th:if="${room.roomSaleStatus} eq 0">未入住</span>
-                <span th:if="${room.roomSaleStatus} eq 1">已入住</span>
-                <span th:if="${room.roomSaleStatus} eq 2">待清潔</span>
-                <span th:if="${room.roomSaleStatus} eq 3">逾期</span>
-                <span th:if="${room.roomSaleStatus} eq 4">異常</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 0">未入住</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 1">已入住</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 2">待清潔</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 3">逾期</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 4">異常</span>
             </td>
 
-            <td th:text="${room.roomPrice}"></td>
+            <td th:text="${roomVO.roomPrice}"></td>
 
             <td>
-                <form method="post" th:action="@{/room/getOneRoomUpdate}" style="margin-bottom: 0px;">
-                    <input type="submit" value="修改">
-                    <input type="hidden" name="roomId" th:value="${room.getRoomId()}"></form>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        th:data-bs-target="'#exampleModal'+ ${roomVO.roomId}" >修改
+                </button>
+            </td>
 
+            <div class="modal fade" th:id="'exampleModal'+ ${roomVO.roomId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog ">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">修改資料</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="updateRoomDiv">
+                                <!-- 表單 -->
+                                <form id="roomForm-${room.roomId}" method="post" action="/room/updateRoom">
+
+                                    <div class="mb-3" >
+                                        <label for="roomId" class="col-form-label" >房間編號:</label>
+                                        <textarea type="text" class="form-control" id="roomId" name="roomId"
+                                                  th:text="${roomVO.roomId}" readonly></textarea>
+                                    </div>
+
+                                    <div class="mb-3" >
+                                        <label for="roomTypeName" class="col-form-label" >房型:</label>
+                                        <textarea type="text" class="form-control" id="roomTypeName" th:text="${roomVO.roomTypeVO.roomTypeName}" readonly></textarea>
+                                    </div>
+
+                                    <input type="hidden" id="roomTypeId" name="roomTypeId" th:value="${roomVO.roomTypeVO.roomTypeId}" />
+
+                                    <div class="mb-3">
+                                        <label for="roomStatus" class="col-form-label">上下架狀態:</label>
+                                        <select class="form-select" id="roomStatus" name="roomStatus">
+                                            <option th:selected="${roomVO.roomStatus == 1}" value="1">上架</option>
+                                            <option th:selected="${roomVO.roomStatus == 0}" value="0">下架</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="roomPrice" class="col-form-label">促銷折扣:</label>
+                                        <textarea type="text" class="form-control"
+                                                  id="roomPrice" name="roomPrice" th:text="${roomVO.roomPrice}"></textarea>
+                                    </div>
+
+
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomGuestAmount" class="col-form-label">住客人數:</label>
+                                        <textarea type="text" class="form-control" id="roomGuestAmount" name="roomGuestAmount" th:text="${roomVO.roomGuestAmount}"></textarea>
+                                    </div>
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomGuestName" class="col-form-label">住客名單:</label>
+                                        <textarea type="text" class="form-control" id="roomGuestNameHidden" name="roomGuestName" th:text="${roomVO.roomGuestName}"></textarea>
+                                    </div>
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomSaleStatusHidden" class="col-form-label">房間狀態:</label>
+                                        <textarea type="text" class="form-control" id="roomSaleStatusHidden" name="roomSaleStatus" th:text="${roomVO.roomSaleStatus}"></textarea>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-primary">送出</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <td>
+                <form method="post" th:action="@{/room/updateOneRoomSaleStatus}">
+                    <select class="form-select" name="roomSaleStatus" th:value="${roomVO.roomSaleStatus}">
+                        <option value="0" th:selected="${roomVO.roomSaleStatus == 0}">未入住</option>
+                        <option value="1" th:selected="${roomVO.roomSaleStatus == 1}">已入住</option>
+                        <option value="2" th:selected="${roomVO.roomSaleStatus == 2}">待清潔</option>
+                        <option value="3" th:selected="${roomVO.roomSaleStatus == 3}">逾期</option>
+                        <option value="4" th:selected="${roomVO.roomSaleStatus == 4}">異常</option>
+                    </select>
+                    <input type="hidden" name="roomId" th:value="${roomVO.roomId}">
+                    <button type="submit" class="btn btn-primary mt-2">更新</button>
+                </form>
             </td>
 
 

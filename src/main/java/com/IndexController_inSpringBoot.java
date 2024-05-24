@@ -220,4 +220,21 @@ public class IndexController_inSpringBoot {
 		return list;
 	}
 
+
+	/*       前往各自前端首頁的連結     */
+	@GetMapping("/")
+	public String cactusIndex(Model model) {
+		return "front_end/index/cactus-index";
+	}
+
+	@GetMapping("/contactus_cactus")
+	public String contactUs(Model model) {
+		return "front_end/index/contactus_cactus";
+	}
+
+	@GetMapping("/about_cactus")
+	public String about(Model model) {
+		return "front_end/index/about_cactus";
+	}
+
 }

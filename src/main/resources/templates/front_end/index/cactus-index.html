@@ -1,0 +1,533 @@
+<div th:replace="~{/front_end/index/include/include_top}"></div>
+
+<body>
+<!-- Spinner Start -->
+<div id="spinner"
+     class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+    <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/index/icons/icon-12.png}"
+         alt="Icon">
+</div>
+<!-- Spinner End -->
+
+
+<!-- Topbar Start -->
+<div class="container-fluid green-bg p-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="row gx-0 d-none d-lg-flex">
+        <div class="col-lg-7 px-5 text-start">
+
+        </div>
+        <div class="col-lg-5 px-5 text-end">
+            <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                <a class="text-white px-2" href="">English ｜</a>
+                <a class="text-white px-2" href="">日本語 ｜</a>
+                <a class="text-white px-2" th:href="@{/member/memberLogin}">會員中心</a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+
+
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+    <a href="/" class="navbar-brand ms-4 ms-lg-0">
+        <h1 class="text2-primary2 m-0"><img class="me-1" th:src="@{/img/front_end/index/icons/LOGO.png}" alt="Icon"><img
+                class="me-3" th:src="@{/img/front_end/index/cactus_name2.png}" alt="Name"></h1>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <!-- 原本輸入內容:Home -->
+            <a href="index.html" class="nav-item nav-link active">最新消息</a>
+            <div class="nav-item dropdown">
+                <!-- 原本輸入內容:Pages -->
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
+                <div class="dropdown-menu border-0 m-0">
+                    <a href="about_cactus" class="dropdown-item">凱克特司</a>
+                    <a href="project.html" class="dropdown-item">周邊特色</a>
+                    <a href="contactus_cactus" class="dropdown-item">常見問題</a>
+
+                </div>
+            </div>
+            <!-- 原本輸入內容:About，要改成下拉式選單 -->
+            <a th:href="@{/roomType/roomTypeFront}" class="nav-item nav-link">房型介紹</a>
+            <div class="dropdown-menu border-0 m-0">
+                <!-- <a href="feature.html" class="dropdown-item">緣起</a>
+                <a href="project.html" class="dropdown-item">特色設施</a>
+                <a href="testimonial.html" class="dropdown-item">交通資訊</a>
+
+                <a href="team.html" class="dropdown-item">周邊景點</a>
+                <a href="appointment.html" class="dropdown-item">周邊美食</a>
+
+                <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
+            </div>
+
+            <a href="activity/activityPhoto" class="nav-item nav-link">特色活動</a>
+            <a th:href="@{/product/listAllProduct}" class="nav-item nav-link shoppingCart"><i class="fa-solid fa-cart-shopping" me-2
+                                                                style="color: #01b2a6;"></i> 購物商城</a>
+        </div>
+
+        <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
+                                                                          style="color: #f2f1f1;"></i> 線上訂房</a>
+
+    </div>
+</nav>
+<!-- Navbar End -->
+
+
+<!-- Carousel Start -->
+<div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="owl-carousel header-carousel position-relative">
+        <!--            第一張圖-->
+        <div class="owl-carousel-item position-relative" data-dot="<img src='img/front_end/index/scroll/img_16-1.jpg'>">
+            <img class="img-fluid" th:src="@{/img/front_end/index/scroll/img_16-1.jpg}" alt="" ;>
+            <div class="owl-carousel-inner">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
+                            <a href="" class="btn btn-primary py-3  px-5 animated slideInLeft">Read More</a> -->
+                            <!-- 圖片後續作連結  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--            第二張圖-->
+        <div class="owl-carousel-item position-relative" data-dot="<img src='img/front_end/index/scroll/img_26.jpg'>">
+            <img class="img-fluid" th:src="@{/img/front_end/index/scroll/img_26.jpg}" alt="">
+            <div class="owl-carousel-inner">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-6">
+                            <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
+                            <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
+                            <!-- 圖片後續作連結  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--            第三張圖-->
+        <div class="owl-carousel-item position-relative" data-dot="<img src='img/front_end/index/scroll/img_24.jpg'>">
+            <img class="img-fluid" th:src="@{/img/front_end/index/scroll/img_24.jpg}" alt="">
+            <div class="owl-carousel-inner">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
+                            <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
+                            <!-- 圖片後續作連結  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--            第四張圖-->
+        <div class="owl-carousel-item position-relative" data-dot="<img src='img/front_end/index/scroll/img_25.jpg'>">
+            <img class="img-fluid" th:src="@{img/front_end/index/scroll/img_25.jpg}" alt="">
+            <div class="owl-carousel-inner">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <!-- <h5 class="display-1 text-white animated slideInDown" style="font-size: 4rem;">The sea of Penghu, along with the presence of cactus, exudes an air of enchantment</h5>
+                            <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Read More</a> -->
+                            <!-- 圖片後續作連結  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Carousel End -->
+<!-- 天氣 -->
+<div class="hero">
+    <div class="container">
+        <div class="row align-items-center bg-wh">
+            <div class="row col-lg-2">
+                <div id="wea" style="padding-right: 30px; padding-left: 20px; float: left;">
+                    <div class="item">
+                        <i class="icon-2"></i>
+                        <p>icon</p>
+                        <p>天氣狀況</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="intro-wrap">
+                    <div class="row">
+                        <div class="col-12">
+                            <form class="form">
+                                <div class="row mb-4">
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2 ">
+                                        <label>
+                                            <select name="" id="" class="form-control custom-select">
+                                                <option value="">選擇房型</option>
+                                                <option value="">Peru</option>
+                                                <option value="">Japan</option>
+                                                <option value="">Thailand</option>
+                                                <option value="">Brazil</option>
+                                                <option value="">United States</option>
+                                                <option value="">Israel</option>
+                                                <option value="">China</option>
+                                                <option value="">Russia</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
+                                        <input type="date" class="form-control" name="daterange">
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
+                                        <input type="date" class="form-control" name="daterange">
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                        <input type="text" class="form-control" placeholder="人數">
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                        <input type="submit" class="btn btn-primary btn-block" value="Search">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Facts Start -->
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h4 class="section-title">Latest News</h4>
+        <h1 class="display-5 mb-4">最新消息</h1>
+    </div>
+    <section>
+        <div class="container-lg py-4">
+            <div class="row g-4">
+
+                <div class="homeNewsPic col-lg-4 col-md-6 col-sm-12">
+                    <div class="wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-white text-center h-100 p-4 p-xl-1-2">
+                            <div class="image-container-lg-4">
+                                <img class="img-fluid mb-4 " src="https://picsum.photos/400/400?random=10" alt="">
+                            </div>
+                            <h4 class="mb-3">熱門精選</h4>
+                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="homeNewsPic col-lg-4 col-md-6 col-sm-12">
+                    <div class="wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-white text-center h-100 p-4 p-xl-1-2">
+                            <div class="image-container-lg-4">
+                                <img class="img-fluid mb-4" src="https://picsum.photos/400/400?random=11" alt="">
+                            </div>
+                            <h4 class="mb-3">熱門精選</h4>
+                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="homeNewsPic col-lg-4 col-md-6 col-sm-12">
+                    <div class="wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="bg-white text-center h-100 p-4 p-xl-1-2">
+                            <div class="image-container-lg-4">
+                                <img class="img-fluid mb-4" src="https://picsum.photos/400/400?random=12" alt="">
+                            </div>
+                            <h4 class="mb-3">熱門精選</h4>
+                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facts End -->
+
+
+    <!--    &lt;!&ndash; About Start &ndash;&gt;-->
+    <!--    <div class="container-xxl py-5">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row g-5">-->
+    <!--                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">-->
+    <!--                    <div class="about-img">-->
+    <!--                        <img class="img-fluid" src="img/about-1.jpg" alt="">-->
+    <!--                        <img class="img-fluid" src="img/about-2.jpg" alt="">-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">-->
+    <!--                    <h4 class="section-title">About Us</h4>-->
+    <!--                    <h1 class="display-5 mb-4">A Creative Architecture Agency For Your Dream Home</h1>-->
+    <!--                    <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>-->
+    <!--                    <p class="mb-4">Stet no et lorem dolor et diam, amet duo ut dolore vero eos. No stet est diam rebum amet diam ipsum. Clita clita labore, dolor duo nonumy clita sit at, sed sit sanctus dolor eos.</p>-->
+    <!--                    <div class="d-flex align-items-center mb-5">-->
+    <!--                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center border border-5 border-primary" style="width: 120px; height: 120px;">-->
+    <!--                            <h1 class="display-1 mb-n2" data-toggle="counter-up">25</h1>-->
+    <!--                        </div>-->
+    <!--                        <div class="ps-4">-->
+    <!--                            <h3>Years</h3>-->
+    <!--                            <h3>Working</h3>-->
+    <!--                            <h3 class="mb-0">Experience</h3>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                    <a class="btn btn-primary py-3 px-5" href="">Read More</a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    &lt;!&ndash; About End &ndash;&gt;-->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h4 class="section-title">Feature Activity</h4>
+                <h1 class="display-5 mb-4">特色活動</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-1.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4" th:src="@{/img/front_end/index/icons/diving.png}" alt="Icon">
+                            <h3 class="mb-3">體驗潛水</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-2.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4" th:src="@{/img/front_end/index/icons/wakeboarding.png}" alt="Icon">
+                            <h3 class="mb-3">寬板滑水</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-3.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4" th:src="@{/img/front_end/index/icons/surfing.png}" alt="Icon">
+                            <h3 class="mb-3">SUP 立式划槳</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-4.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4" th:src="@{/img/front_end/index/icons/firework.png}" alt="Icon">
+                            <h3 class="mb-3">夜划花火</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-5.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4" th:src="@{/img/front_end/index/icons/cactus-9.png}" alt="Icon">
+                            <h3 class="mb-3">仙人掌園區導覽</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item d-flex position-relative text-center h-100">
+                        <img class="bg-img" th:src="@{/img/front_end/index/service-6.jpg}" alt="">
+                        <div class="service-text p-5">
+                            <img class="mb-4 iconcolor" th:src="@{/img/front_end/index/icons/barbecue.png}" alt="Icon">
+                            <h3 class="mb-3">BBQ 晚餐吃到飽</h3>
+                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
+                                stet diam sed stet.</p>
+                            <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+    <!-- About Start -->
+
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h4 class="section-title">Guest Room</h4>
+        <h1 class="display-5 mb-4">房型簡介</h1>
+    </div>
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="mb-4">Welcome to <span class="text-primary3 text-uppercase">Hotelier</span></h1>
+                    <h5 class="section-title text-start text-primary3 text-uppercase">熱門房型</h5>
+                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et
+                        eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat
+                        amet</p>
+                    <div class="row g-3 pb-4">
+                        <div class="col-sm-4 wow fadeIn" data-wow-delay="0.1s">
+                            <div class="border rounded p-1">
+                                <div class="border rounded text-center p-4">
+                                    <i class="fa fa-hotel fa-2x text-primary mb-2"></i>
+                                    <h2 class="mb-1" data-toggle="counter-up">30</h2>
+                                    <p class="mb-0">Rooms</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 wow fadeIn" data-wow-delay="0.3s">
+                            <div class="border rounded p-1">
+                                <div class="border rounded text-center p-4">
+                                    <i class="fa fa-users-cog fa-2x text-primary mb-2"></i>
+                                    <h2 class="mb-1" data-toggle="counter-up">30</h2>
+                                    <p class="mb-0">Staffs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="border rounded p-1">
+                                <div class="border rounded text-center p-4">
+                                    <i class="fa fa-users fa-2x text-primary mb-2"></i>
+                                    <h2 class="mb-1" data-toggle="counter-up">921</h2>
+                                    <p class="mb-0">Clients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary py-3 px-5 mt-2" href="">立即訂房</a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6 text-end">
+                            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.1s"
+                                 src="https://picsum.photos/300/200?random=10" style="margin-top: 25%;">
+                        </div>
+                        <div class="col-6 text-start">
+                            <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.3s"
+                                 src="https://picsum.photos/300/200?random=10">
+                        </div>
+                        <div class="col-6 text-end">
+                            <img class="img-fluid rounded w-50 wow zoomIn" data-wow-delay="0.5s"
+                                 src="https://picsum.photos/300/200?random=10">
+                        </div>
+                        <div class="col-6 text-start">
+                            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.7s"
+                                 src="https://picsum.photos/300/200?random=10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <div>
+
+        <script
+                src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                type="module"
+        ></script>
+        <dotlottie-player
+                src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+                background="transparent"
+                speed="0.4"
+                style="max-width: 100%; margin-bottom: -1px"
+                direction="1"
+                playMode="normal"
+                loop
+                autoplay
+        ></dotlottie-player>
+
+
+    </div>
+
+    <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+
+
+        <div class="container py-5">
+            <div class="row g-5">
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">最新消息</h3>
+                    <a class="btn btn-link text-primary5" href="">所有公告</a>
+                    <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                    <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                    <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                    <!-- <a class="btn btn-link" href="">Construction</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">房型介紹</h3>
+                    <a class="btn btn-link text-primary5" href="">家庭庭園房</a>
+                    <a class="btn btn-link text-primary5" href="">豪華庭園房</a>
+                    <a class="btn btn-link text-primary5" href="">雙層奢華套房</a>
+                    <a class="btn btn-link text-primary5" href="">海洋海景房</a>
+
+                    <!-- <a class="btn btn-link" href="">Support</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">特色活動</h3>
+                    <a class="btn btn-link text-primary5" href="">體驗潛水</a>
+                    <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                    <a class="btn btn-link text-primary5" href="">SUP 立式划槳</a>
+                    <a class="btn btn-link text-primary5" href="">仙人掌園區導覽</a>
+                    <a class="btn btn-link text-primary5" href="">BBQ 晚餐吃到飽</a>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：880 澎湖縣馬公市160號
+                    </p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-8988717 #888</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>CactusHotel@yahoo.com.tw</p>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <div th:replace="~{/front_end/index/include/include_bottom}"></div>
