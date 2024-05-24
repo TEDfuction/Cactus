@@ -1,7 +1,6 @@
 /********** Template CSS **********/
 body{
-    background-image: url("//img/front_end/room/background.jpg");
-    background-repeat: no-repeat;
+    background-image: url(../../../img/front_end/room/background.jpg);
     background-size: contain;
 }
 /* div.container-fluid.text-body.footer{

@@ -231,9 +231,8 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="text2-primary2 m-0"><img class="me-1" src="/img/icons/LOGO.png" alt="Icon"><img class="me-3"
-                                                                                                      src="//member/cactus_name2.png"
-                                                                                                      alt="Name"></h1>
+            <h1 class="text2-primary2 m-0"><img class="me-1" th:src="@{/img/activities/icons/LOGO.png}" alt="Icon"><img class="me-3"
+                th:src="@{/img/activities/cactus_name2.png}" alt="Name"></h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -286,9 +285,9 @@
         <hr class="col-lg-12" style="height: 2px; color: gray">
         <div class="booking-form">
             <form class="dateFormFst" th:action="@{/roomType/selectRoomType}" method="post">
-                <select class="form-control roomType-select" name="roomTypeName">
+                <select class="form-control roomType-select" name="roomTypeName" id="roomType">
                     <option disabled selected>選擇房型</option>
-                    <option th:value="${roomTypeName}"></option>
+<!--                    <option th:value="${roomTypeName}"></option>-->
                 </select>
                 <div class="date-checkIn">
                     <input type="date" id="room-checkIn" th:value="${selectCheckIn}" name="selectCheckIn">
@@ -341,22 +340,22 @@
         <div class="roomIntro">
             <div class="roomBack">
                     <h1 th:text="${roomTypeVO[0]}" class="roomTypeName" id="PageRTName">
-                        <span class="arrow"></span>
+<!--                        <span class="arrow"></span>-->
                     </h1>
                     <div class="hotel-details" style="margin-top: 16px;margin-left: 10px; font-size: 16px; color: #666;">
                         <span class="PageRTBed">
                             <span th:text="${roomTypeVO[3] / 2} + ' 張特大雙人床'"></span>
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3] / 2)}">
-                                <img src="//img/front_end/room/double-bed.png" class="bed-icon" alt="Double Bed">
+                                <img th:src="@{/img/front_end/room/double-bed.png}" class="bed-icon" alt="Double Bed">
                             </span>
                             <span th:if="${roomTypeVO[3] % 2 != 0}">
-                                <img src="//img/front_end/room/single-bed.png" class="bed-icon" alt="Single Bed">
+                               <img th:src="@{/img/front_end/room/single-bed.png}" class="bed-icon" alt="Single Bed">
                             </span>
                         </span>
                         <span class="separator">|</span>
                         <span class="roomGuestAmount">
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3])}">
-                                <img src="//img/front_end/room/peoplecount.png" style="width: 15px;height: 15px" alt="Guest">
+                                <img th:src="@{/img/front_end/room/peoplecount.png}" style="width: 15px;height: 15px" alt="Guest">
                             </span>
                         </span>
                         <span class="separator">|</span><br>
@@ -366,21 +365,24 @@
                             <span th:if="${roomTypeVO[3] == 6}">140~150 ㎡</span>
                         </div>
                         <div style="margin-top: 10px; font-size: 12px">
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;浴缸&淋浴
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;免費盥洗用品
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;咖啡沖泡設備
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;簡易廚房
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;浴缸&淋浴
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;免費盥洗用品
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;咖啡沖泡設備
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;簡易廚房
                         </div>
                         <span th:text="'NT ' + ${roomTypeVO[2]} + ' $'" id="roomPrice" class="roomPrice"></span><br>
                         <div>
                             <form class="dateFormSec" id="dateFormSec" th:action="@{/roomPromotion/OrderList}" method="POST" onsubmit="storeRoomData(this); return true;">
-                                <input type="hidden" name="roomTypeName" id="hiddenRoomTypeName">
-                                <input type="hidden" name="roomGuestAmount" id="hiddenRoomGuestAmount">
-                                <input type="hidden" name="roomSize" id="hiddenRoomSize">
-                                <input type="hidden" name="roomPrice" id="hiddenRoomPrice">
+                                <input type="hidden" name="roomTypeName"  th:value="${roomTypeVO[0]}" id="hiddenRoomTypeName">
+                                <input type="hidden" name="roomGuestAmount" th:value="${roomTypeVO[3]}" id="hiddenRoomGuestAmount">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 2}" value="55~60 ㎡" id="hiddenRoomSizeS">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 4}" value="80~90 ㎡" id="hiddenRoomSizeM">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 6}" value="140~150 ㎡" id="hiddenRoomSizeL">
+                                <input type="hidden" name="roomPrice" th:value="${roomTypeVO[2]}" id="hiddenRoomPrice">
                                 <input type="hidden" name="selectCheckIn" id="selectCheckIn">
                                 <input type="hidden" name="selectCheckOut" id="selectCheckOut">
-                                <input type="submit" class="room-button" value="預定房間">
+                                <input type="hidden" name="roomTypeId" th:value="${roomTypeVO[1]}">
+                                <button type="button" class="room-button roomFormButton">預定房間</button>
                             </form>
                         </div>
                     </div>
@@ -504,12 +506,74 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var session_acount="";
+    	console.log("session_acount =" + session_acount);
+
+            //查看session是否有存著account值
+            $.ajax({
+                url: '/member/getSessionAccount',
+                type: 'GET',
+                success: function(response) {
+
+                    session_acount = response;
+                console.log("response Session Account:", session_acount);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+
+
+
+            $(document).on("click",".roomFormButton",function(e){
+                e.preventDefault();
+                if ( session_acount!="" ) {
+                    e.target.closest("form.dateFormSec").submit();
+
+
+                } else {// 如果沒有值
+
+                    var location = "/roomType/roomTypeFront";
+                    var dataToSend = { location: location };
+
+                    //將欲前往頁面存入供跳轉
+                    $.ajax({
+                        url: '/member/setLocation', // 替换成你的后端路由
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataToSend),
+                        success: function(response) {
+                            //確認是否儲存成功
+//                         console.log("Location setting success", response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+
+                    swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+
+                        .then(function(){
+                            window.location.href = '/member/memberLogin';
+                        })
+                }
+
+            });
+        });
+    </script>
+
 
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
             // 從 sessionStorage 獲取保存的數據
-            const roomType = sessionStorage.getItem('roomTypeName');
+            const roomType = sessionStorage.getItem('roomType');
             const checkInDate = sessionStorage.getItem('checkInDate');
             const checkOutDate = sessionStorage.getItem('checkOutDate');
             const roomGuestAmount = sessionStorage.getItem('roomGuestAmount');
@@ -527,10 +591,13 @@
             // 如果有保存的日期，更新日期輸入框
             if (checkInDate) {
                 document.getElementById('room-checkIn').value = checkInDate;
-                document.getElementById('selectCheckIn').value = checkInDate;
+                $(document).find('input#selectCheckIn').val(checkInDate)
+                // document.querySelectorAll('input#selectCheckIn').value = checkInDate;
             }
             if (checkOutDate) {
                 document.getElementById('room-checkOut').value = checkOutDate;
+                $(document).find('input#selectCheckOut').val(checkOutDate);
+                // document.querySelectorAll('input#selectCheckOut').value = checkOutDate;
             }
 
             // 如果有保存的人數，更新下拉選單
@@ -590,27 +657,20 @@
 
         function storeRoomData(form) {
             const roomIntro = form.closest('.roomIntro');
-            const roomTypeName = roomIntro.querySelector('.roomTypeName').textContent;
+            const roomTypeName = roomIntro.querySelector('.roomTypeName').value;
+            console.log(roomTypeName)
             const roomGuestAmount = roomIntro.querySelector('.roomGuestAmount').textContent.match(/\d+/)[0];
             const roomSize = roomIntro.querySelector('.PageRTSize').textContent;
-            const checkInDate = document.getElementById('selectCheckIn').value;
-            const checkOutDate = document.getElementById('selectCheckOut').value;
+            const checkInDate = document.querySelector('.selectCheckIn').value;
+            const checkOutDate = document.querySelector('.selectCheckOut').value;
             const roomPrice = roomIntro.querySelector('.roomPrice').textContent;
 
-            // 設置隱藏字段的值
-            document.getElementById('hiddenRoomTypeName').value = roomTypeName;
-            document.getElementById('hiddenRoomGuestAmount').value = roomGuestAmount;
-            document.getElementById('hiddenRoomSize').value = roomSize;
-            document.getElementById('hiddenRoomPrice').value = roomPrice;
-            document.getElementById('selectCheckIn').value = checkInDate;
-            document.getElementById('selectCheckOut').value = checkOutDate;
-
-            console.log('RoomTypeName:', roomTypeName);
-            console.log('RoomGuestAmount:', roomGuestAmount);
-            console.log('RoomSize:', roomSize);
-            console.log('Check-inDate:', checkInDate);
-            console.log('Check-outDate:', checkOutDate);
-            console.log('RoomPrice:', roomPrice);
+            localStorage.setItem('roomTypeName', JSON.stringify({ roomTypeName: roomTypeName }));
+            localStorage.setItem('roomGuestAmount', JSON.stringify({roomGuestAmount}));
+            localStorage.setItem('roomSize', JSON.stringify({roomSize}));
+            localStorage.setItem('checkInDate', JSON.stringify({checkInDate}));
+            localStorage.setItem('checkOutDate', JSON.stringify({checkOutDate}));
+            localStorage.setItem('roomPrice', JSON.stringify({roomPrice}));
 
             return true; // 允許表單提交
         }
@@ -632,6 +692,7 @@
     <script src="/js/room/main.js"></script>
     <!-- Kit Icon -->
     <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+
 
 </body>
 </html>
