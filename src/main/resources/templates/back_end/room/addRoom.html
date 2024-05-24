@@ -14,14 +14,14 @@
 
     <div align="center">
 
-        <form th:action="@{insertRoom}" method="post" th:object="${room}">
+        <form th:action="@{insertRoom}" method="post" th:object="${roomVO}">
 
             <div>
                 <label>房型:</label>
-                <select th:field="*{roomType.roomTypeId}">
+                <select th:field="*{roomTypeVO.roomTypeId}" name="roomTypeVO.roomTypeId">
                     <option th:each="roomType : ${roomTypeListData}" th:value="${roomType.roomTypeId}" th:text="${roomType.roomTypeName}" />
                 </select>
-                <span th:if="${#fields.hasErrors('roomType.roomTypeId')}" th:errors="*{roomType.roomTypeId}" class="error" id="roomType.roomTypeId.errors"></span>
+                <span th:if="${#fields.hasErrors('roomTypeVO.roomTypeId')}" th:errors="*{roomTypeVO.roomTypeId}" class="error" id="roomTypeVO.roomTypeId.errors"></span>
             </div>
 
             <div>

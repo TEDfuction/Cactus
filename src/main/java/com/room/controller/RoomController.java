@@ -52,12 +52,13 @@ public class RoomController {
         List<RoomTypeVO> roomType = roomTypeRepository.findAll();
 
         model.addAttribute("roomTypeListData", roomType);
-        model.addAttribute("room", room);
+        model.addAttribute("roomVO", room);
         return "back_end/room/addRoom";
     }
 
     @PostMapping("/insertRoom")
     public String insert(
+            @RequestParam("roomTypeVO.roomTypeId") String roomTypeId,
             @Valid RoomVO room,
             BindingResult result,
             ModelMap model){
@@ -67,14 +68,16 @@ public class RoomController {
             model.addAttribute("roomTypeListData", roomType);
             return "back_end/room/addRoom";
         }
-
+        RoomTypeVO roomTypeVO = roomTypeImpl.getRoomTypeById(Integer.valueOf(roomTypeId));
+        room.setRoomTypeVO(roomTypeVO);
         roomService.addRoom(room);
 
-        List<RoomVO> rooms = roomService.getAll();
-        model.addAttribute("rooms", rooms);
-        return "redirect:/room/getAllRoom";
+
+        model.addAttribute("roomVO", room);
+        return "back_end/room/roomIdSearch";
 
     }
+
 
     @PostMapping("/getOneRoomUpdate")
     public String getOneRoomUpdate(@RequestParam("roomId") String roomId, ModelMap model) {
@@ -102,7 +105,7 @@ public class RoomController {
         roomService.updateRoom(room);
 
         room = roomService.findByPK(room.getRoomId());
-        model.addAttribute("room", room);
+        model.addAttribute("roomVO", room);
         return "back_end/room/roomIdSearch";
 
     }
@@ -118,6 +121,18 @@ public class RoomController {
         List<RoomVO> rooms = roomService.getAll();
         model.addAttribute("rooms", rooms);
         return "back_end/room/showAllRoom";
+    }
+
+    @PostMapping("/updateOneRoomSaleStatus")
+    public String updateRoomOneSaleStatus(@RequestParam("roomId") String roomId,ModelMap model,
+                                       @RequestParam("roomSaleStatus")Byte roomSaleStatus){
+
+        RoomVO room = roomService.findByPK(Integer.valueOf(roomId));
+        room.setRoomSaleStatus(roomSaleStatus);
+        roomService.updateRoom(room);
+
+        model.addAttribute("roomVO", room);
+        return "back_end/room/roomIdSearch";
     }
 
 }

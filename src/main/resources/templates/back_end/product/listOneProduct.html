@@ -33,8 +33,14 @@
                 <p class="card-text"><strong>商品圖片:</strong> <img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" class="img-fluid" width="100px"></p>
             </div>
         </div>
+        
+        <div>
+        <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='/product/historyProduct'">返回下架商品</button>
+        <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='/product/listAllProduct1'">返回上架商品</button>
+    	</div>
 
-        <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='/product/listAllProduct1'">返回</button>
+    	
+    	
     </div>
 </div>
 

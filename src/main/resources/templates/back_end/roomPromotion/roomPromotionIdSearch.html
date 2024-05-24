@@ -63,10 +63,9 @@
 		<!-- 主欄位 -->
 		<div class="unique">
 			<div>
-			<h3>---搜尋的房間促銷資料結果---</h3>
 
 			<br>
-				<h3><a class="navbar-brand" th:href="@{/roomPromotion/searchRoomPromotion}">回查詢頁</a></h3></div>
+				<h3><a class="navbar-brand" th:href="@{/roomPromotion/getAllRoomPromotion}">回查詢頁</a></h3></div>
 			<br>
 
 			<table  id="xxx" class="display">
@@ -87,12 +86,12 @@
 
 					<tr>
 
-						<td th:text="${promotion.promotionId}"></td>
-						<td th:text="${promotion.promotionTitle}"></td>
+						<td th:text="${promotionVO.promotionId}"></td>
+						<td th:text="${promotionVO.promotionTitle}"></td>
 
 						<td>
 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-									th:data-updateRoomPromotionContent="${promotion.promotionContent}"
+									th:data-updateRoomPromotionContent="${promotionVO.promotionContent}"
 									onclick="fillFormContent(this.getAttribute('data-updateRoomPromotionContent'));">
 								詳細說明
 							</button>
@@ -122,21 +121,21 @@
 						</div>
 
 						<td>
-							<span th:if="${promotion.promotionState} eq 0" class="badge bg-danger">下架</span>
-							<span th:if="${promotion.promotionState} eq 1" class="badge bg-success">上架</span>
+							<span th:if="${promotionVO.promotionState} eq 0" class="badge bg-danger">下架</span>
+							<span th:if="${promotionVO.promotionState} eq 1" class="badge bg-success">上架</span>
 						</td>
 
-						<td th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 100, 0, 0)} + '折'"></td>
+						<td th:text="${#numbers.formatDecimal(promotionVO.promotionDiscount * 100, 0, 0)} + '折'"></td>
 
-						<td th:text="${promotion.promotionStarted+'~'+promotion.promotionEnd}"></td>
+						<td th:text="${promotionVO.promotionStarted+'~'+promotionVO.promotionEnd}"></td>
 
 						<td>
 							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-									th:data-bs-target="'#exampleModal'+ ${promotion.promotionId}" >修改
+									th:data-bs-target="'#exampleModal'+ ${promotionVO.promotionId}" >修改
 							</button>
 						</td>
 
-						<div class="modal fade" th:id="'exampleModal'+ ${promotion.promotionId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+						<div class="modal fade" th:id="'exampleModal'+ ${promotionVO.promotionId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
 							<div class="modal-dialog ">
 								<div class="modal-dialog modal-dialog-scrollable">
 									<div class="modal-content">
@@ -146,55 +145,55 @@
 										</div>
 										<div class="modal-body" id="updateRoomPromotionDiv">
 											<!-- 表單 -->
-											<form id="roomTypeForm-${promotion.promotionId}" method="post" action="/roomPromotion/updateRoomPromotion">
+											<form id="roomTypeForm-${promotionVO.promotionId}" method="post" action="/roomPromotion/updateRoomPromotion">
 
 												<div class="mb-3" >
 													<label for="roomPromotionId" class="col-form-label" >促銷編號:</label>
 													<textarea type="text" class="form-control" id="roomPromotionId" name="roomTypeId"
-															  th:text="${promotion.promotionId}" readonly></textarea>
+															  th:text="${promotionVO.promotionId}" readonly></textarea>
 
 												</div>
 
 												<div class="mb-3" >
 													<label for="PromotionTitle" class="col-form-label" >促銷標題:</label>
-													<textarea type="text" class="form-control" id="PromotionTitle" name="promotionTitle" th:text="${promotion.promotionTitle}"></textarea>
+													<textarea type="text" class="form-control" id="PromotionTitle" name="promotionTitle" th:text="${promotionVO.promotionTitle}"></textarea>
 												</div>
 
 												<div class="mb-3">
 													<label for="PromotionContent" class="col-form-label">促銷敘述:</label>
 													<textarea class="form-control"
-															  id="PromotionContent" name="promotionContent" th:text="${promotion.promotionContent}"></textarea>
+															  id="PromotionContent" name="promotionContent" th:text="${promotionVO.promotionContent}"></textarea>
 												</div>
 
 												<div class="mb-3">
 													<label for="status" class="col-form-label">上下架狀態:</label>
 													<select class="form-select" id="status" name="promotionState">
-														<option th:selected="${promotion.promotionState == 1}" value="1">上架</option>
-														<option th:selected="${promotion.promotionState == 0}" value="0">下架</option>
+														<option th:selected="${promotionVO.promotionState == 1}" value="1">上架</option>
+														<option th:selected="${promotionVO.promotionState == 0}" value="0">下架</option>
 													</select>
 												</div>
 
 												<div class="mb-3">
 													<label for="PromotionDiscount" class="col-form-label">促銷折扣:</label>
 													<textarea type="text" class="form-control"
-															  id="PromotionDiscount" name="promotionDiscount" th:text="${promotion.promotionDiscount}"></textarea>
+															  id="PromotionDiscount" name="promotionDiscount" th:text="${promotionVO.promotionDiscount}"></textarea>
 												</div>
 
 												<div class="mb-3">
 													<label for="PromotionStarted" class="col-form-label">促銷開始日:</label>
 													<input type="date" class="form-control" id="PromotionStarted" name="promotionStarted"
-														   th:value="${promotion.promotionStarted}" />
+														   th:value="${promotionVO.promotionStarted}" />
 												</div>
 												<div class="mb-3">
 													<label for="PromotionEnd" class="col-form-label">促銷結束日:</label>
 													<input type="date" class="form-control" id="PromotionEnd" name="promotionEnd"
-														   th:value="${promotion.promotionEnd}" min="${promotion.promotionStarted}" />
+														   th:value="${promotionVO.promotionEnd}" min="${promotion.promotionStarted}" />
 												</div>
 
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
 													<button type="submit" class="btn btn-primary">送出</button>
-													<input type="hidden" id="promotionId" name="promotionId" th:value="${promotion.promotionId}">
+													<input type="hidden" id="promotionId" name="promotionId" th:value="${promotionVO.promotionId}">
 												</div>
 											</form>
 										</div>

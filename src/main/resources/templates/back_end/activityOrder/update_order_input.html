@@ -2,6 +2,20 @@
     <title>活動訂單編輯 </title>
 
     <style >
+        /* For WebKit browsers (Chrome, Safari, Edge) */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* For IE 10+ */
+        input[type=number]::-ms-clear,
+        input[type=number]::-ms-reveal {
+            display: none;
+            width: 0;
+            height: 0;
+        }
 
     </style>
 </head>
@@ -97,8 +111,12 @@
             <div class="mb-4">
                 <h5 class="f-w">報名人數<span class="require_text">(必填)</span> </h5>
             </div>
-            <input type="text" class="form_element7 nt-u2 enrollNumber" th:field="*{enrollNumber}"
+            <div class="input-group">
+                <button type="button" class="numberbtn btn-outline-primary" onclick="changeEnrollNumber(-1)">-</button>
+            <input type="number" class="form_element7-1 nt-u2 enrollNumber" th:field="*{enrollNumber}"
                    oninput="calculateOrderAmount();" onclick="hideContent('enrollNumber.errors');" />
+                <button type="button" class="numberbtn btn-outline-primary" onclick="changeEnrollNumber(1)">+</button>
+            </div>
             <div th:if="${#fields.hasErrors('enrollNumber')}" class="error" id="enrollNumber.errors">
                 <span th:errors="*{enrollNumber}" ></span>
                 <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
@@ -228,10 +246,27 @@
         calculatePayAmount();
     }
 
+    function changeEnrollNumber(delta) {
+        var enrollNumberInput = document.querySelector(".enrollNumber");
+        var currentNumber = parseInt(enrollNumberInput.value);
+        if (isNaN(currentNumber)) {
+            currentNumber = 0;
+        }
+        var newNumber = currentNumber + delta;
+        if (newNumber < 0) {
+            newNumber = 0;
+        }
+        enrollNumberInput.value = newNumber;
+        calculateOrderAmount();
+    }
+
     function calculatePayAmount() {
         var orderAmountInput = document.querySelector(".orderAmount").value;
         var promotionPriceInput = document.querySelector(".promotionPrice").value;
         var payAmountInput = document.querySelector(".payAmount");
+
+        console.log("Order Amount Input: " + orderAmountInput);
+        console.log("Promotion Price Input: " + promotionPriceInput);
 
         // Parse the input values to float
         var orderAmount = parseFloat(orderAmountInput);

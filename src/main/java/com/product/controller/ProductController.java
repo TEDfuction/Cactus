@@ -38,6 +38,10 @@ public class ProductController {
 	@Autowired
 	ProductCategoryService ProductCategorySvc;
 	
+	@GetMapping("/listAllProductCategory")
+	public String listAllProductCategory(Model model) {
+		return "back_end/product/listAllProductCategory";
+	}
 	
 	@GetMapping("/historyProduct")
 	public String historyProduct(Model model) {
@@ -68,7 +72,20 @@ public class ProductController {
 			List<ProductVO> list = productSvc.getAll();
 			return list;
 		}
-
+	
+	//是否顯示刪除欄位
+	@ModelAttribute("productCategoryListDataPro")
+	public boolean canDeleteAnyCategory(Model model) {
+		List<ProductCategoryVO> categories = ProductCategorySvc.getAll(); // 獲取所有类别
+	    for (ProductCategoryVO category : categories) {
+	        if (category.getProductVOs() == null) {
+	        	  model.addAttribute("productCategoryListDataPro", true);
+	            return true; // 如果找到至少一个可以删除的类别，则返回true
+	        }
+	    }
+	    model.addAttribute("productCategoryListDataPro", false);
+	    return false; // 如果所有类别都不能删除，返回false
+	}
 
 
 	@ModelAttribute("productCategoryListData") // for select_page.jsp 第96 108行用 // for listAllEmp.jsp 第68行用//ChatGpt鍵是empListData，值是list
@@ -85,6 +102,13 @@ public class ProductController {
 		ProductVO productVO = new ProductVO();
 		model.addAttribute("productVO", productVO);
 		return "back_end/product/addProduct";
+	}
+	
+	@GetMapping("addProductCategory")
+	public String addProductCategory(ModelMap model) {
+		ProductCategoryVO productCategoryVO = new ProductCategoryVO();
+		model.addAttribute("productCategoryVO", productCategoryVO);
+		return "back_end/product/addProductCategory";
 	}
 	
 	@PostMapping("insert")//對應到addEmp  56行 name名稱
@@ -142,6 +166,60 @@ public class ProductController {
 		return "back_end/product/listAllProduct"; // 新增成功後轉交listAllProduct.jsp
 	}
 	
+	@PostMapping("insertCategory")
+	public String insertCategory(@Valid ProductCategoryVO productCategoryVO, BindingResult result, ModelMap model) throws IOException {
+		
+		//重複類別驗證
+		List<ProductCategoryVO> listCate = ProductCategorySvc.getAll();
+		for(int i = 0 ; i < listCate.size() ; i++) {
+			ProductCategoryVO cate = listCate.get(i);
+			if(cate.getProductCategoryName().equals(productCategoryVO.getProductCategoryName())) {
+//				model.addAttribute("error", "重複商品品項，請重新輸入");
+				result.rejectValue("productCategoryName", "error.productCategoryName", "重複商品品項，請重新輸入");
+				 return "back_end/product/addProductCategory";
+			}
+		}
+		
+		if (result.hasErrors()) {
+		    System.out.println("驗證錯誤：");
+		    for (FieldError error : result.getFieldErrors()) {
+		        System.out.println(error.getField() + ": " + error.getDefaultMessage());
+		    }
+		    return "back_end/product/addProductCategory";
+		}
+		/***************************2.開始新增資料***************************************/
+//		ProductService productSvc = new ProductService();
+		ProductCategorySvc.addProductCategory(productCategoryVO);
+		/***************************3.新增完成,準備轉交(Send the Success view)***********/
+		List<ProductCategoryVO> list = ProductCategorySvc.getAll();
+		model.addAttribute("productCategoryListData", list);
+//		model.addAttribute("success", "- (新增成功)");
+//		System.out.println("成功新增");
+		return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+	}
+	
+	//新增商品類別
+		@PostMapping("addProductCategory")
+		public String addProductCategory(@Valid ProductCategoryVO productCategoryVO, BindingResult result, ModelMap model) throws IOException {
+			
+			if (result.hasErrors()) {
+//			    System.out.println("驗證錯誤：");
+			    for (FieldError error : result.getFieldErrors()) {
+			        System.out.println(error.getField() + ": " + error.getDefaultMessage());
+			    }
+			    return "back-end/product/listAllProductCategory";
+			}
+			
+			ProductCategorySvc.addProductCategory(productCategoryVO);
+			
+			List<ProductCategoryVO> list = ProductCategorySvc.getAll();
+			model.addAttribute("productCategoryListData", list);
+			model.addAttribute("success", "- (新增成功)");
+			System.out.println("成功新增");
+			return "back-end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+		}
+	
+	
 	/*
 	 * This method will be called on listAllEmp.jsp form submission, handling POST request It also validates the user input
 	 */
@@ -155,6 +233,41 @@ public class ProductController {
 		/***************************3.查詢完成,準備轉交(Send the Success view)***********/
 		model.addAttribute("productVO", productVO);
 		model.addAttribute("getOne_For_Update", "true");
+		
+		return "back_end/product/update_product_input"; // 查詢完成後轉交update_product_input.jsp
+//		return "back-end/product/listAllProduct";
+	}
+	
+	//商品類別修改
+	@PostMapping("getOneCategory_For_Update")
+	public String getOneCategory_For_Update(@RequestParam("productCategoryId") String productCategoryId, ModelMap model) {
+		/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
+		/***************************2.開始查詢資料***************************************/
+//		ProductService empSvc = new ProductService();
+		System.out.println("getOneCategory_For_Update有執行");
+		ProductCategoryVO productCategoryVO = ProductCategorySvc.getOneProductCategory(Integer.valueOf(productCategoryId));
+		
+		
+		/***************************3.查詢完成,準備轉交(Send the Success view)***********/
+		model.addAttribute("productCategoryVO", productCategoryVO);
+//		model.addAttribute("getOne_For_Update", "true");
+		
+		return "back_end/product/update_productCategory_input"; // 查詢完成後轉交update_product_input.jsp
+//		return "back-end/product/listAllProduct";
+	}
+	
+	
+	//下架商品
+	@PostMapping("getOnehistory_For_Update")
+	public String getOnehistory_For_Update(@RequestParam("productId") String productId, ModelMap model) {
+		/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
+		/***************************2.開始查詢資料***************************************/
+//		ProductService empSvc = new ProductService();
+		ProductVO productVO = productSvc.getOneProduct(Integer.valueOf(productId));
+		
+		/***************************3.查詢完成,準備轉交(Send the Success view)***********/
+		model.addAttribute("productVO", productVO);
+		model.addAttribute("getOnehistory_For_Update", "true");
 		
 		return "back_end/product/update_product_input"; // 查詢完成後轉交update_product_input.jsp
 //		return "back-end/product/listAllProduct";
@@ -194,6 +307,11 @@ public class ProductController {
 		}
 		/***************************2.開始修改資料***************************************/
 //		ProductService productSvc = new ProductService();
+		if(productVO.getProductStatus() == false) {
+			model.addAttribute("updatehistroy", "true");
+			System.out.println("有到這裡");
+		}
+			
 		productSvc.updateProduct(productVO);
 
 		/***************************3.修改完成,準備轉交(Send the Success view)***********/
@@ -201,7 +319,39 @@ public class ProductController {
 		productVO = productSvc.getOneProduct(Integer.valueOf(productVO.getProductId()));
 		model.addAttribute("productVO", productVO);
 		return "back_end/product/listOneProduct"; // 修改成功後轉交listOneEmp.jsp
+		
 	}
+	
+	//商品類別修改
+		@PostMapping("updateCategory")
+		public String update(@Valid ProductCategoryVO productCategoryVO, BindingResult result, ModelMap model) throws IOException {
+
+
+			/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
+			if (result.hasErrors()) {
+				return "back-end/product/update_productCategory_input";
+			}
+			/***************************2.開始修改資料***************************************/
+//			ProductService productSvc = new ProductService();
+			ProductCategorySvc.updateProductCategory(productCategoryVO);
+
+			/***************************3.修改完成,準備轉交(Send the Success view)***********/
+			model.addAttribute("success", "修改成功");
+			return "back_end/product/listAllProductCategory"; // 修改成功後轉交listOneEmp.jsp
+		}
+		
+		@PostMapping("delete")
+		public String delete(@RequestParam("productCategoryId") String productCategoryId, ModelMap model) {
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+			/*************************** 2.開始刪除資料 *****************************************/
+			// EmpService empSvc = new EmpService();
+			ProductCategorySvc.deleteByProductCategory(Integer.valueOf(productCategoryId));
+			/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
+			List<ProductCategoryVO> list = ProductCategorySvc.getAll();
+			model.addAttribute("productCategoryListData", list);
+			model.addAttribute("success", "- (刪除成功)");
+			return "back_end/product/listAllProductCategory"; // 刪除完成後轉交listAllEmp.html
+		}
 	
 	
 	/*
@@ -244,7 +394,7 @@ public class ProductController {
 			Map<String, String[]> map = req.getParameterMap();
 			List<ProductVO> list = productSvc.getAll(map);//關鍵行
 			model.addAttribute("productListData", list); // for listAllEmp.html 第85行用
-			return "back_end/product/listAllProduct";
+			return "back_end/product/historyProduct";
 		}
 		
 		
@@ -254,7 +404,7 @@ public class ProductController {
 		
 		
 
-		@GetMapping("listAllProduct")
+		@GetMapping("/listAllProduct")
 		public String listAllProduct(ModelMap model) {
 			
 			List<ProductVO> list1 = productSvc.getAll();
@@ -265,7 +415,7 @@ public class ProductController {
 			return "/front_end/product/shop_index" ;
 		}
 		
-		@GetMapping("listOneProduct")
+		@GetMapping("/listOneProduct")
 		public String listOneProduct(ModelMap model,
 				@RequestParam("productId") String productId) {
 			ProductVO productVO = productSvc.findById( Integer.valueOf(productId) );
@@ -279,20 +429,20 @@ public class ProductController {
 	/*******************************************************************/
 		
 		
-		@GetMapping("/listAllTest")
-		public String listAllTest(ModelMap model) {
-			List<ProductVO> list = productSvc.getAll();
-			model.addAttribute("productList", list);
-			return "/front_end/product/shop_indexORI";
-		}
-
-	    @GetMapping("/listOneTest/{productId}")
-	    public String listOneTest(@PathVariable Integer productId, ModelMap model) {
-	    	System.out.println("aaa");
-	        ProductVO productVO = productSvc.findById(productId);
-	        model.addAttribute("productVO", productVO);
-	        return "/front_end/product/shop_singleORI";
-	    }
+//		@GetMapping("/listAllTest")
+//		public String listAllTest(ModelMap model) {
+//			List<ProductVO> list = productSvc.getAll();
+//			model.addAttribute("productList", list);
+//			return "/front_end/product/shop_indexORI";
+//		}
+//
+//	    @GetMapping("/listOneTest/{productId}")
+//	    public String listOneTest(@PathVariable Integer productId, ModelMap model) {
+//	    	System.out.println("aaa");
+//	        ProductVO productVO = productSvc.findById(productId);
+//	        model.addAttribute("productVO", productVO);
+//	        return "/front_end/product/shop_singleORI";
+//	    }
 		
 		
 }

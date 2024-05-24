@@ -62,11 +62,10 @@
 
 <!-- 主欄位 -->
 <div class="unique">
-    <h3>---搜尋的房間資料結果---</h3>
 
     <br>
 
-    <div><h3><a class="navbar-brand" th:href="@{/room/searchRoom}">回查詢頁</a></h3></div>
+
 
     <br>
 
@@ -93,7 +92,7 @@
 
                 <td th:text="${room.roomId}"></td>
 
-                <td th:text="${room.roomType.roomTypeName}"></td>
+                <td th:text="${room.roomTypeVO.roomTypeName}"></td>
 
                 <td th:text="${room.roomGuestAmount}"></td>
 
@@ -170,10 +169,10 @@
 
                                         <div class="mb-3" >
                                             <label for="roomTypeName" class="col-form-label" >房型:</label>
-                                            <textarea type="text" class="form-control" id="roomTypeName" th:text="${room.roomType.roomTypeName}" readonly></textarea>
+                                            <textarea type="text" class="form-control" id="roomTypeName" th:text="${room.roomTypeVO.roomTypeName}" readonly></textarea>
                                         </div>
 
-                                        <input type="hidden" id="roomTypeId" name="roomTypeId" th:value="${room.roomType.roomTypeId}" />
+                                        <input type="hidden" id="roomTypeId" name="roomTypeId" th:value="${room.roomTypeVO.roomTypeId}" />
 
                                         <div class="mb-3">
                                             <label for="roomStatus" class="col-form-label">上下架狀態:</label>
@@ -218,7 +217,7 @@
                 </div>
 
                 <td>
-                    <form method="post" th:action="@{/room/updateRoomSaleStatus}">
+                    <form method="post" th:action="@{/room/updateOneRoomSaleStatus}">
                         <select class="form-select" name="roomSaleStatus" th:value="${room.roomSaleStatus}">
                             <option value="0" th:selected="${room.roomSaleStatus == 0}">未入住</option>
                             <option value="1" th:selected="${room.roomSaleStatus == 1}">已入住</option>
