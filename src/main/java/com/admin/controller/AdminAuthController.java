@@ -125,11 +125,41 @@ public class AdminAuthController {
 	public String authChange(ModelMap model,
 			HttpSession session,
 			@RequestParam("adminId") Integer adminId,
-			@RequestParam("adminAuthorizationId")List<Integer> adminAuthorizationIds) {
+			@RequestParam(value = "adminAuthorizationId", required = false)List<Integer> adminAuthorizationIds) {
+		
+		//若沒選任何權限，就刪除所有權限
+		if(adminAuthorizationIds == null) {
+			
+			List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
+			if(!list.isEmpty()) {
+				adminAuthSvc.emptyAuth(adminId);
+				System.out.println("刪除成功");
+				model.addAttribute("status","successAuth");
+				
+				List<AdminVO> list1 = adminSvc.getAll();
+				model.addAttribute("adminList", list1);
+				
+				List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
+				model.addAttribute("adminAuthorizationList", list2);
+				
+				return "/back_end/admin/authSetting";
+			}else {
+				model.addAttribute("status","confirmAuth");
+				
+				List<AdminVO> list1 = adminSvc.getAll();
+				model.addAttribute("adminList", list1);
+				
+				List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
+				model.addAttribute("adminAuthorizationList", list2);
+				
+				return "/back_end/admin/authSetting";
+			}
+				
+			
+		}
 		
 		
-		//先刪除所有權限
-		
+		//先刪除員工底下所有權限
 		List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
 
 		if(!list.isEmpty()) {
@@ -137,7 +167,7 @@ public class AdminAuthController {
 			System.out.println("刪除成功");
 		}
 		
-		//設定權限
+		//再做權限設定
 		Integer count = 0;
 		
 		for(Integer aaoId : adminAuthorizationIds) {
@@ -167,6 +197,7 @@ public class AdminAuthController {
 		List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
 		model.addAttribute("adminAuthorizationList", list2);
 		
+		model.addAttribute("status","successAuth");
 		return "/back_end/admin/authSetting";
 	}
 	
