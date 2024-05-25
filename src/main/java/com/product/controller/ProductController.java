@@ -40,20 +40,6 @@ public class ProductController {
 	
 	@GetMapping("/listAllProductCategory")
 	public String listAllProductCategory(Model model) {
-		
-		//商品刪除存在判別
-//		List<ProductCategoryVO> categories = ProductCategorySvc.getAll(); // 獲取所有類別
-//		Boolean canDelete = false;
-//	    for (ProductCategoryVO category : categories) {
-//	        if (category.getProductVOs() == null || category.getProductVOs().isEmpty()) { 
-//	        	System.out.println("是true");
-//	        	canDelete = true;
-//	        	  break;
-//	        }
-//	    }
-//	    System.out.println("有跑到");
-//	    model.addAttribute("productCategoryListDataPro",canDelete);
-	    
 		return "back_end/product/listAllProductCategory";
 	}
 	
@@ -88,18 +74,18 @@ public class ProductController {
 		}
 	
 	//是否顯示刪除欄位
-//	@ModelAttribute("productCategoryListDataPro")
-//	public boolean canDeleteAnyCategory(Model model) {
-//		List<ProductCategoryVO> categories = ProductCategorySvc.getAll(); // 獲取所有类别
-//	    for (ProductCategoryVO category : categories) {
-//	        if (category.getProductVOs() == null) {
-//	        	  model.addAttribute("productCategoryListDataPro", true);
-//	            return true; // 如果找到至少一个可以删除的类别，则返回true
-//	        }
-//	    }
-//	    model.addAttribute("productCategoryListDataPro", false);
-//	    return false; // 如果所有类别都不能删除，返回false
-//	}
+	@ModelAttribute("productCategoryListDataPro")
+	public boolean canDeleteAnyCategory(Model model) {
+		List<ProductCategoryVO> categories = ProductCategorySvc.getAll(); // 獲取所有类别
+	    for (ProductCategoryVO category : categories) {
+	        if (category.getProductVOs() == null) {
+	        	  model.addAttribute("productCategoryListDataPro", true);
+	            return true; // 如果找到至少一个可以删除的类别，则返回true
+	        }
+	    }
+	    model.addAttribute("productCategoryListDataPro", false);
+	    return false; // 如果所有类别都不能删除，返回false
+	}
 
 
 	@ModelAttribute("productCategoryListData") // for select_page.jsp 第96 108行用 // for listAllEmp.jsp 第68行用//ChatGpt鍵是empListData，值是list
@@ -209,7 +195,7 @@ public class ProductController {
 		model.addAttribute("productCategoryListData", list);
 //		model.addAttribute("success", "- (新增成功)");
 //		System.out.println("成功新增");
-		return "redirect:/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+		return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
 	}
 	
 	//新增商品類別
@@ -356,26 +342,10 @@ public class ProductController {
 		
 		@PostMapping("delete")
 		public String delete(@RequestParam("productCategoryId") String productCategoryId, ModelMap model) {
-			
-			
-			
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 			/*************************** 2.開始刪除資料 *****************************************/
 			// EmpService empSvc = new EmpService();
 			ProductCategorySvc.deleteByProductCategory(Integer.valueOf(productCategoryId));
-			
-			//刪除欄位是否存在判斷
-			List<ProductCategoryVO> categories = ProductCategorySvc.getAll(); // 獲取所有類別
-			Boolean canDelete = false;
-		    for (ProductCategoryVO category : categories) {
-		        if (category.getProductVOs() == null || category.getProductVOs().isEmpty()) { 
-		        	System.out.println("是true");
-		        	canDelete = true;
-		        	  break;
-		        }
-		    }
-		    model.addAttribute("productCategoryListDataPro",canDelete);
-			
-			
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
 			List<ProductCategoryVO> list = ProductCategorySvc.getAll();
 			model.addAttribute("productCategoryListData", list);
