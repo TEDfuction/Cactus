@@ -3,12 +3,181 @@
 <div th:replace="~{/front_end/member/include/include_top}"></div>
   	
   	
-  	<style>
-  		.left_item{
+ <style>
+ 
+ 	.left_item{
 			text-align:center;
   		}
-  		
-  	</style>
+
+	.unique{
+			text-align:center;
+	}
+	
+ 	.display{ 
+		font-size:15px;
+/*  		table-layout: fixed;  */
+		word-break: break-all; 
+		word-wrap: break-word; 
+ 		width:100%; 
+  		height:200px;  
+		
+ 	} 
+ 	
+ 	.display .timeTD{
+ 	
+ 	}
+	
+ 	.display td,th{ 
+ 		border: 1px solid black; 
+ 	} 
+	
+ 	.display thead{ 
+ 		background-color:lightcyan 
+ 	} 
+
+ 	.display tbody{ 
+ 		background-color:ivory; 
+ 	} 
+ 	
+ 	
+ 	.no-data{
+ 		font-size:3rem;
+ 	}
+ 	
+ 	div.lightbox{
+ 		padding:15px 0 15px 0 ;
+ 		z-index:1;	
+ 		border:1px solid blue;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		background-color: hsla(0, 0%, 0%, .5);
+		overflow-y:hidden;
+/*  		display: none;  */
+ 	}
+ 	
+ 	div.innerBlock {
+ 		padding:15px 0 15px 0;
+ 		z-index:2;
+ 		font-size:1.3rem;
+		background-color: white;
+		height:100%;
+		width: 100%;
+		max-width: 650px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px #ddd;
+		padding: 10px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		overflow-x:hidden;
+		overflow-y:auto;
+		text-align:left;
+	}
+	
+	div.innerBlock h3{
+		margin-top:10px;
+		text-align:center;
+		
+	}
+	
+	div.innerBlock div{
+		margin-left:10px;
+	}
+	
+	button.closeButton{
+		z-index:3;
+		background-color: white;
+		width:20px;
+		font-size:1.3rem;
+		border:none;
+		position: absolute;
+		top: 2%;
+		right: 27%;
+	}
+	
+	.-none{
+		display:none;
+	}
+	
+	input.submitButton{
+		border:2px solid black;
+	}
+	
+	#cancel{
+		border:2px solid black;
+		background-color:red;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	#success{
+		border:2px solid black;
+		background-color:green;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	#refound{
+		border:2px solid black;
+		background-color:blue;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	#finish{
+		border:2px solid black;
+		background-color:gray;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	#foundOK{
+		border:2px solid black;
+		background-color:pink;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+	}
+	
+	#noNeedRefound{
+		border:2px solid black;
+		background-color:orange;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+	}
+	
+	#noRefound{
+		border:2px solid black;
+		background-color:purple;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+	}
+	
+	
+
+</style>
+
   	
 </head>
 
@@ -20,11 +189,179 @@
 
    
         <!-- 主欄位 -->
-	    <div class="unique">
-	    
-	    <p>ActivityRoomDetail</p>
 	    	
-        </div>
+	<div class="unique">
+			<h3>---搜尋的通知資料結果---</h3>
+			<br>
+		
+			<br>
+		
+		<div th:if="${activityOrderList != null}">
+			<table  id="xxx" class="display">
+				
+				<thead>
+					<tr>
+						<th>訂單編號</th>
+						<th>訂單成立時間</th>
+						<th>訂單狀態</th>
+						<th>退款狀態</th>
+						<th>是否有促銷折扣</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<th:block th:each="activityOrderVO : ${activityOrderList}">
+						<tr>
+					
+							<td th:text="${activityOrderVO.activityOrderId}" class="id" name="orderId"></td>
+							
+							<td class="timeTD" th:text="${activityOrderVO.orderTime}"></td>
+							
+							
+							<td class="showStatus1" th:if="${activityOrderVO.orderState} eq 0"></th:if><span class="StatusClass1">已繳費</span></td>
+							<td class="showStatus1" th:if="${activityOrderVO.orderState} eq 1"></th:if><span class="StatusClass1">取消訂單</span></td>
+							<td class="showStatus1" th:if="${activityOrderVO.orderState} eq 2"></th:if><span class="StatusClass1">完成訂單</span></td>
+							
+							
+							<td class="showStatus2" th:if="${activityOrderVO.refundState} eq 0"></th:if><span class="StatusClass2">無須退款</span></td>
+							<td class="showStatus2" th:if="${activityOrderVO.refundState} eq 1"></th:if><span class="StatusClass2">尚未退款</span></td>
+							<td class="showStatus2" th:if="${activityOrderVO.refundState} eq 2"></th:if><span class="StatusClass2">退款中</span></td>
+							<td class="showStatus2" th:if="${activityOrderVO.refundState} eq 3"></th:if><span class="StatusClass2">完成退款</span></td>
+
+							
+							<td th:if="${activityOrderVO.promotionVO}">是</td>
+							<td th:if="${activityOrderVO.promotionVO == null}">否</td>
+							
+
+							
+							<td>
+								<form method="post" th:action="@{/member/showActivityOrderDetail}">
+									<input type="hidden" name="activityOrderId" class="activityOrderId" th:value="${activityOrderVO.activityOrderId}">
+									<input class="submitButton" type="submit" value="顯示詳情">
+								</form>
+							</td>
+
+						</tr>
+					</th:block>
+				</tbody>
+				
+			</table>
+			
+			<div class="lightbox" th:if="${showActivityOrderDetail}">
+				<button class="closeButton">X</button>
+				<div class="innerBlock">
+					<div th:insert="~{/front_end/member/showActivityOrderDetail :: detail-div}"></div>
+				</div>			
+			</div>
+		</div>
+		
+		
+		
+		<div th:if="${activityOrderList == null}">
+		    <p class="no-data">您目前沒有任何訂單喔~ </p>
+		</div>
+		
+
+	</div>
+	
+	
+	
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>     
+	                           
+	
+	<script th:inline="javascript">
+	    $(document).ready(function () {
+	    	
+	    	status_color1();
+	    	status_color2();
+	    	
+	    	
+	    	function status_color1() {
+	 	    	var statusText1 = $(document).find(".StatusClass1")
+	 				
+	 	    	$.each(statusText1, (i, value) => {
+	 	    		if(statusText1[i].hasAttribute("id")){
+	 	    			statusText1[i].removeAttribute("id");
+	 	    		}
+//	  		    	console.log(statusText[i].innerHTML);
+
+	 		    	switch (statusText1[i].innerHTML) {
+	                 case '已繳費':
+	                 	statusText1[i].setAttribute('id', 'foundOK');
+	                     return;
+	                     
+	                 case '取消訂單':
+	                 	statusText1[i].setAttribute('id', 'cancel');
+	                     return;
+	                     
+	                 case '完成訂單':
+	                 	statusText1[i].setAttribute('id', 'success');
+	                     return;
+	                     
+	                 default:
+	                 	
+	                     return;
+	             	}
+	 	    	});
+	 	    }
+	    	
+	    	
+	    	
+	    	 function status_color2() {
+	 	    	var statusText2 = $(document).find(".StatusClass2")
+	 				
+	 	    	$.each(statusText2, (i, value) => {
+	 	    		if(statusText2[i].hasAttribute("id")){
+	 	    			statusText2[i].removeAttribute("id");
+	 	    		}
+//	  		    	console.log(statusText[i].innerHTML);
+
+	 		    	switch (statusText2[i].innerHTML) {
+	                 case '無須退款':
+	                 	statusText2[i].setAttribute('id', 'noNeedRefound');
+	                     return;
+	                     
+	                 case '尚未退款':
+	                 	statusText2[i].setAttribute('id', 'noRefound');
+	                     return;
+	                     
+	                 case '退款中':
+	                 	statusText2[i].setAttribute('id', 'refound');
+	                     return;
+	                     
+	                 case '完成退款':
+	                 	statusText2[i].setAttribute('id', 'finish');
+	                     return;
+	                     
+	                 default:
+	                 	
+	                     return;
+	             	}
+	 	    	});
+	 	    }
+
+	    });
+	    
+ 
+	</script>
+	
+	
+	
+	
+
+	<!-- 前端sweet alert錯誤判斷用 -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	<script>
+	//燈箱XX按鈕
+ 		$(document).on("click","button.closeButton",function(){
+ 			$(document).find(".lightbox").addClass("-none");
+ 		})
+	
+	</script>
+
+	
         
 <div th:replace="~{/front_end/member/include/include_bottom}"></div>
         

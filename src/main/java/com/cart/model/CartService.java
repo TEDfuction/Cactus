@@ -284,5 +284,38 @@ public class CartService {
         }
 
     }
+	
+	//拿取總數
+	public Integer getCartNumber(Integer memberId){
+		Jedis jedis = null;
+		Gson gson = new Gson();
+		
+		Integer count = 0;
+		
+		try {
+			jedis = new Jedis("localhost", 6379);
+			
+			// 確認是否已有購物車存在(以會員ID判斷)
+			String cartStr = jedis.get("memberId:" + memberId);
+			
+			//如果購物車存在
+			if(cartStr != null) {
+				JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
+				
+				// 取出裡面每個JsonObject
+                for (JsonElement element : cart) {
+                	//每取出一個便+1
+                	count++;
+                }
+            }
+
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+
+        return count;
+    }
 
 }
