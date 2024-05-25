@@ -156,18 +156,17 @@
                                     <div class="row mb-4">
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
                                             <label>
-                                                <select name="roomTypeName" class="form-control custom-select" id="roomTypeSelect">
+                                                <select name="roomTypeName" class="form-control custom-select" id="roomTypeSelect" required>
                                                     <option value="" class="selectRoom">選擇房型</option>
                                                     <option th:each="roomTypeVO : ${listAllRTFront}" th:value="${roomTypeVO.roomTypeName}" th:text="${roomTypeVO.roomTypeName}"></option>
                                                 </select>
                                             </label>
                                         </div>
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                            <input type="date" class="form-control selectRoom" name="selectCheckIn"
-                                                   id="selectCheckIn" th:value="${selectCheckIn}" onchange="updateCheckoutMinDate()">
+                                            <input type="date" class="form-control selectRoom" name="selectCheckIn" id="selectCheckIn" th:value="${selectCheckIn}" onchange="updateCheckoutMinDate()" required>
                                         </div>
                                         <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                            <input type="date" class="form-control selectRoom" name="selectCheckOut" id="selectCheckOut" th:value="${selectCheckOut}">
+                                            <input type="date" class="form-control selectRoom" name="selectCheckOut" id="selectCheckOut" th:value="${selectCheckOut}" required>
                                         </div>
                                         <label class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
                                             <select class="form-control selectRoom" name="roomGuestAmount" id="selectRoomAmount" th:value="${roomGuestAmount}">
@@ -208,37 +207,37 @@
                     <img th:src="@{/roompic/DBGifReader} + '?roomTypeId=' + ${roomTypeVO.roomTypeId}" style= "width: 600px;height: 345px">
                     <div class="RT-facilities">
                         <div>
-                            <img src="//img/icons/swimming.png">
+                            <img th:src="@{/img/front_end/room/swimming.png}">
                             <span>室外游泳池</span>
                         </div>
                         <div>
-                            <img src="//img/icons/massage.png">
+                            <img th:src="@{/img/front_end/room/massage.png}">
                             <span>SPA會館</span>
                         </div>
 
                         <div>
-                            <img src="//img/icons/wine-glasses.png">
+                            <img th:src="@{/img/front_end/room/wine-glasses.png}">
                             <span>酒吧</span>
                         </div>
                         <div>
-                            <img src="//img/icons/breakfast.png">
+                            <img th:src="@{/img/front_end/room/breakfast.png}">
                             <span>早餐</span>
                         </div><br>
                         &emsp;
                         <div>
-                            <img src="//img/icons/shuttle.png">
+                            <img th:src="@{/img/front_end/room/shuttle.png}">
                             <span>機場接駁車</span>
                         </div>
                         <div>
-                            <img src="//img/icons/beach-chair.png">
+                            <img th:src="@{/img/front_end/room/beach-chair.png}">
                             <span>私人海灘區</span>
                         </div>
                         <div>
-                            <img src="//img/icons/tv-monitor.png">
+                            <img th:src="@{/img/front_end/room/tv-monitor.png}">
                             <span>平面電視</span>
                         </div>
                         <div>
-                            <img src="//img/icons/wifi.png">
+                            <img th:src="@{/img/front_end/room/wifi.png}">
                             <span>無線網路</span>
                         </div>
                     </div>
@@ -449,7 +448,7 @@
             const checkOutDate = document.getElementById('selectCheckOut').value;
             const roomGuestAmount = document.getElementById('selectRoomAmount').value;
 
-            sessionStorage.setItem('roomTypeName', roomType);
+            sessionStorage.setItem('roomType', roomType);
             sessionStorage.setItem('checkInDate', checkInDate);
             sessionStorage.setItem('checkOutDate', checkOutDate);
             sessionStorage.setItem('roomGuestAmount', roomGuestAmount);
@@ -476,8 +475,10 @@
         // 獲取台灣當地的今日日期
         function getTodayDate() {
             const now = new Date();
-            now.setHours(now.getHours() + 8 - now.getTimezoneOffset() / 60);
-            return formatDate(now);
+            const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+            const taiwanTime = new Date(utcNow.setHours(utcNow.getHours() + 8));
+
+            return formatDate(taiwanTime);
         }
 
         // 獲取指定日期的次日

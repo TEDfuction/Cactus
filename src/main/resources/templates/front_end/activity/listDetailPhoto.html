@@ -138,6 +138,15 @@
         margin-right: 0.5rem;
     }
 
+    .ui-datepicker-header{
+        background-color: #d0faf6;
+    }
+    .ui-state-default{
+        border-radius: 3px;
+        border: 1px solid #9ad2ce !important;
+        background-color: #77dfe8 !important;
+    }
+
 
 </style>
 </head>
@@ -206,6 +215,7 @@
         <h4>選擇預訂場次</h4>
     </div>
     <hr>
+    <input type="hidden" id="activityId" th:value="${itemVO.activityId}">
 
     <h4 class="menu-to">活動</h4>
     <div class="sch" th:text="${itemVO.activityName}">
@@ -219,7 +229,7 @@
     <h4 class="menu-to">日期</h4>
     </div>
 <form th:action="@{/activity/listDetailAddAttendees} " method="GET" id="itemId" >
-          <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"> 
+          <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}">
                  <input type="hidden" name="activityId" id="activityId" class="activityId" th:value="${photoVO.activityPh.activityId}">
     <div>
         <form id="searchForm">
@@ -227,9 +237,6 @@
             <input type="text" class="datechoose" id="activityDate"  th:value="${sessionVO.activityDate}" />
             &nbsp;&nbsp;<i class="fa-solid fa-pen fa-lg" style="color: #060e6d;"></i>
         </form>
-        
-        
-        
         <div id="timePeriodResults"></div>
     </div>
 
@@ -243,13 +250,13 @@
 <!--         <a id="link" href=''></a> -->
          
              <!-- 把值帶到下個頁面listDetailAddAttendees -->
-           
+
 <!--                  <input type="text" name="timePeriod" th:value="${photoVO.activityPh.sessionVOs[0].time_PeriodVO[0].sessionTimePeriodId}"> -->
-                 
+
                  <button type="button" class="btn btn-primary border-radius"  id="loginDefault">立即預訂</button>
 <!--         </button> -->
     </div>
-</form> 
+</form>
 
 </div>
 
@@ -432,14 +439,18 @@
 <script>
     $(document).ready(function() {
         var availableDates = [];
-
-        // 獲取可用日期並設置 Datepicker
+        var activityId = $("#activityId").val(); // 從頁面獲取 activityId
+        console.log(activityId);
         $.ajax({
-            url: "/activity/availableDates",
+            url: "/activity/activityDatesByActivityId",
             method: "GET",
-            success: function(dates) { //dates:從服務器返回的可用日期數據
-                availableDates = dates;
+            data: { "activityId": activityId },
+            dataType: 'json',
+            success: function(activityDates) {
+                console.log(activityDates);
+                availableDates = activityDates; // 將活動儲存在 availableDates 變量中
 
+                // 設置日期儲存器
                 $("#activityDate").datepicker({
                     dateFormat: 'yy-mm-dd',
                     beforeShowDay: function(date) {
@@ -454,40 +465,35 @@
                             data: { "activityDate": dateText },
                             dataType: 'json',
                             success: function(timePeriods) {
-                                console.log(timePeriods);
                                 var resultsDiv = $("#timePeriodResults");
                                 resultsDiv.empty();
                                 if (timePeriods.length > 0) {
                                     var timeList = $("<div ><h4 class='menu-to2'>時段</h4></div>");
                                     timePeriods.forEach(function(timePeriodObj) {
                                         var formattedTime = new Date('1970-01-01T' + timePeriodObj.timePeriod).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                                        // 創建radio
-                                        var radioButton = $('<input type="radio" class="radio-1" name="sessionTimePeriodId" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
-                                        // 創建label標籤用於顯示時段
+                                        var radioButton = $('<input type="radio" class="radio-1" name="timePeriod" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
                                         var label = $('<label></label>').attr("for", timePeriodObj.sessionTimePeriodId).text(formattedTime);
-                                        // 将radio和label標籤添加到列表中
                                         var listItem = $("<span class='check-input'></span>").append(radioButton).append(label);
-                                        // 將列表添加到timeList變數中
                                         timeList.append(listItem);
                                     });
                                     resultsDiv.append(timeList);
                                 } else {
-                                    resultsDiv.append($("<p></p>").text("今天沒有活動喔> <"));
+                                    resultsDiv.append($("<p></p>").text("今天没有活動哦> <"));
                                 }
                             },
                             error: function() {
-                                $("#timePeriodResults").html("<p>Error retrieving time periods.</p>");
+                                $("#timePeriodResults").html("<p>今天活動已額滿！</p>");
                             }
                         });
                     }
                 });
             },
             error: function() {
-                console.error("Error retrieving available dates.");
+                console.error("Error retrieving activity dates.");
             }
         });
     });
+
 </script>
 
  

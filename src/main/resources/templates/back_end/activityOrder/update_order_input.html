@@ -93,12 +93,13 @@
                 <h5 class="f-w">場次時段 <span>(不可編輯)</span></h5>
             </div>
 
-            <select class="selectric2" th:field="*{time_PeriodVO.sessionTimePeriodId}"  disabled>
+            <select class="selectric2" th:field="*{time_PeriodVO.sessionTimePeriodId}"   disabled>
                 <option value="">請選擇</option>
                 <option th:each="time_PeriodVO : ${timePeriodListData}"
                         th:value="${time_PeriodVO.sessionTimePeriodId}"
-                        th:text="${time_PeriodVO.timePeriod}" readonly/>
+                        th:text="${#dates.format(time_PeriodVO.timePeriod, 'HH:mm')}" />
             </select>
+            <input type="hidden" th:field="*{time_PeriodVO.sessionTimePeriodId}"/>
             <div th:if="${#fields.hasErrors('time_PeriodVO.sessionTimePeriodId')}"
                  class="error"
                  id="time_PeriodVO.timePeriod.errors">

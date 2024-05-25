@@ -275,7 +275,7 @@
     
 
 <!-- <table  class="center" id="search" style="width: 100%"> -->
-<!-- <!-- 活動搜尋 --> 
+<!--  活動搜尋 -->
 <!-- <thead> -->
 <!-- <th></th> -->
 <!-- <th></th> -->
@@ -308,6 +308,7 @@
                 
   <div class="row2 row-cols-1 row-cols-md-3 g-4" style="display: flex ; flex-wrap: wrap;" id="photoList">
     <th:block th:each="photoVO : ${photoListData}">
+        <th:block th:if="${photoVO.activityPh.activityState}">
         <div class="col" style="margin-bottom:30px;">
             <div class="card h-100 space ">
                 <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
@@ -379,6 +380,7 @@
                 
             </div>
         </div>
+        </th:block>
     </th:block>
   
 </div>
