@@ -111,22 +111,6 @@ public class SessionService {
 	}
 
 
-	//透過活動Id取得所有的日期
-	public List<Date> getAllDate(Integer activityId){
-		List<SessionVO> list =  sessionRepository.findSessionVOs(activityId);
-		List<Date> dateList = new ArrayList<>();
-
-		for(SessionVO sessionVO : list){
-			sessionVO.getActivityDate();
-			dateList.add(sessionVO.getActivityDate());
-		}
-		System.out.println("dateList" + dateList);
-		return dateList;
-
-
-	}
-
-
 
 
 

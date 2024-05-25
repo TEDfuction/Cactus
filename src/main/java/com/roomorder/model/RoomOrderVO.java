@@ -1,6 +1,7 @@
 package com.roomorder.model;
 
 import com.member.model.MemberVO;
+import com.roomorderlist.model.RoomOrderListVO;
 import com.roompromotion.model.RoomPromotionVO;
 
 import javax.persistence.*;
@@ -51,6 +52,17 @@ public class RoomOrderVO {
 
     @Column(name = "room_order_id_req", length = 1000)
     private String roomOrderIdReq;
+
+    @OneToOne (mappedBy = "roomOrder")
+    private RoomOrderListVO roomOrderList;
+
+    public RoomOrderListVO getRoomOrderList() {
+        return roomOrderList;
+    }
+
+    public void setRoomOrderList(RoomOrderListVO roomOrderList) {
+        this.roomOrderList = roomOrderList;
+    }
 
     public Integer getRoomOrderId() {
         return roomOrderId;

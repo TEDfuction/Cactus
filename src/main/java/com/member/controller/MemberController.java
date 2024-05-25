@@ -41,8 +41,6 @@ import com.member.model.MemberVO;
 import com.member.model.TaiwanCity;
 import com.notification.model.NotificationService;
 import com.notification.model.NotificationVO;
-import com.roomorder.model.RoomOrderVO;
-import com.roomorder.service.impl.RoomOrderImpl;
 import com.shoporder.model.ShopOrderService;
 import com.shoporder.model.ShopOrderVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
@@ -51,9 +49,6 @@ import com.shoporderdetail.model.ShopOrderDetailVO;
 //@Validated
 @RequestMapping("/member")
 public class MemberController {
-	
-	@Autowired
-	RoomOrderImpl roomOrderSvc;
 
 	@Autowired
 	MemberService memSvc;
@@ -592,22 +587,10 @@ public class MemberController {
 		
 		model.addAttribute("memberVO", memberVO);
 		
-		List<RoomOrderVO> roomOrderList;
-		
-		try {
-			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("roomOrderList", null);
-			return "/front_end/member/checkRoomOrderDetail";
-		}
-		
-		model.addAttribute("roomOrderList", roomOrderList);
-		
 		return "/front_end/member/checkRoomOrderDetail";
 	}	
 	
-
+	
 	
 	
 /*************************************************************************/	

@@ -1,9 +1,5 @@
 package com.roomtype.controller;
 
-import com.cart.model.Cart;
-import com.member.model.MemberService;
-import com.member.model.MemberVO;
-import com.roomorder.model.RoomOrderVO;
 import com.roomtype.dto.RoomTypeStatus;
 import com.roomtype.dto.RoomTypeUpdate;
 import com.roomtype.dto.RoomTypeVORequest;
@@ -20,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +49,7 @@ public class RoomTypeController {
     }
 
 
+
     @PostMapping("/updateRTS")
     public String updateRTS(@Valid @ModelAttribute RoomTypeStatus roomTypeStatus,
                             BindingResult result, Model model,
@@ -81,6 +77,7 @@ public class RoomTypeController {
     }
 
 
+
     @GetMapping("/addRoomType")
     public String showAddPage(Model model) {
         RoomTypeVORequest roomTypeVORequest = new RoomTypeVORequest();
@@ -91,7 +88,7 @@ public class RoomTypeController {
 
     @PostMapping("/addRoomType")
     public String addRoomType(@Valid @ModelAttribute RoomTypeVORequest roomTypeVORequest,
-                              BindingResult result, ModelMap model) {
+                                  BindingResult result, ModelMap model)  {
 
         if (result.hasErrors()) {
             return "back_end/roomtype/addRoomType";
@@ -104,6 +101,8 @@ public class RoomTypeController {
         roomTypeVO.setRoomTypeContent(roomTypeVORequest.getRoomTypeContent());
         roomTypeVO.setRoomTypePrice(roomTypeVORequest.getRoomTypePrice());
         roomTypeVO.setRoomTypeStatus(Boolean.TRUE);
+
+        roomTypeRepository.save(roomTypeVO);
 
         return "redirect:/back_end/roomtype/listAllRoomType";
     }
@@ -189,11 +188,11 @@ public class RoomTypeController {
 
     @PostMapping("/selectRoom")
     public String selectRoom(@RequestParam("roomTypeName") String roomTypeName,
-                             @RequestParam("selectCheckIn") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkInDate,
-                             @RequestParam("selectCheckOut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkOutDate,
-                             @RequestParam(value = "roomGuestAmount", required = false) Integer roomGuestAmount,
-                             @Valid @ModelAttribute RoomTypeVO roomTypeVO,
-                             BindingResult result, Model model) {
+                                 @RequestParam("selectCheckIn") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkInDate,
+                                 @RequestParam("selectCheckOut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date checkOutDate,
+                                 @RequestParam(value = "roomGuestAmount", required = false) Integer roomGuestAmount,
+                                 @Valid @ModelAttribute RoomTypeVO roomTypeVO,
+                                 BindingResult result, Model model) {
 
         List<Object[]> getSelect = roomTypeImpl.getAvailableRoomTypes(roomTypeName, checkInDate, checkOutDate, roomGuestAmount);
         model.addAttribute("select", getSelect);
