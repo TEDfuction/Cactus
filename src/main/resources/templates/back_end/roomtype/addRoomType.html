@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Cactus BackEnd</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap"
+          rel="stylesheet">
+    <!-- Tac One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/backend/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="/backend/css/styleold.css" rel="stylesheet">
+    <link rel="stylesheet" href="/backend/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- 引入 DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <!-- 引入 DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/back_end/style.css}"/>
+</head>
+
+
+
+<title>員工資料新增 - addEmp.html</title>
+<!--    <head th:insert="~{/back-end/roomorder/included-fragment}"></head>-->
+
+
+
+<style>
+    .expanded-textarea {
+        height: 180px; /* 或根據需求調整 */
+    }
+</style>
+
+<body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+        <!--                表單內容                 -->
+
+        <div align="center" style="display: flex; justify-content: center; flex-direction: column; width: 50%; margin: auto; margin-top: 25px;">
+
+            <h2><span class="badge bg-success" style="text-align: center">新增房型 </span></h2>
+            <a> (<span style="color: red;">*</span>表示為必填欄位)</a>
+
+            <form method="post" th:object="${roomTypeVORequest}" enctype="multipart/form-data" >
+                <div class="mb-3 row " style="margin-top:20px">
+                    <label for="roomTypeId" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型編號:</label>
+                    <div class="col-sm-8 ">
+                        <input type="text" th:field="${roomTypeVORequest.roomTypeId}" name="roomTypeId" id="roomTypeId" placeholder="ex:1001" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypeId')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeId}"></p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypeName" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型名稱:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="roomTypeName" th:field="${roomTypeVORequest.roomTypeName}" id="roomTypeName" placeholder="房型名稱:" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypeName')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeName}"></p></div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypeContent" class="col-sm-4 col-form-label">房型說明:</label>
+                    <div class="col-sm-8">
+                        <textarea name="roomTypeContent" th:field="${roomTypeVORequest.roomTypeContent}" id="roomTypeContent" placeholder="房型說明:" class="form-control expanded-textarea"></textarea>
+                        <p th:if="${#fields.hasErrors('roomTypeContent')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypeContent}"></p></div>
+                </div>
+
+                <div class="mb-3 row" style="margin-top:20px">
+                    <label for="roomTypePrice" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型價格說明:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="roomTypePrice" th:field="${roomTypeVORequest.roomTypePrice}" id="roomTypePrice" placeholder="ex:30000~50000" class="form-control">
+                        <p th:if="${#fields.hasErrors('roomTypePrice')}" th:errorclass="text-danger"
+                           th:errors="${roomTypeVORequest.roomTypePrice}"></p></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 d-grid">
+                        <button type="submit" class="btn btn-primary">送出新增</button>
+                    </div>
+                    <div class="col-sm-6 d-grid">
+                        <a class="btn btn-outline-primary" href="/roomType/listAllRoomType" role="button">取消</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!--            <div>-->
+    <!--                <label>照片:</label>-->
+    <!--                <input type="file" th:field="*{upFiles}" onclick="previewImage()" multiple="multiple"-->
+    <!--                       onchange="hideContent('upFile7s.errors');"/>-->
+    <!--                &lt;!&ndash; 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> &ndash;&gt;-->
+    <!--                <span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span>-->
+    <!--                &lt;!&ndash; 			<h2 id="errorMessage">${errorMessage}</h2>  &ndash;&gt;-->
+    <!--                <div id="blob_holder"></div>-->
+    <!--            </div>-->
+
+</body>
+
+<!-- JavaScript part -->
+<script>
+
+
+</script>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>

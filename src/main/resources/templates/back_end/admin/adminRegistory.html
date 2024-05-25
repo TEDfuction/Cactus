@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html   xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Admin Register</title>
+
+
+<!-- Font Icon -->
+<link rel="stylesheet" th:href="@{/fonts/front_end/member/icon/css/material-design-iconic-font.min.css}">
+
+<!-- Main css -->
+<link rel="stylesheet" th:href="@{/css/front_end/member/member.css}">
+
+
+<style>
+    .error {
+        color: red;
+        position:relative;
+        font-size:12.5px;
+    }
+    
+
+	
+	a.signup-image-link{
+    	display:inline-block;
+    	width:200px;
+    	text-align:left;
+    }
+    
+    div.container{
+    	width:450px;
+    	height:700px;
+    	
+    }
+</style>
+
+</head>
+
+
+
+<body>
+
+<input type="hidden" id="status" th:value="${status}">
+
+
+
+	<div class="main">
+
+		<!-- Sign up form -->
+		<section class="signup">
+			<div class="container">
+				<div class="signup-content">
+					<div class="signup-form">
+						<h2 class="form-title">員工註冊</h2>
+						
+					
+						<form method="post" th:action="@{/admin/adminRegistory}" class="register-form"
+							id="register-form" th:object="${adminVO}" enctype="multipart/form-data">
+							
+							<div class="form-group">
+								<label for="adminAccount"><i class="zmdi zmdi-account material-icons-name"></i></label><br>
+								<input type="text" th:field="*{adminAccount}" onclick="hideContent('adminAccount.errors');" placeholder="請輸入帳號..."><br>
+								<span  th:if="${#fields.hasErrors('adminAccount')}" th:errors="*{adminAccount}" class="error" id="adminAccount.errors"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="adminPassword"><i class="zmdi zmdi-lock"></i></label><br> 
+								<input type="password" th:field="*{adminPassword}" onclick="hideContent('adminPassword.errors');" placeholder="請輸入密碼..."><br>
+								<span  th:if="${#fields.hasErrors('adminPassword')}" th:errors="*{adminPassword}" class="error" id="adminPassword.errors"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="adminName"><i class="zmdi zmdi-account material-icons-name"></i></label> <br>
+								<input type="text" th:field="*{adminName}" onclick="hideContent('adminName.errors');"  placeholder="請輸入姓名..."><br>
+								<span  th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}" class="error" id="adminName.errors"></span>							
+							</div>
+							
+							<input type="hidden" name="adminStatus" value="1">
+		
+							<div class="form-group form-button">
+								<input type="submit" id="signup" class="form-submit" value="註冊"/>
+							</div>
+							
+							<a th:href="@{/admin/adminLogin}" class="signup-image-link">返回後台登入畫面</a>
+								
+						</form>
+						
+						
+					</div>
+					
+				</div>
+			</div>
+		</section>
+
+
+	</div>
+
+
+
+
+<!-- JS -->
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script th:src="@{/js/front_end/member/member.js}"></script>
+	
+
+<script>
+
+var status = $("#status").val();
+if(status == "success"){
+	swal("恭喜您~","帳號已成功申請，請回到登入頁面進行登入!","success");
+}else if (status == "failed"){
+	swal("請注意~","有些選項沒有填妥喔~請麻煩再確認一次!","warning")
+	status == "";
+}else if(status == "sameAccount"){
+	swal("請注意~","這個帳號已經有人註冊過囉!請嘗試用別的帳號!","warning")
+	status == "";
+}
+
+</script>
+
+
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+//清除提示信息
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+
+</script>
+
+	
+</body>
+
+</html>

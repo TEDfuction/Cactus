@@ -1,0 +1,188 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+	.unique div.showAuth{
+		font-size:1.2rem;
+		color:red;
+	}
+	
+	.unique .giveAuth label{
+		font-size:1.5rem;
+	}
+	
+	.unique div.chooseAdmin{
+		font-size:1.2rem;
+	}
+	
+	
+</style>
+</head>
+<body>
+
+	<div th:replace="~{/back_end/include/include_body}"></div>
+	
+		
+	<!-- =========================================================================================== -->
+	
+	
+	<!-- 主欄位 -->
+	<div class="unique">
+	
+		<input type="hidden" id="status" th:value="${status}">
+	
+		<h3>--員工權限設定--</h3>
+	
+	 	<br>
+	 	<div>
+	 		<span th:value="errorMessage"></span>
+	 	</div>
+	 	<br>
+	 	
+	 	
+	 	<form method="post" th:action="@{/adminAuth/authSetting}">
+	 	
+	 	
+			<div class="chooseAdmin">
+			
+				<label>請選擇要設定權限的員工--></label>
+				<select name="adminId" class="adminId">
+					<th:blocK th:each="adminVO : ${adminList}">
+					
+						<!--不可對自己設定權限 -->
+						<th:blocK th:if="${session.adminVO.adminId} != ${adminVO.adminId}">
+							<!--不可對停權帳號設定 -->
+							<th:blocK th:if="${adminVO.adminStatus} eq 1">
+								<option th:value="${adminVO.adminId}" th:text="${adminVO.adminName}"></option>
+							</th:blocK>
+						</th:blocK>
+						
+					</th:blocK>
+				</select>
+				
+			</div>
+			
+			<br>
+			
+			<div class="showAuth">
+			
+			</div>
+			
+			
+			
+			<br>
+			<br>
+			
+			<div class="giveAuth">
+			
+				<h3>請選擇要賦予此員工哪些權限↓</h3>
+				
+				<th:block th:each="adminAuthorizationVO : ${adminAuthorizationList}">
+					<input th:id="${adminAuthorizationVO.adminAuthorizationId}" type="checkbox" name="adminAuthorizationId" th:value="${adminAuthorizationVO.adminAuthorizationId}"><label  th:text="${adminAuthorizationVO.adminAuthorizationName}" th:for="${adminAuthorizationVO.adminAuthorizationId}"></label><br>
+				</th:block>
+			</div>
+			
+			<br>
+			
+			<div>
+				<input type="submit" value="送出">
+			</div>
+	
+	
+		</form>
+	
+	
+	
+	</div>
+	
+	
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+	
+	<script>
+	var status = $("#status").val();
+	
+	if(status == "successAuth"){
+		swal("成功","您已修改此員工之權限!","success")
+		status == "";
+	}else if(status == "confirmAuth"){
+		swal("請確認","該員工本就沒有任何權限，請進行確認","warning")
+		status == "";
+	}
+</script>	
+
+<script>
+
+	$(document).ready(function(){
+		getAuth();	
+ 	});
+	
+	
+	$("select.adminId").change(function(){
+		getAuth();
+	});
+	
+	
+
+	
+	
+	
+	function getAuth(){
+		
+		var adminId = $("select.adminId").val();
+// 		console.log(adminId);
+		
+		var auth_id;
+		var auth_name;
+			
+//=============================================================//	
+		$.ajax({
+			url:"/adminAuth/getAuth",
+			type:"post",
+			data:{"adminId":adminId},
+			success:function(response){
+// 				console.log(response);
+				auth_id = response.AuthId;
+// 				console.log(auth_id);
+				auth_name = response.AuthName;
+// 				console.log(auth_name);
+				
+				showAuth(auth_id, auth_name);
+				
+			},error:function(xhr, status, error){
+				console.log("Status:", status);
+		        console.log("Error:", error);
+			}
+		})
+//=============================================================//
+	};
+	
+	
+	
+	
+	
+	
+	function showAuth(auth_id,auth_name){
+		
+		var showBlock = $("div.showAuth");
+		
+		var HTML = `<span>目前此員工已有之權限:<span><br>`;
+		
+		for(var i = 0 ; i < auth_id.length ; i++){
+			HTML += `<span value='${auth_id[i]}'>(${i+1})${auth_id[i]}-${auth_name[i]}</span><br>`		
+		}
+// 		console.log(showBlock)
+		showBlock.html(HTML);
+	
+	}
+
+
+
+
+
+</script>
+
+
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>

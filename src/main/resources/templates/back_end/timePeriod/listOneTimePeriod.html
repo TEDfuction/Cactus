@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>活動時段 </title>
+    <style type="text/css">
+
+        span {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div align="center"> <h2>活動時段資料 </h2>
+<!--    <h3><a class="navbar-brand" th:href="@{/session/select_session}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>-->
+</div>
+
+<div align="center" th:fragment="listOneTimePeriod-div"> <!-- 此div被select_page.html第158行insert用 -->
+    <h3><span>查詢結果 :</span></h3>
+    <span>活動場次編號:</span><span th:text="${}"></span><br/>
+<!--    <span>活動名稱:</span><span th:text="${sessionVO.itemVO.activityName}"></span><br/>-->
+<!--    <span>場次日期:</span><span th:text="${#dates.format(sessionVO.activityDate, 'yyyy-MM-dd')}"></span><br/>-->
+</div>
+</body>
+</html>

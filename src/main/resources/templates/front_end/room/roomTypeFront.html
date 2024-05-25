@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Arkitektur - Architecture HTML Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.icon" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap"
+          rel="stylesheet">
+
+    <!-- Tac One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/js/room/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/js/room/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/js/room/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/js/room/bootstrap.min.css" rel="stylesheet">
+
+    <link th:href="@{/css/front_end/room/style.css}" rel="stylesheet">
+
+
+</head>
+
+
+<style>
+    .RT-container {
+        display: flex;
+        flex-direction: row; /* 水平布局 */
+        align-items: flex-start; /* 对齐到顶部，防止图片和文本垂直对齐导致的覆盖 */
+        justify-content: space-between; /* 在子元素之间保持空间 */
+        border: 5px solid white;
+        border-radius: 40px;
+        padding: 23px 23px 10px 23px;
+        background-color: #f0f0f0;
+        margin: 13px 70px;
+        position: relative;
+        overflow-wrap: break-word;
+    }
+
+    .RT-content {
+        max-width: 40%;
+        padding-top: 17px; /* 为绝对定位的标题留出空间 */
+        padding-bottom: 0; /* 为底部按钮留出空间 */
+        padding-right: 20px; /* 避免文字靠近容器边缘 */
+
+    }
+
+    .RT-image {
+        max-width: 60%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column; /* 垂直排列 */
+        align-items: center; /* 水平居中對齊圖片和文字 */
+    }
+
+    .RT-image img {
+        height: auto;
+        border-radius: 10px; /* 如果您希望图片也有圆角 */
+    }
+
+    .RT-button {
+        padding: 4px 15px;
+        background-color: #91cecc;
+        color: #fff;
+        border: none;
+        border-radius: 40px; /* 增加了 border-radius 的值以创建更明显的圆弧形状 */
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: inline-flex;
+        font-size: 16px;
+        position: absolute;
+        left: 30px; /* 距离左侧边缘20px */
+        /*margin-top: 12px;*/
+        bottom: 30px;
+    }
+
+    .RT-button:hover {
+        background-color: darkgoldenrod; /* 鼠标悬停时的背景颜色 */
+    }
+
+    .RT-button:focus {
+        outline: none; /* 去除焦点时的轮廓 */
+    }
+
+    .RT-facilities {
+        width: 100%; /* 確保 div 拉伸至整個容器寬度 */
+        padding: 2px 25px; /* 增加一些內距 */
+        text-align: left;
+        margin-top: 12px;display: flex; /* 設置為 flex 容器使子元素水平排列 */
+        justify-content: space-around; /* 平均分配子元素間距 */
+        flex-wrap: wrap;
+    }
+
+    .RT-facilities > div {
+        display: flex; /* 同樣設置為 flex 容器 */
+        align-items: start; /* 垂直居中對齊圖片和文字 */
+        margin: 10px 15px; /* 添加一些外邊距 */
+    }
+
+    .RT-facilities img {
+        width: 25px;
+        height: 25px;
+        margin-right: 7px; /* 圖片和文字之間的間距 */
+    }
+
+    #RTText {
+        color: black;
+        font-size: 17px;
+    }
+
+
+</style>
+
+
+<body>
+    <div th:replace="~{/front_end/product/include_body}"></div>
+    <!-- Carousel End -->
+
+    <div class="hero" >
+
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="row col-lg-2">
+                    <div id="wea" style="padding-right: 30px; padding-left: 20px; float: left;">
+                        <div class="weather">
+                            <i class="icon-2"></i>
+                            <p>icon</p>
+                            <p>天氣狀況</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="intro-wrap">
+                        <div class="row">
+                            <div class="col-12">
+                                <form class="form" id="selectroom" action="/roomType/selectRoomType" method="post" onsubmit="saveData()">
+                                    <div class="row mb-4">
+                                        <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                            <label>
+                                                <select name="roomTypeName" class="form-control custom-select" id="roomTypeSelect" required>
+                                                    <option value="" class="selectRoom">選擇房型</option>
+                                                    <option th:each="roomTypeVO : ${listAllRTFront}" th:value="${roomTypeVO.roomTypeName}" th:text="${roomTypeVO.roomTypeName}"></option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
+                                            <input type="date" class="form-control selectRoom" name="selectCheckIn" id="selectCheckIn" th:value="${selectCheckIn}" onchange="updateCheckoutMinDate()" required>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
+                                            <input type="date" class="form-control selectRoom" name="selectCheckOut" id="selectCheckOut" th:value="${selectCheckOut}" required>
+                                        </div>
+                                        <label class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                            <select class="form-control selectRoom" name="roomGuestAmount" id="selectRoomAmount" th:value="${roomGuestAmount}">
+                                                <option value="" disabled selected>選擇房間人數</option>
+                                            </select>
+                                        </label>
+                                        <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                            <input type="submit" class="btn btn-primary btn-block" value="Search">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                 <!----------------房型說明------------------->
+        <th:block th:each="roomTypeVO : ${listAllRTFront}">
+        <div class="RT-container container" >
+            <div class="RT-content col-lg-6" >
+                <div  >
+                    <h2  style="margin-left: 15px"  th:text="${roomTypeVO.roomTypeName}"></h2>
+                </div>
+                <hr class="col-lg-8" style="height: 4px; color: #FF8000">
+                <div class="col-lg-4 RTText" id="RTText"  style="margin-right: 20px; width: 390px;height: 260px" >
+                    <td th:text="${#strings.length(roomTypeVO.roomTypeContent) > 300 ? #strings.substring(roomTypeVO.roomTypeContent, 0, 133) + '...' : roomTypeVO.roomTypeContent}"></td>
+                    <!--                               <a id="moreContent" style="color: darkblue; cursor: pointer; display: inline; font-size: 12px">查看更多</a>-->
+                </div>
+                <div id="RTPrice" style="margin-top: 14px; bottom: 0px">
+                    <h5>房型金額NTD: <span th:text="${roomTypeVO.roomTypePrice}"></span>$</h5>
+                </div>
+                <button class="RT-button">選擇日期查看房間詳情</button>
+            </div>
+                <div class="RT-image col-lg-8" >
+                    <img th:src="@{/roompic/DBGifReader} + '?roomTypeId=' + ${roomTypeVO.roomTypeId}" style= "width: 600px;height: 345px">
+                    <div class="RT-facilities">
+                        <div>
+                            <img th:src="@{/img/front_end/room/swimming.png}">
+                            <span>室外游泳池</span>
+                        </div>
+                        <div>
+                            <img th:src="@{/img/front_end/room/massage.png}">
+                            <span>SPA會館</span>
+                        </div>
+
+                        <div>
+                            <img th:src="@{/img/front_end/room/wine-glasses.png}">
+                            <span>酒吧</span>
+                        </div>
+                        <div>
+                            <img th:src="@{/img/front_end/room/breakfast.png}">
+                            <span>早餐</span>
+                        </div><br>
+                        &emsp;
+                        <div>
+                            <img th:src="@{/img/front_end/room/shuttle.png}">
+                            <span>機場接駁車</span>
+                        </div>
+                        <div>
+                            <img th:src="@{/img/front_end/room/beach-chair.png}">
+                            <span>私人海灘區</span>
+                        </div>
+                        <div>
+                            <img th:src="@{/img/front_end/room/tv-monitor.png}">
+                            <span>平面電視</span>
+                        </div>
+                        <div>
+                            <img th:src="@{/img/front_end/room/wifi.png}">
+                            <span>無線網路</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+
+
+
+
+
+        <!-- Footer Start -->
+        <div>
+            <!-- <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+        <dotlottie-player src="https://lottie.host/fc43b16a-af6f-4e58-bdbd-d96737e15241/cVR7NJdBCO.json" background="transparent" speed="1" style="max-width:100%;" loop autoplay></dotlottie-player> -->
+
+
+            <script
+                    src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                    type="module"
+            ></script>
+            <dotlottie-player
+                    src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+                    background="transparent"
+                    speed="0.4"
+                    style="max-width: 100%; margin-bottom: -1px"
+                    direction="1"
+                    playMode="normal"
+                    loop
+                    autoplay
+            ></dotlottie-player>
+
+            <!-- <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+            <dotlottie-player src="https://lottie.host/777a5b5d-529f-4364-9495-d65d0970a84e/Ba7LUIIk0J.json" background="transparent" speed="1" style="max-width:100% ;" loop autoplay></dotlottie-player>   -->
+
+            <!--test-->
+
+            <!-- <dotlottie-player src="https://lottie.host/efcbfecd-cae9-4698-9447-d2c691244d5c/tEiGA0EIx5.json"round="transparent" speed="0.5" style="wi backgdth: 1200px; height: 300px;" loop autoplay></dotlottie-player> -->
+            <!-- <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> -->
+        </div>
+
+        <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+
+
+            <div class="container py-5">
+                <div class="row g-5">
+
+                    <div class="col-lg-3 col-md-6">
+                        <h3 class="text-darkblue mb-4">最新消息</h3>
+                        <a class="btn btn-link text-primary5" href="">所有公告</a>
+                        <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                        <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                        <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                        <!-- <a class="btn btn-link" href="">Construction</a> -->
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h3 class="text-darkblue mb-4">房型介紹</h3>
+                        <a class="btn btn-link text-primary5" href="">AAA套房</a>
+                        <a class="btn btn-link text-primary5" href="">BBB套房</a>
+                        <a class="btn btn-link text-primary5" href="">CCC套房</a>
+                        <a class="btn btn-link text-primary5" href="">DDD套房</a>
+                        <!-- <a class="btn btn-link" href="">Support</a> -->
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h3 class="text-darkblue mb-4">特色活動</h3>
+                        <a class="btn btn-link text-primary5" href="">浮潛</a>
+                        <a class="btn btn-link text-primary5" href="">SUP立槳衝浪</a>
+                        <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                        <a class="btn btn-link text-primary5" href="">淺灘衝浪</a>
+                        <a class="btn btn-link text-primary5" href="">仙人掌園區參觀</a>
+                    </div>
+                    <!-- <div class="col-lg-3 col-md-6">
+                        <h3 class="text-light mb-4">Newsletter</h3>
+                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                        <div class="position-relative mx-auto" style="max-width: 400px;">
+                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                        </div>
+                    </div> -->
+
+                    <div class="col-lg-3 col-md-6">
+                        <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：澎湖縣馬公市時裡200號
+                        </p>
+                        <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-2345678 #888
+                        </p>
+                        <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>cactus@gmail.com</p>
+                        <!-- <div class="d-flex pt-2">
+                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</body>
+
+    <script>
+        $(function () {
+            getWeather();
+        });
+
+        //以下為天氣預報 -------------------------------------------------------------------------------
+        function getWeather() {
+            $(document).ready(function () {
+                $.ajax({
+                    url: 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-045?Authorization=CWA-DF377CF9-E09D-4633-8904-F07D2D2B086E&locationName=%E9%A6%AC%E5%85%AC%E5%B8%82&elementName=',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (weatherJson) {
+                        let weatherHTML = "";
+                        let wea = weatherJson.records.locations[0].location[0];
+                        let rain = wea.weatherElement[0].time[0].elementValue[0].value; //天氣狀況
+                        let temp = wea.weatherElement[2].time[0].elementValue[0].value; //當前氣溫
+                        let desc = wea.weatherElement[1].time[1].elementValue[0].value;
+
+                        let imgHTML = changeImg(desc);
+                        weatherHTML =
+                            `<div class="item" style="margin-top: 20px;">
+                         <p>當地天氣</p>
+                         <p>${imgHTML}</p>
+                         <p style="margin-bottom: 5px;">當地溫度: ${temp}°C</p>
+                         <p style="margin-bottom: 7px;">降雨機率: ${rain}%</p>
+                         </div></p>`
+
+
+                        $('#wea').html(weatherHTML);
+                        // $('#weather_data').html(JSON.stringify(weatherHTML, null));
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Request failed: ' + status + ', ' + error);
+                    }
+                });
+            });
+
+            function changeImg(weatherDescription) {
+                if (weatherDescription === '多雲時晴' || weatherDescription === '晴時多雲' || '晴') {
+                    return '<img src="/img/front_end/room/sun.png" alt="sun-cloudy" width="50" height="50">';
+                } else if (weatherDescription === '多雲' || weatherDescription === '陰時多雲' || weatherDescription === '多雲時陰') {
+                    return '<img src="/img/front_end/room/cloudy.png" alt="cloudy" width="50" height="50">';
+                } else {
+                    return '<img src="/img/front_end/room/raining.png" alt="rainy" width="50" height="50">';
+                }
+            }
+        }
+
+        $(document).ready(function() {
+            $('#roomTypeSelect').change(function() {
+                var selectedRoomType = $(this).val();
+                if (selectedRoomType) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/roomType/getRoomGuestAmounts',
+                        data: { roomTypeName: selectedRoomType },
+                        success: function(response) {
+                            $('#selectRoomAmount').empty(); // Clear existing options
+                            $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>'); // Add default option
+
+                            if (response && response.length > 0) {
+                                response.forEach(function(amount) {
+                                    $('#selectRoomAmount').append('<option value="' + amount + '">' + amount + '位</option>');
+                                });
+                            } else {
+                                // If the response is null or empty, reset to default
+                                $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching room guest amounts:', error);
+                            // Reset to default if there's an error
+                            $('#selectRoomAmount').empty(); // Clear existing options
+                            $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>'); // Add default option
+                        }
+                    });
+                }
+            });
+        });
+
+        function saveData() {
+            const roomType = document.getElementById('roomTypeSelect').value;
+            const checkInDate = document.getElementById('selectCheckIn').value;
+            const checkOutDate = document.getElementById('selectCheckOut').value;
+            const roomGuestAmount = document.getElementById('selectRoomAmount').value;
+
+            sessionStorage.setItem('roomType', roomType);
+            sessionStorage.setItem('checkInDate', checkInDate);
+            sessionStorage.setItem('checkOutDate', checkOutDate);
+            sessionStorage.setItem('roomGuestAmount', roomGuestAmount);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkIn = document.getElementById('selectCheckIn');
+            const checkOut = document.getElementById('selectCheckOut');
+            const today = getTodayDate(); // 獲取台灣當地的今日日期
+
+            checkIn.value = today;
+            checkIn.min = today;
+
+            checkOut.min = getNextDay(today);
+
+            checkIn.addEventListener('change', function() {
+                checkOut.min = getNextDay(checkIn.value);
+                if (checkOut.value <= checkIn.value) {
+                    checkOut.value = getNextDay(checkIn.value);
+                }
+            });
+        });
+
+        // 獲取台灣當地的今日日期
+        function getTodayDate() {
+            const now = new Date();
+            const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+            const taiwanTime = new Date(utcNow.setHours(utcNow.getHours() + 8));
+
+            return formatDate(taiwanTime);
+        }
+
+        // 獲取指定日期的次日
+        function getNextDay(dateStr) {
+            const date = new Date(dateStr);
+            date.setDate(date.getDate() + 1);
+            return formatDate(date);
+        }
+
+        // 格式化日期為YYYY-MM-DD
+        function formatDate(date) {
+            let month = '' + (date.getMonth() + 1),
+                day = '' + date.getDate(),
+                year = date.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+
+
+
+
+    </script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/room/lib/wow/wow.min.js"></script>
+    <script src="/js/room/lib/easing/easing.min.js"></script>
+    <script src="/js/room/lib/waypoints/waypoints.min.js"></script>
+    <script src="/js/room/lib/counterup/counterup.min.js"></script>
+    <script src="/js/room/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/js/room/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="/js/room/main.js"></script>
+    <!-- Kit Icon -->
+    <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+
+
+</html>

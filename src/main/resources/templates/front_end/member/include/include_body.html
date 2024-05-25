@@ -1,0 +1,107 @@
+ <!-- Spinner Start  瀏覽器載入前的遮蓋頁面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/member/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start 置頂列-->
+    <div class="container-fluid green-bg p-0 wow fadeIn " data-wow-delay="0.1s">
+        <div class="row gx-0 d-none d-lg-flex shadow ">
+
+            <!-- 左側圖標 -->
+            <div class="col-lg-7 px-4 text-start">
+                <a th:href="@{/member/memberOnlyWeb}"><img th:src="@{/img/front_end/member/LOGO-7.png}"></a>
+                <span class="navbar-brand2" href="#">CACTUS</span>
+            </div>
+
+            <!-- 右側文字節點 -->
+            <div class="col-lg-5  text-end">
+                
+              	
+                <img th:src="@{/member/ShowPic} + '?memberId=' + ${memberVO.memberId}" width="55px">        
+                
+                <div class=" d-inline-flex align-items-center   height-1 border-dot"> 
+                    <a class="text-white padding-set " th:href="@{/member/listOneMember}"><span th:text="${memberVO.memberName}"></span></a>            
+                </div>
+                
+                <div class=" d-inline-flex align-items-center  me-2 height-1 border-dot">
+                    <a class="text-white px-4 " th:href="@{/member/memberLogout}">登出</a>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+
+
+    <div class="display-a">
+    
+
+    <!-- 側邊欄 -->
+    <div class="main-menu">
+
+        <!-- <nav class="main-menu"> -->
+            <ul class="list">
+  
+                
+                  <li class="list-set border-dot2">
+                  <div class="left_item">                                    
+	                    <a class="changecolor" th:href="@{/member/UpdateMember}"> 
+	                      <i class="fa-solid fa-user"></i> 
+	                      <span class="nav-text">修改會員資料</span> 
+	                    </a>
+                    </div> 
+                  </li>     
+                    
+                  
+                  <li class="list-set border-dot2">
+                  <div class="left_item">                                    
+	                    <a class="changecolor" th:href="@{/member/checkNotification}"> 
+	                      <i class="fa-solid fa-bell"></i> 
+	                      <span class="nav-text">重要消息通知
+	                      	  <span th:text="${UnreadCount}" class="red_circle position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">0</span> 
+	                      </span>
+	                        
+	                    </a>  
+                    </div> 
+                  </li>   
+                  
+                  <li class="list-set border-dot2">
+                  <div class="left_item">                                    
+	                    <a class="changecolor" th:href="@{/member/checkActivityOrderDetail}"> 
+	                      <i class="fa-solid fa-person-swimming"></i> 
+	                      <span class="nav-text">活動訂單查看</span> 
+	                    </a>
+                    </div> 
+                  </li>   
+                  
+                  <li class="list-set border-dot2">
+                  <div class="left_item">                                    
+	                    <a class="changecolor" th:href="@{/member/checkProductOrderDetail}"> 
+	                      <i class="fa-solid fa-cart-shopping"></i> 
+	                      <span class="nav-text">商品訂單查看</span> 
+	                    </a>
+                    </div> 
+                  </li>   
+                  
+                  <li class="list-set border-dot2">
+                  <div class="left_item">                                    
+	                    <a class="changecolor" th:href="@{/member/checkRoomOrderDetail}"> 
+	                      <i class="fa fa-bed fa-lg"></i> 
+	                      <span class="nav-text">房務訂單查看</span> 
+	                    </a>
+                    </div> 
+                  </li>   
+
+              </ul>
+ 
+        </div>
+	
+		<!-- 		WebSocket傳遞參數用    -->
+		<br> <input class="memNo" type="hidden" th:value="${memberVO.memberId}">
+

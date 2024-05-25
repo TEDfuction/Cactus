@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html   xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Register</title>
+
+
+<!-- Font Icon -->
+<link rel="stylesheet" th:href="@{/fonts/front_end/member/icon/css/material-design-iconic-font.min.css}">
+
+<!-- Main css -->
+<link rel="stylesheet" th:href="@{/css/front_end/member/member.css}">
+
+
+<style>
+    .error {
+        color: red;
+        position:relative;
+        font-size:12.5px;
+    }
+    
+    
+    select.citySelect , select.townSelect{
+    	display:inline-block;
+    	width:45%;
+    
+	}
+</style>
+
+</head>
+
+
+
+<body>
+
+<input type="hidden" id="status" th:value="${status}">
+
+
+
+	<div class="main">
+
+		<!-- Sign up form -->
+		<section class="signup">
+			<div class="container">
+				<div class="signup-content">
+					<div class="signup-form">
+						<h2 class="form-title">會員註冊</h2>
+						
+<!-- 						<%-- 錯誤訊息列表呈現處 --%> -->
+
+<!-- 						<c:if test="${not empty errorMsgs}"> -->
+<!-- 							<font style="color:red">請修正以下錯誤:</font> -->
+<!-- 							<ul> -->
+<!-- 							    <c:forEach var="message" items="${errorMsgs}"> -->
+<!-- 									<li style="color:red">${message}</li> -->
+<!-- 								</c:forEach> -->
+<!-- 							</ul> -->
+<!-- 						</c:if> -->
+					
+						<form method="post" th:action="@{addMember}" class="register-form"
+							id="register-form" th:object="${memberVO}" enctype="multipart/form-data">
+							
+							<div class="form-group">
+								<label for="email"><i class="zmdi zmdi-email"></i></label><br>
+								<input type="email" th:field="*{email}" onclick="hideContent('email.errors');" placeholder="請輸入信箱..."><br>
+								<span  th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error" id="email.errors"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="memberName"><i class="zmdi zmdi-account material-icons-name"></i></label> <br>
+								<input type="text" th:field="*{memberName}" onclick="hideContent('memberName.errors');"  placeholder="請輸入姓名..."><br>
+								<span  th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}" class="error" id="memberName.errors"></span>
+																
+							</div>
+						
+							<div class="form-group">
+								<label for="pass"><i class="zmdi zmdi-lock"></i></label><br> 
+								<input type="password" th:field="*{password}" onclick="hideContent('password.errors');" placeholder="請輸入密碼..."><br>
+								<span  th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error" id="password.errors"></span>
+							</div>
+							
+<!-- 							<div class="form-group"> -->
+<!-- 								<label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label><br> -->
+<!-- 								<input type="password" name="rePassword" id="re_pass" placeholder="請再次輸入密碼..."/> -->
+<!-- 							</div> -->
+							
+							<div class="form-group">
+								<label for="birthday"><i class="zmdi zmdi-cake"></i></label><br>
+								<input type="date" th:field="*{birthday}" onclick="hideContent('birthday.errors');" ><br>
+								<span  th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="error" id="birthday.errors"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="gender"><i class="zmdi zmdi-male-female"></i></label><br>
+								<select th:field="*{gender}" id="gender">
+									<option value="0">男</option>
+									<option value="1">女</option>
+									<option value="2">其他</option>
+								</select>
+								<span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error" id="gender.errors"></span>
+								
+							</div>
+							
+							<div class="form-group">
+								<label for="phone"><i class="zmdi zmdi-phone"></i></label><br>
+								<input type="text" th:field="*{phone}" onclick="hideContent('phone.errors');" placeholder="請輸入電話..."><br>
+								<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error" id="phone.errors"></span>
+							</div>
+							
+							<div>
+								<select id="citySelect" class="citySelect" name="city">
+					    
+								</select>
+								
+								
+								<select id="townSelect" class="townSelect" name="town">
+
+								</select>
+								
+							</div>
+							
+							<div class="form-group">    <!--  th:text="${#strings.substring(memberVO.address, 6)}"  -->
+								<label for="address"><i class="zmdi zmdi-home"></i></label><br>
+								<input type="text" th:field="*{address}" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
+								<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="memberPic"><i class="zmdi zmdi-assignment-account"></i></label><br>
+								<input type="file"  th:field="*{memberPic}" onclick="previewImage()" multiple="multiple" onchange="hideContent('memberPic.errors');" />
+							    <span class="error" th:utext="${errorMessage}" id="memberPic.errors">${errorMessage}</span>
+								
+								
+								<div id="blob_holder"></div>		
+							</div>
+			
+							
+
+							<div class="form-group form-button">
+								<input type="submit" id="signup" class="form-submit" value="註冊"/>
+							</div>
+							
+						</form>
+						
+						
+					</div>
+					<div class="signup-image">
+					
+						<figure>
+							<img th:src="@{/img/front_end/member/icons/LOGO.png}" alt="sing up image">
+						</figure>
+						
+						<a th:href="@{/member/memberLogin}" class="signup-image-link">返回登入畫面</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+	</div>
+
+
+
+
+<!-- JS -->
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- 	<link rel="stylesheet" href="alert/dist/sweetalert.css"> -->
+	
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script th:src="@{/js/front_end/member/member.js}"></script>
+	
+
+<!-- <%  -->
+<!--   java.sql.Date birthday = null; -->
+<!--   try { -->
+<!-- 	    birthday = memberVO.getBirthday(); -->
+<!--    } catch (Exception e) { -->
+<!-- 	   birthday = new java.sql.Date(System.currentTimeMillis()); -->
+<!--    } -->
+<!-- %> -->
+
+
+<!--
+<link rel="stylesheet" type="text/css" th:href="@{/datetimepicker/jquery.datetimepicker.css}" />
+<script th:src="@{/datetimepicker/jquery.js}"></script>
+<script th:src="@{/datetimepicker/jquery.datetimepicker.full.js}"></script>
+
+<style>
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  }
+  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  }
+</style>
+
+<script>
+$.datetimepicker.setLocale('zh');
+$('#birthday').datetimepicker({
+    theme: '',              //theme: 'dark',
+    timepicker:false,       //timepicker:true,
+    step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+    format:'Y-m-d',         //format:'Y-m-d H:i:s',
+	value: '${birthday}'
+    //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+    //startDate:	            '2017/07/10',  // 起始日
+    //minDate:               '-1970-01-01', // 去除今日(不含)之前
+    //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+ });
+ 
+</script>
+-->
+
+<script>
+
+var status = $("#status").val();
+if(status == "success"){
+	swal("恭喜您~","帳號已成功申請，請回到登入頁面進行登入!","success");
+}else if (status == "failed"){
+	swal("請注意~","有些選項沒有填妥喔~請麻煩再確認一次!","warning")
+	status == "";
+}else if (status == "addressEmpty"){
+	swal("請注意~","縣市及鄉鎮市區皆是需要做填寫的喔!!","warning")
+	status == "";
+}else if (status == "sameEmail"){
+	swal("請注意~","此信箱已被註冊過囉!請換一個試試看","warning")
+	status == "";
+}
+
+</script>
+
+
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+//清除提示信息
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+
+//照片上傳-預覽用
+var filereader_support = typeof FileReader != 'undefined';
+if (!filereader_support) {
+	alert("No FileReader support");
+}
+acceptedTypes = {
+		'image/png' : true,
+		'image/jpeg' : true,
+		'image/gif' : true
+};
+function previewImage() {
+	var upfile1 = document.getElementById("memberPic");
+	upfile1.addEventListener("change", function(event) {
+		var files = event.target.files || event.dataTransfer.files;
+		for (var i = 0; i < files.length; i++) {
+			previewfile(files[i])
+		}
+	}, false);
+}
+function previewfile(file) {
+	if (filereader_support === true && acceptedTypes[file.type] === true) {
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			var image = new Image();
+			image.src = event.target.result;
+			image.width = 100;
+			image.height = 75;
+			image.border = 2;
+			if (blob_holder.hasChildNodes()) {
+				blob_holder.removeChild(blob_holder.childNodes[0]);
+			}
+			blob_holder.appendChild(image);
+		};
+		reader.readAsDataURL(file);
+		document.getElementById('signup').disabled = false;
+	} else {
+		blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+				+ "<br>" + "● ContentTyp: " + file.type
+				+ "<br>" + "● size: " + file.size + "bytes"
+				+ "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+		document.getElementById('signup').disabled = true;
+	}
+}
+</script>
+
+<script>
+
+//============================結合大吳範例版==============================//
+
+
+
+//第一層選單
+$.ajax({
+    url: "/member/getEnums", 
+    method: "GET",
+    dataType: "json",
+    Async:false,
+    success: function(response) {
+
+        // 將 JSON 物件轉換為 JSON 字串輸出到控制台
+//	        console.log(response);
+        
+        var zip1 =[];
+        var zip2 =[];
+        
+        for(var i in response){
+        	zip1[i] = response[i].city
+        }
+
+        for(var i in response){
+        	zip2[response[i].city] = response[i].towns;        
+        }
+//	        console.log(zip2["新北市"]);
+
+		
+//	      //初始化
+      
+      	init_address();
+//       	dbAdressData(zip2);
+      
+        function init_address(){
+            	
+            var zone1 = document.getElementById('citySelect');
+            var zone2 = document.getElementById('townSelect');
+            
+            zone1.options.add(first());
+        	  zone2.options.add(first());
+            
+            //市
+        	for(var i in zip1){
+                o=document.createElement('option');
+                o.text=zip1[i];
+                o.value=zip1[i];
+                zone1.options.add(o);
+        	}
+            
+            //區
+        	zone1.onchange=function(){
+        	   
+               
+        		zone2.innerHTML='';
+        		zone2.options.add(first());
+                
+        		if(this.selectedIndex>0){
+            		for(var i in zip2[this.value]){                
+            			o=document.createElement('option');
+                        o.text = zip2[this.value][i];
+            			o.value = zip2[this.value][i];
+            			zone2.options.add(o);
+            		}
+                }
+        	};
+            
+        }
+
+        //第一個選項
+        function first(){
+        	var o=document.createElement('option');
+        	o.text='請選擇';
+        	o.value="";
+        	return o;
+        }
+    },
+    error: function(xhr, status, error) {
+        console.log("Status:", status);
+        console.log("Error:", error);
+    }
+});
+
+
+//將資料庫的資料代入欄位
+function dbAdressData(zip2){
+
+$.ajax({
+    url: "/member/splitAddress", 
+    method: "GET",
+    dataType: "json",
+    success: function(response) {
+
+        // 將 JSON 物件轉換為 JSON 字串輸出到控制台
+//	        console.log(response);
+        
+        var memcity = response.memcity;
+        var memtown = response.memtown;
+        var memroad = response.memroad;
+        
+        console.log(memcity);
+        console.log(memtown);
+        console.log(memroad);
+        console.log(zip2[memcity]);
+
+		$("#citySelect").val(memcity);
+		for ( var i in zip2[memcity]) {
+			o = document.createElement('option');
+			o.text = zip2[memcity][i];
+			o.value = zip2[memcity][i];
+			document.getElementById('townSelect').options.add(o);
+		}
+		$("#townSelect").val(memtown);
+		$("#address").val(memroad);
+		
+        
+
+    },
+    error: function(xhr, status, error) {
+        console.log("Status:", status);
+        console.log("Error:", error);
+    }
+});
+ 
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================GPT協作版==============================//
+
+//第一層選單
+// $.ajax({
+//     url: "/member/getEnums", // 假設這是你的後端接口路徑
+//     method: "GET",
+//     dataType: "json",
+//     success: function(response) {
+
+//         // 將 JSON 物件轉換為 JSON 字串輸出到控制台
+// 	        console.log(response);
+        
+//         $.each(response,function(key,value){
+// // 			console.log(key,value)
+// 			$('.citySelect').append('<option value="'+key+'">'+response[key].city+'</option>')
+// 		})
+// 		var taipei_town = response[0].towns;
+// 		$.each(taipei_town,function(key,value){
+			
+// 			$('.townSelect').append('<option value="'+response[0].city+taipei_town[key]+'">'+taipei_town[key]+'</option>')
+// 		})
+       
+//     },
+//     error: function(xhr, status, error) {
+//         console.log("Status:", status);
+//         console.log("Error:", error);
+//     }
+// });
+
+
+// //第二層選單
+// $(".citySelect").change(function(){
+// 	cityvalue=$(".citySelect").val();  //取值
+// 	$(".townSelect").empty(); //清空上次的值
+	
+// 	$.ajax({
+// 	    url: "/member/getEnums", // 假設這是你的後端接口路徑
+// 	    method: "GET",
+// 	    dataType: "json",
+// 	    success: function(response) {
+
+// 	    	eachval=response[cityvalue].towns; //鄉鎮
+			
+// 			$.each(eachval,function(key,value){
+// 				$('.townSelect').append('<option value="'+response[cityvalue].city+eachval[key]+'">'+eachval[key]+'</option>')
+// 			});
+	       
+// 	    },
+// 	    error: function(xhr, status, error) {
+// 	        console.log("Status:", status);
+// 	        console.log("Error:", error);
+// 	    }
+// 	});
+// });
+
+
+</script>
+	
+</body>
+
+</html>

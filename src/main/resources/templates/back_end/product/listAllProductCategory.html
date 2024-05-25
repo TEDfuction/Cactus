@@ -1,0 +1,160 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+<style>
+#lightbox {
+        display: none; /* 初始狀態為不顯示 */
+        position: fixed; /* 固定定位，始終覆蓋整個畫面 */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+        /* z-index: 9999; 高層級以覆蓋其他內容 */
+    }
+</style>
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+
+
+
+<div class="unique">
+<input class="btn btn-primary" type="submit" value="新增類別" onclick="location.href='/product/addProductCategory';">
+<!-- <div th:if="${error}" th:text="${error}"></div> -->
+<!--   <div th:if="${error}" th:text="${error}" style="display:none;" id="errorMsg"></div> -->
+
+<!-- Button trigger modal -->
+
+
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> -->
+<!--   新增類別 -->
+<!-- </button> -->
+
+ <!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
+<!--   <div class="modal-dialog"> -->
+<!--     <div class="modal-content"> -->
+<!--       <div class="modal-header"> -->
+<!--         <h5 class="modal-title" id="exampleModalLabel">新增類別</h5> -->
+<!--         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+<!--       </div> -->
+<!--       <div class="modal-body"> -->
+<!--         <form method="post" th:action="@{addProductCategory}"> -->
+      
+<!--           類別名稱:  -->
+<!--           <input type="text" name="productCategoryName" value="" class="form-control"><br> -->
+  
+<!--           <input type="submit" value="送出" class="btn btn-primary"> -->
+<!--         </form> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </div> -->
+
+
+
+<table id="productListData" class="display" style="width: 100%">
+  <thead >
+	<tr style="background-color:#CCCCFF">
+<!-- 		<th>計數</th> -->
+		<th>類別編號</th>
+		<th>類別名稱</th>
+		<th>修改</th>
+<!-- 		<th th:if="${productCategoryListDataPro}">刪除</th> -->
+		<th>刪除</th>
+<!-- 		<th>VOs size:</th> -->
+<!-- 		<th>Is empty:</th> -->
+	</tr>
+  </thead>
+	
+  <tbody>
+		<th:block th:each="productCategoryVO : ${productCategoryListData}">
+			<tr>
+				<td th:text="${productCategoryVO.productCategoryId}"></td>
+				<td th:text="${productCategoryVO.productCategoryName}"></td>
+			<td>
+			
+			  <form method="post" th:action="@{/product/getOneCategory_For_Update}" style="margin-bottom: 0px;">
+			     <input type="submit" value="修改">
+			     <input type="hidden" name="productCategoryId" th:value="${productCategoryVO.productCategoryId}"></form>
+			
+			</td>
+			
+<!-- 			<td> -->
+<!-- 			  <form th:if="${productCategoryVO.productVOs.empty}" method="post" th:action="@{/product/delete}" style="margin-bottom: 0px;"> -->
+<!-- 			     <input type="submit" value="刪除"> -->
+<!-- 			     <input type="hidden" name="productCategoryId" th:value="${productCategoryVO.productCategoryId}"></form>		 -->
+<!-- 			</td> -->
+			
+			<td>
+			  <form method="post" th:action="@{/product/delete}" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除" th:disabled="${!productCategoryVO.productVOs.empty}">
+			     <input type="hidden" name="productCategoryId" th:value="${productCategoryVO.productCategoryId}"></form>		
+			</td>
+			
+<!-- 			<td th:text="'VOs size: ' + ${productCategoryVO.productVOs.size()}"></td> -->
+<!-- 			<td th:text="'Is empty: ' + ${productCategoryVO.productVOs.empty}"></td> -->
+			
+		
+
+
+			</tr>
+		</th:block>
+  </tbody>
+</table>
+
+</div>
+
+
+
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+<!----------- ●● jquery datatables 設定 ---------------------->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                   
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+
+
+<script>
+	$(document).ready(function() {
+		$('#productListData').DataTable({
+			"lengthMenu": [10, 20, 50, 100],
+			"searching": true,  //搜尋功能, 預設是開啟
+		    "paging": true,     //分頁功能, 預設是開啟
+		    "ordering": true,   //排序功能, 預設是開啟
+		    "language": {
+		        "processing": "處理中...",
+		        "loadingRecords": "載入中...",
+		        "lengthMenu": "顯示 _MENU_ 筆結果",
+		        "zeroRecords": "沒有符合的結果",
+		        "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+		        "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+		        "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+		        "infoPostFix": "",
+		        "search": "搜尋:",
+		        "paginate": {
+		            "first": "第一頁",
+		            "previous": "上一頁",
+		            "next": "下一頁",
+		            "last": "最後一頁"
+		        },
+		        "aria": {
+		            "sortAscending":  ": 升冪排列",
+		            "sortDescending": ": 降冪排列"
+		        }
+		    }
+		});
+	});
+</script>
+
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        var errorMsg = /*[[${error}]]*/ 'defaultError';
+        if (errorMsg && errorMsg !== 'defaultError') {
+            alert(errorMsg);
+        }
+        /*]]>*/
+</script>

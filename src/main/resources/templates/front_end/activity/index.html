@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Cactus Activity Category HTML</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+<!--     <link th:href="@{/img/front_end/activity/favicon.ico}" rel="icon" > -->
+
+    <!-- Google Web Fonts -->
+    <!-- Noto+Sans+TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Pridi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+   
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/front_end/activity/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/front_end/activity/tempusdominus/css/tempusdominus-bootstrap-4.min.css}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/front_end/activity/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/front_end/activity/style.css}" rel="stylesheet">
+    
+</head>
+
+<body>
+
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center"> -->
+<!-- 		 <div align="center"> <h2>所有圖片資料 - listAllPhoto.html</h2> -->
+<!-- 		 <h3><a class="navbar-brand" th:href="@{/photo/select_photo}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div> -->
+<!-- </nav> -->
+    <!-- Spinner Start  Lodding畫面-->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/activity/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+  
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn sticky-top" data-wow-delay="0.1s" style="visibility: visible; animation-delay:0.2s; animation-name: fadeIn;">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
+                    <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
+                    <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-5 px-2-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" href="">日本語 ｜</a>
+                    <a class="text-white px-2" href="">加入會員</a>
+                    
+                </div>
+                <span class="navbar3 navbar-light ">
+                  <button class="navbar-toggler2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="offcanvas offcanvas-end2  text-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body2">
+                      <ul class="list list-size">
+  
+                        <li class="list-set3 border-line">                                   
+                        <a class="changecolor" href="">
+                        <span class="nav-text fw-medium">最新消息</span>
+                        </a>
+                        </li>   
+
+                            
+                        <li class="border-line">                                 
+                        
+                        <div >
+                            
+                            <h2 class="accordion-header" id="headingOne">
+                               
+                              <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                關於我們&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body3">
+                                <ul class="list2">
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;凱克特司</a></li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;周邊特色</a> </li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;常見問題</a> </li>
+                                </ul>
+                          
+                              </div>
+                            </div>
+                          </div>
+                        
+                        </li> 
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">房型介紹</span>
+                          </a>
+                        </li>
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">特色活動</span>
+                          </a>
+                        </li>  
+                        
+                        <li class="list-set3 border-line">                                 
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">購物商城</span>
+                          </a>
+                        </li>   
+                        <!-- <li class="border-line">                                 
+                          
+                            <div class="accordion-item2 ">
+                                
+                                <h2 class="accordion-header" id="headingOne">
+                                   
+                                  <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    活動管理系統
+                                  </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body2">
+                                    <ul class="list2">
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動類別管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動場次</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動圖片管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動訂單管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動促銷管理</a> </li>
+                                    </ul>
+                              
+                                  </div>
+                                </div>
+                              </div>
+                             
+                        </li> -->
+                        <!-- <div class="roomorder offcanvas-header">
+                          <a class="roomorder-set" href="">
+                            線上訂房
+                        </div> -->
+                     
+                    </div>
+                    
+                    <div class="offcanvas-bottom2"> 
+                      <input type="button" class="roomorder-set" value="線上訂房" onclick="location.href='https://www.youtube.com/'">
+                      <!-- <button class="roomorder-set changecolor">線上訂房</button> -->
+                      <!-- <a class="roomorder-set   " href="">
+                        線上訂房 -->
+                    </div>
+                    
+
+                    
+                  </div>
+                </span>
+                
+                
+                <!-- <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+   
+
+    <!-- 輪播圖 -->
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img th:src="@{/img/front_end/activity/carousel-1.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-3.jpg}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/front_end/activity/carousel-4.jpg}" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- 輪播圖結束 -->
+
+      <!-- 活動搜尋 -->
+       <nav class="navbar2 navbar-expand-lg navbar-light ">
+        <div class="container-fluid">
+          <!-- <a class="navbar-brand" href="#">Navbar scroll</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a class="nav-link3 active" aria-current="page" href="#">活動類別：</a>
+              </li>
+               
+<!--               <li class="nav-item"> -->
+<!--                 <a class="nav-link" href="#">Link</a> -->
+<!--               </li>  -->
+              <!-- =============================a標籤版本活動類別下拉選單================================= -->
+              <li class="nav-item dropdown">
+                <div class="nav-item dropdown" id="search_filter">
+                    <a class="nav-link2 dropdown-toggle" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                       全部
+                    </a>
+                    <!-- id="keywordSelect" 下拉選單 -->
+                <ul class="nav-link2 dropdown-menu" aria-labelledby="navbarScrollingDropdown" id="keywordSelect">
+                <li><a class="dropdown-item"  data-value="">全部</a></li>
+                <li><a class="dropdown-item"  data-value="仙人掌園區">仙人掌園區</a></li>
+                <li><a class="dropdown-item"  data-value="體驗潛水">體驗潛水</a></li>
+                <li><a class="dropdown-item"  data-value="浮潛">浮潛</a></li>
+                <li><a class="dropdown-item"  data-value="漫遊嵵裡沙灘與海上花火個人板">漫遊嵵裡沙灘與海上花火個人板</a></li>
+                <li><a class="dropdown-item"  data-value="BBQ 晚餐吃到飽">BBQ 晚餐吃到飽</a></li>
+                </ul>
+                </div>
+              </li>
+              <!-- ===================================搜尋結果======================================= -->  
+             </ul>          
+             <form class="d-flex"> 
+                    <!-- id="searchInput"搜尋框 -->
+              <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search" id="searchInput" >
+             </form>
+                    <!-- id="matchCount"顯示結果 -->
+             <div id="matchCount">搜尋结果：0 筆</div>
+        </div>
+      </nav>
+      <!-- 活動搜尋結束 -->
+
+      <!-- 活動項目介紹 -->
+
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h5 class="section-title">Feature Activity</h5>
+        <h4 class="display-5 mb-4" >特色活動</h4>
+    </div>
+    
+
+<!-- <table  class="center" id="search" style="width: 100%"> -->
+<!--  活動搜尋 -->
+<!-- <thead> -->
+<!-- <th></th> -->
+<!-- <th></th> -->
+<!-- <th></th> -->
+
+
+
+
+
+<!-- =============================不是a標籤版本================================= -->
+<!-- <input type="text" id="searchInput" placeholder="Search..." > -->
+<!-- <div id="matchCount">匹配结果：0 項</div> -->
+<!-- <div id="search_filter"> -->
+<!--     <input type="text" id="searchInput" placeholder="Search..."> -->
+<!--     <select id="keywordSelect"> -->
+<!--         <option value="" >全部</option> -->
+<!--         <option value="BBQ">BBQ</option> -->
+<!--         <option value="仙人掌園區">仙人掌園區</option> -->
+<!--         <option value="體驗潛水">體驗潛水</option> -->
+<!--         <option value="浮潛">浮潛</option> -->
+<!--         <option value="漫遊嵵裡沙灘與海上花火個人板">漫遊嵵裡沙灘與海上花火個人板</option> -->
+<!--     </select> -->
+<!-- </div> -->
+<!-- <div id="pagination"></div> -->
+
+<!-- ==============================活動圖片資料抓取================================ -->
+
+                
+                
+                
+  <div class="row2 row-cols-1 row-cols-md-3 g-4" style="display: flex ; flex-wrap: wrap;" id="photoList">
+    <th:block th:each="photoVO : ${photoListData}">
+        <th:block th:if="${photoVO.activityPh.activityState}">
+        <div class="col" style="margin-bottom:30px;">
+            <div class="card h-100 space ">
+                <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px">
+                <div class="card-body">
+                    <h4 class="card-title2" th:text="${photoVO.activityPh.activityName}"></h4>
+                    <p class="card-text multiline-ellipsis" th:text="${photoVO.activityPh.activityDescription}"></p>
+                </div>
+                <div class="card-footer2">
+                
+                    <span class="nt" >NT$</span><span class="money" th:text="${photoVO.activityPh.activityPrice}" ></span></span> 起</span>
+                     
+<!--                     <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${photoVO.activityPhotoId}" >詳細介紹</button> -->
+<!--                <button class="btn btn-primary border-radius" type="submit" value="Submit" data-bs-toggle="modal" > -->
+               <!-- 把值帶到下個頁面listDetailPhoto -->
+               <form th:action="@{/activity/listDetailPhoto} " method="post" >
+                 <input type="hidden" name="activityPhotoId" th:value="${photoVO.activityPhotoId}"> 
+                 <input type="hidden" name="activityId" th:value="${photoVO.activityPh.activityId}"> 
+                 <input type="submit"  value="詳細介紹" class="btn btn-primary border-radius" >
+               </form> 
+<!--                <a class="text-white px-2 " th:href="@{'/activity/listDetailPhoto?activityPhotoId=' + ${photoVO.activityPhotoId} + ''}">詳細介紹</a> -->
+<!--                </button> -->
+<!--                     <small class="text-muted">Last updated 3 mins ago</small> -->
+                </div>
+                
+               
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+                
+                <!-- 詳細介紹 -->
+<!--                <div class="modal fade modal-dialog-scrollable" th:id="'exampleModal' + ${photoVO.activityPhotoId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
+<!--                <div class="modal-dialog"> -->
+<!--     				<div class="modal-content"> -->
+<!--       					<div class="modal-header"> -->
+<!--         				<h1 class="modal-title fs-5" id="exampleModalLabel">詳細介紹</h1> -->
+<!--         		 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+<!-- 		      			</div> -->
+<!-- 		            <div class="modal-body"> -->
+<!-- 		        	  <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"> -->
+<!-- 		        	  <h4 class="card-title2" th:text="${photoVO.activityPh.activityName}"></h4> -->
+<!--  		        	  <p class="card-text multiline-ellipsis" th:text="${photoVO.activityPh.activityDescription}"></p> -->
+<!--  		        	  <img class="card-img-top card-h" th:src="@{/activity/DBGifReader} + '?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"> -->
+<!-- 		            </div> -->
+<!-- 		       <div class="modal-footer"> -->
+<!-- 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button> -->
+<!-- 		        <button type="button" class="btn btn-primary">下訂</button> -->
+<!-- 		       </div> -->
+<!-- 		    		</div> -->
+<!-- 		  	  </div> -->
+<!-- 			  </div> -->
+              <!-- 詳細介紹 -->              
+                
+                
+                
+                
+            </div>
+        </div>
+        </th:block>
+    </th:block>
+  
+</div>
+
+
+<!-- ======================================================================= -->
+
+ 
+
+    
+        
+      <!-- 活動項目介紹結束 -->
+
+      <!-- 分頁按鈕 -->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination2 justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          <!-- pagination 頁碼按鈕 -->
+          <li class="page-item2"><a class="page-link" id="pagination"  ></a></li>
+          <li class="page-item disabled" >
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    
+    <!-- Footer Start -->
+    <div>
+      
+    <script
+        src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+        type="module"
+      ></script>
+      <dotlottie-player
+        src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+        background="transparent"
+        speed="0.4"
+        style="max-width: 100%; margin-bottom: -1px"
+        direction="1"
+        playMode="normal"
+        loop
+        autoplay
+      ></dotlottie-player>
+
+    
+    </div>
+    
+    <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        
+        
+
+        
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">最新消息</h3>
+                    <a class="btn btn-link text-primary5" href="">所有公告</a>
+                    <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                    <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                    <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                    <!-- <a class="btn btn-link" href="">Construction</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">房型介紹</h3>
+                    <a class="btn btn-link text-primary5" href="">AAA套房</a>
+                    <a class="btn btn-link text-primary5" href="">BBB套房</a>
+                    <a class="btn btn-link text-primary5" href="">CCC套房</a>
+                    <a class="btn btn-link text-primary5" href="">DDD套房</a>
+                    <!-- <a class="btn btn-link" href="">Support</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">特色活動</h3>
+                    <a class="btn btn-link text-primary5" href="">浮潛</a>
+                    <a class="btn btn-link text-primary5" href="">SUP立槳衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                    <a class="btn btn-link text-primary5" href="">淺灘衝浪</a>
+                    <a class="btn btn-link text-primary5" href="">仙人掌園區參觀</a>
+                </div>
+                <!-- <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Newsletter</h3>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div> -->
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：澎湖縣馬公市時裡200號</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-2345678 #888</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>cactus@gmail.com</p>
+                    <!-- <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        <!-- Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+    <script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●js  for jquery datatables 用 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/lib/front_end/activity/wow/wow.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/counterup/counterup.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/owlcarousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/moment-timezone.min.js}"></script>
+    <script th:src="@{/lib/front_end/activity/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
+    
+    
+    
+    
+
+    <!-- Template Javascript -->
+    <script th:src="@{/js/front_end/activity/main.js}"></script>
+
+    <!-- Kit Icon -->
+    <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+    
+    
+    <!-- JqueryTable -->
+ <script type="text/javascript">
+//  $(document).ready(function() {
+//      $("#searchInput").on("keyup", function() {
+//          // 抓搜尋的關鍵詞
+//          var value = $(this).val().toLowerCase();
+//          // 抓Table裡頭有沒有符合
+//          $("#photoList .col").filter(function() {
+//              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+//          });
+//      });
+     
+//  });
+//======================================================================================//
+//  $(document).ready(function() {
+//     $("#searchInput").on("keyup", function() {
+//     	// 抓搜尋的關鍵詞
+//         var value = $(this).val().toLowerCase();
+//         var matches = 0; // 初始化匹配结果數量
+//         // 抓Table裡頭有沒有符合
+//         $("#photoList .col").filter(function() {
+//             var isVisible = $(this).text().toLowerCase().indexOf(value) > -1;
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++; // 如果找到項目，則增加匹配结果數量
+//             }
+//         });
+
+//         $("#matchCount").text("匹配结果：" + matches + " 項"); // 更新匹配结果數量顯示
+//     })
+// });
+ //=================================不是a標籤版本=====================================================//
+//  $(document).ready(function() {
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase());
+//     });
+
+//     $("#keywordSelect").on("change", function() {
+//         var keyword = $(this).val().toLowerCase();
+//         searchItems(keyword);
+//     });
+
+//     function searchItems(keyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function() {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = text.indexOf(keyword) > -1 || keyword === "";
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+//         $("#matchCount").text("匹配结果：" + matches + " 項");
+//     }
+// });
+//===================================a標籤版本==================================================//
+//  $(document).ready(function() {
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase());
+//     });
+
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         searchItems(keyword);
+//     });
+
+//     function searchItems(keyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function() {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = text.indexOf(keyword) > -1 || keyword === "";
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//     }
+// });
+//=======================================a標籤搜尋版本包含頁碼=======================================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase());
+//     });
+//     //綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         searchItems(keyword);
+//     });
+
+//     function searchItems(keyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = text.indexOf(keyword) > -1 || keyword === "";
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+
+//         // 隐藏超過指定數量的项目
+//         $("#photoList .col:gt(" + (itemsPerPage - 1) + ")").hide();
+//     }
+
+//     // 更新分頁按钮
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮綁定
+//         $("#pagination " ).empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination ").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按鈕點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的項目
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         $("#photoList .col").each(function(index) {
+//             var isVisible = index >= startIndex && index < endIndex;
+//             $(this).toggle(isVisible);
+//         });
+//     }
+
+//     // 初始化顯示第一頁，同時隱藏超過六項的項目
+//     searchItems("");
+
+// });
+//==============================得到所選活動類别的文字版本=========================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase());
+//     });
+//     //綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         searchItems(keyword);
+
+//         // 得到所選活動類别的文字
+//         var selectedText = $(this).text();
+        
+//         // 在改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(keyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = text.indexOf(keyword) > -1 || keyword === "";
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+
+//         // 隐藏超過指定數量的项目
+//         $("#photoList .col:gt(" + (itemsPerPage - 1) + ")").hide();
+//     }
+
+//     // 更新分頁按钮
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮綁定
+//         $("#pagination " ).empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination ").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按鈕點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的項目
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         $("#photoList .col").each(function(index) {
+//             var isVisible = index >= startIndex && index < endIndex;
+//             $(this).toggle(isVisible);
+//         });
+//     }
+
+//     // 初始化顯示第一頁，同時隱藏超過六項的項目
+//     searchItems("");
+
+// });
+//======================================文字框與活動類別選單bug修正=============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+//     var selectedCategory = ""; // 用儲存當前選的活動類別
+
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase(), selectedCategory);
+//     });
+
+//     // 綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選的活動類别
+//         searchItems($("#searchInput").val().toLowerCase(), selectedCategory);
+
+//         // 得到所選活动類别的結果
+//         var selectedText = $(this).text();
+
+//         // 在這里改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+
+//         // 隐藏超過指定數量的項目
+//         $("#photoList .col:gt(" + (itemsPerPage - 1) + ")").hide();
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮
+//         $("#pagination").empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按钮點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的內容
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         $("#photoList .col").each(function(index) {
+//             var isVisible = index >= startIndex && index < endIndex;
+//             $(this).toggle(isVisible);
+//         });
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過六項的項目
+//     searchItems("", "");
+
+// });
+//===================================================================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+//     var selectedCategory = ""; // 用儲存當前選的活動類別
+
+//     $("#searchInput").on("keyup", function() {
+//         searchItems($(this).val().toLowerCase(), selectedCategory);
+//     });
+
+//     // 綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選的活動類别
+//         searchItems($("#searchInput").val().toLowerCase(), selectedCategory);
+
+//         // 得到所選活动類别的結果
+//         var selectedText = $(this).text();
+
+//         // 在這里改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮
+//         $("#pagination").empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按钮點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的內容
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var isVisible = index >= startIndex && index < endIndex;
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//     }
+    
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+
+// });
+//======================================修改搜尋頁數問題=============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+//     var selectedCategory = ""; // 用儲存當前選的活動類別
+//     var currentSearchKeyword = ""; // 用來存當前搜尋關鍵字
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選的活動類别
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 得到所選活動類别的結果
+//         var selectedText = $(this).text();
+
+//         // 在這改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
+//             $(this).toggle(isVisible);
+//             if (isVisible) {
+//                 matches++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮
+//         $("#pagination").empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按钮點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的內容
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         var matches = 0;
+//         var visibleIndex = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(currentSearchKeyword) > -1 || currentSearchKeyword === "") &&
+//                             (text.indexOf(selectedCategory) > -1 || selectedCategory === "");
+
+//             if (isVisible) {
+//                 if (visibleIndex >= startIndex && visibleIndex < endIndex) {
+//                     $(this).show();
+//                     matches++;
+//                 } else {
+//                     $(this).hide();
+//                 }
+//                 visibleIndex++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+
+// });
+//=======================================搜尋特效版本============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+//     var selectedCategory = ""; // 用儲存當前選的活動類別
+//     var currentSearchKeyword = ""; // 用来存當前搜索關键字
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選的活動類别
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 得到所選活動類别的結果
+//         var selectedText = $(this).text();
+
+//         // 改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
+//             if (isVisible) {
+//                 $(this).slideDown(); // 使用 slideDown 伸展卡片
+//                 matches++;
+//             } else {
+//                 $(this).slideUp(); // 使用 slideUp 收起卡片
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮
+//         $("#pagination").empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按钮點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的內容
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         var matches = 0;
+//         var visibleIndex = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(currentSearchKeyword) > -1 || currentSearchKeyword === "") &&
+//                             (text.indexOf(selectedCategory) > -1 || selectedCategory === "");
+
+//             if (isVisible) {
+//                 if (visibleIndex >= startIndex && visibleIndex < endIndex) {
+//                     $(this).slideDown(); // 使用 slideDown 伸展卡片
+//                     matches++;
+//                 } else {
+//                     $(this).slideUp(); // 使用 slideUp 收起卡片
+//                 }
+//                 visibleIndex++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+
+// });
+//=======================================改良type"search"搜尋特效版本============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目數量
+//     var selectedCategory = ""; // 用儲存當前選的活動類別
+//     var currentSearchKeyword = ""; // 用来存當前搜索關键字
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 監聽搜索框的清除事件
+//     $("#searchInput").on("search", function() {
+//         if ($(this).val() === "") { // 搜索框被清空時
+//             currentSearchKeyword = ""; // 清空当前搜索關键字
+//             searchItems("", selectedCategory); // 恢复到原始狀態
+//         }
+//     });
+
+//     // 綁定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選的活動類别
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 得到所選活動類别的結果
+//         var selectedText = $(this).text();
+
+//         // 改變下拉選單的内容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+   
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         var matches = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
+//             if (isVisible) {
+//                 $(this).slideDown(); // 使用 slideDown 伸展卡片
+//                 matches++;
+//             } else {
+//                 $(this).slideUp(); // 使用 slideUp 收起卡片
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//         updatePagination(matches); // 更新分頁按鈕
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalMatches) {
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 清空頁碼按钮
+//         $("#pagination").empty();
+
+//         // 創建頁碼按钮
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定頁碼按钮點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var page = $(this).data("page");
+//             showPage(page);
+//         });
+//     }
+
+//     // 顯示特定頁碼的內容
+//     function showPage(page) {
+//         var startIndex = (page - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         var matches = 0;
+//         var visibleIndex = 0;
+//         $("#photoList .col").each(function(index) {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(currentSearchKeyword) > -1 || currentSearchKeyword === "") &&
+//                             (text.indexOf(selectedCategory) > -1 || selectedCategory === "");
+
+//             if (isVisible) {
+//                 if (visibleIndex >= startIndex && visibleIndex < endIndex) {
+//                     $(this).slideDown(); // 使用 slideDown 伸展卡片
+//                     matches++;
+//                 } else {
+//                     $(this).slideUp(); // 使用 slideUp 收起卡片
+//                 }
+//                 visibleIndex++;
+//             }
+//         });
+
+//         $("#matchCount").text("搜尋结果：" + matches + " 筆");
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+
+// });
+//=======================================改良type"search"每六筆呈現搜尋特效版本============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目筆數
+//     var currentPage = 1; // 當前頁碼
+//     var selectedCategory = ""; // 保存當前選中的活動類别
+//     var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         currentPage = 1; // 重置頁碼為1
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 監聽搜索框的清除事件
+//     $("#searchInput").on("search", function() {
+//         if ($(this).val() === "") { // 搜索框被清空時
+//             currentSearchKeyword = ""; // 清空當前搜索關键字
+//             currentPage = 1; // 重置頁碼為1
+//             searchItems("", selectedCategory); // 恢复到原始狀態
+//         }
+//     });
+
+//     // 绑定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選中的活動類别
+//         currentPage = 1; // 重置頁碼为1
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 獲得所選活動類别的结果
+//         var selectedText = $(this).text();
+
+//         // 改變下拉選單內容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         $("#photoList .col").hide(); // 隱藏所有項目
+
+//         var filteredItems = $("#photoList .col").filter(function() {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+//             return isVisible;
+//         });
+
+//         var totalMatches = filteredItems.length;
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+
+//         // 更新分頁按鈕
+//         updatePagination(totalPages);
+
+//         // 活得當前頁碼對應的項目範圍
+//         var startIndex = (currentPage - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         // 顯示當前頁的項目
+//         filteredItems.slice(startIndex, endIndex).slideDown();
+
+//         // 更新匹配结果文本
+//         $("#matchCount").text("搜尋结果：" + totalMatches + " 筆");
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalPages) {
+//         // 清空分頁按鈕
+//         $("#pagination").empty();
+
+//         // 創鍵分頁按鈕
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定分頁按鈕點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             currentPage = $(this).data("page");
+//             searchItems(currentSearchKeyword, selectedCategory);
+//         });
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+
+// });
+//=======================================改良type"search"每六筆呈現搜尋特效版本搜尋结果：6 筆============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目筆數
+//     var currentPage = 1; // 當前頁碼
+//     var selectedCategory = ""; // 保存當前選中的活動類别
+//     var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         currentPage = 1; // 重置頁碼為1
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 監聽搜索框的清除事件
+//     $("#searchInput").on("search", function() {
+//         if ($(this).val() === "") { // 搜索框被清空時
+//             currentSearchKeyword = ""; // 清空當前搜索關键字
+//             currentPage = 1; // 重置頁碼為1
+//             searchItems("", selectedCategory); // 恢复到原始狀態
+//         }
+//     });
+
+//     // 绑定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選中的活動類别
+//         currentPage = 1; // 重置頁碼为1
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 獲得所選活動類别的结果
+//         var selectedText = $(this).text();
+
+//         // 改變下拉選單內容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         $("#photoList .col").hide(); // 隱藏所有項目
+
+//         var filteredItems = $("#photoList .col").filter(function() {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+//             return isVisible;
+//         });
+
+//         var totalMatches = filteredItems.length;
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+//         var startIndex = (currentPage - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         // 限制搜索结果為每頁顯示的項目數量
+//         filteredItems = filteredItems.slice(startIndex, endIndex);
+
+//         // 更新分頁按鈕
+//         updatePagination(totalPages);
+
+//         // 顯示當前頁的項目
+//         filteredItems.slideDown();
+
+//         // 更新匹配结果文本
+//         $("#matchCount").text("搜尋结果：" + filteredItems.length + " 筆");
+//     }
+
+//     // 更新分頁按鈕
+//     function updatePagination(totalPages) {
+//         // 清空分頁按鈕
+//         $("#pagination").empty();
+
+//         // 創鍵分頁按鈕
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 绑定分頁按鈕點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             currentPage = $(this).data("page");
+//             searchItems(currentSearchKeyword, selectedCategory);
+//         });
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+// });
+
+//=======================================改良type"search"每六筆呈現搜尋特效版本搜尋结果：6 筆============================================//
+// $(document).ready(function() {
+//     var itemsPerPage = 6; // 每頁顯示的項目筆數
+//     var currentPage = 1; // 當前頁碼
+//     var selectedCategory = ""; // 保存當前選中的活動類别
+//     var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+    
+
+
+//     $("#searchInput").on("keyup", function() {
+//         currentSearchKeyword = $(this).val().toLowerCase();
+//         currentPage = 1; // 重置頁碼為1
+//         searchItems(currentSearchKeyword, selectedCategory);
+//     });
+
+//     // 監聽搜索框的清除事件
+//     $("#searchInput").on("search", function() {
+//         if ($(this).val() === "") { // 搜索框被清空時
+//             currentSearchKeyword = ""; // 清空當前搜索關键字
+//             currentPage = 1; // 重置頁碼為1
+//             searchItems("", selectedCategory); // 恢复到原始狀態
+//         }
+//     });
+
+//     // 绑定a標籤
+//     $("#keywordSelect a").on("click", function() {
+//         var keyword = $(this).attr("data-value").toLowerCase();
+//         selectedCategory = keyword; // 更新當前選中的活動類别
+//         currentPage = 1; // 重置頁碼為1
+//         searchItems(currentSearchKeyword, selectedCategory);
+
+//         // 獲得所選活動類别的结果
+//         var selectedText = $(this).text();
+
+//         // 改變下拉選單內容
+//         $("#navbarScrollingDropdown").text(selectedText);
+//     });
+    
+
+//     function searchItems(searchKeyword, categoryKeyword) {
+//         $("#photoList .col").hide(); // 隱藏所有項目
+
+//         var filteredItems = $("#photoList .col").filter(function() {
+//             var text = $(this).text().toLowerCase();
+//             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+//                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+//             return isVisible;
+//         });
+
+//         var totalMatches = filteredItems.length;
+//         var totalPages = Math.ceil(totalMatches / itemsPerPage);
+//         var startIndex = (currentPage - 1) * itemsPerPage;
+//         var endIndex = startIndex + itemsPerPage;
+
+//         // 限制搜索结果為每頁顯示的項目數量
+//         filteredItems = filteredItems.slice(startIndex, endIndex);
+
+//         // 更新分頁按鈕
+//         updatePagination(totalPages);
+
+//         // 顯示當前頁的項目
+//         filteredItems.slideDown();
+
+//         // 更新匹配结果文本
+//         $("#matchCount").text("搜尋结果：" + filteredItems.length + " 筆");
+//     }
+
+//  // 更新分頁按鈕
+//     function updatePagination(totalPages) {
+//         // 清空分頁按鈕
+//         $("#pagination").empty();
+
+//         // 創建分頁按鈕
+//         for (var i = 1; i <= totalPages; i++) {
+//             var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+//             pageBtn.data("page", i);
+//             $("#pagination").append(pageBtn);
+//         }
+
+//         // 綁定分頁按鈕點擊事件
+//         $(".pageBtn").off("click").on("click", function() {
+//             var clickedPage = $(this).data("page");
+//             var targetElementTop = $("h4.display-5.mb-4").offset().top;
+//             var offset = 100; // 額外的偏移量，使其向上滾動
+//             var currentScrollTop = $(window).scrollTop(); // 當前的滾動位置
+//             var scrollTo = Math.max(0, targetElementTop - offset); // 確保不會小於0
+
+//             // 如果 scrollTo 比當前的 scrollTop 還小，則向上滾動
+//             if (scrollTo < currentScrollTop) {
+//                 $('html, body').animate({
+//                     scrollTop: scrollTo
+//                 }, 100, function() {
+//                     // 向上滾動完成後執行搜索操作
+//                     currentPage = clickedPage;
+//                     searchItems(currentSearchKeyword, selectedCategory);
+//                 }); // 持續時間為0.5秒
+//             } else {
+//                 // 如果不需要向上滾動，直接執行搜索操作
+//                 currentPage = clickedPage;
+//                 searchItems(currentSearchKeyword, selectedCategory);
+//             }
+//         });
+//     }
+
+//     // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+//     searchItems("", "");
+// });
+//=======================================改良type"search"每六筆呈現搜尋特效版本搜尋结果：6 筆============================================//
+$(document).ready(function() {
+    var itemsPerPage = 6; // 每頁顯示的項目筆數
+    var currentPage = 1; // 當前頁碼
+    var selectedCategory = ""; // 保存當前選中的活動類别
+    var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+    var searchTimeout;
+
+    $("#searchInput").on("keyup", function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            currentSearchKeyword = $(this).val().toLowerCase();
+            currentPage = 1; // 重置頁碼為1
+            searchItems(currentSearchKeyword, selectedCategory);
+        }.bind(this), 300); // 設置延遲時間為300毫秒（即0.3秒）
+    });
+
+    // 監聽搜索框的清除事件
+    $("#searchInput").on("search", function() {
+        if ($(this).val() === "") { // 搜索框被清空時
+            currentSearchKeyword = ""; // 清空當前搜索關键字
+            currentPage = 1; // 重置頁碼為1
+            searchItems("", selectedCategory); // 恢复到原始狀態
+        }
+    });
+
+    // 绑定a標籤
+    $("#keywordSelect a").on("click", function() {
+        var keyword = $(this).attr("data-value").toLowerCase();
+        selectedCategory = keyword; // 更新當前選中的活動類别
+        currentPage = 1; // 重置頁碼為1
+        searchItems(currentSearchKeyword, selectedCategory);
+
+        // 獲得所選活動類别的结果
+        var selectedText = $(this).text();
+
+        // 改變下拉選單內容
+        $("#navbarScrollingDropdown").text(selectedText);
+    });
+    
+
+    function searchItems(searchKeyword, categoryKeyword) {
+        $("#photoList .col").hide(); // 隱藏所有項目
+
+        var filteredItems = $("#photoList .col").filter(function() {
+            var text = $(this).text().toLowerCase();
+            var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
+                            (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+            return isVisible;
+        });
+
+        var totalMatches = filteredItems.length;
+        var totalPages = Math.ceil(totalMatches / itemsPerPage);
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        // 限制搜索结果為每頁顯示的項目數量
+        filteredItems = filteredItems.slice(startIndex, endIndex);
+
+        // 更新分頁按鈕
+        updatePagination(totalPages);
+
+        // 顯示當前頁的項目
+        filteredItems.slideDown();
+
+        // 更新匹配结果文本
+        $("#matchCount").text("搜尋结果：" + filteredItems.length + " 筆");
+    }
+
+    // 更新分頁按鈕
+    function updatePagination(totalPages) {
+        // 清空分頁按鈕
+        $("#pagination").empty();
+
+        // 創建分頁按鈕
+        for (var i = 1; i <= totalPages; i++) {
+            var pageBtn = $('<button class="pageBtn">' + i + '</button>');
+            pageBtn.data("page", i);
+            $("#pagination").append(pageBtn);
+        }
+
+        // 綁定分頁按鈕點擊事件
+        $(".pageBtn").off("click").on("click", function() {
+            var clickedPage = $(this).data("page");
+            var targetElementTop = $("h4.display-5.mb-4").offset().top;
+            var offset = 100; // 額外的偏移量，使其向上滾動
+            var currentScrollTop = $(window).scrollTop(); // 當前的滾動位置
+            var scrollTo = Math.max(0, targetElementTop - offset); // 確保不會小於0
+
+            // 如果 scrollTo 比當前的 scrollTop 還小，則向上滾動
+            if (scrollTo < currentScrollTop) {
+                $('html, body').animate({
+                    scrollTop: scrollTo
+                }, 100, function() {
+                    // 向上滾動完成後執行搜索操作
+                    currentPage = clickedPage;
+                    searchItems(currentSearchKeyword, selectedCategory);
+                }); // 持續時間為0.5秒
+            } else {
+                // 如果不需要向上滾動，直接執行搜索操作
+                currentPage = clickedPage;
+                searchItems(currentSearchKeyword, selectedCategory);
+            }
+        });
+    }
+
+    // 初始化顯示第一頁的項目，同時隐藏超過指定數量的項目
+    searchItems("", "");
+});
+
+</script>
+</body>
+
+</html>
+
+
+

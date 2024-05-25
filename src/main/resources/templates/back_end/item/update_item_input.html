@@ -1,0 +1,291 @@
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+<title>活動項目編輯</title>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/super-build/ckeditor.js"></script>
+
+<style>
+    .ck-editor__editable {
+
+        height: 250px; /* 设置固定高度 */
+
+    }
+
+    .ck {
+        border-radius: 4px !important;
+    }
+
+    .ck-editor {
+        width: 94% !important;
+        margin-bottom: 2rem !important;
+
+    }
+
+</style>
+</head>
+<body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <form th:action="@{update}" method="post" th:object="${itemVO}" enctype="multipart/form-data">
+        <div>
+            <h2 class="hc-2">編輯活動項目&nbsp;<span th:text="${itemVO.activityId}" th:field="*{activityId}" name="activityId"></span></h2>
+            <input type="hidden" th:field="*{activityId}" />
+        </div>
+
+        <div>
+
+
+            <div class="mb-4">
+                <div class="mb-4">
+                    <h5 class="f-w">活動類別 <span class="require_text">(必填)</span></h5>
+                </div>
+                <select class="selectric2" th:field="*{categoryVO.activityCategoryId}">
+                    <option value="">請選擇</option>
+                    <option th:each="categoryVO : ${categoryListData2}"
+                            th:value="${categoryVO.activityCategoryId}"
+                            th:text="${categoryVO.activityCategoryName}"/>
+                </select>
+                <div th:if="${#fields.hasErrors('categoryVO.activityCategoryId')}"
+                     class="error"
+                     id="categoryVO.activityCategoryId.errors">
+                    <span th:errors="*{categoryVO.activityCategoryId}"></span>
+                    <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+                </div>
+
+            </div>
+            <div class="mb-4">
+                <div class="mb-4">
+                    <h5 class="f-w">活動名稱 <span class="require_text">(必填)</span></h5>
+                </div>
+                <input type="text" class="form_element" th:field="*{activityName}"
+                       onclick="hideContent('activityName.errors');"/>
+                <div th:if="${#fields.hasErrors('activityName')}" class="error" id="activityName.errors">
+                    <span th:errors="*{activityName}"></span>
+                    <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="mb-4">
+                    <h5 class="f-w">活動簡述</h5>
+                </div>
+                <textarea class="textarea_element" th:field="*{activityDescription}"
+                          onclick="hideContent('activityDescription.errors');"/></textarea>
+                <div th:if="${#fields.hasErrors('activityDescription')}" th:errors="*{activityDescription}"
+                     class="error" id="activityDescription.errors"></div>
+            </div>
+            <div class="mb-3">
+                <div class="mb-4">
+                    <h5 class="f-w">活動說明<span class="require_text">(必填)</span></h5>
+                </div>
+                <textarea th:field="*{activityInfo}" onclick="hideContent('activityInfo.errors');"/></textarea>
+                <div th:if="${#fields.hasErrors('activityInfo')}" class="error" id="activityInfo.errors">
+                    <span th:errors="*{activityInfo}"></span>
+                    <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="mb-4">
+                    <h5 class="f-w">活動價格 <span class="require_text">(必填)</span></h5>
+                </div>
+                <span class="nt-u2 f-z">NT$&nbsp;</span>
+                <input type="text" class="form_element5 nt-u2" th:field="*{activityPrice}"
+                       onclick="hideContent('activityPrice.errors');"/>
+                <div th:if="${#fields.hasErrors('activityPrice')}" class="error" id="activityPrice.errors">
+                    <span th:errors="*{activityPrice}"></span>
+                    <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="mb-4">
+                    <h5 class="f-w">活動狀態 <span class="require_text">(必填)</span></h5>
+                </div>
+                <select class="selectric2 " th:field="*{activityState}">
+                    <option value="">請選擇</option>
+                    <option value="true">上架</option>
+                    <option value="false">下架</option>
+                </select>
+                <div th:if="${#fields.hasErrors('activityState')}" class="error" id="activityState.errors">
+                    <span th:errors="*{activityState}"></span>
+                    <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
+                </div>
+            </div>
+            <br>
+            <div>
+                <div class="btn_area">
+
+                    <button type="button" class="btn btn-secondary cu-2"
+                            onclick="window.location.href='/item/listAllItem'">返回
+                    </button>
+                    <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 編輯完成</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+
+    CKEDITOR.ClassicEditor.create(document.getElementById("activityInfo"), {
+
+        // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+        toolbar: {
+            items: [
+                'exportPDF', 'exportWord', '|',
+                'findAndReplace', 'selectAll', '|',
+                'heading', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo',
+                '-',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'alignment', '|',
+                'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                'textPartLanguage'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+        // Changing the language of the interface requires loading the language file using the <script> tag.
+        // language: 'es',
+        list: {
+            properties: {
+                styles: true,
+                startIndex: true,
+                reversed: true
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+        heading: {
+            options: [
+                {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
+                {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
+                {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'},
+                {model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3'},
+                {model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4'},
+                {model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5'},
+                {model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6'}
+            ]
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+        placeholder: '請輸入內容',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+        fontFamily: {
+            options: [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+        fontSize: {
+            options: [10, 12, 14, 'default', 18, 20, 22, 24, 26, 28, 30, 32, 36, 40],
+            supportAllValues: true
+        },
+        // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+        // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+        htmlSupport: {
+            allow: [
+                {
+                    name: /.*/,
+                    attributes: true,
+                    classes: true,
+                    styles: true
+                }
+            ]
+        },
+        // Be careful with enabling previews
+        // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+        htmlEmbed: {
+            showPreviews: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://',
+                toggleDownloadable: {
+                    mode: 'manual',
+                    label: 'Downloadable',
+                    attributes: {
+                        download: 'file'
+                    }
+                }
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+        mention: {
+            feeds: [
+                {
+                    marker: '@',
+                    feed: [
+                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                        '@sugar', '@sweet', '@topping', '@wafer'
+                    ],
+                    minimumCharacters: 1
+                }
+            ]
+        },
+        // The "superbuild" contains more premium features that require additional configuration, disable them below.
+        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+        removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            'AIAssistant',
+            'CKBox',
+            'CKFinder',
+            'EasyImage',
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            'MultiLevelList',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType.
+            'MathType',
+            // The following features are part of the Productivity Pack and require additional license.
+            'SlashCommand',
+            'Template',
+            'DocumentOutline',
+            'FormatPainter',
+            'TableOfContents',
+            'PasteFromOfficeEnhanced',
+            'CaseChange'
+        ],
+
+    });
+
+
+</script>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>

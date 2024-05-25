@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{/back_end/include/include_top}"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <title>所有活動促銷資料</title>
+
+    <style>
+        label input[type="search"]{
+            margin-bottom :  1.5rem;
+        }
+        table.dataTable {
+            margin-bottom: 1rem !important;
+        }
+        table.dataTable thead th {
+            text-align: center !important;
+        }
+        th:first-child {
+            border-top-left-radius: 6px;
+
+        }
+
+        th:last-child {
+            border-top-right-radius: 6px;
+
+        }
+        table.dataTable > thead > tr > th {
+            padding-top: 25px !important;
+            padding-bottom: 25px !important;
+        }
+        .t-t-2 th:nth-child(3)::before,
+        .t-t-2 th:nth-child(9)::before,
+        .t-t-2 th:nth-child(10)::before {
+            display: none !important;
+        }
+
+        .t-t-2 th:nth-child(3)::after,
+        .t-t-2 th:nth-child(9)::after,
+        .t-t-2 th:nth-child(10)::after {
+            display: none !important;
+        }
+
+    </style>
+</head>
+<body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <input type="hidden" id="success" th:value="${success}">
+    <div>
+        <h2 class="hc-1">所有活動促銷列表</h2>
+    </div>
+    <div class="controls">
+        <div class="button-container">
+            <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增促銷</button>
+            <a id="link" href='addPromotion'></a>
+        </div>
+
+
+<table id="example" class="display tr-line tl" >
+    <thead class="t-t-1">
+    <tr class="t-t-2">
+
+        <th class="th-w6 tp-1">促銷編號</th>
+        <th class="th-w2">促銷標題</th>
+        <th class="th-w8">促銷內容</th>
+        <th class="th-w6">促銷折扣</th>
+        <th class="th-w6">活動折價</th>
+        <th class="th-w2-1">促銷開始時間</th>
+        <th class="th-w2-1">促銷結束時間</th>
+        <th class="th-w9">促銷狀態</th>
+        <th >&nbsp;&nbsp;編輯</th>
+        <th >&nbsp;&nbsp;刪除</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <th:block th:each="promotionVO : ${promotionListData}">
+        <tr>
+
+            <td class="th-w4" th:text="${promotionVO.promotionId}"></td>
+            <td class="tto-1" th:text="${promotionVO.promotionTitle}"></td>
+            <td >
+                <button type="button" class="btn  cu-1 td-1" data-bs-toggle="modal"
+                        th:data-bs-target="'#staticBackdrop'+ ${promotionVO.promotionId}">明細
+
+                </button>
+            </td>
+            <!-- Modal -->
+
+            <div class="modal fade " id="staticBackdrop"
+                 th:id="'staticBackdrop' + ${promotionVO.promotionId}"
+                 data-bs-backdrop="static" 　data-bs-keyboard="false" 　tabindex="-1" 　
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content cu-1">
+                        <div class="modal-header pw-2">
+                            <h3 class="modal-title hc-3" id="staticBackdropLabel">活動促銷&nbsp;<span
+                                    th:text="${promotionVO.promotionId}"></span>&nbsp;內容</h3>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pw-3">
+                            <div class="modal-dialog modal-lg">
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動促銷標題</h5>
+                                    </div>
+                                    <input type="text" class="form_element3 " name="promotionTitle"
+                                           th:value="${promotionVO.promotionTitle} "></input>
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動促銷內容</h5>
+                                    </div>
+
+                                    <textarea type="text" class="textarea_element3 "
+                                              name="activityInfo"
+                                              th:text="${promotionVO.promotionContent}"></textarea>
+
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">促銷折扣</h5>
+                                    </div>
+                                    <span class="form_element3" th:if="${promotionVO.promotionDiscount == 1}">無</span>
+                                    <span class="form_element3" th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 == 0}" th:text="${#numbers.formatDecimal((promotionVO.promotionDiscount * 10), 0, 0)} + '折'"></span>
+                                    <span class="form_element3" th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 != 0}" th:text="${#numbers.formatDecimal((promotionVO.promotionDiscount * 10), 1, 1)} + '折'"></span>
+
+<!--                                    <input type="text" class="form_element3 " name="promotionDiscount"-->
+<!--                                           th:if="${promotionVO.promotionDiscount == 1  }" th:value="無"-->
+<!--                                    th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 == 0 }" th:value="${#numbers.formatDecimal((promotionVO.promotionDiscount * 10), 0, 0)} "-->
+<!--                                    th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 != 0 }" th:value="${#numbers.formatDecimal( (promotionVO.promotionDiscount * 100), 0, 0)} "></input>-->
+
+<!--                                            <span class="form_element3 " th:unless="${promotionVO.promotionDiscount < 1}">無</span>-->
+
+
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">促銷折價</h5>
+                                    </div>
+                                    <input type="text" class="form_element3 " name="promotionCoupon"
+                                           th:value="${promotionVO.promotionCoupon} "></input>
+                                </div>
+
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"
+                                                                 style="color: #454a46;"></i>&nbsp;促銷開始時間</h5>
+                                    </div>
+                                    <input type="text" class="form_element3" name="promotionStarted"
+                                           th:value="${promotionVO.promotionStarted}"></input>
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"
+                                                                 style="color: #454a46;"></i>&nbsp;促銷結束時間</h5>
+                                    </div>
+                                    <input type="text" class="form_element3" name="promotionEnd"
+                                           th:value="${promotionVO.promotionEnd}"></input>
+                                </div>
+
+
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動促銷狀態</h5>
+                                    </div>
+                                    <div class="form_element6">
+                                    <input type="text" class="form_element3"  name="promotionState"
+                                            th:value="${promotionVO.promotionState ? '上架' : '下架'}"></input>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Modal end-->
+
+            <td class="th-w4">
+                <span th:if="${promotionVO.promotionDiscount == 1}">無</span>
+                <span th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 == 0}" th:text="${#numbers.formatDecimal((promotionVO.promotionDiscount * 10), 0, 0)} + '折'"></span>
+                <span th:if="${promotionVO.promotionDiscount < 1 && (promotionVO.promotionDiscount * 100) % 10 != 0}" th:text="${#numbers.formatDecimal((promotionVO.promotionDiscount * 100), 0, 0)} + '折'"></span>
+
+            </td>
+
+
+            <td class="th-w4" th:text="${promotionVO.promotionCoupon}"></td>
+            <td th:text="${promotionVO.promotionStarted}"></td>
+            <td th:text="${promotionVO.promotionEnd}"></td>
+            <td class="th-w4" th:text="${promotionVO.promotionState ? '上架' : '下架'}"></td>
+            <td>
+                <form method="post" th:action="@{/promotion/getOne_For_Update}" style="margin-bottom: 0px;">
+                    <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
+                    <input type="hidden" name="promotionId" th:value="${promotionVO.promotionId}">
+                </form>
+<!--                <button type="button" class="btn btn-outline-success2 cu-5" data-bs-toggle="modal"-->
+<!--                        th:data-bs-target="'#staticBackdrop2'+ ${promotionVO.promotionId}">編輯-->
+
+<!--                </button>-->
+
+            </td>
+            <!-- Modal 2 -->
+
+<!--            <div class="modal fade " id="staticBackdrop2" th:id="'staticBackdrop2' + ${promotionVO.promotionId}"-->
+<!--                 data-bs-backdrop="static"　data-bs-keyboard="false"　tabindex="-1"　-->
+<!--                 aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--                <div class="modal-dialog modal-lg">-->
+<!--                    <div class="modal-content cu-1">-->
+<!--                        <div class="modal-header pw-2">-->
+<!--                            <h3 class="modal-title hc-3" id="staticBackdropLabel2">編輯活動促銷&nbsp;<span th:text="${promotionVO.promotionId}"></span></h3>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+<!--                                    aria-label="Close"></button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body pw-1">-->
+<!--                            &lt;!&ndash;                                <div class="modal-dialog modal-lg">&ndash;&gt;-->
+
+
+<!--                            <form id="formTest-${itemVO.activityId}" action="/promotion/update"-->
+<!--                                  method="post">-->
+
+<!--                                <div class="mb-4-5">-->
+<!--                                    &lt;!&ndash;                                                <label for="catId1">活動類別編號:</label>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                                <textarea type="text" th:field="*{activityCategoryId}"  id="catId1" name="activityCategoryId" style="border:0px ; font-weight: bold;" readonly /><br/>&ndash;&gt;-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動促銷編號 (不可編輯)</h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="text" class="form_element2"  name="promotionId"-->
+<!--                                           th:value="${promotionVO.promotionId}" readonly></input>-->
+
+<!--                                </div>-->
+
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動促銷標題 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="text" class="form_element3"  name="promotionTitle"-->
+<!--                                           th:value="${promotionVO.promotionTitle}" required-->
+<!--                                           onclick="hideContent('promotionVO.promotionTitle.errors');"/>-->
+<!--&lt;!&ndash;                                    <span th:if="${#fields.hasErrors('promotionVO.promotionTitle')}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          th:errors="${promotionVO.promotionTitle}" class="error"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          id="promotionTitle.errors"></span>&ndash;&gt;-->
+
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動促銷內容</h5>-->
+<!--                                    </div>-->
+
+<!--                                    <textarea type="text" class="textarea_element2"-->
+<!--                                              name="promotionContent"-->
+<!--                                              th:text="${promotionVO.promotionContent}"></textarea>-->
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">促銷折扣 </h5>-->
+<!--                                    </div>-->
+<!--                                    <select class="selectric " th:field="*{promotionVO.promotionDiscount}" >-->
+<!--                                        <option value="1"></option>-->
+<!--                                        <option value="0.95">95折</option>-->
+<!--                                        <option value="0.9">9折</option>-->
+<!--                                        <option value="0.85">85折</option>-->
+<!--                                        <option value="0.8">8折</option>-->
+<!--                                        <option value="0.75">75折</option>-->
+<!--                                        <option value="0.7">7折</option>-->
+<!--                                        <option value="0.65">65折</option>-->
+<!--                                        <option value="0.6">6折</option>-->
+<!--                                        <option value="0.55">55折</option>-->
+<!--                                        <option value="0.5">5折</option>-->
+<!--                                        <option value="0.45">45折</option>-->
+<!--                                        <option value="0.4">4折</option>-->
+<!--                                        <option value="0.35">35折</option>-->
+<!--                                        <option value="0.3">3折</option>-->
+<!--                                        <option value="0.25">25折</option>-->
+<!--                                        <option value="0.2">2折</option>-->
+<!--                                        <option value="0.15">15折</option>-->
+<!--                                        <option value="0.1">1折</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="mb-4-5 rl">-->
+<!--                                    <div class="mb-4 ">-->
+<!--                                        <h5 class="f-w ">促銷折價 </h5>-->
+<!--                                    </div>-->
+<!--                                    <span class="nt-u2 f-z">NT$&nbsp;</span>-->
+<!--                                    <input type="text" class="form_element5 nt-u2"  name="promotionCoupon"-->
+<!--                                           th:value="${promotionVO.promotionCoupon}" required-->
+<!--                                           onclick="hideContent('promotionVO.promotionCoupon.errors');"/>-->
+<!--                                    <span th:if="${#fields.hasErrors('promotionVO.promotionCoupon')}"-->
+<!--                                          th:errors="${promotionVO.promotionCoupon}" class="error"-->
+<!--                                          id="promotionCoupon.errors"></span>-->
+
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"-->
+<!--                                                                 style="color: #454a46;"></i>&nbsp;促銷開始時間-->
+<!--                                            <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="date" class="form_element6" name="promotionStarted"-->
+<!--                                           th:value="${promotionVO.promotionStarted}" required-->
+<!--                                           onclick="hideContent('promotionStarted.errors');"/>-->
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">&nbsp;<i class="fa-solid fa-calendar-days"-->
+<!--                                                                 style="color: #454a46;"></i>&nbsp;促銷結束時間-->
+<!--                                            <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="date" class="form_element6" name="promotionEnd"-->
+<!--                                           th:value="${promotionVO.promotionEnd}" required-->
+<!--                                           onclick="hideContent('promotionEnd.errors');"/>-->
+
+<!--                                </div>-->
+<!--&lt;!&ndash;                                <div class="mb-4-5">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div class="mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <h5 class="f-w">活動說明</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                    <textarea type="text" id="activityInfo" class="textarea_element2"&ndash;&gt;-->
+<!--&lt;!&ndash;                                              name="activityInfo"&ndash;&gt;-->
+<!--&lt;!&ndash;                                              th:text="${itemVO.activityInfo}"></textarea>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動促銷狀態 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <select class="selectric " th:value="*{promotionVO.promotionState}" required>-->
+<!--                                        <option value="true">上架</option>-->
+<!--                                        <option value="false">下架</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+
+<!--                                <div class="modal-footer b-t-1">-->
+<!--                                    <button type="button" class="btn btn-secondary cu-3" data-bs-dismiss="modal">取消-->
+<!--                                    </button>-->
+<!--                                    <button type="submit" class="btn btn-primary cu-3">儲存變更</button>-->
+<!--                                    <input type="hidden" id="activityId" name="activityId"-->
+<!--                                           th:value="${promotionVO.promotionId}">-->
+<!--                                </div>-->
+
+
+<!--                            </form>-->
+<!--                            &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash;                                 JavaScript part&ndash;&gt;-->
+<!--                        <script type="text/javascript">-->
+<!--                            //清除提示信息-->
+<!--                            function hideContent(d) {-->
+<!--                                document.getElementById(d).innerText = '';-->
+<!--                            }-->
+<!--                            // 獲取 textarea 元素-->
+<!--                            var activityInfoTextarea = document.getElementsByClassName('ttt');-->
+<!--                            // 獲取 activityInfo 的 HTML 內容-->
+<!--                            var activityInfoHtmlContent = activityInfoTextarea.value;-->
+
+<!--                        </script>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+            <!-- Modal End-->
+
+            <td>
+                <form method="post" th:action="@{/promotion/delete}" style="margin-bottom: 0px;" onsubmit="return confirmDelete(this);">
+                    <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
+                    <input type="hidden" name="promotionId" th:value="${promotionVO.promotionId}" onclick="confirmDelete(this.form)">
+                </form>
+
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    // 在页面加载完成后执行
+    window.onload = function() {
+        /*<![CDATA[*/
+        // 獲取隱藏內容的值
+        var successValue = /*[[${success}]]*/ '';
+
+        // 如果成功消息存在且不為空，則顯示彈框
+        if (successValue && successValue.trim() !== '') {
+            Swal.fire({
+                icon: 'success',
+                title: '成功',
+                text: successValue
+            });
+        }
+        /*]]>*/
+    };
+    function confirmDelete(form) {
+        Swal.fire({
+            title: '確定要刪除嗎？',
+            text: "刪除後，資料不可復原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#35cce7',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的，刪除它！',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false; // 阻止提交行為
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
+        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+        crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+        crossorigin="anonymous"></script>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+
+<!-- ●● jquery datatables 設定 -->
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "lengthMenu": [5, 10, 15,20, 25,50, 100],
+            "searching": true,  //搜尋功能, 預設是開啟
+            "paging": true,     //分頁功能, 預設是開啟
+            "ordering": true,   //排序功能, 預設是開啟
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共 _TOTAL_ 筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "infoPostFix": "",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

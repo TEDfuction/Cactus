@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>Cactus BackEnd</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Pridi:wght@600&display=swap"
+		  rel="stylesheet">
+	<!-- Tac One -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Pridi:wght@600&display=swap" rel="stylesheet">
+	<!-- Icon Font Stylesheet -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+	<!-- Libraries Stylesheet -->
+	<link href="/lib/animate/animate.min.css" rel="stylesheet">
+	<link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+	<link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="/backend/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Template Stylesheet -->
+	<link href="/backend/css/styleold.css" rel="stylesheet">
+	<link rel="stylesheet" href="/backend/css/bootstrap.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<!-- 引入 DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+	<!-- 引入 DataTables JS -->
+	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>           <!-- ●●js  for jquery datatables 用 -->
+<!--	<script src="/postrequest.js"></script>-->
+	<!-- Template Stylesheet -->
+	<link rel="stylesheet" th:href="@{/css/back_end/style.css}"/>
+<!--	<link rel="stylesheet" th:href="@{/css/activities/style.css}"/>-->
+
+
+</head>
+
+<style>
+	.main {
+		width: 980px;
+		margin: 25px auto ;
+	}
+	.header span, table th, table td {
+		vertical-align: middle;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	th, td {
+		padding: 20px;
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	.center {
+		margin: auto;
+	}
+
+
+	label {
+		display: block;
+		margin-bottom: 15px; /* 設定下邊距為 10px */
+	}
+
+	label input[type="search"] {
+		width: 60%;
+		height: 25px;
+		margin-bottom: 0;
+	}
+
+    .table-controls {
+        display: flex;
+        justify-content: flex-end; /* 將內容對齊到右側 */
+        margin-bottom: 5px; /* 與表格之間的間距 */
+        padding: 2px;
+
+    .btn-primary{
+            font-size: 13px; /* 减小字体大小 */
+            border-radius: 4px; /* 设置圆角 */
+        }
+
+
+    }
+
+
+</style>
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+		<!-- 主欄位 -->
+        <div class="main">
+			<div style="text-align: center;">
+				<h3>房型管理</h3>
+			</div>
+            <div class="table-controls">
+                <a th:href="@{/roomType/addRoomType}" class="btn btn-primary" role="button">新增房型</a>
+            </div>
+            <table class="center" id="mainbox">
+				<thead>
+				<tr style="background-color:#b8daff;">
+					<th>No</th>
+					<th>房型編號</th>
+					<th>房型名稱</th>
+					<th>房型說明</th>
+					<th>上下架狀態</th>
+					<th>房型價格說明</th>
+					<th>修改內容</th>
+					<th>更換房型狀態</th>
+				</tr>
+				</thead>
+				<tbody>
+
+				<th:block th:each="roomTypeVO : ${allRoomTypes}" class="descriptions">
+					<tr>
+						<td th:text="${roomTypeVOStat.count}"></td>
+						<td th:text="${roomTypeVO.roomTypeId}"></td>
+						<td th:text="${roomTypeVO.roomTypeName}"></td>
+<!--						<td th:text="${roomTypeVO.roomTypeContent}" class="desc"></td>-->
+
+						<!-- Button trigger modal -->
+						<td>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+									th:data-updateRTCON="${roomTypeVO.roomTypeContent}"
+									onclick="fillFormContent(this.getAttribute('data-updateRTCON'));">
+								詳細說明
+							</button>
+						</td>
+
+						<td>
+							<span th:if="${roomTypeVO.roomTypeStatus}" class="badge bg-success">上架中</span>
+							<span th:unless="${roomTypeVO.roomTypeStatus}" class="badge bg-danger">下架中</span>
+						</td>
+						<td th:text="${roomTypeVO.roomTypePrice}"></td>
+						<td>
+							<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+									th:data-bs-target="'#exampleModal'+ ${roomTypeVO.roomTypeId}" >修改
+							</button>
+						</td>
+
+						<!------- 房型說明Modal -------->
+						<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							<div class="modal-dialog ">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="staticBackdropLabel">房型詳細說明</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div id="roomTypeContent" class="modal-body">
+										<div class="mb-2" >
+											<label for="updateRTCON" class="col-form-label"></label>
+											<textarea class="form-control" id="updateRTCON" readonly></textarea>
+										</div>
+										<input type="hidden" name="roomTypeId">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+<!--										<button type="button" class="btn btn-primary">Understood</button>-->
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<!--------- 修改Modal -------->
+						<div class="modal fade" th:id="'exampleModal'+ ${roomTypeVO.roomTypeId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+							<div class="modal-dialog ">
+								<div class="modal-dialog modal-dialog-scrollable">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">修改資料</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body" id="updateRTDiv">
+											<!-- 表單 -->
+											<form id="roomTypeForm-${roomTypeVO.roomTypeId}" method="post" action="/roomType/updateRoomTypeForm">
+												<div class="mb-3" >
+													<label for="RTId" class="col-form-label" >房型編號:</label>
+													<textarea type="text" class="form-control" id="RTId" name="roomTypeId"
+															  th:text="${roomTypeVO.roomTypeId}" readonly></textarea>
+
+												</div>
+												<div class="mb-3" >
+													<label for="RTName" class="col-form-label" >房型名稱:</label>
+													<textarea type="text" class="form-control" id="RTName" name="roomTypeName" th:text="${roomTypeVO.roomTypeName}"></textarea>
+												</div>
+												<div class="mb-3">
+													<label for="RTContent" class="col-form-label">房型說明:</label>
+													<textarea class="form-control"
+															  id="RTContent" name="roomTypeContent" th:text="${roomTypeVO.roomTypeContent}"></textarea>
+												</div>
+												<div class="mb-3">
+													<label for="RTPrice" class="col-form-label">房型價格說明:</label>
+													<textarea type="text" class="form-control"
+													   id="RTPrice" name="roomTypePrice" th:text="${roomTypeVO.roomTypePrice}"></textarea>
+												</div>
+												<!-- 隐藏的输入字段用于存储roomTypeId -->
+
+												<!--								<input type="hidden" id="roomTypeContent" name="roomTypeContent">-->
+												<!--								<input type="hidden" id="roomTypePrice" name="roomTypePrice">-->
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+													<button type="submit" class="btn btn-primary">送出</button>
+													<input type="hidden" id="roomTypeId" name="roomTypeId" th:value="${roomTypeVO.roomTypeId}">
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<td>
+							<form id="updateRTS" method="post" action="/roomType/updateRTS">
+								<input type="hidden" name="roomTypeStatus" th:value="${!roomTypeVO.roomTypeStatus}" />
+								<input type="hidden" name="roomTypeId" th:value="${roomTypeVO.roomTypeId}" />
+								<button type="submit" class="btn btn-outline-dark btn-sm" onclick="submitForm(event)">更換房型狀態</button>
+							</form>
+						</td>
+				</th:block>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+</body>
+
+<!--以下為table分頁用-->
+<script>
+
+	$(document).ready(function() {
+		// 限制文字長度功能
+		$(".desc").each(function() {
+			let text = $(this).text();
+			if (text.length > 10) {
+				$(this).text(text.substring(0, 10) + "...");
+			}
+		});
+
+		// 初始化 DataTable
+		$('#mainbox').DataTable({
+			"lengthMenu": [5, 10, 15], // 可以再加其他選項 20/50
+			"searching": true,  // 搜索功能, 預設是開啟
+			"paging": true,     // 分頁功能, 預設是開啟
+			"ordering": true,   // 排序功能, 預設是開啟
+			"language": {
+				"processing": "處理中...",
+				"loadingRecords": "載入中...",
+				"lengthMenu": "顯示 _MENU_ 筆結果",
+				"zeroRecords": "沒有符合的結果",
+				"info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+				"infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+				"infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+				"infoPostFix": "",
+				"search": "搜尋:",
+				"paginate": {
+					"first": "第一頁",
+					"previous": "上一頁",
+					"next": "下一頁",
+					"last": "最後一頁"
+				},
+				"aria": {
+					"sortAscending": ": 升冪排列",
+					"sortDescending": ": 降冪排列"
+				}
+			}
+		});
+	});
+
+
+	// $('#exampleModal').on('show.bs.modal', function (event) {
+	// 	var button = $(event.relatedTarget) // 按钮，触发了模态窗口
+	// 	var roomTypeId = button.data('roomtype-id') // 从 data-roomtype-id 属性中提取数据
+	// 	var modal = $(this)
+	// 	modal.find('.modal-body input#modalRoomTypeId').val(roomTypeId) // 更新隐藏字段的值
+	// })
+
+
+
+	$(document).ready(function() {
+		// 使用事件委托监听所有模态窗口的显示事件
+		$(document).on('show.bs.modal', '.modal', function(event) {
+			var button = event.relatedTarget; // 触发事件的按钮
+			var modalId = $(this).attr('id'); // 获取当前模态框的 ID
+			var modal = $('#' + modalId); // 获取当前模态框的 jQuery 对象
+			var recipient = button.getAttribute('data-bs-whatever') // 获取按钮上的数据
+
+			// 获取当前模态框内的元素
+			var modalTitle = modal.find('.modal-title');
+			var modalBodyInput = modal.find('.modal-body input');
+
+			// 更新模态框内容
+			if (modalTitle && modalBodyInput) {
+				modalTitle.text('房型詳細說明')  ;
+				modalBodyInput.val(recipient);
+			}
+		});
+	});
+		 // Ajax
+
+	$('.modal').on('submit', '.roomTypeForm', function(event) {
+		event.preventDefault();
+		var formId = $(this).attr('id'); // 获取表单的 ID
+		var formData = $(this).serialize(); // 序列化表单数据
+
+
+		$.ajax({
+			url: '/roomtype/updateRoomTypeForm', // 控制器的 URL
+			type: 'POST',
+			data: formData,
+			success: function(response) {
+				alert('更新成功');
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				alert('更新失败: ' + error);
+			}
+		});
+	});
+
+
+
+
+	// 比如检查房型名稱是否为空
+	var roomTypeName = document.getElementById('RTName').value;
+	if (!roomTypeName) {
+		alert("請輸入房型名稱");
+		// 可以加入更多驗證...
+	}
+
+	function fillFormContent(content) {
+		var inputElement = document.getElementById('updateRTCON');
+		if (inputElement) {
+			inputElement.value = content;
+		} else {
+			console.error('Element with ID "updateRTCON" not found.');
+		}
+	}
+
+	function submitForm(event) {
+		var confirmChange = confirm("確定要更改房型上下架嗎?");
+		if (confirmChange) {
+			document.getElementById("updateForm").submit();
+		} else {
+			event.preventDefault();
+		}
+	}
+
+</script>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>

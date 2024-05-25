@@ -1,0 +1,292 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+    thead tr > th{
+        text-align: center !important;
+    }
+
+    .unique{
+        text-align:center;
+    }
+
+    /*.display{*/
+    /*    font-size:15px;*/
+    /*    table-layout: fixed;*/
+    /*    word-break: break-all;*/
+    /*    word-wrap: break-word;*/
+    /*    width:100%;*/
+    /*    height:70%;  */
+
+    /*}*/
+
+    .display td,th{
+        border: 1px solid black;
+    }
+
+    .display thead{
+        background-color:lightcyan
+    }
+
+    .display tbody{
+        background-color:ivory;
+    }
+    .display img{
+        width:100%;
+        height:100%;
+    }
+    .btn-primary{
+        font-size: 13px;
+        border-radius: 4px;
+    }
+
+    #updateRoomGuestName {
+        height: 150px;
+    }
+</style>
+
+</head>
+
+
+
+
+
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+<!-- =========================================================================================== -->
+
+
+<!-- 主欄位 -->
+<div class="unique">
+    <div>
+
+        <br>
+        <h3><a class="navbar-brand" th:href="@{/room/getAllRoom}">回查詢頁</a></h3></div>
+        <br>
+
+    <table  id="xxx" class="display">
+        <thead>
+        <tr>
+
+            <th>房間編號</th>
+            <th>房型</th>
+            <th>住客人數</th>
+            <th>住客名單</th>
+            <th>上下架狀態</th>
+            <th>房間狀態</th>
+            <th>房間價格</th>
+            <th>修改</th>
+            <th>更改房間狀態</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr>
+
+            <td th:text="${roomVO.roomId}"></td>
+
+            <td th:text="${roomVO.roomTypeVO.roomTypeName}"></td>
+
+            <td th:text="${roomVO.roomGuestAmount}"></td>
+
+            <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                        th:data-updateRoomGuestName="${roomVO.roomGuestName}"
+                        onclick="fillFormContent(this.getAttribute('data-updateRoomGuestName'));">
+                    房客名單詳細
+                </button>
+            </td>
+
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">房客名單詳細</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="roomGuestName" class="modal-body">
+                            <div class="mb-2" >
+                                <label for="updateRoomGuestName" class="col-form-label"></label>
+                                <textarea class="form-control" id="updateRoomGuestName" readonly></textarea>
+                            </div>
+                            <input type="hidden" name="roomId">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <!--										<button type="button" class="btn btn-primary">Understood</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <td>
+                <span th:if="${roomVO.roomStatus} eq 0" class="badge bg-danger">下架</span>
+                <span th:if="${roomVO.roomStatus} eq 1" class="badge bg-success">上架</span>
+            </td>
+
+            <td>
+                <span th:if="${roomVO.roomSaleStatus} eq 0">未入住</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 1">已入住</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 2">待清潔</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 3">逾期</span>
+                <span th:if="${roomVO.roomSaleStatus} eq 4">異常</span>
+            </td>
+
+            <td th:text="${roomVO.roomPrice}"></td>
+
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        th:data-bs-target="'#exampleModal'+ ${roomVO.roomId}" >修改
+                </button>
+            </td>
+
+            <div class="modal fade" th:id="'exampleModal'+ ${roomVO.roomId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog ">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">修改資料</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="updateRoomDiv">
+                                <!-- 表單 -->
+                                <form id="roomForm-${room.roomId}" method="post" action="/room/updateRoom">
+
+                                    <div class="mb-3" >
+                                        <label for="roomId" class="col-form-label" >房間編號:</label>
+                                        <textarea type="text" class="form-control" id="roomId" name="roomId"
+                                                  th:text="${roomVO.roomId}" readonly></textarea>
+                                    </div>
+
+                                    <div class="mb-3" >
+                                        <label for="roomTypeName" class="col-form-label" >房型:</label>
+                                        <textarea type="text" class="form-control" id="roomTypeName" th:text="${roomVO.roomTypeVO.roomTypeName}" readonly></textarea>
+                                    </div>
+
+                                    <input type="hidden" id="roomTypeId" name="roomTypeId" th:value="${roomVO.roomTypeVO.roomTypeId}" />
+
+                                    <div class="mb-3">
+                                        <label for="roomStatus" class="col-form-label">上下架狀態:</label>
+                                        <select class="form-select" id="roomStatus" name="roomStatus">
+                                            <option th:selected="${roomVO.roomStatus == 1}" value="1">上架</option>
+                                            <option th:selected="${roomVO.roomStatus == 0}" value="0">下架</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="roomPrice" class="col-form-label">促銷折扣:</label>
+                                        <textarea type="text" class="form-control"
+                                                  id="roomPrice" name="roomPrice" th:text="${roomVO.roomPrice}"></textarea>
+                                    </div>
+
+
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomGuestAmount" class="col-form-label">住客人數:</label>
+                                        <textarea type="text" class="form-control" id="roomGuestAmount" name="roomGuestAmount" th:text="${roomVO.roomGuestAmount}"></textarea>
+                                    </div>
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomGuestName" class="col-form-label">住客名單:</label>
+                                        <textarea type="text" class="form-control" id="roomGuestNameHidden" name="roomGuestName" th:text="${roomVO.roomGuestName}"></textarea>
+                                    </div>
+
+                                    <div class="mb-3 d-none">
+                                        <label for="roomSaleStatusHidden" class="col-form-label">房間狀態:</label>
+                                        <textarea type="text" class="form-control" id="roomSaleStatusHidden" name="roomSaleStatus" th:text="${roomVO.roomSaleStatus}"></textarea>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-primary">送出</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <td>
+                <form method="post" th:action="@{/room/updateOneRoomSaleStatus}">
+                    <select class="form-select" name="roomSaleStatus" th:value="${roomVO.roomSaleStatus}">
+                        <option value="0" th:selected="${roomVO.roomSaleStatus == 0}">未入住</option>
+                        <option value="1" th:selected="${roomVO.roomSaleStatus == 1}">已入住</option>
+                        <option value="2" th:selected="${roomVO.roomSaleStatus == 2}">待清潔</option>
+                        <option value="3" th:selected="${roomVO.roomSaleStatus == 3}">逾期</option>
+                        <option value="4" th:selected="${roomVO.roomSaleStatus == 4}">異常</option>
+                    </select>
+                    <input type="hidden" name="roomId" th:value="${roomVO.roomId}">
+                    <button type="submit" class="btn btn-primary mt-2">更新</button>
+                </form>
+            </td>
+
+
+        </tr>
+        </th:block>
+        </tbody>
+
+
+
+    </table>
+
+
+</div>
+</div>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+
+<!----------- ●● jquery datatables 設定 ---------------------->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+
+<script>
+    $(document).ready(function() {
+        $('#xxx').DataTable({
+            "lengthMenu": [3 ,5, 10],
+            "searching": true,  //搜尋功能, 預設是開啟
+            "paging": true,     //分頁功能, 預設是開啟
+            "ordering": true,   //排序功能, 預設是開啟
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "infoPostFix": "",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+    });
+
+    function fillFormContent(content) {
+        var inputElement = document.getElementById('updateRoomGuestName');
+        if (inputElement) {
+            inputElement.value = content;
+        } else {
+            console.error('Element with ID "updateRoomGuestName" not found.');
+        }
+    }
+</script>
+
+

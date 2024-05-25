@@ -1,0 +1,407 @@
+<div th:replace="~{/front_end/index/include/include_top}"></div>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/index/icons/icon-12.png}" alt="Icon">
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+    <div class="container-fluid green-bg p-0 wow fadeIn" data-wow-delay="0.1s">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+                    <a class="text-white px-2" href="">English ｜</a>
+                    <a class="text-white px-2" th:href="@{/admin/adminLogin}">日本語 ｜</a>
+                    <a class="text-white px-2" th:href="@{/member/memberLogin}">會員中心</a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <a href="/" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="text2-primary2 m-0"><img class="me-1" th:src="@{/img/front_end/index/icons/LOGO.png}" alt="Icon"><img
+                    class="me-3" th:src="@{/img/front_end/index/cactus_name2.png}" alt="Name"></h1>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <!-- 原本輸入內容:Home -->
+                <a href="index.html" class="nav-item nav-link active">最新消息</a>
+                <div class="nav-item dropdown">
+                    <!-- 原本輸入內容:Pages -->
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
+                    <div class="dropdown-menu border-0 m-0">
+                        <a href="about_cactus" class="dropdown-item">凱克特司</a>
+                        <a href="project.html" class="dropdown-item">周邊特色</a>
+                        <a href="contactus_cactus" class="dropdown-item">常見問題</a>
+
+                    </div>
+                </div>
+                <!-- 原本輸入內容:About，要改成下拉式選單 -->
+                <a href="about.html" class="nav-item nav-link">房型介紹</a>
+                <div class="dropdown-menu border-0 m-0">
+                    <!-- <a href="feature.html" class="dropdown-item">緣起</a>
+                    <a href="project.html" class="dropdown-item">特色設施</a>
+                    <a href="testimonial.html" class="dropdown-item">交通資訊</a>
+
+                    <a href="team.html" class="dropdown-item">周邊景點</a>
+                    <a href="appointment.html" class="dropdown-item">周邊美食</a>
+
+                    <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
+                </div>
+
+                <a href="service.html" class="nav-item nav-link">特色活動</a>
+                <a th:href="@{/product/listAllProduct}" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping" me-2
+                                                                    style="color: #01b2a6;"></i> 購物商城</a>
+            </div>
+
+            <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
+                                                                              style="color: #f2f1f1;"></i> 線上訂房</a>
+
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Page Header Start -->
+<!--    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">-->
+<!--        <div class="container py-5">-->
+<!--            <h1 class="display-1 text-white animated slideInDown">Contact Us</h1>-->
+<!--            <nav aria-label="breadcrumb animated slideInDown">-->
+<!--                <ol class="breadcrumb text-uppercase mb-0">-->
+<!--                    <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>-->
+<!--                    <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>-->
+<!--                    <li class="breadcrumb-item text-primary active" aria-current="page">Contact Us</li>-->
+<!--                </ol>-->
+<!--            </nav>-->
+<!--        </div>-->
+<!--    </div>-->
+    <!-- Page Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            
+
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h4 class="section-title">常見問題</h4>
+            </div>
+        
+
+            <div class="question_block row g-5">
+
+
+                <div class="col-lg-6 wow fadeInUp left_question_block" data-wow-delay="0.1s">
+                    <div class="d-flex flex-column justify-content-between h-100">
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">若我沒有事先預訂，可直接入住嗎?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">本渡假村為全預約制，目前無接待現場客戶，造成不便，敬請見諒!</h5>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">線上預約可用轉帳的嗎?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">本渡假村目前只接受信用卡預付訂金，非常感謝您的配合!</h5>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">你們入住/退房的時間是幾點?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">我們的入住時間為下午3點，退房時間為早上11點。</h5>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6 wow fadeInUp right_question_block" data-wow-delay="0.1s">
+                    <div class="d-flex flex-column justify-content-between h-100">
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">要到哪裡找到我的訂單資料?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">您可登入至會員專區，查看您的各項訂單細項。</h5>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">渡假村內可以抽菸嗎?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">不可以，全館客房內與公共空間皆為禁菸區。</h5>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="question">
+
+                            <div class="d-flex align-items-center w-100 p-4 title_block">                                
+                                <a href="#" class="link_title ms-4">你們有客房服務嗎?</a>
+                                <button type="button" class="switch_btn">
+                                    <span class="-plus">+</span>
+                                    <span class="-minus">-</span>
+                                </button>
+                            </div>
+
+                            <div class="align-items-center w-100 inner_block">
+                                <h5 class="mb-0 content">沒有。</h5>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="text-left mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h5 class="section-title">若您尚有其他問題，請於早上08:00 ~ 晚上22:00間打電話詢問。</h5>
+                <h5 class="section-title">或是利用本網站之線上客服視窗功能，我們會有專人為您服務。</h5>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h4 class="section-title">聯絡資訊</h4>
+            </div>
+        
+
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="d-flex flex-column justify-content-between h-100">
+                        <div class="bg-light d-flex align-items-center w-100 p-4 mb-4">
+                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-dark" style="width: 55px; height: 55px;">
+                                <i class="fa fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div class="ms-4">
+                                <p class="mb-2">Address</p>
+                                <h3 class="mb-0">880澎湖縣馬公市160號</h3>
+                            </div>
+                        </div>
+                        <div class="bg-light d-flex align-items-center w-100 p-4 mb-4">
+                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-dark" style="width: 55px; height: 55px;">
+                                <i class="fa fa-phone-alt text-primary"></i>
+                            </div>
+                            <div class="ms-4">
+                                <p class="mb-2">Call Us Now</p>
+                                <h3 class="mb-0">06-8988717</h3>
+                            </div>
+                        </div>
+                        <div class="bg-light d-flex align-items-center w-100 p-4">
+                            <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-dark" style="width: 55px; height: 55px;">
+                                <i class="fa fa-envelope-open text-primary"></i>
+                            </div>
+                            <div class="ms-4">
+                                <p class="mb-2">Mail Us Now</p>
+                                <h3 class="mb-0">CactusHotel@yahoo.com.tw</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp2" data-wow-delay="0.5s">
+                    <img th:src="@{/img/front_end/index/scroll/img_5.jpg}">
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <!-- Contact End -->
+
+
+    <!-- Google Map Start -->
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h4 class="section-title">交通資訊</h4>
+            </div>
+    <div class="container-xxl pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        <iframe class="w-100 mb-n2" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d769.0347044226563!2d119.56627495724614!3d23.526525111985062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1szh-TW!2stw!4v1714993416865!5m2!1szh-TW!2stw"
+            width="600" height="450" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0" > </iframe>
+    </div>
+    <!-- Google Map End -->
+
+
+    <!-- Footer Start -->
+    <div>
+
+        <script
+                src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                type="module"
+        ></script>
+        <dotlottie-player
+                src="https://lottie.host/d5c4ce3c-dc9c-4472-a042-082ebdf05872/kzl7Q2a4za.json"
+                background="transparent"
+                speed="0.4"
+                style="max-width: 100%; margin-bottom: -1px"
+                direction="1"
+                playMode="normal"
+                loop
+                autoplay
+        ></dotlottie-player>
+
+
+    </div>
+
+    <div class="container-fluid text-body footer pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+
+
+        <div class="container py-5">
+            <div class="row g-5">
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">最新消息</h3>
+                    <a class="btn btn-link text-primary5" href="">所有公告</a>
+                    <a class="btn btn-link text-primary5" href="">住宿優惠</a>
+                    <a class="btn btn-link text-primary5" href="">商城優惠</a>
+                    <a class="btn btn-link text-primary5" href="">活動優惠</a>
+                    <!-- <a class="btn btn-link" href="">Construction</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">房型介紹</h3>
+                    <a class="btn btn-link text-primary5" href="">家庭庭園房</a>
+                    <a class="btn btn-link text-primary5" href="">豪華庭園房</a>
+                    <a class="btn btn-link text-primary5" href="">雙層奢華套房</a>
+                    <a class="btn btn-link text-primary5" href="">海洋海景房</a>
+
+                    <!-- <a class="btn btn-link" href="">Support</a> -->
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">特色活動</h3>
+                    <a class="btn btn-link text-primary5" href="">體驗潛水</a>
+                    <a class="btn btn-link text-primary5" href="">寬板滑水</a>
+                    <a class="btn btn-link text-primary5" href="">SUP 立式划槳</a>
+                    <a class="btn btn-link text-primary5" href="">仙人掌園區導覽</a>
+                    <a class="btn btn-link text-primary5" href="">BBQ 晚餐吃到飽</a>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-darkblue mb-4">聯絡我們</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary5 me-2"></i>地址：880 澎湖縣馬公市160號
+                    </p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary5 me-2"></i>訂房專線：06-8988717 #888</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary5 me-2"></i>CactusHotel@yahoo.com.tw</p>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">2024 Cactus Resort Hotel 凱克特司渡假村</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+<script>
+    $("a.link_title").on("click",function(e){
+        e.preventDefault();
+        $(this).closest("div.title_block").toggleClass("-on");
+        $(this).closest("div.question").find("div.inner_block").slideToggle();
+    })
+</script>
+
+    <div th:replace="~{/front_end/index/include/include_bottom}"></div>

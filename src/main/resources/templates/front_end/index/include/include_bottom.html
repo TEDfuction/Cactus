@@ -1,0 +1,73 @@
+</div>
+
+
+<script>
+    $(function () {
+        getWeather();
+    });
+
+    //以下為天氣預報 -------------------------------------------------------------------------------
+    function getWeather() {
+        $(document).ready(function () {
+            $.ajax({
+                url: 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-045?Authorization=CWA-DF377CF9-E09D-4633-8904-F07D2D2B086E&locationName=%E9%A6%AC%E5%85%AC%E5%B8%82&elementName=',
+                type: 'GET',
+                dataType: 'json',
+                success: function (weatherJson) {
+                    let weatherHTML = "";
+                    let wea = weatherJson.records.locations[0].location[0];
+                    let rain = wea.weatherElement[0].time[0].elementValue[0].value; //天氣狀況
+                    let temp = wea.weatherElement[2].time[0].elementValue[0].value; //當前氣溫
+                    let desc = wea.weatherElement[1].time[1].elementValue[0].value;
+
+                    let imgHTML = changeImg(desc);
+                    weatherHTML =
+                        `<div class="item" style="margin-top: 20px;">
+                         <p>當地天氣</p>
+                         <p>${imgHTML}</p>
+                         <p style="margin-bottom: 5px;">當地溫度: ${temp}°C</p>
+                         <p style="margin-bottom: 7px;">降雨機率: ${rain}%</p>
+                         </div></p>`
+
+
+                    $('#wea').html(weatherHTML);
+                    // $('#weather_data').html(JSON.stringify(weatherHTML, null));
+                },
+                error: function (xhr, status, error) {
+                    console.error('Request failed: ' + status + ', ' + error);
+                }
+            });
+        });
+
+        function changeImg(weatherDescription) {
+            if (weatherDescription === '多雲時晴' || weatherDescription === '晴時多雲' || '晴') {
+                return '<img src="./img/front_end/index/sun.png" alt="sun-cloudy" width="50" height="50">';
+            } else if (weatherDescription === '多雲' || weatherDescription === '陰時多雲' || weatherDescription === '多雲時陰') {
+                return '<img src="./img/front_end/index/cloudy.png" alt="cloudy" width="50" height="50">';
+            } else {
+                return '<img src="./img/front_end/index/raining.png" alt="rainy" width="50" height="50">';
+            }
+        }
+    }
+</script>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/lib/front_end/index/wow/wow.min.js}"></script>
+<script th:src="@{/lib/front_end/index/easing/easing.min.js}"></script>
+<script th:src="@{/lib/front_end/index/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/lib/front_end/index/counterup/counterup.min.js}"></script>
+<script th:src="@{/lib/front_end/index/owlcarousel/owl.carousel.min.js}"></script>
+<script th:src="@{/lib/front_end/index/tempusdominus/js/moment.min.js}"></script>
+<!-- <script src="lib/tempusdominus/js/moment-timezone.min.js"></script> -->
+<script th:src="@{/lib/front_end/index/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/js/front_end/index/main.js}"></script>
+
+<!-- Kit Icon -->
+<script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<div th:replace="~{back_end/include/include_top}"></div>
+
+
+<style type="text/css">
+	
+    span {
+		display: inline-block;
+		width: 150px;
+		text-align: left;
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+<div th:replace="~{back_end/include/include_body}"></div>
+
+<div class="unique">
+
+	<div align="center"> <h2>活動類別資料 </h2>
+	<h3><a class="navbar-brand" th:href="@{/activity/select_photo}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+	
+	<div align="center" th:fragment="listOnePhoto-div"> <!-- 此div被select_page.html第158行insert用 -->
+		<h3><span>查詢結果 :</span></h3>
+		<span>活動圖片編號:</span><span th:text="${photoVO.activityPhotoId}"></span><br/>
+		<span>活動項目編號:</span><span th:text="${photoVO.activityPh.activityId}"></span><br/>
+		<span>活動項目描述:</span><span th:text="${photoVO.activityPh.activityDescription}"></span><br/>
+		
+		<span>照片:</span><span><img th:src="@{/activity/DBGifReader}+'?activityPhotoId=' + ${photoVO.activityPhotoId}" width="100px"></span><br/>
+<!-- 		<span>活動類別名稱:</span><span th:text="${itemVO.categoryVO.activityCategoryName}"></span><br/> -->
+<!-- 		<span>活動名稱:</span><span th:text="${itemVO.activityName}"></span><br/> -->
+<!-- 		<span>活動簡述:</span><span th:text="${itemVO.activityDescription}"></span><br/> -->
+<!-- 		<span>活動說明:</span><span th:text="${itemVO.activityInfo}"></span><br/> -->
+<!-- 		<span>活動價格:</span><span th:text="${itemVO.activityPrice}"></span><br/> -->
+<!-- 		<span>活動狀態:</span><span th:text="${itemVO.activityState ? '上架' : '下架'}"></span><br/> -->
+		
+	</div>
+</div>
+<div th:replace="~{back_end/include/include_bottom}"></div>

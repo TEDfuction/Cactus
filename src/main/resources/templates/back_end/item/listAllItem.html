@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{/back_end/include/include_top}"></div>
+    <title>所有活動項目資料</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/super-build/ckeditor.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+    <style>
+        label input[type="search"]{
+            margin-bottom :  1.5rem;
+        }
+        table.dataTable {
+            margin-bottom: 1rem !important;
+        }
+        table.dataTable thead th {
+            text-align: center !important;
+        }
+        th:first-child {
+            border-top-left-radius: 6px;
+
+        }
+
+        th:last-child {
+            border-top-right-radius: 6px;
+
+        }
+        table.dataTable > thead > tr > th {
+            padding-top: 25px !important;
+            padding-bottom: 25px !important;
+        }
+
+        .multiline-ellipsis2{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .t-t-2 th:nth-child(9)::before,
+        .t-t-2 th:nth-child(8)::before,
+        .t-t-2 th:nth-child(5)::before {
+            display: none !important;
+        }
+        .t-t-2 th:nth-child(9)::after,
+        .t-t-2 th:nth-child(8)::after,
+        .t-t-2 th:nth-child(5)::after {
+            display: none !important;
+        }
+
+    </style>
+    
+</head>
+<body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <input type="hidden" id="success" th:value="${success}">
+
+    <div >
+        <h2 class="hc-1">所有活動項目列表</h2>
+    </div>
+    <div class="controls">
+        <div class="button-container">
+            <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增項目</button>
+            <a id="link" href='addItem'></a>
+        </div>
+<!--        <div>-->
+<!--        <form method="post" th:action="@{listItem_ByCompositeQuery}">-->
+
+<!--            選擇活動類別名稱:-->
+<!--            <select th:field="*{categoryVO.activityCategoryId}">-->
+<!--                <option value="">-->
+<!--                <option th:each="categoryVO : ${categoryListData2}" th:value="${categoryVO.activityCategoryId}" th:text="${categoryVO.activityCategoryName}" />-->
+<!--            </select><br>-->
+
+<!--            上/下架:-->
+<!--            &lt;!&ndash;<select th:field="*{activityState}"> &ndash;&gt;-->
+<!--            <select name="activityState">-->
+<!--                <option value="" >-->
+<!--                <option value="true" th:text="上架"></option>-->
+<!--                <option value="false" th:text="下架"></option>-->
+<!--            </select><br>-->
+
+<!--            <input type="submit" value="送出">-->
+<!--        </form>-->
+<!--        </div>-->
+
+
+
+        <table id="example" class="display tr-line tl" >
+            <thead class="t-t-1">
+            <tr class="t-t-2">
+
+                <th class="th-w6 tp-1">項目編號</th>
+                <th class="th-w2">活動類別</th>
+
+                <th class="th-w2">活動項目名稱</th>
+                <th class="th-w2">活動簡述 </th>
+                <th class="th-w2-1">活動說明</th>
+                <th class="th-w6">活動價格</th>
+                <th class="th-w6">活動狀態</th>
+                <th class="th-w5">編輯</th>
+                <th class="th-w5">刪除</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <th:block th:each="itemVO : ${itemListData}">
+                <tr>
+
+                    <td class="th-w4" th:text="${itemVO.activityId}"></td>
+                    <td class="th-w4" th:text=" ${itemVO.categoryVO.activityCategoryName} "></td>
+
+                    <td class="th-w4 th-w1" th:text="${itemVO.activityName}"></td>
+                    <td class="tto-1" th:text="${itemVO.activityDescription}"></td>
+                    <!--            <td th:text="${itemVO.activityInfo}">-->
+                    <td >
+                        <!--                <form method="post" th:action="@{/item/delete}" style="margin-bottom: 0px;">-->
+                        <!--                    <input type="submit" class="btn btn-outline-secondary cu-1" value="詳細資料">-->
+                        <!--                    <input type="hidden" name="activityId" th:value="${itemVO.activityId}"></form>-->
+                        <button type="button" class="btn  cu-1 td-1" data-bs-toggle="modal"
+                                th:data-bs-target="'#staticBackdrop'+ ${itemVO.activityId}">詳細資料
+
+                        </button>
+                    </td>
+            <!-- Modal -->
+
+            <div class="modal fade " id="staticBackdrop" th:id="'staticBackdrop' + ${itemVO.activityId}"
+                 data-bs-backdrop="static"　data-bs-keyboard="false"　tabindex="-1"　
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content cu-1">
+                        <div class="modal-header pw-2">
+                            <h3 class="modal-title hc-3" id="staticBackdropLabel">活動項目&nbsp;<span th:text="${itemVO.activityId}"></span>&nbsp;內容</h3>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body pw-3">
+                            <div class="modal-dialog modal-lg">
+                                <div class="mb-4-5" >
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動類別</h5>
+                                    </div>
+                                    <input type="text" class="form_element3"  name="activityCategoryName"
+                                           th:value="${itemVO.categoryVO.activityCategoryName}" ></input>
+                                </div>
+                                <div class="mb-4-5" >
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動名稱</h5>
+                                    </div>
+                                    <input type="text" class="form_element3"  name="activityName"
+                                           th:value="${itemVO.activityName}" ></input>
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動簡述</h5>
+                                    </div>
+
+                                    <textarea type="text" class="textarea_element3"
+                                              name="activityDescription"
+                                              th:text="${itemVO.activityDescription}"></textarea>
+
+                                </div>
+                                <div class="mb-4-5">
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動說明</h5>
+                                    </div>
+
+                                    <textarea type="text"  class="textarea_element3 ttt"
+                                              name="activityInfo"
+                                              th:utext="${itemVO.activityInfo}"></textarea>
+
+                                </div>
+                                <div class="mb-4-5" >
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動價格</h5>
+                                    </div>
+                                    <input type="text" class="form_element3"  name="activityPrice"
+                                           th:value="${itemVO.activityPrice}" ></input>
+                                </div>
+                                <div class="mb-4-5" >
+                                    <div class="mb-4">
+                                        <h5 class="f-w">活動狀態</h5>
+                                    </div>
+                                    <input type="text" class="form_element3"  name="activityState"
+                                           th:value="${itemVO.activityState ? '上架' : '下架'}"></input>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Modal end-->
+
+            <td th:text="${itemVO.activityPrice}"></td>
+            <td th:text="${itemVO.activityState ? '上架' : '下架'}"></td>
+		
+       		<td>
+<!--                <button type="button" class="btn btn-outline-success2 cu-4" data-bs-toggle="modal"-->
+<!--                        th:data-bs-target="'#staticBackdrop2'+ ${itemVO.activityId}">編輯-->
+
+<!--                </button>-->
+
+                <form method="post" th:action="@{/item/getOne_For_Update}" style="margin-bottom: 0px;">
+                    <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
+                    <input type="hidden" name="activityId" th:value="${itemVO.activityId}">
+                </form>
+      		</td>
+            <!-- Modal 2 -->
+
+<!--            <div class="modal fade " id="staticBackdrop2" th:id="'staticBackdrop2' + ${itemVO.activityId}"-->
+<!--                 data-bs-backdrop="static"　data-bs-keyboard="false"　tabindex="-1"　-->
+<!--                 aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--                <div class="modal-dialog modal-lg">-->
+<!--                    <div class="modal-content cu-1">-->
+<!--                        <div class="modal-header pw-2">-->
+<!--                            <h3 class="modal-title hc-3" id="staticBackdropLabel2">編輯活動項目&nbsp;<span th:text="${itemVO.activityId}"></span></h3>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+<!--                                    aria-label="Close"></button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body pw-1">-->
+<!--                            &lt;!&ndash;                                <div class="modal-dialog modal-lg">&ndash;&gt;-->
+
+<!--                            &lt;!&ndash;                                        <form id="formTest" th:action="@{update}" method="post" th:object="${categoryVO}" enctype="multipart/form-data">&ndash;&gt;-->
+<!--                            <form id="formTest-${itemVO.activityId}" action="/item/update"-->
+<!--                                  method="post">-->
+
+<!--                                <div class="mb-4-5">-->
+<!--                                    &lt;!&ndash;                                                <label for="catId1">活動類別編號:</label>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                                <textarea type="text" th:field="*{activityCategoryId}"  id="catId1" name="activityCategoryId" style="border:0px ; font-weight: bold;" readonly /><br/>&ndash;&gt;-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動項目編號 (不可編輯)</h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="text" class="form_element2"  name="activityId"-->
+<!--                                           th:value="${itemVO.activityId}" readonly>-->
+
+<!--                                </div>-->
+
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動類別 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--&lt;!&ndash;                                    <select class="selectric " th:field="*{categoryVO.activityCategoryId}" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <option th:each="categoryVO : ${categoryListData2}" th:value="${categoryVO.activityCategoryId}" th:text="${categoryVO.activityCategoryName}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span th:if="${#fields.hasErrors('categoryVO.activityCategoryId')}" th:errors="*{categoryVO.activityCategoryId}" class="error" id="categoryVO.activityCategoryId.errors"></span>&ndash;&gt;-->
+<!--                                    <select name="categoryVO.activityCategoryId" class="selectric" required>-->
+<!--                                        <option th:each="categoryVO : ${categoryListData2}"-->
+<!--                                                th:value="${categoryVO.activityCategoryId}"-->
+<!--                                                th:text="${categoryVO.activityCategoryName}"-->
+<!--                                                th:selected="${categoryVO.activityCategoryId == itemVO.categoryVO.activityCategoryId}"/>-->
+<!--                                    </select>-->
+<!--&lt;!&ndash;                                    <span th:if="${#fields.hasErrors('categoryVO.activityCategoryId')}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          th:errors="*{categoryVO.activityCategoryId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          class="error"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          id="categoryVO.activityCategoryId.errors"></span>&ndash;&gt;-->
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動名稱 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <input type="text" class="form_element3"  name="activityName"-->
+<!--                                           th:value="${itemVO.activityName}" required-->
+<!--                                           onclick="hideContent('itemVO.activityName.errors');"/>-->
+<!--                                    <span th:if="${#fields.hasErrors('itemVO.activityName')}"-->
+<!--                                          th:errors="${itemVO.activityName}" class="error"-->
+<!--                                          id="activityName.errors"></span>-->
+
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動簡述</h5>-->
+<!--                                    </div>-->
+
+<!--                                    <textarea type="text" class="textarea_element2"-->
+<!--                                              name="activityDescription"-->
+<!--                                              th:text="${itemVO.activityDescription}"></textarea>-->
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動說明</h5>-->
+<!--                                    </div>-->
+
+<!--                                    <textarea type="text" id="activityInfo" class="textarea_element2"-->
+<!--                                              name="activityInfo"-->
+<!--                                              th:text="${itemVO.activityInfo}"></textarea>-->
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5 rl">-->
+<!--                                    <div class="mb-4 ">-->
+<!--                                        <h5 class="f-w ">活動價格 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--                                    <span class="nt-u2 f-z">NT$&nbsp;</span>-->
+<!--                                    <input type="text" class="form_element4 nt-u2"  name="activityPrice"-->
+<!--                                           th:value="${itemVO.activityPrice}" required-->
+<!--                                           onclick="hideContent('itemVO.activityName.errors');"/>-->
+<!--                                    <span th:if="${#fields.hasErrors('itemVO.activityPrice')}"-->
+<!--                                          th:errors="${itemVO.activityPrice}" class="error"-->
+<!--                                          id="activityPrice.errors"></span>-->
+
+
+<!--                                </div>-->
+<!--                                <div class="mb-4-5">-->
+<!--                                    <div class="mb-4">-->
+<!--                                        <h5 class="f-w">活動狀態 <span class="require_text">(必填)</span></h5>-->
+<!--                                    </div>-->
+<!--&lt;!&ndash;                                    <option th:each="categoryVO : ${categoryListData2}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:value="${categoryVO.activityCategoryId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:text="${categoryVO.activityCategoryName}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:selected="${categoryVO.activityCategoryId == itemVO.categoryVO.activityCategoryId}"/>&ndash;&gt;-->
+
+
+
+<!--                                    <select class="selectric " th:field="*{itemVO.activityState}" required>-->
+
+<!--                                        <option-->
+<!--                                            th:value="${itemVO.activityState}"-->
+<!--                                            th:text="${itemVO.activityState ? '上架' : '下架'}"-->
+<!--                                            th:selected="${itemVO.activityState == itemVO.activityState}" />-->
+<!--                                        <option-->
+<!--                                                th:value="${itemVO.activityState}"-->
+<!--                                                th:text="${itemVO.activityState ? '上架' : '下架'}"-->
+<!--                                                th:selected="${ !itemVO.activityState}" />-->
+
+
+<!--&lt;!&ndash;                                        <option&ndash;&gt;-->
+<!--&lt;!&ndash;                                                th:value="${itemVO.activityState}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                th:text="${itemVO.activityState ? '上架' : '下架'}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                 />&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <option value="true" th:selected="${itemVO.activityState} == 1">上架</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <option value="false" th:selected="${itemVO.activityState} == 0">下架</option>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                        <option th:value="${itemVO.activityState}" th:selected="${itemVO.activityState}">上架</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <option th:value="${itemVO.activityState}" th:selected="${!itemVO.activityState}">下架</option>&ndash;&gt;-->
+<!--                                    </select>-->
+<!--                                </div>-->
+
+<!--                                <div class="modal-footer b-t-1">-->
+<!--                                    <button type="button" class="btn btn-secondary cu-3" data-bs-dismiss="modal">取消-->
+<!--                                    </button>-->
+<!--                                    <button type="submit" class="btn btn-primary cu-3">儲存變更</button>-->
+<!--                                    <input type="hidden" id="activityId" name="activityId"-->
+<!--                                           th:value="${itemVO.activityId}">-->
+<!--                                </div>-->
+
+
+<!--                            </form>-->
+<!--                            &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash;                                 JavaScript part&ndash;&gt;-->
+<!--                        <script type="text/javascript">-->
+<!--                            //清除提示信息-->
+<!--                            function hideContent(d) {-->
+<!--                                document.getElementById(d).innerText = '';-->
+<!--                            }-->
+<!--                            // 獲取 textarea 元素-->
+<!--                            var activityInfoTextarea = document.getElementsByClassName('ttt');-->
+<!--                            // 獲取 activityInfo 的 HTML 內容-->
+<!--                            var activityInfoHtmlContent = activityInfoTextarea.value;-->
+
+<!--                        </script>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+            <!-- Modal End-->
+            <td>
+           		<form method="post" th:action="@{/item/delete}" style="margin-bottom: 0px;"　 onsubmit="return confirmDelete(this);">
+           		    <input type="submit" class="btn btn-outline-secondary cu-4" value="刪除">
+           		    <input type="hidden" name="activityId" th:value="${itemVO.activityId}"　onclick="confirmDelete(this.form)">
+                </form>
+
+      		            </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    // 在页面加载完成后执行
+    window.onload = function() {
+        /*<![CDATA[*/
+        // 獲取隱藏內容的值
+        var successValue = /*[[${success}]]*/ '';
+
+        // 如果成功消息存在且不為空，則顯示彈框
+        if (successValue && successValue.trim() !== '') {
+            Swal.fire({
+                icon: 'success',
+                title: '成功',
+                text: successValue
+            });
+        }
+        /*]]>*/
+    };
+    function confirmDelete(form) {
+        Swal.fire({
+            title: '確定要刪除嗎？',
+            text: "刪除後，資料不可復原！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#35cce7',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的，刪除它！',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false; // 阻止刪除行為'
+    }
+</script>
+<script>
+
+    CKEDITOR.ClassicEditor.create(document.getElementById("activityInfo"), {
+        // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+        toolbar: {
+            items: [
+                'exportPDF','exportWord', '|',
+                'findAndReplace', 'selectAll', '|',
+                'heading', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo',
+                '-',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'alignment', '|',
+                'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                'textPartLanguage', '|',
+                'sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+        // Changing the language of the interface requires loading the language file using the <script> tag.
+        // language: 'es',
+        list: {
+            properties: {
+                styles: true,
+                startIndex: true,
+                reversed: true
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+            ]
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+        placeholder: '請輸入內容',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+        fontFamily: {
+            options: [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+        fontSize: {
+            options: [ 10, 12, 14, 'default', 18, 20, 22 ,24,26,28,30,32,36,40],
+            supportAllValues: true
+        },
+        // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+        // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+        htmlSupport: {
+            allow: [
+                {
+                    name: /.*/,
+                    attributes: true,
+                    classes: true,
+                    styles: true
+                }
+            ]
+        },
+        // Be careful with enabling previews
+        // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+        htmlEmbed: {
+            showPreviews: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://',
+                toggleDownloadable: {
+                    mode: 'manual',
+                    label: 'Downloadable',
+                    attributes: {
+                        download: 'file'
+                    }
+                }
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+        mention: {
+            feeds: [
+                {
+                    marker: '@',
+                    feed: [
+                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                        '@sugar', '@sweet', '@topping', '@wafer'
+                    ],
+                    minimumCharacters: 1
+                }
+            ]
+        },
+        // The "superbuild" contains more premium features that require additional configuration, disable them below.
+        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+        removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            'AIAssistant',
+            'CKBox',
+            'CKFinder',
+            'EasyImage',
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            'MultiLevelList',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType.
+            'MathType',
+            // The following features are part of the Productivity Pack and require additional license.
+            'SlashCommand',
+            'Template',
+            'DocumentOutline',
+            'FormatPainter',
+            'TableOfContents',
+            'PasteFromOfficeEnhanced',
+            'CaseChange'
+        ]
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"
+        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+        crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+        crossorigin="anonymous"></script>
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+
+<!-- ●● jquery datatables 設定 -->
+<script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "lengthMenu": [5, 10, 15, 20, 50],
+                "searching": true,  //搜尋功能, 預設是開啟
+                "paging": true,     //分頁功能, 預設是開啟
+                "ordering": true,   //排序功能, 預設是開啟
+                "language": {
+                    "processing": "處理中...",
+                    "loadingRecords": "載入中...",
+                    "lengthMenu": "顯示 _MENU_ 筆結果",
+                    "zeroRecords": "沒有符合的結果",
+                    "info": "顯示第 _START_ 至 _END_ 筆結果，共 _TOTAL_ 筆",
+                    "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                    "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                    "infoPostFix": "",
+                    "search": "搜尋:",
+                    "paginate": {
+                        "first": "第一頁",
+                        "previous": "上一頁",
+                        "next": "下一頁",
+                        "last": "最後一頁"
+                    },
+                    "aria": {
+                        "sortAscending":  ": 升冪排列",
+                        "sortDescending": ": 降冪排列"
+                    }
+                }
+            });
+        });
+    </script>

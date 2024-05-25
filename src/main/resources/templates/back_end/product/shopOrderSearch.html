@@ -1,0 +1,50 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+	.unique ul li{
+		font-size:1.4rem;
+	}
+	
+</style>
+</head>
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+	
+		<!-- =========================================================================================== -->
+
+
+		<!-- 主欄位 -->
+		<div class="unique">
+		
+			<h3>---商品訂單搜尋---</h3>
+			<br>		
+			<br>		
+			
+			<ul>	
+				<li>
+					<a th:href="@{/shopOrder/showAllShopOrder}">顯示所有訂單</a>
+				</li>
+				
+			<br>		
+			<br>
+			
+				<li>
+					<form method="post" th:action="@{/shopOrder/showOneShopOrder}">
+								請選擇會員編號:
+								<select name="memberId">
+								    <th:block th:each="memberVO : ${memberList}">
+										<option th:value="${memberVO.memberId}" th:text="${memberVO.memberId}"></option>
+									</th:block>
+								</select> 
+								<input type="submit" value="送出">
+					</form>
+				</li>
+				
+			<br>
+			</ul>
+			
+		</div>
+		
+<div th:replace="~{/back_end/include/include_bottom}"></div>

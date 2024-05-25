@@ -1,0 +1,45 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+</style>
+</head>
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+<!-- =========================================================================================== -->
+
+<div class="unique">
+    <!-- 主欄位 -->
+    <h4><span>資料查詢:</span></h4>
+    <div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
+    <div class="a">
+
+        <ul>
+
+            <li><h5><a th:href="@{/room/getAllRoom}">查看</a>所有房間 <br><br></h5></li>
+
+
+            <h3>---房間搜尋---</h3>
+            <br>
+            <br>
+
+            <form method="post" th:action="@{/room/findRoomById}">
+                輸入房間編號:
+                <input type="text" name="roomId" th:value="${param.roomId}" >
+                <input type="submit" value="送出">
+            </form>
+            <br>
+
+            <h4><span>房間管理</span></h4>
+            <ul>
+                <li><h5><a th:href="@{/room/addRoom}">新增</a>房間</h5></li>
+            </ul>
+
+
+
+    </div>
+</div>
+<div th:replace="~{/back_end/include/include_bottom}"></div>

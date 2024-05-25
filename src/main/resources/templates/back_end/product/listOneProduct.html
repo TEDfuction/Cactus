@@ -1,0 +1,53 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+
+
+
+
+
+
+<div class="unique" th:fragment="listOneProduct-div">
+	<div class="container">
+    <div class="mt-5">
+        <div th:if="${success}" class="alert alert-success text-center">
+            <h3>修改成功</h3>
+        </div>
+        <div th:unless="${success}" class="alert alert-info">
+            <h3>查詢結果 :</h3>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">商品信息</h5>
+                <p class="card-text"><strong>商品編號:</strong> <span th:text="${productVO.productId}"></span></p>
+                <p class="card-text"><strong>商品類別:</strong> <span th:text="${productVO.productCategoryVO.productCategoryId}"></span></p>
+                <p class="card-text"><strong>商品簡述:</strong> <span th:text="${productVO.productDescribtion}"></span></p>
+                <p class="card-text"><strong>商品價格:</strong> <span th:text="${productVO.productPrice}"></span></p>
+                <p class="card-text"><strong>商品名稱:</strong> <span th:text="${productVO.productName}"></span></p>
+                <p class="card-text"><strong>商品狀態:</strong> <span th:text="${productVO.productStatus}"></span></p>
+                <p class="card-text"><strong>商品圖片:</strong> <img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" class="img-fluid" width="100px"></p>
+            </div>
+        </div>
+        
+        <div>
+        <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='/product/historyProduct'">返回下架商品</button>
+        <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='/product/listAllProduct1'">返回上架商品</button>
+    	</div>
+
+    	
+    	
+    </div>
+</div>
+
+
+
+</div>	
+
+			
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>

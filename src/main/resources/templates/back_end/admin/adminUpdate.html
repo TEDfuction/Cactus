@@ -1,0 +1,79 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+</style>
+</head>
+<body>
+
+	<div th:replace="~{/back_end/include/include_body}"></div>
+	
+		
+	<!-- =========================================================================================== -->
+	
+	
+	<!-- 主欄位 -->
+	<div class="unique">
+	
+	<input type="hidden" id="status" th:value="${status}">
+	
+	
+	<h2>更新員工個人資料</h2>
+			
+		<form method="post" th:action="@{/admin/adminUpdate}" class="register-form"
+		id="register-form" th:object="${adminVO}" enctype="multipart/form-data">
+		
+			<input type="hidden" th:field="*{adminId}" name="adminId">
+								
+			<div class="form-group">
+				<label for="adminAccount"><i class="zmdi zmdi-account material-icons-name"></i></label><br>
+				<input type="text" th:field="*{adminAccount}" onclick="hideContent('adminAccount.errors');" placeholder="請輸入帳號..." name="adminAccount"><br>
+				<span  th:if="${#fields.hasErrors('adminAccount')}" th:errors="*{adminAccount}" class="error" id="adminAccount.errors"></span>
+			</div>
+							
+			<div class="form-group">
+				<label for="adminPassword"><i class="zmdi zmdi-lock"></i></label><br> 
+				<input type="password" th:field="*{adminPassword}" onclick="hideContent('adminPassword.errors');" placeholder="請輸入密碼..." name="adminPassword"><br>
+				<span  th:if="${#fields.hasErrors('adminPassword')}" th:errors="*{adminPassword}" class="error" id="adminPassword.errors"></span>
+			</div>
+							
+			<div class="form-group">
+				<label for="adminName"><i class="zmdi zmdi-account material-icons-name"></i></label> <br>
+				<input type="text" th:field="*{adminName}" onclick="hideContent('adminName.errors');"  placeholder="請輸入姓名..." name="adminName"><br>
+				<span th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}" class="error" id="adminName.errors"></span>							
+			</div>
+							
+			<input type="hidden" name="adminStatus" value="1">
+			<br>
+			<br>
+		
+			<div class="form-group form-button">
+				<input type="submit" id="signup" class="form-submit" value="修改"/>
+			</div>
+															
+		</form>
+	</div>
+	
+	
+	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	<script>
+	var status = $("#status").val();
+	
+	if(status == "sameAccount"){
+		swal("請注意~","這個帳號已經有人使用囉!您無法改成這個帳號","warning")
+		status == "";
+	}
+	</script>
+	
+<script type="text/javascript">
+	//清除提示信息
+	function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+	}
+</script>
+
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
