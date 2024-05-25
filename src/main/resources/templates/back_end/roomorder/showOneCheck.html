@@ -1,0 +1,176 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+    thead tr > th{
+        text-align: center !important;
+        white-space: nowrap;
+    }
+
+    .unique{
+        text-align:center;
+    }
+
+    /*.display{*/
+    /*    font-size:15px;*/
+    /*    table-layout: fixed;*/
+    /*    word-break: break-all;*/
+    /*    word-wrap: break-word;*/
+    /*    width:100%;*/
+    /*      		height:70%;*/
+
+    /*}*/
+
+    /*.display td,th{*/
+    /*    border: 1px solid black;*/
+    /*}*/
+
+    .display thead{
+        background-color:lightcyan
+    }
+
+    .display tbody{
+        background-color:ivory;
+    }
+    .display img{
+        width:100%;
+        height:100%;
+    }
+    .btn-primary{
+        font-size: 13px;
+        border-radius: 4px;
+    }
+
+</style>
+
+</head>
+
+
+
+
+
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+<!-- =========================================================================================== -->
+
+
+<!-- 主欄位 -->
+<div class="unique">
+    <h3 th:if="${message}" th:text="${message}"></h3>
+    <br>
+
+    <div><h4><a class="navbar-brand" th:href="@{/roomOrder/showCheckIn}">回查詢頁</a></h4></div>
+
+    <br>
+
+
+
+
+    <table  id="xxx" class="display">
+        <thead>
+        <tr>
+            <th>訂單編號</th>
+            <th>會員</th>
+            <th>訂單日期</th>
+            <th>訂單狀態</th>
+            <th>房間狀態</th>
+            <th>訂單總金額</th>
+            <th>促銷金額</th>
+            <th>實付金額</th>
+            <th>入住日期</th>
+            <th>退房日期</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+                <td th:text="${roomOrder.roomOrderId}"></td>
+
+                <td th:text="${roomOrder.memberId.memberName}"></td>
+
+                <td th:text="${roomOrder.roomOrderDate}"></td>
+
+                <td>
+                    <span th:if="${roomOrder.roomOrderStatus}" class="badge bg-success">正常</span>
+                    <span th:if="${!roomOrder.roomOrderStatus}" class="badge bg-danger">訂單取消</span>
+                </td>
+
+                <td>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 0" class="badge bg-secondary">未入住</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 1" class="badge bg-primary">已入住</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 2" class="badge bg-warning">待清潔</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 3" class="badge bg-danger">逾期</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 4" class="badge bg-danger">異常</span>
+                </td>
+
+
+                <td th:text="${roomOrder.roomAmount}"></td>
+
+                <td th:text="${roomOrder.promotionPrice}"></td>
+
+                <td th:text="${roomOrder.payAmount}"></td>
+
+                <td th:text="${roomOrder.checkInDate}"></td>
+
+                <td th:text="${roomOrder.checkOutDate}"></td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+
+<!----------- ●● jquery datatables 設定 ---------------------->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+
+<script>
+    $(document).ready(function() {
+        $('#xxx').DataTable({
+            "lengthMenu": [5, 10],
+            "searching": true,  //搜尋功能, 預設是開啟
+            "paging": true,     //分頁功能, 預設是開啟
+            "ordering": true,   //排序功能, 預設是開啟
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "infoPostFix": "",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+
+    });
+
+
+</script>
+
+
