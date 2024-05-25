@@ -195,7 +195,7 @@ public class PhotoController {
 		result = removeFieldError(photoVO, result, "activityPhoto");
 
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
-			model.addAttribute("errorMessage", "員工照片: 請上傳照片");
+			model.addAttribute("errorMessage", "請上傳照片");
 		} else {
 			for (MultipartFile multipartFile : parts) {
 				byte[] buf = multipartFile.getBytes();

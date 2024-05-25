@@ -374,8 +374,42 @@
     jQuery("#loginDefault").click(function addToCart(e) {
      
      if ( session_acount!="" ) {
-      
-        $("#itemId").submit();
+    	 
+    	 event.preventDefault()
+         
+    	 
+    	  // 假設 timeperiod 是一个包含 radio 按鈕的 DOM 元素集合
+    	  var activityDate = document.getElementById("activityDate").value;
+    	  var checkbox = document.getElementById('check-rule');
+    	       if (activityDate.trim() === "") {
+    	        // 如果日期阻止表單提交
+    	        event.preventDefault();
+    	        swal("請注意","請點選活動日期！","warning");
+    	        } else {
+    	            var timeperiod = document.querySelectorAll("input[type='radio']");
+    	            var noneChecked = true; // 初始化為 true
+    	        // 假設 timeperiod 是一個包含 radio 按鈕的 DOM 元素集合
+    	        for (var i = 0; i < timeperiod.length; i++) {
+    	            if (timeperiod[i].checked) {
+    	                noneChecked = false; // 如果有任何一個 radio 被選中，標記為 false
+    	                break; // 如果有一個被選中，就不再執行
+    	            }
+    	        }
+
+    	        if (noneChecked) {
+    	            event.preventDefault();
+    	            swal("請注意","請點選活動時段!","warning");
+    	        } else if(!checkbox.checked){
+    	        	event.preventDefault();
+    	        	swal("請注意","請勾選同意使用條款與隱私權保護政策","warning");
+    	        } else{
+    	        	// 如果日期和時段都填寫了，則提交表單
+    	            $("#itemId").submit();
+    	        }
+    	           
+    	 }
+    	     
+    	      
      
         } else {// 如果沒有值
          
@@ -471,7 +505,7 @@
                                     var timeList = $("<div ><h4 class='menu-to2'>時段</h4></div>");
                                     timePeriods.forEach(function(timePeriodObj) {
                                         var formattedTime = new Date('1970-01-01T' + timePeriodObj.timePeriod).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                        var radioButton = $('<input type="radio" class="radio-1" name="timePeriod" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
+                                        var radioButton = $('<input type="radio" class="radio-1" name="sessionTimePeriodId" id="' + timePeriodObj.sessionTimePeriodId + '" value="' + timePeriodObj.sessionTimePeriodId + '">');
                                         var label = $('<label></label>').attr("for", timePeriodObj.sessionTimePeriodId).text(formattedTime);
                                         var listItem = $("<span class='check-input'></span>").append(radioButton).append(label);
                                         timeList.append(listItem);
