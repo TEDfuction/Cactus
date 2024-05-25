@@ -21,15 +21,124 @@
             </div>
             <div class="col-lg-5 px-2-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2 " th:href="@{/}"><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
-                    <div class="box">
-                    	<a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}"><i class="fa-solid fa-cart-shopping"></i><span class="cartnumber"></span>&nbsp;&nbsp;購物車 ｜</a>
-                    </div>
+                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+                    <a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}">購物車 ｜</a>
                     <a class="text-white px-2" id="memberCenterLink" th:href="@{/member/memberOnlyWeb}">會員中心 ｜</a>
                     <a class="text-white px-2" th:href="@{/member/memberLogin}">加入會員</a>
 
                 </div>
-             
+                <span class="navbar3 navbar-light ">
+                  <button class="navbar-toggler2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="offcanvas offcanvas-end2  text-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body2">
+                      <ul class="list list-size">
+
+                        <li class="list-set3 border-line">
+                        <a class="changecolor" href="">
+                        <span class="nav-text fw-medium">最新消息</span>
+                        </a>
+                        </li>
+
+
+                        <li class="border-line">
+
+                        <div >
+
+                            <h2 class="accordion-header" id="headingOne">
+
+                              <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                關於我們&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body3">
+                                <ul class="list2">
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;凱克特司</a></li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;周邊特色</a> </li>
+                                    <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;常見問題</a> </li>
+                                </ul>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </li>
+
+                        <li class="list-set3 border-line">
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">房型介紹</span>
+                          </a>
+                        </li>
+
+                        <li class="list-set3 border-line">
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">特色活動</span>
+                          </a>
+                        </li>
+
+                        <li class="list-set3 border-line">
+                          <a class="changecolor" href="">
+                          <span class="nav-text fw-medium">購物商城</span>
+                          </a>
+                        </li>
+                        <!-- <li class="border-line">
+
+                            <div class="accordion-item2 ">
+
+                                <h2 class="accordion-header" id="headingOne">
+
+                                  <button class="accordion-button3 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    活動管理系統
+                                  </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                  <div class="accordion-body2">
+                                    <ul class="list2">
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動類別管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動場次</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動圖片管理</a> </li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動訂單管理</a></li>
+                                        <li class="list-set4"><a class="changecolor fw-medium" href=""><i class="fa-solid fa-splotch"></i>&nbsp;&nbsp;活動促銷管理</a> </li>
+                                    </ul>
+
+                                  </div>
+                                </div>
+                              </div>
+
+                        </li> -->
+                        <!-- <div class="roomorder offcanvas-header">
+                          <a class="roomorder-set" href="">
+                            線上訂房
+                        </div> -->
+
+                    </div>
+
+                    <div class="offcanvas-bottom2">
+                      <input type="button" class="roomorder-set" value="線上訂房" onclick="location.href='https://www.youtube.com/'">
+                      <!-- <button class="roomorder-set changecolor">線上訂房</button> -->
+                      <!-- <a class="roomorder-set   " href="">
+                        線上訂房 -->
+                    </div>
+
+
+
+                  </div>
+                </span>
+
+
+                <!-- <div class="h-100 d-inline-flex align-items-center">
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
+                </div> -->
             </div>
         </div>
     </div>
