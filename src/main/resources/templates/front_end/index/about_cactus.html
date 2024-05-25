@@ -88,14 +88,17 @@
 
             </div>
             <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2" href="">English ｜</a>
-                    <a class="text-white px-2" th:href="@{/admin/adminLogin}">日本語 ｜</a>
-                    <a class="text-white px-2" th:href="@{/member/memberLogin}">會員中心</a>
-
-                </div>
+            <div class="h-100 d-inline-flex align-items-center py-3 me-2">
+            <th:block th:if="${session.memberVO}">
+            	<img th:src="@{/member/ShowPic} + '?memberId=' + ${session.memberVO.memberId}" width="35px" height="35px"> 
+    &nbsp;&nbsp;<span class="text-white px-2" th:text="${session.memberVO.memberName}"></span>
+            </th:block>
+                <a class="text-white px-2" th:href="@{/admin/adminLogin}">｜ English ｜</a>
+                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>
 
             </div>
+
+        </div>
         </div>
     </div>
     <!-- Topbar End -->
@@ -113,19 +116,19 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <!-- 原本輸入內容:Home -->
-                <a href="index.html" class="nav-item nav-link active">最新消息</a>
+                <a href="#" class="nav-item nav-link active">最新消息</a>
                 <div class="nav-item dropdown">
                     <!-- 原本輸入內容:Pages -->
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
                     <div class="dropdown-menu border-0 m-0">
                         <a href="about_cactus" class="dropdown-item">凱克特司</a>
-                        <a href="project.html" class="dropdown-item">周邊特色</a>
+<!--                         <a href="project.html" class="dropdown-item">周邊特色</a> -->
                         <a href="contactus_cactus" class="dropdown-item">常見問題</a>
 
                     </div>
                 </div>
                 <!-- 原本輸入內容:About，要改成下拉式選單 -->
-                <a href="about.html" class="nav-item nav-link">房型介紹</a>
+                <a th:href="@{/roomType/roomTypeFront}" class="nav-item nav-link">房型介紹</a>
                 <div class="dropdown-menu border-0 m-0">
                     <!-- <a href="feature.html" class="dropdown-item">緣起</a>
                     <a href="project.html" class="dropdown-item">特色設施</a>
@@ -137,7 +140,7 @@
                     <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
                 </div>
 
-                <a href="service.html" class="nav-item nav-link">特色活動</a>
+                <a href="activity/activityPhoto" class="nav-item nav-link">特色活動</a>
                 <a th:href="@{/product/listAllProduct}" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping" me-2
                                                                     style="color: #01b2a6;"></i> 購物商城</a>
             </div>

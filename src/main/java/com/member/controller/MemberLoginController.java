@@ -101,6 +101,7 @@ public class MemberLoginController {
     		//驗證通過,將資訊存至session給過濾器做驗證
     		HttpSession session = req.getSession();
     		model.addAttribute("memberVO", memberVO);
+    		session.setAttribute("memberVO", memberVO);
     		session.setAttribute("account", email);
     		
     		//供WebSocket隨時調用
@@ -261,6 +262,7 @@ public class MemberLoginController {
 		if (session != null) {
 			//移除session上之屬性,使對應網頁重新進入過濾器控制範圍
 			session.removeAttribute("account");
+			session.removeAttribute("memberVO");
 		}
 
 		MemberVO memberVO = new MemberVO();
