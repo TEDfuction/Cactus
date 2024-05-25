@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
 
+	
+	
     @Transactional
     @Modifying
     @Query(value = "from SessionVO where activityDate between :start and :end ")

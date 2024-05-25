@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface RoomOrderService {
 
+	
     List<RoomOrderVO> getAllRoomOrder();
 
     List<RoomOrderVO> getOneRoomOrder(Integer memberId) throws Exception;

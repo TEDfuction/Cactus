@@ -14,6 +14,8 @@ import redis.clients.jedis.Jedis;
 @Component
 public class CartService {
 	
+	
+	
 	public String addToCart(Cart cartItem, Integer memberId) {
 		
 		// 拿到前端的購物項 先轉成JSON物件

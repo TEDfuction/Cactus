@@ -52,6 +52,8 @@ import com.shoporderdetail.model.ShopOrderDetailVO;
 @RequestMapping("/member")
 public class MemberController {
 	
+	
+	
 	@Autowired
 	RoomOrderImpl roomOrderSvc;
 

@@ -7,6 +7,8 @@
 //
 //    private static JedisPool jedisPool = null;
 //
+
+
 //    // private->防止實例化
 //    private JedisPoolUtil() {}
 //

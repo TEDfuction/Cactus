@@ -6,6 +6,7 @@ import com.roompromotion.model.RoomPromotionVO;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Table(name = "room_order", schema = "cactus")
 public class RoomOrderVO {

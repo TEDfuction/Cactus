@@ -32,6 +32,7 @@ import com.productcategory.model.ProductCategoryVO;
 @RequestMapping("/product")//網頁網址式/product/addProduct才會出現
 public class ProductController {
 	
+	
 	@Autowired
 	ProductService productSvc;
 	

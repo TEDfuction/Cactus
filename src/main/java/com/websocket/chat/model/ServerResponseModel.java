@@ -7,6 +7,8 @@
 //    public ServerResponseModel() {
 //    }
 //
+
+
 //    public ServerResponseModel(String responseMessage) {
 //        this.responseMessage = responseMessage;
 //    }

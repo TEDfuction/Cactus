@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service("photoservice")
 public class PhotoService {
 	
+	
+	
 	@Autowired
 	PhotoRepository photoRepository;
 	

@@ -18,6 +18,7 @@ import ecpay.payment.integration.domain.AioCheckOutALL;
 @Component
 public class ShopOrderService {
 	
+	
 	@Autowired
 	ShopOrderRepository repository;
 	

@@ -10,6 +10,7 @@ import java.util.Optional;
 @Component
 public class RoomPromotionService {
 
+	
     @Autowired
     RoomPromotionRepository roomPromotionRepository;
 

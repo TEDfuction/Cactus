@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface RoomPromotionRepository extends JpaRepository<RoomPromotionVO, Integer> {
 
+	
     @Query(value = "SELECT * FROM room_promotion rp " +
             "WHERE :selectCheckIn BETWEEN rp.promotion_started AND rp.promotion_end " +
             "AND rp.promotion_state = 1", nativeQuery = true)

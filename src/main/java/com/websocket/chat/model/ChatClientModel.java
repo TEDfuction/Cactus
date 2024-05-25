@@ -6,6 +6,8 @@
 //
 //    public ChatClientModel(){}
 //
+
+
 //    public ChatClientModel(String Clientname){
 //        this.Clientname = Clientname;
 //    }

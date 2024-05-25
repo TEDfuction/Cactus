@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
+
 @Entity
 @Table(name = "room_promotion")
 public class RoomPromotionVO {

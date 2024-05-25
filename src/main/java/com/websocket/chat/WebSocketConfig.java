@@ -11,6 +11,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
    registerStompEndpoints:註冊了一個節點,用來映射指定URL,註冊一個STOMP的endpoint,指定使用SockJS協定
    configureMessageBroker:配製訊息代理(Message broker)
 
+
+
  */
 @Configuration
 @EnableWebSocketMessageBroker

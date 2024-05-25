@@ -6,6 +6,8 @@ public class ChatMessage {
     private String receiver;
     private String content;
 
+    
+    
     private String timestamp;
 
     public ChatMessage() {}

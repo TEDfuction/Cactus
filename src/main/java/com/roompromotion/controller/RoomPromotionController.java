@@ -23,6 +23,7 @@ import java.util.List;
 @RequestMapping("/roomPromotion")
 public class RoomPromotionController {
 
+	
     @Autowired
     RoomPromotionService roomPromotionService;
 

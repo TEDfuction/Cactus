@@ -31,6 +31,7 @@ import java.util.Optional;
 @RequestMapping("/roomType")
 public class RoomTypeController {
 
+	
 
     @Autowired
     private RoomTypeImpl roomTypeImpl;

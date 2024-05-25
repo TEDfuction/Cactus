@@ -10,7 +10,6 @@ import com.activities_photo.model.PhotoVO;
 import com.activities_session.model.SessionVO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 @Entity
 	@Table(name = "activity_item")
 	public class ItemVO implements java.io.Serializable{

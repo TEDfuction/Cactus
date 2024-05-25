@@ -35,6 +35,8 @@ import com.admin.model.AdminVO;
 @RequestMapping("/adminAuth")
 public class AdminAuthController {
 	
+	
+	
 	@Autowired
 	AdminService adminSvc;
 	
