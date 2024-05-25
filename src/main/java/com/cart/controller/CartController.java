@@ -40,7 +40,7 @@ import com.shoporderdetail.model.ShopOrderDetailVO;
 public class CartController {
 
 	@Autowired
-	CartService CartSvc;
+	CartService cartSvc;
 
 	@Autowired
 	ShopOrderService shopOrderSvc;
@@ -71,7 +71,7 @@ public class CartController {
 		cart.setProductName(productVO.getProductName());
 
 		// 將一筆購物項目(訂單明細DTO)和會員ID放進購物車
-		return CartSvc.addToCart(cart, memberId);
+		return cartSvc.addToCart(cart, memberId);
 	}
 
 	// 導入購物車頁面
@@ -89,7 +89,7 @@ public class CartController {
 		String email = (String) session.getAttribute("account");
 		Integer memberId = memSvc.findByEmail(email).getMemberId();
 		
-		return CartSvc.findAllItem(memberId);
+		return cartSvc.findAllItem(memberId);
 	}
 
 	@ResponseBody
@@ -107,7 +107,7 @@ public class CartController {
 			cart.setPrice(productVO.getProductPrice());
 			cart.setProductName(productVO.getProductName());
 
-			CartSvc.updateOneItem(memberId, cart);
+			cartSvc.updateOneItem(memberId, cart);
 			System.out.println("結束");
 		} else {
 			return "沒找到Id";
@@ -127,7 +127,7 @@ public class CartController {
 		if (memberId != null) {
 
 			System.out.println("開始");
-			CartSvc.removeOneItem(productId, memberId);
+			cartSvc.removeOneItem(productId, memberId);
 			System.out.println("結束");
 
 		} else {
@@ -153,7 +153,7 @@ public class CartController {
 		
 		if (memberId != null) {
 			MemberVO memberVO = memSvc.findByPK(memberId);
-			List<Cart> cart = CartSvc.findAllItem(memberId);
+			List<Cart> cart = cartSvc.findAllItem(memberId);
 
 			shopOrderVO.setMember(memberVO);
 			shopOrderVO.setOrderStatus(1);
@@ -203,7 +203,7 @@ public class CartController {
 		    String ecpayCheckout = shopOrderSvc.ecpayCheckout(shopOrderVO.getShopOrderId());
 	        model.addAttribute("ecpayCheckout", ecpayCheckout);
 	        
-	        CartSvc.cleanAllCart(memberId);
+	        cartSvc.cleanAllCart(memberId);
 		}
 		return "front_end/product/success";
 	}
@@ -217,8 +217,24 @@ public class CartController {
 		Integer memberId = memSvc.findByEmail(email).getMemberId();	
 		
 		if (memberId != null) {
-			CartSvc.cleanAllCart(memberId);
+			cartSvc.cleanAllCart(memberId);
 		}
 		return "/product/listAllProduct";
 	}
+	
+	@ResponseBody
+	@GetMapping("/cartTotalNumber")
+	public Integer cartTotalNumber(HttpSession session) {
+		
+		String email = (String)session.getAttribute("account");
+		
+		if(email == null) {
+			return 0;
+		}else {
+			MemberVO memberVO = memSvc.findByEmail(email);
+			Integer memberId = memberVO.getMemberId();
+			return cartSvc.getCartNumber(memberId);	
+		}		
+	}
+	
 }

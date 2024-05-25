@@ -41,6 +41,27 @@
 	.cartTable th,td{
 		text-align:center;
 	}
+	
+	
+	.box{
+    		position:relative;
+    	}
+    	.box .cartnumber{
+    		position:absolute;
+    		background-color:red;
+    		color:#fff;
+    		border-radius:24px;
+    		text-align:center;
+    		font-size:15px;
+    		width:15%;
+    		height:100%;
+    		right:95%;
+    		top:-13px;
+    	}
+    	
+    	.-cartnone{
+    		display:none;
+    	}
 
 
 </style>
@@ -70,12 +91,13 @@
             
             <div class="col-lg-5 px-2-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2 " href=""><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
-                    <a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}">購物車 ｜</a>
-                    <a class="text-white px-2" id="memberCenterLink" th:href="@{/member/memberOnlyWeb}">會員中心 ｜</a>
+                    <a class="text-white px-2 " th:href="@{/}"><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 ｜</a>
+					<div class="box">
+                    	<a class="text-white px-2" id="cartLink" th:href="@{/shopCart/shopCart}"><i class="fa-solid fa-cart-shopping"></i><span class="cartnumber"></span>&nbsp;&nbsp;購物車 ｜</a>
+                    </div>                    <a class="text-white px-2" id="memberCenterLink" th:href="@{/member/memberOnlyWeb}">會員中心 ｜</a>
                     <a class="text-white px-2" th:href="@{/member/memberLogin}">加入會員</a>
-                    
-                </div>  
+
+                </div>
             </div>
             
         </div>
@@ -138,8 +160,8 @@
         <p>總價: <span id="cart-total"></span></p>
     </div>
     
-    <button id="checkout-button" class="checkout-button">確認下單</button>
-    <button id="cleanShopCart" class="checkout-button">清空購物車</button>
+    <button type="button" id="checkout-button" class="checkout-button">確認下單</button>
+    <button type="button" id="cleanShopCart" class="cleanShopCart">清空購物車</button>
 
 
 
@@ -173,7 +195,7 @@ function getShopCart() {
                 	
                     html += `<tr>
                                     <td>${item.productId}</td>
-                                    <td>${item.productName} -> ${a_string}</td>
+                                    <td>${item.productName} <br> ${a_string}</td>
                                     <td><input type="number" min="1" value="${item.quantity}"></td>
                                     <td>${item.price}</td>
                                     <td class="item-total">${item.quantity * item.price}</td>
@@ -243,7 +265,6 @@ function eventButton() {
 //              console.log("remove")
              updateCartTotal();
 //              console.log("update total price")
-
              const productId = Number(event.target.attributes[1].value);
 //              console.log(productId);
              removeRedisCart(productId);
@@ -333,6 +354,25 @@ function eventButton() {
             data: JSON.stringify({productId: productId}),
             success: function (response) {
 //                 console.log(response);
+			//=============================================================//
+    	        	//抓購物車裡的數量
+    	        	$.ajax({
+    	                url: '/shopCart/cartTotalNumber', 
+    	                type: 'GET',
+    	                success: function(response) {   
+    	                    console.log("shopNumber"+response);
+    	                    $("span.cartnumber").text(response);
+    	                    if(response == "0"){
+    	                    	$("span.cartnumber").addClass("-cartnone")
+    	                    }else{
+    	                    	$("span.cartnumber").removeClass("-cartnone")
+    	                    }
+    	                },
+    	                error: function(xhr, status, error) {
+    	                    console.error("Error:", error);
+    	                }
+    	            });
+    	    //=============================================================//
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -366,6 +406,25 @@ function eventButton() {
   	                type: 'GET',
   	                success: function (response) {
 //   	                    console.log("呼叫AJAX成功")
+			//=============================================================//
+    	        	//抓購物車裡的數量
+    	        	$.ajax({
+    	                url: '/shopCart/cartTotalNumber', 
+    	                type: 'GET',
+    	                success: function(response) {   
+    	                    console.log("shopNumber"+response);
+    	                    $("span.cartnumber").text(response);
+    	                    if(response == "0"){
+    	                    	$("span.cartnumber").addClass("-cartnone")
+    	                    }else{
+    	                    	$("span.cartnumber").removeClass("-cartnone")
+    	                    }
+    	                },
+    	                error: function(xhr, status, error) {
+    	                    console.error("Error:", error);
+    	                }
+    	            });
+    	    //=============================================================//
   	                    swal("購物車已清空","您的購物車空空如也啦!趕快再去物色其他好貨吧!","success")
   	                    .then(function(){
   	                        window.location.href = response;
@@ -387,26 +446,36 @@ const checkoutButton = document.querySelector('#checkout-button');
 // 監聽確認下單按鈕點擊事件
 checkoutButton.addEventListener('click', () => {
 	
-	swal({
-		  text:"確認要結帳嗎?",
-		  icon: "warning",
-		  buttons:{
-		      cancel: {
-			        text: "取消",
-			        visible: true
-			      },
-			      confirm: {
-			        text: "確認",
-			        visible: true
-			      }
-		  }
-		}).then(function(confirm){
-			if(confirm){
-		        window.location.href = "/shopCart/CartToCheckout";
-			}else{
-// 				console.log("NO");
-			}
-		})
+	//確認有物件再送出
+	if( $("tbody button").length > 0 ){
+		
+		swal({
+			  text:"確認要結帳嗎?",
+			  icon: "warning",
+			  buttons:{
+			      cancel: {
+				        text: "取消",
+				        visible: true
+				      },
+				      confirm: {
+				        text: "確認",
+				        visible: true
+				      }
+			  }
+			}).then(function(confirm){
+				if(confirm){
+					window.location.href = "/shopCart/CartToCheckout";
+				}else{
+//	 				console.log("NO");
+				}
+			})
+	}else{   //沒物件不可送出
+		swal("錯誤","您似乎還沒有選購任何物件喔!無法進行結帳動作","error")
+	}
+	
+	
+	
+	
 
 });
 

@@ -193,7 +193,6 @@
 	    	if ( session_acount!="" ) {
 
 	    		addToCart();
-	    		
             } else {// 如果沒有值
             	
             	var location = "/product/listOneProduct?productId=" + pid.val();
@@ -247,6 +246,25 @@
 	            contentType: "application/json",
 	            data: JSON.stringify(cartItem),
 	            success: function (response) {
+	      //=============================================================//
+    	        	//抓購物車裡的數量
+    	        	$.ajax({
+    	                url: '/shopCart/cartTotalNumber', 
+    	                type: 'GET',
+    	                success: function(response) {   
+    	                    console.log("shopNumber"+response);
+    	                    $("span.cartnumber").text(response);
+    	                    if(response == "0"){
+    	                    	$("span.cartnumber").addClass("-cartnone")
+    	                    }else{
+    	                    	$("span.cartnumber").removeClass("-cartnone")
+    	                    }
+    	                },
+    	                error: function(xhr, status, error) {
+    	                    console.error("Error:", error);
+    	                }
+    	            });
+    	    //=============================================================//
                 	swal("成功!","商品已添加到購物車！","success"); 
 	            },
 	            error: function () {
