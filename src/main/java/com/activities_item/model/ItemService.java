@@ -13,7 +13,6 @@ public class ItemService {
 	
 	@Autowired
 	ItemRepository itemRepository;
-	
 	@Autowired
 	private SessionFactory sessionFactory;
 	

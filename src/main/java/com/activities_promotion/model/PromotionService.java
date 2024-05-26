@@ -44,4 +44,5 @@ public class PromotionService {
 
         return promotionRepository.findByStartedAndEnd(promotionStarted, promotionEnd);
     }
+
 }

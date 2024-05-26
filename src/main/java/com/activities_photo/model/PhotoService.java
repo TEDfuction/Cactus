@@ -51,8 +51,6 @@ public class PhotoService {
 		return Optional.orElse(null);
 	}
 	
-	
-	
 
 //	public List<PhotoVO> getAll(Map<String, String[]> map){
 //		return Photo_Compositegory.getAllPhotoVOs(map, sessionFactory.openSession());

@@ -137,9 +137,9 @@
                                         <!--                                                <label for="catId1">活動類別編號:</label>-->
                                         <!--                                                <textarea type="text" th:field="*{activityCategoryId}"  id="catId1" name="activityCategoryId" style="border:0px ; font-weight: bold;" readonly /><br/>-->
                                         <div class="mb-4">
-                                        <h5 class="f-w">活動類別編號 (不可編輯)</h5>
+                                        <h5 class="f-w">活動類別編號</h5>
                                         </div>
-                                        <input type="text" class="form_element2" id="catId1" name="activityCategoryId"
+                                        <input type="text" class="form_element2 readonly-field" id="catId1" name="activityCategoryId"
                                                th:value="${categoryVO.activityCategoryId}" readonly></input>
 
                                     </div>

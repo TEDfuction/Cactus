@@ -81,7 +81,6 @@ public class ActivityOrder_Compositegory {
             session.close();
             // HibernateUtil.getSessionFactory().close();
         }
-
         return list;
     }
 

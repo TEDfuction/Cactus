@@ -198,7 +198,5 @@ public class AttendeesController {
     }
 
 
-
-
 }
 

@@ -138,4 +138,5 @@ public class PromotionVO implements Serializable {
                 ", activityOrderVO=" + activityOrderVO +
                 '}';
     }
+
 }

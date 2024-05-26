@@ -16,14 +16,16 @@
     </style>
 </head>
 <body>
-<div align="center"> <h2>活動訂單資料 </h2>
-    <h3><a class="navbar-brand" th:href="@{/activityOrder/select_order}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>
+<div align="center"><h2>活動訂單資料 </h2>
+    <h3><a class="navbar-brand" th:href="@{/activityOrder/select_order}"><img
+            th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3>
 </div>
 
 <div align="center" th:fragment="listOneOrder-div">
     <h3><span>查詢結果 :</span></h3>
     <span>活動訂單編號:</span><span th:text="${activityOrderVO.activityOrderId}"></span><br/>
-    <span>會員編號[會員姓名]:</span><span th:text="${activityOrderVO.memberVO.memberId} + '-[' + ${activityOrderVO.memberVO.memberName} + ']'"></span><br/>
+    <span>會員編號[會員姓名]:</span><span
+        th:text="${activityOrderVO.memberVO.memberId} + '-[' + ${activityOrderVO.memberVO.memberName} + ']'"></span><br/>
     <span>活動場次編號:</span><span th:text="${activityOrderVO.sessionVO.activitySessionId}"></span><br/>
     <span>促銷編號:</span><span th:text="${activityOrderVO.promotionVO.promotionId}"></span><br/>
     <span>訂單日期:</span><span th:text="${activityOrderVO.orderTime}"></span><br/>
@@ -45,6 +47,5 @@
     <span>備註:</span><span th:text="${activityOrderVO.orderMemo}"></span><br/>
 
 </div>
-
 </body>
 </html>

@@ -185,6 +185,5 @@ public class ItemController {
 		model.addAttribute("itemListData", list); // for listAllItem.html 第85行用
 		return "back_end/item/listAllItem";
 	}
-
 	
 }

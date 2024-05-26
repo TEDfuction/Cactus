@@ -32,4 +32,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/queue", "/topic"); //消息發送到/queue(特定客戶端)的目的地
         registry.setUserDestinationPrefix("/user");//客戶端發送地址的前綴
     }
+
 }

@@ -46,4 +46,5 @@ public class CategoryService {
     public List<CategoryVO> getAll(Map<String ,String[]> map ){
         return Category_Compositegory.getAllCategory(map, sessionFactory.openSession());
     }
+
 }

@@ -52,5 +52,6 @@ public class AttendeesService {
     public List<AttendeesVO> getAttendeesEmail(String attendeesEmail){
         return attendeesRepository.findByEmail(attendeesEmail);
     }
+
 }
 

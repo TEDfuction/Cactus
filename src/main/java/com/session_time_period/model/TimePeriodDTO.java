@@ -22,5 +22,6 @@ public class TimePeriodDTO {
     public void setTimePeriod(Time timePeriod) {
         this.timePeriod = timePeriod;
     }
+
 }
 

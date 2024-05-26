@@ -161,9 +161,8 @@
         var enrollEndedValue = new Date(enrollStartedValue);
         enrollEndedValue.setDate(enrollStartedValue.getDate() + 1);
 
-        // 结束報名日期的最小值設置为開始報名日期的後一天
+        // 结束報名日期的最小值設置為開始報名日期的後一天
         endInput.min = enrollEndedValue.toISOString().slice(0, 10);
     });
-
 </script>
 <div th:replace="~{/back_end/include/include_bottom}"></div>

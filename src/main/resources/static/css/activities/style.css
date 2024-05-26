@@ -1072,7 +1072,7 @@ h6,
 
 /*活動後台START*/
 div.unique{
-    padding: 4rem 2rem 4rem 4rem;
+    padding: 3rem 2rem 4rem 4rem;
 }
 tbody{
     background-color: #ffffff;
@@ -1120,6 +1120,10 @@ th.th-w5{
 th.th-w6 {
     width: 2rem !important;
 }
+th.th-w6-1 {
+    width: 2rem !important;
+    padding-left: 1.25rem !important;
+}
 th.th-w7{
      width: 1.5rem !important;
  }
@@ -1161,25 +1165,65 @@ h2.hc-1{
     font-size: 2.5rem !important;
 }
 .button-container {
-    float: right;
-    margin-bottom: 1.5rem;
+    /*float: right;*/
+    margin-bottom: -2.5rem;
+    margin-top: 2.5rem;
 }
 
 
 .bttn{
     /*float: right;*/
-    margin-right: 1rem;
+    /*margin-bottom: -5rem;*/
+    margin-left: 0.5rem;
     width: 7rem;
     border-radius: 6px;
-    line-height: 2;
+    line-height: 1.8;
+    position:relative;
+    z-index:10;
+    display: inline-block;
 }
 .bttn2{
     /*float: right;*/
-    margin-right: 1rem;
+    margin-left: 0.5rem;
     width: 7rem;
     border-radius: 6px;
-    line-height: 2.5;
+
     font-size: 0.9rem;
+    line-height: 2;
+    position:relative;
+    z-index:10;
+    display: inline-block;
+}
+.bttn-select{
+    /*float: right;*/
+
+    /*margin-left: 33rem;*/
+    /*margin-bottom: 0.5rem;*/
+    width: 7rem;
+    border-radius: 6px;
+    line-height: 1.8;
+    position:relative;
+    z-index:10;
+    display: inline-block;
+}
+.bttn-select2{
+    /*float: right;*/
+
+    margin-left: 1rem;
+    /*margin-bottom: 0.5rem;*/
+    width: 7rem;
+    border-radius: 6px;
+    line-height: 1.7;
+    position:relative;
+    z-index:10;
+    display: inline-block;
+}
+
+
+.buttons-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    gap: 18px; /* 按钮之间的间距 */
 }
 .cu-1{
     border-radius: 6px;
@@ -1367,7 +1411,6 @@ h2.hc-1{
     width: 12%;
     border: none;
     background-color:transparent;
-    padding-left: 0.5rem;
     border-bottom: 1px solid #c7c5c5;
     color: #605c5c;
     font-size: 1.35rem;
@@ -1422,6 +1465,17 @@ h2.hc-1{
 .form_element12{
     display: inline-block;
     width: 12%;
+    border: none;
+    background-color:transparent;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid #c7c5c5;
+    color: #605c5c;
+    font-size: 1.35rem;
+
+}
+.form_element11-1{
+    display: inline-block;
+    width: 22%;
     border: none;
     background-color:transparent;
     padding-left: 0.5rem;
@@ -1555,6 +1609,124 @@ h2.hc-1{
     border-radius: 4px !important;
     transition: .5s;
     width: 3rem;
+}
+
+.error2{
+    color: #dc3545; display: none;
+    font-size: 14px;
+}
+.readonly-field:hover {
+    cursor: not-allowed;
+}
+
+.stateup{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #519ef5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    border: 1px solid #519ef5;
+}
+.stateup2{
+    width: 3rem;
+    display: inline-block;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #519ef5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    border: 1px solid #519ef5;
+    white-space: normal;
+}
+.stateno{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #519ef5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    /*border: 1px solid #519ef5;*/
+}
+.stateno-1{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #efa4ab;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    /*border: 1px solid #519ef5;*/
+}
+
+.stateno-2{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #f56674;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    /*border: 1px solid #519ef5;*/
+}
+
+.statefinish{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #eef2f8;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    background-color: #519ef5;
+    border: 1px solid #519ef5;
+}
+.statedown{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(108, 117, 125, 0.66);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    border: 1px solid rgba(108, 117, 125,  0.66);
+}
+.statedelay{
+    display: inline-block;
+    padding: 0.65em 0.6em;
+    font-size: 0.95em;
+    font-weight: 700;
+    line-height: 1;
+    color: #f56674;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    border: 1px solid #f34b5b;
 }
 
 
