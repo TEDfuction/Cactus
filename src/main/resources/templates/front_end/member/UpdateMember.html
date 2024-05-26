@@ -20,6 +20,11 @@
   			width:30%;
   		}
   		
+  		.error-message{
+  			color:red;
+  			margin-top:10px;
+  		}
+  		
   	
   	</style>
 </head>
@@ -36,6 +41,7 @@
 
 <!-- =========================================================================================== -->
  
+        <input type="hidden" id="status" th:value="${status}">
         
         <!-- 主欄位 -->
 	    <div class="unique">
@@ -112,6 +118,10 @@
 				
 				</select>
 				
+				<div th:if="${error}" class="error-message">
+				    <p th:text="${error}"></p>
+				</div>
+				
 <!-- 				<span th:if="${#fields.hasErrors('city')}" class="error"></span> -->
 					
 							
@@ -120,7 +130,7 @@
 				<div class="form-group">   <!--  th:text="${#strings.substring(memberVO.address, 6)}"  -->
 					<label for="address"><i class="zmdi zmdi-home"></i>會員地址:</label>
 					<input type="text" class="form-box" id="address" name="address" onclick="hideContent('address.errors');" placeholder="請輸入地址..."><br>
-<!-- 					<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span> -->
+					<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error" id="address.errors"></span>
 				</div>
 				
 				
@@ -152,6 +162,7 @@
         </div>
         
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         
         <script>
        
@@ -277,6 +288,18 @@
 	 }	
 		</script>
 		
+		<script>
+		
+
+		var status = $("#status").val();
+		
+		
+		if(status == "sameEmail"){
+			swal("錯誤","這個信箱有人使用囉!請改別的試試看","error");
+			status = "";
+		}
+		
+		</script>
         
         
 		
