@@ -52,8 +52,4 @@ public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
 
 
 
-
-
-
-
 }

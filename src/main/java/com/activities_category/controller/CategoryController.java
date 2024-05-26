@@ -134,6 +134,5 @@ public class CategoryController {
         model.addAttribute("categoryListData", list); // for listAllCategory.html 第85行用
         return "back_end/category/listAllCategory";
     }
-    
 
 }

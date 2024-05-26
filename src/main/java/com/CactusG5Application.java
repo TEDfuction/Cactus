@@ -12,8 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ServletComponentScan
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.*"},basePackageClasses = {ActivitiesController.class, IndexController_inSpringBoot.class})
-//@EnableJpaRepositories(basePackages = {"com.activities_promotion.model"})
-//@EntityScan(basePackages = {"com.activities_promotion.model"})
 public class CactusG5Application {
 
 	public static void main(String[] args) {

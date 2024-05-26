@@ -39,18 +39,19 @@
 				<div class="mb-4">
 					<h5 class="f-w">活動類別 <span class="require_text">(必填)</span></h5>
 				</div>
-				<select class="selectric2" th:field="*{categoryVO.activityCategoryId}" >
+				<select class="selectric2 required-field" th:field="*{categoryVO.activityCategoryId}" required>
 					<option value="">請選擇</option>
 					<option th:each="categoryVO : ${categoryListData2}"
 							th:value="${categoryVO.activityCategoryId}"
 							th:text="${categoryVO.activityCategoryName}" />
 				</select>
-				<div th:if="${#fields.hasErrors('categoryVO.activityCategoryId')}"
-					 class="error"
-					 id="categoryVO.activityCategoryId.errors">
-					<span th:errors="*{categoryVO.activityCategoryId}" ></span>
-					<i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
-				</div>
+				<div class="error2" id="activitySelectError" >請先選擇一個活動類別&nbsp;<i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i></div>
+<!--				<div th:if="${#fields.hasErrors('categoryVO.activityCategoryId')}"-->
+<!--					 class="error"-->
+<!--					 id="categoryVO.activityCategoryId.errors">-->
+<!--					<span th:errors="*{categoryVO.activityCategoryId}" ></span>-->
+<!--					<i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>-->
+<!--				</div>-->
 
 			</div>
 
@@ -151,6 +152,19 @@ function hideContent(d) {
 		],
 		shouldNotGroupWhenFull: true
 	},
+	 simpleUpload: {
+		 // The URL that the images are uploaded to.
+		 uploadUrl: '/upload',
+
+		 // Enable the XMLHttpRequest.withCredentials property.
+		 withCredentials: true,
+
+		 // Headers sent along with the XMLHttpRequest to the upload server.
+		 headers: {
+			 'X-CSRF-TOKEN': 'CSRF-Token',
+			 Authorization: 'Bearer <JSON Web Token>'
+		 }
+	 },
 	// Changing the language of the interface requires loading the language file using the <script> tag.
 	// language: 'es',
 	list: {
@@ -280,6 +294,36 @@ function hideContent(d) {
 		'CaseChange'
 	],
 
+});
+
+$(document).ready(function () {
+	$('#submit').click(function (event) {
+		let isValid = true;
+		const requiredFields = $('.required-field');
+		const errorElement = $('#activitySelectError');
+
+		requiredFields.each(function () {
+			if ($(this).val() === '') {
+				isValid = false;
+				errorElement.show();
+				$(this).focus();
+				return false; // 退出循環
+			} else {
+				errorElement.hide();
+			}
+		});
+
+		if (!isValid) {
+			event.preventDefault(); // 防止提交
+		}
+	});
+
+	$('.required-field').on('input', function () {
+		const errorElement = $('#activitySelectError');
+		if ($(this).val() !== '') {
+			errorElement.hide();
+		}
+	});
 });
 
 

@@ -118,5 +118,4 @@ public class ActivityOrderService {
 		return activityOrderRepository.findByMemberId(memberId);
 	}
 
-
 }

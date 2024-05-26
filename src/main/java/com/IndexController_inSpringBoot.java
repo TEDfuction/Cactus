@@ -90,8 +90,7 @@ public class IndexController_inSpringBoot {
         return "/front_end/activity/addAttendees"; //view
     }
     
-    
-    
+
     
   
     
