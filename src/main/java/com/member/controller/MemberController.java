@@ -41,8 +41,11 @@ import com.member.model.MemberVO;
 import com.member.model.TaiwanCity;
 import com.notification.model.NotificationService;
 import com.notification.model.NotificationVO;
+import com.roomorder.model.RoomOrderRepository;
 import com.roomorder.model.RoomOrderVO;
 import com.roomorder.service.impl.RoomOrderImpl;
+import com.roomorderlist.model.RoomOrderListRepository;
+import com.roomorderlist.model.RoomOrderListVO;
 import com.shoporder.model.ShopOrderService;
 import com.shoporder.model.ShopOrderVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
@@ -54,6 +57,12 @@ public class MemberController {
 	
 	@Autowired
 	RoomOrderImpl roomOrderSvc;
+	
+	@Autowired
+	RoomOrderRepository roomOrderRepository;
+	
+	@Autowired
+	RoomOrderListRepository roomOrderListRepository;
 
 	@Autowired
 	MemberService memSvc;
@@ -454,6 +463,60 @@ public class MemberController {
 	}
 	
 	
+	@PostMapping("/cancelActivityOrder")
+	public String cancelActivityOrder(ModelMap model,
+			@RequestParam("activityOrderId") Integer activityOrderId,
+			HttpServletRequest req){
+		
+		
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		
+		ActivityOrderVO activityOrderVO = activityOrderSvc.getOneOrder(activityOrderId);
+		activityOrderVO.setOrderState(1);
+		activityOrderSvc.updateOrder(activityOrderVO);
+			
+		model.addAttribute("memberVO", memberVO);
+		
+		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberVO.getMemberId());
+		
+		if(activityOrderList.isEmpty()) {
+			model.addAttribute("activityOrderList", null);
+			return "/front_end/member/checkActivityOrderDetail";
+		}
+		
+		model.addAttribute("activityOrderList", activityOrderList);
+		
+		Date date = new Date();
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowTime = formatter1.format(date);
+		
+		//發送通知給會員
+		notiSvc.orderCancel(memberId, 1,
+				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+activityOrderVO.getActivityOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		System.out.println("message has send");
+		
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		model.addAttribute("status", "cancelOrderSuccess");
+		
+		return "/front_end/member/checkActivityOrderDetail";
+
+	}
+	
+	
 	
 /*************************************************************************/	
 	
@@ -568,6 +631,8 @@ public class MemberController {
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
 		model.addAttribute("UnreadCount",count);
 		
+		model.addAttribute("status", "cancelOrderSuccess");
+		
 		return "/front_end/member/checkProductOrderDetail";
 
 	}
@@ -606,6 +671,105 @@ public class MemberController {
 		
 		return "/front_end/member/checkRoomOrderDetail";
 	}	
+	
+	
+	@PostMapping("/showRoomOrderDetail")  //顯示訂單詳情內容
+	public String showRoomOrderDetail(ModelMap model,
+			@RequestParam("roomOrderId") Integer roomOrderId,
+			HttpServletRequest req) {
+				
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		RoomOrderVO roomOrderVO = roomOrderRepository.findById(roomOrderId).get();
+		model.addAttribute("roomOrderVO", roomOrderVO);
+		
+		RoomOrderListVO roomOrderListVO = roomOrderListRepository.findByRoomOrderId(roomOrderId);
+		model.addAttribute("roomOrderListVO",roomOrderListVO);
+		
+		
+		model.addAttribute("memberVO", memberVO);
+		
+		model.addAttribute("showRoomOrderDetail", "true");
+		
+		List<RoomOrderVO> roomOrderList;
+		
+		try {
+			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("roomOrderList", null);
+			return "/front_end/member/checkRoomOrderDetail";
+		}
+		
+		model.addAttribute("roomOrderList", roomOrderList);
+
+		return "/front_end/member/checkRoomOrderDetail";
+	}
+	
+	
+	@PostMapping("/cancelRoomOrder")
+	public String cancelRoomOrder(ModelMap model,
+			@RequestParam("roomOrderId") Integer roomOrderId,
+			HttpServletRequest req){
+		
+		
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+		
+		
+		RoomOrderVO roomOrderVO = roomOrderRepository.getById(roomOrderId);
+		roomOrderVO.setRoomOrderStatus(false);
+		roomOrderRepository.save(roomOrderVO);
+			
+		model.addAttribute("memberVO", memberVO);
+		
+		
+		List<RoomOrderVO> roomOrderList;
+		try {
+			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("roomOrderList", null);
+			return "/front_end/member/checkRoomOrderDetail";
+		}
+	
+		
+		model.addAttribute("roomOrderList", roomOrderList);
+		
+		Date date = new Date();
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowTime = formatter1.format(date);
+		
+		//發送通知給會員
+		notiSvc.orderCancel(memberId, 0,
+				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+roomOrderVO.getRoomOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		System.out.println("message has send");
+		
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+		
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
+		model.addAttribute("UnreadCount",count);
+		
+		model.addAttribute("status", "cancelOrderSuccess");
+		
+		return "/front_end/member/checkRoomOrderDetail";
+
+	}
 	
 
 	
