@@ -163,6 +163,7 @@ h6,
 .navbar.sticky-top {
     top: -100px;
     transition: .5s;
+    z-index: 10;
 }
 
 @media (max-width: 991.98px) {
@@ -1139,6 +1140,8 @@ h6,
     background-color: #ffffff;
     border-radius: 10px;
     margin: 0rem 0rem 6rem 0rem;
+    webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);
 }
 
 /*** About & Feature ***/
@@ -1244,6 +1247,14 @@ div.-on span.-minus{
 }
 .iconcolor{
     color: #BF6766;
+}
+
+.dropdown-menu-green {
+    color: #2c2d2d;
+    background-color: rgb(249, 253, 253);
+    min-width: 4rem !important;
+    border: none;
+    border-radius: 3px;
 }
 
 
