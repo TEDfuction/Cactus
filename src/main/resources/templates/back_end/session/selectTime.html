@@ -6,15 +6,14 @@
 <body>
 
 <div align="center" th:fragment="selectTime-div"> <!-- 此div被select_page.html第158行insert用 -->
-<h1>Sessions on <span th:text="${#dates.format(activityDate, 'yyyy-MM-dd')}"></span></h1>
+    <h1>Sessions on <span th:text="${#dates.format(activityDate, 'yyyy-MM-dd')}"></span></h1>
 
-<div class="form_element8">
+    <div class="form_element8">
         <span th:each="timePeriod : ${timePeriods}">
             <span th:text="${#dates.format(timePeriod, 'HH:mm')}"></span>
         </span>
-</div>
+    </div>
 </div>
 ttttt
-<!-- 其他 HTML 代码 -->
 </body>
 </html>

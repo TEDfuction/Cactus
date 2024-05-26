@@ -18,5 +18,4 @@ public interface Time_PeriodRepository extends JpaRepository<Time_PeriodVO, Inte
 
 
 
-
 }

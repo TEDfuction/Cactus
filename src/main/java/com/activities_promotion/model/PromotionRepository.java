@@ -19,4 +19,5 @@ public interface PromotionRepository extends JpaRepository<PromotionVO, Integer>
     @Query(value = "from PromotionVO where ?1 >= promotionStarted and ?2 <= promotionEnd")
     List<PromotionVO> findByStartedAndEnd(Date promotionStarted, Date promotionEnd);
 
+
 }

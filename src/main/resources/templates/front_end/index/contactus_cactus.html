@@ -1,5 +1,10 @@
 <div th:replace="~{/front_end/index/include/include_top}"></div>
-
+<style>
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* Adjust for a smoother transition */
+    }
+</style>
 <body>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -22,8 +27,16 @@
     &nbsp;&nbsp;<span class="text-white px-2" th:text="${session.memberVO.memberName}"></span>
             </th:block>
                 <a class="text-white px-2" th:href="@{/admin/adminLogin}">｜ English ｜</a>
-                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>
+<!--                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>-->
 
+                <div class="dropdown">
+                    <a class="text-white px-2 dropdown-toggle" href="#" role="button" id="memberDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        會員中心
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-green" aria-labelledby="memberDropdown">
+                        <li><a class="dropdown-item" th:href="@{/member/memberRegistory}">會員註冊</a></li>
+                    </ul>
+                </div>
             </div>
 
         </div>
@@ -405,6 +418,16 @@
         $(this).closest("div.title_block").toggleClass("-on");
         $(this).closest("div.question").find("div.inner_block").slideToggle();
     })
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var memberDropdown = document.getElementById('memberDropdown');
+        memberDropdown.addEventListener('click', function (event) {
+            var isDropdownShown = memberDropdown.getAttribute('aria-expanded') === 'true';
+            if (!isDropdownShown) {
+                window.location.href = '/member/memberOnlyWeb';
+            }
+        });
+    });
 </script>
 
     <div th:replace="~{/front_end/index/include/include_bottom}"></div>

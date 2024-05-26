@@ -16,7 +16,6 @@ public interface ActivityOrderRepository extends JpaRepository<ActivityOrderVO, 
     @Query(value = "from ActivityOrderVO  where orderTime between :start and :end")
     List<ActivityOrderVO> findByOrderTimeBetween(@Param("start") Date start, @Param("end") Date end);
 
-
     @Query(value = "select * from  activity_order where session_time_period_id = ?1" , nativeQuery = true)
     List<ActivityOrderVO> findTotalEnrollNumber(Integer sessionTimePeriodId);
 

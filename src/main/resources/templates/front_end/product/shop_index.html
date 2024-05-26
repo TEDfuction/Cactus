@@ -12,6 +12,10 @@
 	h3.card-title2{
 		display:none;
 	}
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* Adjust for a smoother transition */
+    }
 
 </style>
 
@@ -442,6 +446,17 @@ $(document).ready(function() {
     searchItems("", "");
 });
 
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var memberDropdown = document.getElementById('memberDropdown');
+        memberDropdown.addEventListener('click', function (event) {
+            var isDropdownShown = memberDropdown.getAttribute('aria-expanded') === 'true';
+            if (!isDropdownShown) {
+                window.location.href = '/member/memberOnlyWeb';
+            }
+        });
+    });
 </script>
 
 

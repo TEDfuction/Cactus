@@ -21,14 +21,15 @@
             <div class="mb-4">
                 <h5 class="f-w">活動訂單編號 <span class="require_text">(必選)</span></h5>
             </div>
-            <select class="selectric2" th:field="*{activityOrderVO.activityOrderId}" required>
-                <option value="">
+            <select class="selectric2 required-field" th:field="*{activityOrderVO.activityOrderId}" required>
+                <option value="">請選擇</option>
                 <option th:each="activityOrderVO : ${activityOrderListData}" th:value="${activityOrderVO.activityOrderId}" th:text="${activityOrderVO.activityOrderId}" />
             </select>
-            <div th:if="${#fields.hasErrors('activityOrderVO.activityOrderId')}" class="error" id="categoryVO.activityCategoryId.errors">
-                <span th:errors="*{activityOrderVO.activityOrderId}" ></span>
-                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
-            </div>
+            <div class="error2" id="activitySelectError" >請先選擇一個活動訂單編號&nbsp;<i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i></div>
+<!--            <div th:if="${#fields.hasErrors('activityOrderVO.activityOrderId')}" class="error" id="categoryVO.activityCategoryId.errors">-->
+<!--                <span th:errors="*{activityOrderVO.activityOrderId}" ></span>-->
+<!--                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>-->
+<!--            </div>-->
 
         </div>
         <div class="mb-4">
@@ -101,6 +102,36 @@
     function hideContent(d) {
         document.getElementById(d).style.display = "none";
     }
+
+    $(document).ready(function () {
+        $('#submit').click(function (event) {
+            let isValid = true;
+            const requiredFields = $('.required-field');
+            const errorElement = $('#activitySelectError');
+
+            requiredFields.each(function () {
+                if ($(this).val() === '') {
+                    isValid = false;
+                    errorElement.show();
+                    $(this).focus();
+                    return false; // 退出循环
+                } else {
+                    errorElement.hide();
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault(); // 防止提交
+            }
+        });
+
+        $('.required-field').on('input', function () {
+            const errorElement = $('#activitySelectError');
+            if ($(this).val() !== '') {
+                errorElement.hide();
+            }
+        });
+    });
 
 </script>
 <div th:replace="~{/back_end/include/include_bottom}"></div>

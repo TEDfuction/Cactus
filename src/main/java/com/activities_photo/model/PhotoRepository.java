@@ -18,10 +18,6 @@ public interface PhotoRepository extends JpaRepository<PhotoVO, Integer> {
 			void deleteByActivityId(int activityId);
 
 
-
-
-			
-			
 			
 			
 			

@@ -17,5 +17,6 @@ public interface AttendeesRepository extends JpaRepository<AttendeesVO, Integer>
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM AttendeesVO a WHERE a.attendeesEmail = :attendeesEmail AND a.activityAttendeesId <> :activityAttendeesId")
     boolean existsByEmailExcludingId(@Param("attendeesEmail") String attendeesEmail, @Param("activityAttendeesId") Integer activityAttendeesId);
 
+
 }
 

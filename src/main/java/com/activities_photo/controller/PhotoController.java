@@ -38,7 +38,6 @@ import com.session_time_period.model.Time_PeriodService;
 import com.session_time_period.model.Time_PeriodVO;
 
 
-
 @Controller
 @RequestMapping("/activity")
 public class PhotoController {

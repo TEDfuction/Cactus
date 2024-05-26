@@ -83,9 +83,6 @@ public class ItemIdController {
 		model.addAttribute("categoryListData2", list2);
 		String message = strBuilder.toString();
 		return new ModelAndView("back_end/item/select_item", "errorMessage", "請修正以下錯誤:<br>"+message);
-			
-			
-			
 		
 	}
 

@@ -145,4 +145,5 @@ public class SessionIdController {
 		String message = strBuilder.toString();
 	    return new ModelAndView("back_end/session/select_session", "errorMessage", "請修正以下錯誤:<br>"+message);
 	}
+
 }

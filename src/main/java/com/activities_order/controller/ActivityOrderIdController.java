@@ -86,4 +86,5 @@ public class ActivityOrderIdController {
         String message = strBuilder.toString();
         return new ModelAndView("back_end/activityOrder/select_order", "errorMessage", "請修正以下錯誤:<br>"+message);
     }
+
 }

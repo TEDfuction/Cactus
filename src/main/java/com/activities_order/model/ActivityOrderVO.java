@@ -71,7 +71,6 @@ public class ActivityOrderVO implements Serializable {
     @OneToMany(mappedBy = "activityOrderVO", cascade = CascadeType.ALL)
     private Set<AttendeesVO> attendeesVO;
 
-
     public ActivityOrderVO() {
     }
 

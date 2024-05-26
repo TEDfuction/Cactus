@@ -47,5 +47,4 @@ public class Time_PeriodService {
         return timePeriodRepository.findByActivitySessionId(activitySessionId);
     }
 
-
 }

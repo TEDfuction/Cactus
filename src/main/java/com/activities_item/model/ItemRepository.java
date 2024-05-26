@@ -12,4 +12,5 @@ public interface ItemRepository extends JpaRepository<ItemVO, Integer>{
 		//刪除特定活動ID
 		@Query(value = "delete from activity_item where activity_id = ?1", nativeQuery = true)
 		void deleteByActivityId(int activityId);
+
 }

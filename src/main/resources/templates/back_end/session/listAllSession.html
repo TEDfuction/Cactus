@@ -5,9 +5,10 @@
     <title>所有活動場次資料</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-        label input[type="search"]{
-            margin-bottom :  1.5rem;
+        label input[type="search"] {
+            margin-bottom: 1.5rem;
         }
+
         table.dataTable {
             margin-bottom: 1rem !important;
         }
@@ -43,6 +44,11 @@
             display: none !important;
         }
 
+        .dataTables_wrapper .dataTables_length {
+            margin-left: 2rem;
+            float: right !important;
+        }
+
 
     </style>
 </head>
@@ -51,99 +57,109 @@
 <div class="unique">
     <input type="hidden" id="success" th:value="${success}">
     <div>
-        <h2 class="hc-1">所有活動場次列表</h2>
+        <h2 class="hc-1">活動場次列表</h2>
     </div>
 
     <div class="controls">
-        <div class="button-container">
-            <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增場次</button>
-            <a id="link" href='addSession'></a>
+        <div class="buttons-wrapper">
+            <div class="button-container">
+                <button class="btn btn-primary bttn" onclick="document.getElementById('link').click()">新增場次</button>
+                <a id="link" href='addSession'></a>
+            </div>
+            <div class="button-container">
+                <button class="btn btn-outline-secondary bttn-select"
+                        onclick="document.getElementById('link-select').click()">進階搜尋
+                </button>
+                <a id="link-select" href='select_session'></a>
+            </div>
         </div>
 
-<table id="example" class="display tr-line tl" >
-    <thead class="t-t-1">
-    <tr class="t-t-2">
-        <th class="th-w6 tp-2">場次內容</th>
-        <th class="th-w6">場次編號</th>
-        <th>活動名稱</th>
-        <th class="th-w2-3">場次日期</th>
-<!--        <th>活動時長</th>-->
-<!--        <th>活動地點</th>-->
-<!--        <th>活動人數上限</th>-->
-<!--        <th>活動人數下限</th>-->
-<!--        <th>報名總數</th>-->
-        <th>開始報名日期</th>
-        <th>結束報名日期</th>
-        <th class="th-w6">場次狀態</th>
-<!--        <th>備註</th>-->
-        <th class="th-w5">編輯</th>
-        <th class="th-w1">刪除</th>
-    </tr>
-    </thead>
+        <table id="example" class="display tr-line tl">
+            <thead class="t-t-1">
+            <tr class="t-t-2">
+                <th class="th-w6 tp-2">場次內容</th>
+                <th class="th-w6">場次編號</th>
+                <th>活動名稱</th>
+                <th class="th-w2-3">場次日期</th>
+                <!--        <th>活動時長</th>-->
+                <!--        <th>活動地點</th>-->
+                <!--        <th>活動人數上限</th>-->
+                <!--        <th>活動人數下限</th>-->
+                <!--        <th>報名總數</th>-->
+                <th>開始報名日期</th>
+                <th>結束報名日期</th>
+                <th class="th-w6-1">場次狀態</th>
+                <!--        <th>備註</th>-->
+                <th class="th-w5">編輯</th>
+                <th class="th-w1">刪除</th>
+            </tr>
+            </thead>
 
-    <tbody>
-    <th:block th:each="sessionVO : ${sessionListData}">
-        <tr>
+            <tbody>
+            <th:block th:each="sessionVO : ${sessionListData}">
+                <tr>
 
-            <td class="th-w4">
-<!--                <button type="button" class="btn  cu-1 td-1" data-bs-toggle="modal"-->
-<!--                        th:data-bs-target="'#staticBackdrop'+ ${sessionVO.activitySessionId}">查看-->
+                    <td class="th-w4">
+                        <!--                <button type="button" class="btn  cu-1 td-1" data-bs-toggle="modal"-->
+                        <!--                        th:data-bs-target="'#staticBackdrop'+ ${sessionVO.activitySessionId}">查看-->
 
-<!--                </button>-->
-                <form method="post" th:action="@{getOne_For_Display}">
+                        <!--                </button>-->
+                        <form method="post" th:action="@{getOne_For_Display}">
 
-                    <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}" >
-                    <input class="btn  cu-1 td-1" type="submit" value="查看">
-                </form>
-            </td>
-            <td th:text="${sessionVO.activitySessionId}"></td>
-            <td class="th-w4" th:text="${sessionVO.itemVO.activityName} "></td>
-            <td th:text="${#dates.format(sessionVO.activityDate, 'yyyy-MM-dd')}"></td>
-<!--            <td th:text="${sessionVO.duration}"></td>-->
-<!--            <td th:text="${sessionVO.activityLocation}"></td>-->
-<!--            <td th:text="${sessionVO.activityMaxPart}"></td>-->
-<!--            <td th:text="${sessionVO.activityMinPart}"></td>-->
-<!--            <td th:text="${sessionVO.enrollTotal}"></td>-->
-            <td th:text="${#dates.format(sessionVO.enrollStarted, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${#dates.format(sessionVO.enrollEnd, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:switch="${sessionVO.activitySessionState}">
-                <span th:case="0">正常舉辦</span>
-                <span th:case="1">取消</span>
-                <span th:case="2">延期</span>
-            </td>
-<!--            <td th:text="${sessionVO.activityNote}"></td>-->
+                            <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}">
+                            <input class="btn  cu-1 td-1" type="submit" value="查看">
+                        </form>
+                    </td>
+                    <td class="th-w4" th:text="${sessionVO.activitySessionId}"></td>
+                    <td class="th-w4" th:text="${sessionVO.itemVO.activityName} "></td>
+                    <td th:text="${#dates.format(sessionVO.activityDate, 'yyyy-MM-dd')}"></td>
+                    <!--            <td th:text="${sessionVO.duration}"></td>-->
+                    <!--            <td th:text="${sessionVO.activityLocation}"></td>-->
+                    <!--            <td th:text="${sessionVO.activityMaxPart}"></td>-->
+                    <!--            <td th:text="${sessionVO.activityMinPart}"></td>-->
+                    <!--            <td th:text="${sessionVO.enrollTotal}"></td>-->
+                    <td th:text="${#dates.format(sessionVO.enrollStarted, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#dates.format(sessionVO.enrollEnd, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:switch="${sessionVO.activitySessionState}">
+                        <span th:case="0" class="stateup2">正常舉辦</span>
+                        <span th:case="1" class="statedown">取消</span>
+                        <span th:case="2" class="statedelay">延期</span>
+                    </td>
+                    <!--            <td th:text="${sessionVO.activityNote}"></td>-->
 
-            <td>
-<!--                <button type="button" class="btn btn-outline-success2 cu-5" data-bs-toggle="modal"-->
-<!--                        th:data-bs-target="'#staticBackdrop2'+ ${promotionVO.promotionId}">編輯-->
+                    <td>
+                        <!--                <button type="button" class="btn btn-outline-success2 cu-5" data-bs-toggle="modal"-->
+                        <!--                        th:data-bs-target="'#staticBackdrop2'+ ${promotionVO.promotionId}">編輯-->
 
-<!--                </button>-->
-                <form method="post" th:action="@{/session/getOne_For_Update}" style="margin-bottom: 0px;" >
-                    <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
-                    <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}" >
-                </form>
+                        <!--                </button>-->
+                        <form method="post" th:action="@{/session/getOne_For_Update}" style="margin-bottom: 0px;">
+                            <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
+                            <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}">
+                        </form>
 
-            </td>
-            <td>
-                <form method="post" th:action="@{/session/delete}" style="margin-bottom: 0px;" onsubmit="return confirmDelete(this);">
-                    <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
-                    <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}" onclick="confirmDelete(this.form)">
-                </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/session/delete}" style="margin-bottom: 0px;"
+                              onsubmit="return confirmDelete(this);">
+                            <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
+                            <input type="hidden" name="activitySessionId" th:value="${sessionVO.activitySessionId}"
+                                   onclick="confirmDelete(this.form)">
+                        </form>
 
-            </td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
     </div>
 
 
-    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:inline="javascript">
     // 在页面加载完成后执行
-    window.onload = function() {
+    window.onload = function () {
         /*<![CDATA[*/
         // 獲取隱藏內容的值
         var successValue = /*[[${success}]]*/ '';
@@ -158,6 +174,7 @@
         }
         /*]]>*/
     };
+
     function confirmDelete(form) {
         Swal.fire({
             title: '確定要刪除嗎？',
@@ -189,14 +206,16 @@
 
 <div th:replace="~{/back_end/include/include_bottom}"></div>
 
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script><!-- ●●js  for jquery datatables 用 -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css"/><!--●●css for jquery datatables 用 -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css"/>
+<!--●●css for jquery datatables 用 -->
 
 <!-- ●● jquery datatables 設定 -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#example').DataTable({
-            "lengthMenu": [5, 10,15, 20, 25,50],
+            "lengthMenu": [5, 10, 15, 20, 25, 50],
             "searching": true,  //搜尋功能, 預設是開啟
             "paging": true,     //分頁功能, 預設是開啟
             "ordering": true,   //排序功能, 預設是開啟
@@ -217,7 +236,7 @@
                     "last": "最後一頁"
                 },
                 "aria": {
-                    "sortAscending":  ": 升冪排列",
+                    "sortAscending": ": 升冪排列",
                     "sortDescending": ": 降冪排列"
                 }
             }

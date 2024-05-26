@@ -70,4 +70,5 @@ public class PromotionIdController {
         return new ModelAndView("back_end/promotion/select_promotion", "errorMessage", "請修正以下錯誤:<br>"+message);
     }
 
+
 }
