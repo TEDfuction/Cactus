@@ -33,6 +33,7 @@
     div.topic {
         font-size: 32px;
         color: #1e1e1e;
+        font-weight: 600;
 
 
     }
@@ -153,7 +154,7 @@
 <body>
 <div class="pad">
     <div class="pad2">
-        <div class="location"><img th:src="@{/img/front_end/activity/location.png}"  style="height: 25px;">&nbsp;澎湖縣</div>
+        <div class="location"><i class="fa-solid fa-location-dot " style="color: #f4f7fa; margin-top: 4px"></i>&nbsp;澎湖縣</div>
         <div class="topic" th:text="${itemVO.activityName}"></div>
         
     </div>

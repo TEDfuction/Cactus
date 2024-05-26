@@ -186,6 +186,7 @@
 
 <div th:replace="~{/front_end/member/include/include_body}"></div>
 
+<input type="hidden" id="status" th:value="${status}">
 
    
         <!-- 主欄位 -->
@@ -206,6 +207,7 @@
 						<th>訂單狀態</th>
 						<th>退款狀態</th>
 						<th>是否有促銷折扣</th>
+						<th>操作</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -241,6 +243,16 @@
 									<input class="submitButton" type="submit" value="顯示詳情">
 								</form>
 							</td>
+							
+							
+							<td>
+								<div class="cancelBlock">
+									<form id="myForm" method="post" th:action="@{/member/cancelActivityOrder}">
+										<input type="hidden" name="activityOrderId" class="activityOrderId" th:value="${activityOrderVO.activityOrderId}">
+	  									<button type="button" class="cancelButton">取消訂單</button>
+									</form>
+								</div>
+							</td>
 
 						</tr>
 					</th:block>
@@ -268,7 +280,18 @@
 	
 	
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>     
-	                           
+<!-- 前端sweet alert錯誤判斷用 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+
+var status = $("#status").val();
+if(status == "cancelOrderSuccess"){
+	swal("成功","該筆訂單已取消","success");
+}
+
+</script>	                           
 	
 	<script th:inline="javascript">
 	    $(document).ready(function () {
@@ -340,6 +363,74 @@
 	             	}
 	 	    	});
 	 	    }
+	    	 
+	    	 
+	    	 
+	    	 
+	    	 
+	    	//取消訂單按鈕
+	    	
+	    	 var statusText = $(document).find(".StatusClass1");
+	    		
+	    		$.each(statusText, (i, value) => {
+
+	    			if(statusText[i].innerHTML != "已繳費"){
+	    				var cancel_block = statusText[i].closest("tr").querySelectorAll("div.cancelBlock");
+	    				var cancel_HTML = `<span>該筆訂單無法取消</span>`;
+	    				
+	    				for (var j = 0; j < cancel_block.length; j++) {
+	    			        cancel_block[j].innerHTML = "<span>該筆訂單無法取消</span>";
+	    			    }
+	    			}
+	    			
+	    			
+	    			
+	    		});
+	    		
+	    		
+	    		$('.cancelButton').click(function() {
+	    	    	
+	    	        var form = $(this).closest('form#myForm');
+	    	        
+	    	        swal({
+	    	    		title:"訂單取消",
+	    	    		text:"您確定要取消訂單嗎??!",
+	    	    		icon:"warning",
+	    	    		buttons:{
+	    	    			cancel: {
+	    	    		        text: "我再想想好了..",
+	    	    		        visible: true
+	    	    		      },
+	    	    		      confirm: {
+	    	    		        text: "是的我要取消訂單",
+	    	    		        visible: true
+	    	    		      }
+	    	    		}
+	    	    	}).then(function(confirm){
+	    	    		if(confirm){
+	    	    			swal({
+	    	    				title:"訂單取消",
+	    	    				text:"您真的真的確定要取消訂單嗎??!?!!",
+	    	    				icon:"warning",
+	    	    				buttons:{
+	    	    					cancel: {
+	    	    				        text: "還是不要好了..",
+	    	    				        visible: true
+	    	    				      },
+	    	    				      confirm: {
+	    	    				        text: "是的沒錯!!",
+	    	    				        visible: true
+	    	    				      }
+	    	    				}
+	    	    			}).then(function(confirm){
+	    	    				if(confirm){
+	    	    					form.submit();
+	    	    				}
+	    	    			})
+	    	    		}
+	    	    	})
+	    	        
+	    	    });
 
 	    });
 	    
@@ -350,8 +441,7 @@
 	
 	
 
-	<!-- 前端sweet alert錯誤判斷用 -->
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	
 	<script>
 	//燈箱XX按鈕
