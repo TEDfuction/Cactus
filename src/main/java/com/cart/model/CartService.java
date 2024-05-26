@@ -19,7 +19,7 @@ public class CartService {
 		// 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
-        System.out.println(dtoString);
+//        System.out.println(dtoString);
         
         JsonObject newItem = gson.fromJson(dtoString, JsonObject.class);
 
@@ -84,7 +84,7 @@ public class CartService {
 
             }
 
-            System.out.println(cartStr);
+//            System.out.println(cartStr);
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -146,7 +146,7 @@ public class CartService {
         // 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
-        System.out.println(dtoString);
+//        System.out.println(dtoString);
 
         JsonObject newItem = gson.fromJson(dtoString, JsonObject.class);
 
@@ -205,7 +205,7 @@ public class CartService {
                 jedis.set("memberId:" + memberId, cartStr);
 
             }
-            System.out.println(cartStr);
+//            System.out.println(cartStr);
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -255,7 +255,7 @@ public class CartService {
                 jedis.set("memberId:" + memberId, cartStr);
 
             }
-            System.out.println(cartStr);
+//            System.out.println(cartStr);
         } finally {
             if (jedis != null) {
                 jedis.close();

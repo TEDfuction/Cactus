@@ -153,7 +153,7 @@ public class MemberController {
 	public String setLocation(HttpSession session, @RequestBody Map<String, String> jsonData ) {
         
 		String location = jsonData.get("location");
-        System.out.println("Received string from frontend: " + location);
+//        System.out.println("Received string from frontend: " + location);
         session.setAttribute("location", location);
 		
 		return location;
@@ -280,7 +280,7 @@ public class MemberController {
 		
 		/**** 2.開始新增資料 ****/
 		String address = city + "-" + town + "-" + memberVO.getAddress();
-		System.out.println(address);
+//		System.out.println(address);
 		memberVO.setAddress(address);
 		
 		memSvc.addMember(memberVO);
@@ -334,7 +334,7 @@ public class MemberController {
 			
 		
 		String address = city + "-" + town + "-" + memberVO.getAddress();
-		System.out.println(address);
+//		System.out.println(address);
 		memberVO.setAddress(address);
 		
 		
@@ -498,7 +498,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 1,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+activityOrderVO.getActivityOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
@@ -619,7 +619,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 2,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
@@ -753,7 +753,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 0,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+roomOrderVO.getRoomOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
