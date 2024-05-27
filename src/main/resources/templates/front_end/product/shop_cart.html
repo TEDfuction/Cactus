@@ -365,7 +365,7 @@ function eventButton() {
     	                url: '/shopCart/cartTotalNumber', 
     	                type: 'GET',
     	                success: function(response) {   
-    	                    console.log("shopNumber"+response);
+//     	                    console.log("shopNumber"+response);
     	                    $("span.cartnumber").text(response);
     	                    if(response == "0"){
     	                    	$("span.cartnumber").addClass("-cartnone")
@@ -417,7 +417,7 @@ function eventButton() {
     	                url: '/shopCart/cartTotalNumber', 
     	                type: 'GET',
     	                success: function(response) {   
-    	                    console.log("shopNumber"+response);
+//     	                    console.log("shopNumber"+response);
     	                    $("span.cartnumber").text(response);
     	                    if(response == "0"){
     	                    	$("span.cartnumber").addClass("-cartnone")
