@@ -287,14 +287,13 @@ public class PhotoController {
         Integer promotionCoupon = 0;
         Integer promotionId = null;
 
-
 			for (PromotionVO promotion : list3) {
 				java.util.Date promotionStart = promotion.getPromotionStarted();
 				System.out.println("promotionStart" + promotionStart);
 				java.util.Date promotionEnd = promotion.getPromotionEnd();
 				System.out.println("promotionEnd" + promotionEnd);
-
-				if ((sessiondate.after(promotionStart) || sessiondate.equals(promotionStart)) && (sessiondate.before(promotionEnd) || sessiondate.equals(promotionEnd))) {
+				Boolean promotionState = promotion.getPromotionState();
+				if ((sessiondate.after(promotionStart) || sessiondate.equals(promotionStart)) && (sessiondate.before(promotionEnd) || sessiondate.equals(promotionEnd)) && promotionState == true) {
 					System.out.println("aaaaaa");
 					promotionDiscount = promotion.getPromotionDiscount();
 					promotionCoupon = promotion.getPromotionCoupon();
