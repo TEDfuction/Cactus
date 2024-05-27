@@ -1,4 +1,4 @@
-package com.activity.hibernate.util.CompositeQuery;
+package com.activities_category.model;
 
 import java.util.*;
 
@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.activities_category.model.CategoryVO;
+
 public class Category_Compositegory {
 	
 	public static Predicate getCategory_For_AnyDB(CriteriaBuilder builder, Root<CategoryVO> root, String columnName, String value){
@@ -66,6 +67,5 @@ public class Category_Compositegory {
         }
         return list;
     }
-
-
 }
+

@@ -153,7 +153,7 @@ public class MemberController {
 	public String setLocation(HttpSession session, @RequestBody Map<String, String> jsonData ) {
         
 		String location = jsonData.get("location");
-        System.out.println("Received string from frontend: " + location);
+//        System.out.println("Received string from frontend: " + location);
         session.setAttribute("location", location);
 		
 		return location;
@@ -280,7 +280,7 @@ public class MemberController {
 		
 		/**** 2.開始新增資料 ****/
 		String address = city + "-" + town + "-" + memberVO.getAddress();
-		System.out.println(address);
+//		System.out.println(address);
 		memberVO.setAddress(address);
 		
 		memSvc.addMember(memberVO);
@@ -332,9 +332,12 @@ public class MemberController {
 			@RequestParam("town") String town
 			) throws IOException {
 			
+		//供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount",count);
 		
 		String address = city + "-" + town + "-" + memberVO.getAddress();
-		System.out.println(address);
+//		System.out.println(address);
 		memberVO.setAddress(address);
 		
 		
@@ -353,23 +356,36 @@ public class MemberController {
 			memberVO.setMemberPic(b);
 		}
 		
-		if(city == null || town == null) {
+		if(city.isEmpty() || town.isEmpty()) {
 			result.addError(new FieldError("memberVO","city","請選擇完整地址"));
+			model.addAttribute("error", "請選擇完整地址");
 		}
 		
 		if (result.hasErrors()) {
 			return "front_end/member/UpdateMember";
 		}
 		
+		List<MemberVO> list = memSvc.getAll();
+		for(MemberVO dbMemberVO : list) {
+			HttpSession session = req.getSession();
+			String sessionEmail = (String)session.getAttribute("account");
+			String dbEmail = dbMemberVO.getEmail();
+			String inputEmail = memberVO.getEmail();
+			
+			if(!sessionEmail.equals(inputEmail) && dbEmail.equals(inputEmail)) {
+				model.addAttribute("status", "sameEmail");
+				return "/front_end/member/UpdateMember";
+			}
+			
+		}
+		
 		memSvc.updateMember(memberVO);
 		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
 		
-		model.addAttribute("memberVO", memberVO);
+		
 		HttpSession session = req.getSession();
 		session.setAttribute("account", memberVO.getEmail());
+		model.addAttribute("memberVO", memberVO);
 		
 		return "/front_end/member/listOneMember";
 	}
@@ -498,7 +514,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 1,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+activityOrderVO.getActivityOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
@@ -619,7 +635,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 2,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
@@ -638,13 +654,8 @@ public class MemberController {
 	}
 	
 	
-	
-/*************************************************************************/	
-	
-	
-	
 	@GetMapping("/checkRoomOrderDetail")
-	public String checkRoomOrderDetail(HttpServletRequest req,ModelMap model) {
+	public String checkRoomOrderDetail(HttpServletRequest req,ModelMap model) throws Exception {
 		
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
@@ -657,12 +668,9 @@ public class MemberController {
 		
 		model.addAttribute("memberVO", memberVO);
 		
-		List<RoomOrderVO> roomOrderList;
+		List<RoomOrderVO> roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
 		
-		try {
-			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(roomOrderList.isEmpty()) {
 			model.addAttribute("roomOrderList", null);
 			return "/front_end/member/checkRoomOrderDetail";
 		}
@@ -676,7 +684,7 @@ public class MemberController {
 	@PostMapping("/showRoomOrderDetail")  //顯示訂單詳情內容
 	public String showRoomOrderDetail(ModelMap model,
 			@RequestParam("roomOrderId") Integer roomOrderId,
-			HttpServletRequest req) {
+			HttpServletRequest req) throws Exception {
 				
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
@@ -698,12 +706,10 @@ public class MemberController {
 		
 		model.addAttribute("showRoomOrderDetail", "true");
 		
-		List<RoomOrderVO> roomOrderList;
+		List<RoomOrderVO> roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
 		
-		try {
-			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
-		} catch (Exception e) {
-			e.printStackTrace();
+		
+		if(roomOrderList.isEmpty()) {
 			model.addAttribute("roomOrderList", null);
 			return "/front_end/member/checkRoomOrderDetail";
 		}
@@ -753,7 +759,7 @@ public class MemberController {
 		notiSvc.orderCancel(memberId, 0,
 				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+roomOrderVO.getRoomOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
-		System.out.println("message has send");
+//		System.out.println("message has send");
 		
 //		try {
 //			Thread.sleep(1000);
@@ -785,16 +791,21 @@ public class MemberController {
 		String email = (String) session.getAttribute("account");
 		
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
+		model.addAttribute("memberVO", memberVO);
+
 		//供WebSocket隨時調用
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
 		model.addAttribute("UnreadCount",count);
 		
+		
 		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
-		model.addAttribute("notiList", notiList);
+		if(notiList.isEmpty()) {
+			model.addAttribute("notiList", null);
+			return "/front_end/member/checkNotification";
+		}
 		
-		model.addAttribute("memberVO", memberVO);
 		
+		model.addAttribute("notiList", notiList);		
 		return "/front_end/member/checkNotification";
 	}
 	

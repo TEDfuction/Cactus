@@ -49,8 +49,8 @@ public class NotificationAlert {
 		//若是後台員工，則參數傳遞0做為區別
 		sessionsMap.put(memNo, userSession);
 
-		System.out.println("Session ID = " + userSession.getId() + ", connected;");
-		System.out.println("memNo = " + memNo);
+//		System.out.println("Session ID = " + userSession.getId() + ", connected;");
+//		System.out.println("memNo = " + memNo);
 	}
 
 	@OnMessage
@@ -88,7 +88,7 @@ public class NotificationAlert {
 					
 					//推播未讀訊息之個數
 					count = notiSvc.getNotiUnread( Integer.valueOf(memberId) );
-					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
+//					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
 					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count)+ "0" );
 				}
 			}	
@@ -106,7 +106,7 @@ public class NotificationAlert {
 			//比對後回傳給會員頁面做更新
 			for(String memberNo : memNos) {
 				if( memberNo.equals(memberId) && sessionsMap.get(memberNo).isOpen() ) {
-					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
+//					System.out.println("ccccc"+count+"cccccc");               //多送一個數字當作前端是否刷新ajax的標準
 					sessionsMap.get(memberNo).getAsyncRemote().sendText( String.valueOf(count) + "1" );
 				}
 			}

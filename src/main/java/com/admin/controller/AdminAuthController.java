@@ -133,7 +133,7 @@ public class AdminAuthController {
 			List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
 			if(!list.isEmpty()) {
 				adminAuthSvc.emptyAuth(adminId);
-				System.out.println("刪除成功");
+//				System.out.println("刪除成功");
 				model.addAttribute("status","successAuth");
 				
 				List<AdminVO> list1 = adminSvc.getAll();
@@ -164,11 +164,11 @@ public class AdminAuthController {
 
 		if(!list.isEmpty()) {
 			adminAuthSvc.emptyAuth(adminId);
-			System.out.println("刪除成功");
+//			System.out.println("刪除成功");
 		}
 		
 		//再做權限設定
-		Integer count = 0;
+//		Integer count = 0;
 		
 		for(Integer aaoId : adminAuthorizationIds) {
 			AdminAuthVO adminAuthVO = new AdminAuthVO();
@@ -183,12 +183,12 @@ public class AdminAuthController {
 			adminAuthVO.setAdminVO(aVO);
 			
 			adminAuthSvc.addAdminAuth(adminAuthVO);
-			count++;
-			System.out.println("新增成功");
+//			count++;
+//			System.out.println("新增成功");
 
 		}
 		
-		System.out.println("共新增"+count+"筆權限");
+//		System.out.println("共新增"+count+"筆權限");
 		
 	
 		List<AdminVO> list1 = adminSvc.getAll();
@@ -203,26 +203,26 @@ public class AdminAuthController {
 	
 	
 	
-	//捕捉MissingServletRequestParameterException做處理
-		@ExceptionHandler(value = { MissingServletRequestParameterException.class })
-		public ModelAndView handleError(
-				HttpServletRequest req,
-				ConstraintViolationException e,
-				Model model) {
-			
-			//將錯誤訊息收集
-		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-		    
-		    StringBuilder strBuilder = new StringBuilder();
-		    
-		    for (ConstraintViolation<?> errorSet : violations ) {
-		    	//把錯誤訊息串接 
-		    	strBuilder.append(errorSet.getMessage() + "<br>");
-		    }
-		    
-			String message = strBuilder.toString();
-		    return new ModelAndView("back_end/adminAuth/authSetting", "errorMessage", "請修正以下錯誤:<br>"+message);
-		}
+//	//捕捉MissingServletRequestParameterException做處理
+//		@ExceptionHandler(value = { MissingServletRequestParameterException.class })
+//		public ModelAndView handleError(
+//				HttpServletRequest req,
+//				ConstraintViolationException e,
+//				Model model) {
+//			
+//			//將錯誤訊息收集
+//		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+//		    
+//		    StringBuilder strBuilder = new StringBuilder();
+//		    
+//		    for (ConstraintViolation<?> errorSet : violations ) {
+//		    	//把錯誤訊息串接 
+//		    	strBuilder.append(errorSet.getMessage() + "<br>");
+//		    }
+//		    
+//			String message = strBuilder.toString();
+//		    return new ModelAndView("back_end/adminAuth/authSetting", "errorMessage", "請修正以下錯誤:<br>"+message);
+//		}
 	
 	
 }
