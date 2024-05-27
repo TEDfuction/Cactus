@@ -10,13 +10,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.activities.hibernate.util.ActivityOrder_Compositegory;
 import com.activities_item.model.ItemRepository;
-import com.shoporder.model.ShopOrderVO;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
-import redis.clients.jedis.util.RedisOutputStream;
 
 @Service
 public class ActivityOrderService {

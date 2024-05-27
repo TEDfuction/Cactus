@@ -1,132 +1,217 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>活動訂單管理</title>
-    <!-- <head th:insert="~{/back_end/item/included-fragment}"></head> --> <!-- 使用included-fragment.html網頁的全部 -->
-    <style type="text/css">
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+<title>活動訂單搜尋</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-        button {
-            padding: 5px;
-        }
-        form {
-            display: table;
-        }
-        form div {
-            display: table-row;
-        }
-        label, input, span, select {
-            display: table-cell;
-            margin: 2px;
-            text-align: left;
-        }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 2px;
-        }
-        form div div {
-            display: table-cell;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        span {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            font-weight: bold;
-        }
-        div.a {
-            display: inline-block;
-            width: 50%;
-            height: auto;
-            padding: 5px;
-            border: 0px solid blue;
-            background-color: white;
-        }
-        div.b {
-            position: absolute;
-            bottom: 1%;
-            right: 2%;
-            width: 45%;
-            padding: 5px;
-            border: 1px solid blue;
-        }
-    </style>
+<style>
+
+    .selectform {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 4rem !important;
+
+    }
+
+    .selectform2 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 10.5rem !important;
+
+
+    }
+    .selectform2-1 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 14rem !important;
+
+
+    }
+    .selectform2-2 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 12rem !important;
+
+
+    }
+    .selectform2-3 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 13.5rem !important;
+
+
+    }
+
+    .selectform3 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 3.5rem !important;
+
+
+    }
+
+    .selectform4 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 14.5rem !important;
+
+
+    }
+
+    .selectform-area {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 22rem !important;
+    }
+
+    .iblock {
+        margin-right: 1rem;
+    }
+    .select2-selection--single{
+        height: 56px !important;
+    }
+    .select2-selection__placeholder {
+        /*padding-top: 30px !important;*/
+        padding-left: 0.25rem !important;
+        color: #777777 !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 80px; /* 根据需要调整 */
+    }
+</style>
 </head>
 <body>
-<div align="center"> <h2>活動訂單管理</h2>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <div>
+        <h2 class="hc-2">活動訂單搜尋</h2>
+    </div>
 
-    <h4><span>資料查詢:</span></h4>
-    <h5><a href='listAllOrder'>全部活動訂單</a><br><br></h5>
+
+    <!--<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>-->
+
+<!--            <form method="post" th:action="@{getOne_For_Display}">-->
+<!--                輸入活動訂單編號:-->
+<!--                <input type="text" name="activityOrderId" th:value="${param.activityOrderId}">-->
+<!--                <input type="submit" value="送出"> (輸入編號如:1)-->
+<!--            </form>-->
+
+
+    <form method="get" th:action="@{getOrderTimeBetween}">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="date" class="form-control selectform" id="floatingInput" name="start" th:value="${start}" />
+                <label for="floatingInput">訂單開始日期 </label>
+            </div>
+            <div class="form-floating">
+                <input type="date" class="form-control selectform" id="floatingInput" name="end" th:value="${end}" />
+                <label for="floatingInput">訂單結束日期 </label>
+            </div>
+            <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2-1"> 搜尋 </button>
+
+        </div>
+    </form>
+
+        <form method="post" th:action="@{listAllActivityOrder}">
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <input type="text" class="form-control selectform" id="floatingInput" name="activityOrderId" value=""
+                           placeholder="例如：1">
+                    <label for="floatingInput">活動訂單編號 </label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <select class="form-select selectform2-1" id="floatingSelect" th:field="*{memberVO.memberId}"
+                            aria-label="Floating label select example">
+                        <option selected value="">請選擇</option>
+                        <option th:each="memberVO : ${memberListData}" th:value="${memberVO.memberId}"
+                                th:text="${memberVO.memberName}"/>
+                    </select>
+                    <label for="floatingSelect">會員名稱</label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <select class="form-select selectform2-2 trl" id="floatingSelect" th:field="*{sessionVO.activitySessionId}" aria-label="Floating label select example">
+                        <option selected value="">請選擇</option>
+                        <option th:each="sessionVO : ${sessionListData}" th:value="${sessionVO.activitySessionId}" th:text="${sessionVO.activityDate}"></option>
+                    </select>
+                    <label for="floatingSelect">場次日期</label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <input type="text" class="form-control selectform" id="floatingInput" name="enrollNumber" value=""
+                           placeholder="">
+                    <label for="floatingInput">報名人數 </label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <input type="text" class="form-control selectform" id="floatingInput" name="payAmount" value=""
+                           placeholder="">
+                    <label for="floatingInput">訂單實付金額 </label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <select class="form-select selectform2-3 " id="floatingSelect" name="orderState"
+                            aria-label="Floating label select example">
+                        <option selected value="">請選擇</option>
+                        <option value="0" th:text="已繳費"></option>
+                        <option value="1" th:text="取消訂單"></option>
+                        <option value="2" th:text="完成訂單"></option>
+                    </select>
+                    <label for="floatingSelect">訂單狀態</label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+                <div class="form-floating">
+                    <select class="form-select selectform2-3 " id="floatingSelect" name="refundState"
+                            aria-label="Floating label select example">
+                        <option selected value="">請選擇</option>
+                        <option value="0" th:text="無須退款"></option>
+                        <option value="1" th:text="尚未退款"></option>
+                        <option value="2" th:text="退款中"></option>
+                        <option value="3" th:text="完成退款"></option>
+                    </select>
+                    <label for="floatingSelect">訂單退款狀態</label>
+                </div>
+            </div>
+            <br>
+            <div>
+                <div class="btn_area">
+
+                    <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/activityOrder/listAllOrder'">返回</button>
+                    <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 搜尋 </button>
+                </div>
+            </div>
+
+        </form>
+
+
+
+    <!--<div class="b" th:if="${getOne_For_Display}">-->
+    <!--    &lt;!&ndash;使用listOneOrder.html網頁的listOneOrder-div片段&ndash;&gt;-->
+    <!--    <div th:insert="~{/back_end/activityOrder/listOneOrder :: listOneOrder-div}"></div>-->
+    <!--</div>-->
+
 </div>
-<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
+<script>
+    $(document).ready(function() {
 
-<div class="a">
-    <ul>
-        <li><form method="post" th:action="@{getOne_For_Display}">
-            輸入活動訂單編號:
-            <input type="text" name="activityOrderId" th:value="${param.activityOrderId}" >
-            <input type="submit" value="送出"> (輸入編號如:1)
-        </form><br>
-        </li>
-
-
-        <li><form method="post" th:action="@{listAllActivityOrder}">
-            輸入會員編號:
-            <input type="text" name="memberId" value="" >
-            <input type="submit" value="送出">
-        </form><br>
-        </li>
-
-        <li><form method="post" th:action="@{listAllActivityOrder}">
-            選擇會員姓名:
-            <select th:field="*{memberVO.memberId}">
-                <option value="">
-                <option th:each="memberVO : ${memberListData}" th:value="${memberVO.memberId}" th:text="${memberVO.memberName}" />
-            </select>
-            <input type="submit" value="送出">
-        </form><br>
-        </li>
-        <li><form method="post" th:action="@{listAllActivityOrder}">
-            輸入活動場次編號:
-            <input type="text" name="activitySessionId" value="" >
-            <input type="submit" value="送出">
-        </form><br>
-        </li>
-
-        <li>
-            <form method="get" th:action="@{getOrderTimeBetween}">
-                <label for="start">活動訂單成立時間:</label>
-                <input type="date" id="start" name="start" th:value="${start}"/>
-
-                <label for="end"> ~ </label>
-                <input type="date" id="end" name="end" th:value="${end}"/>
-
-                <button type="submit">搜尋</button>
-            </form>
-        </li>
-    </ul>
-
-    <ul>
-        <li><h5><a href='addOrder'>新增活動訂單</a> (create a new Activity Item)</h5></li>
-    </ul>
-    =============================================
-    <br>
-    <ul>
-        <li><h5><a href='/attendees/select_attendees'>選擇活動參加人員</a></h5></li>
-    </ul>
-    <ul>
-        <li><h5><a href='/attendees/listAllAttendees'>全部活動參加人員</a> </h5></li>
-    </ul>
-</div>
-
-<div class="b" th:if="${getOne_For_Display}">
-    <!--使用listOneOrder.html網頁的listOneOrder-div片段-->
-    <div th:insert="~{/back_end/activityOrder/listOneOrder :: listOneOrder-div}"></div>
-</div>
-
-</body>
-</html>
+        $('.selectform2-2.trl').select2({
+            placeholder: "請選擇或輸入",
+            allowClear: true
+        });
+    });
+</script>
+<div th:replace="~{/back_end/include/include_bottom}"></div>
