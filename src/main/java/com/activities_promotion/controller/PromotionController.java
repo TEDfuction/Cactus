@@ -1,5 +1,6 @@
 package com.activities_promotion.controller;
 
+import com.activities_item.model.ItemVO;
 import com.activities_promotion.model.PromotionService;
 import com.activities_promotion.model.PromotionVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -130,6 +133,14 @@ public class PromotionController {
         List<PromotionVO> list = promotionService.getAll();
         model.addAttribute("promotionListData", list);
         return "back_end/promotion/listAllPromotion"; // 修改成功後轉交listOnePromotion.html
+    }
+
+    @PostMapping("listPromotion_ByCompositeQuery")
+    public String listAllPromotion(HttpServletRequest req, Model model) {
+        Map<String, String[]> map = req.getParameterMap();
+        List<PromotionVO> list = promotionService.getAll(map);
+        model.addAttribute("promotionListData", list); // for listAllItem.html 第85行用
+        return "back_end/promotion/listAllPromotion";
     }
 
     @GetMapping("getPromotionTitle")

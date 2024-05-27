@@ -1,4 +1,4 @@
-package com.activities.hibernate.util;
+package com.activities_item.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.hibernate.Transaction;
 
 import com.activities_category.model.CategoryVO;
 import com.activities_item.model.ItemVO;
-
 
 public class Item_Compositegory {
 	
@@ -81,5 +80,6 @@ public class Item_Compositegory {
 
 		return list;
 	}
-}
 
+
+}

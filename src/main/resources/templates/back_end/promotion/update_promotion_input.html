@@ -8,13 +8,15 @@
 <body>
 <div th:replace="~{/back_end/include/include_body}"></div>
 <div class="unique">
+
+    <form th:action="@{update}" method="post" th:object="${promotionVO}" enctype="multipart/form-data">
     <div>
         <h2 class="hc-2">編輯活動促銷&nbsp;<span th:text="${promotionVO.promotionId}"></span></h2>
+        <input type="hidden" th:field="*{promotionId}" />
     </div>
 
     <div>
 
-        <form th:action="@{update}" method="post" th:object="${promotionVO}" enctype="multipart/form-data">
             <div class="mb-4">
                 <div class="mb-4">
                     <h5 class="f-w">活動促銷標題 <span class="require_text">(必填)</span></h5>
