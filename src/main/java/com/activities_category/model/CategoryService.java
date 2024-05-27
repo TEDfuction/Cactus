@@ -6,8 +6,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.activity.hibernate.util.CompositeQuery.Category_Compositegory;
-
 @Service("categoryService")
 public class CategoryService {
 	

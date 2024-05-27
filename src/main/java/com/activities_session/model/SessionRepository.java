@@ -1,6 +1,7 @@
 package com.activities_session.model;
 
 
+import com.activities_promotion.model.PromotionVO;
 import com.session_time_period.model.Time_PeriodVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
@@ -16,6 +18,11 @@ public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
     @Modifying
     @Query(value = "from SessionVO where activityDate between :start and :end ")
     List<SessionVO> findByActivityDateBetween(@Param("start") Date start, @Param("end") Date end);
+
+    @Transactional
+    @Modifying
+    @Query(value = "from SessionVO where ?1 >= enrollStarted and ?2 <= enrollEnd")
+    List<SessionVO> findBySignStartedAndEnd(Timestamp enrollStarted, Timestamp enrollEnd);
 
 //    @Transactional
 //    @Modifying
