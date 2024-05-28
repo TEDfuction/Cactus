@@ -112,7 +112,10 @@
                     <span th:if="${!roomOrder.roomOrderStatus}" class="badge bg-danger">訂單取消</span>
                 </td>
 
-                <td>
+<!--                <td>-->
+<!--                     <span th:text="${roomOrder.roomOrderList.}" >000</span>-->
+
+
                     <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 0" class="badge bg-secondary">未入住</span>
                     <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 1" class="badge bg-primary">已入住</span>
                     <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 2" class="badge bg-warning">待清潔</span>

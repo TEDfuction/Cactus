@@ -95,7 +95,7 @@ public class RoomOrderController {
                 byte[] bytes = image.getBytes();
                 roomOrder.setIdConfirm(bytes);
                 roomOrderImpl.updateOneRoomOrder(roomOrder);
-                RoomVO roomVO = roomOrder.getRoomOrderList().getRoomVO();
+                RoomVO roomVO = roomOrder.getRoomOrderList().getRoom();
                 roomVO.setRoomSaleStatus((byte) 1);
                 roomService.updateRoom(roomVO);
                 model.addAttribute("message", "圖片上傳成功！");
@@ -107,7 +107,7 @@ public class RoomOrderController {
                 return "back_end/roomorder/showCheckIN";
             }
         }
-        RoomOrderVO roomOrder1 = roomorderImpl.getOneRoomOrderById(roomOrderId);
+        RoomOrderVO roomOrder1 = roomOrderImpl.getOneRoomOrderById(roomOrderId);
         model.addAttribute("roomOrder", roomOrder1);
         return "back_end/roomorder/showOneCheck";
 
@@ -128,7 +128,7 @@ public class RoomOrderController {
     public String checkOut(@RequestParam ("roomOrderId") Integer roomOrderId,Model model) {
         RoomOrderVO roomOrder = roomOrderImpl.getOneRoomOrderById(roomOrderId);
         model.addAttribute("roomOrder", roomOrder);
-        RoomVO roomVO = roomOrder.getRoomOrderList().getRoomVO();
+        RoomVO roomVO = roomOrder.getRoomOrderList().getRoom();
         roomVO.setRoomSaleStatus((byte) 2);
         roomService.updateRoom(roomVO);
         model.addAttribute("message", "CheckOut完成!");

@@ -21,8 +21,6 @@ import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.impl.RoomTypeImpl;
 import com.roomtypepic.model.RoomTypePicRepository;
-import com.roomtypepic.model.RoomTypePicVO;
-import com.roomtypepic.model.impl.RoomTypePicImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -30,11 +28,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Controller
@@ -295,8 +294,8 @@ public class RoomTypeController {
             if (saveRoomTypeId != null) {
                 RoomOrderListVO roomOrderList = new RoomOrderListVO();
                 roomOrderList.setRoomOrder(savedRoomOrder);
-                roomOrderList.setRoomType(saveRoomTypeId);
-                roomOrderList.setRoomVO(saveRoomId);
+                roomOrderList.setRoomTypeVO(saveRoomTypeId);
+                roomOrderList.setRoom(saveRoomId);
                 roomOrderListRepository.save(roomOrderList);
 
                 long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);

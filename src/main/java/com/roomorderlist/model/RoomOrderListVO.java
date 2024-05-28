@@ -16,16 +16,17 @@ public class RoomOrderListVO {
     @Column(name = "room_order_list_id", nullable = false)
     private Integer roomOrderListId;
 
-
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_Id", nullable = false)
-    private RoomVO roomVO;
+    private RoomVO room;
 
+    @NotNull
     @OneToOne (fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "room_order_id", nullable = false)
     private RoomOrderVO roomOrder;
 
-
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomTypeVO roomTypeVO;
@@ -38,6 +39,13 @@ public class RoomOrderListVO {
         this.roomOrderListId = roomOrderListId;
     }
 
+    public RoomVO getRoom() {
+        return room;
+    }
+
+    public void setRoom(RoomVO room) {
+        this.room = room;
+    }
 
     public RoomOrderVO getRoomOrder() {
         return roomOrder;
@@ -45,22 +53,6 @@ public class RoomOrderListVO {
 
     public void setRoomOrder(RoomOrderVO roomOrder) {
         this.roomOrder = roomOrder;
-    }
-
-    public RoomTypeVO getRoomType() {
-        return roomTypeVO;
-    }
-
-    public void setRoomType(RoomTypeVO roomType) {
-        this.roomTypeVO = roomType;
-    }
-
-    public RoomVO getRoomVO() {
-        return roomVO;
-    }
-
-    public void setRoomVO(RoomVO roomVO) {
-        this.roomVO = roomVO;
     }
 
     public RoomTypeVO getRoomTypeVO() {
