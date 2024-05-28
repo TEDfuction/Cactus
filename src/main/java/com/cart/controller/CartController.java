@@ -227,6 +227,8 @@ public class CartController {
 	public Integer cartTotalNumber(HttpSession session) {
 		
 		String email = (String)session.getAttribute("account");
+//		
+//		System.out.println("aaaaaaa");
 		
 		if(email == null) {
 			return 0;

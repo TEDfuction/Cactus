@@ -25,7 +25,7 @@
                 <img th:src="@{/member/ShowPic} + '?memberId=' + ${memberVO.memberId}" width="55px">        
                 
                 <div class=" d-inline-flex align-items-center   height-1 border-dot"> 
-                    <a class="text-white padding-set " th:href="@{/member/listOneMember}"><span th:text="${memberVO.memberName}"></span></a>            
+                    <a class="text-white padding-set " th:href="@{/member/listOneMember}"><span th:text="${session.memberVO.memberName}"></span></a>            
                 </div>
                 
                 <div class=" d-inline-flex align-items-center  me-2 height-1 border-dot">
