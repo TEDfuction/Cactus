@@ -1,4 +1,4 @@
-//package com.websocket.chat.controller;
+package com.websocket.controller;//package com.websocket.chat.controller;
 //import org.springframework.messaging.handler.annotation.MessageMapping;
 //import org.springframework.messaging.handler.annotation.SendTo;
 //import org.springframework.web.bind.annotation.ResponseBody;

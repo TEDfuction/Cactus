@@ -49,7 +49,7 @@ public class RoomPromotionController {
     public String addPromotion(ModelMap model) {
         RoomPromotionVO roomPromotion  = new RoomPromotionVO();
 
-        model.addAttribute("roomPromotion", roomPromotion);
+        model.addAttribute("roomPromotionVO", roomPromotion);
         return "back_end/roomPromotion/addRoomPromotion";
     }
 
@@ -60,18 +60,16 @@ public class RoomPromotionController {
             BindingResult result,
             ModelMap model){
         if (result.hasErrors()) {
+            model.addAttribute("roomPromotionVO", roomPromotion);
             model.addAttribute("promotionStarted", roomPromotion.getPromotionStarted());
             model.addAttribute("promotionEnd", roomPromotion.getPromotionEnd());
             return "back_end/roomPromotion/addRoomPromotion";
         }
 
         roomPromotionService.addRoomPromotion(roomPromotion);
+        model.addAttribute("roomPromotionVO", roomPromotion);
 
-        List<RoomPromotionVO> list = roomPromotionService.getAll();
-        model.addAttribute("roomPromotions", list);
-
-        model.addAttribute("status" , "success");
-        return "back_end/roomPromotion/showAllRoomPromotions";
+        return "back_end/roomPromotion/roomPromotionIdSearch";
 
     }
 
@@ -85,9 +83,11 @@ public class RoomPromotionController {
 
 
     @PostMapping("/updateRoomPromotion")
-    public String updateRoomPromotion(@Valid RoomPromotionVO roomPromotion,
-                                  BindingResult result,
-                                  ModelMap model){
+    public String updateRoomPromotion(
+            @RequestParam("promotionId") Integer promotionId,
+            @Valid RoomPromotionVO roomPromotion,
+            BindingResult result,
+            ModelMap model){
 
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
@@ -95,9 +95,8 @@ public class RoomPromotionController {
         }
         roomPromotionService.updateRoomPromotion(roomPromotion);
 
-        model.addAttribute("status" , "success");
-        roomPromotion = roomPromotionService.findByPK(roomPromotion.getPromotionId());
-        model.addAttribute("promotion" , roomPromotion);
+        roomPromotion = roomPromotionService.findByPK(promotionId);
+        model.addAttribute("roomPromotionVO" , roomPromotion);
         return "back_end/roomPromotion/roomPromotionIdSearch";
     }
 
@@ -110,45 +109,45 @@ public class RoomPromotionController {
 //        return "/member/showAllPromotions";
 //    }
 
-    @PostMapping("/OrderList")
-    public String getRoomPromotion(
-            @RequestParam("roomTypeName") String roomTypeName,
-            @RequestParam("roomGuestAmount") String roomGuestAmount,
-            @RequestParam("roomSize") String roomSize,
-            @RequestParam("roomAmount") Integer roomAmount,
-            @RequestParam("selectCheckIn") String selectCheckInStr,
-            @RequestParam("selectCheckOut") String selectCheckOutStr,
-            @RequestParam("roomTypeId") Integer roomTypeId,
-            Model model, HttpSession httpSession) {
-
-        try {
-            LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
-            List<RoomPromotionVO> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
-//            httpSession.setAttribute("roomTypeName", roomTypeName);
-//            System.out.println(httpSession.getAttribute(roomTypeName));
-            // 將查詢結果和其他參數添加到模型中
-            model.addAttribute("roomTypeName", roomTypeName);
-            model.addAttribute("roomGuestAmount", roomGuestAmount);
-            model.addAttribute("roomSize", roomSize);
-            model.addAttribute("roomPrice", roomAmount);
-            model.addAttribute("selectCheckIn", selectCheckInStr);
-            model.addAttribute("selectCheckOut", selectCheckOutStr);
-            model.addAttribute("roomTypeId", roomTypeId);
-            System.out.println(roomTypeName);
-
-            String email = (String)httpSession.getAttribute("account");
-
-            MemberVO memberVO = memSvc.findByEmail(email);
-            model.addAttribute("memberVO",memberVO);
-            model.addAttribute("roomPromotionVO",getRoomPromotion);
-
-
-            return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
-            model.addAttribute("errorMessage", "Invalid date format.");
-            return "/front_end/room/roomTypeFront";  // 當日期解析出錯時，返回到主頁面
-        }
-    }
+//    @PostMapping("/OrderList")
+//    public String getRoomPromotion(
+//            @RequestParam("roomTypeName") String roomTypeName,
+//            @RequestParam("roomGuestAmount") String roomGuestAmount,
+//            @RequestParam("roomSize") String roomSize,
+//            @RequestParam("roomAmount") Integer roomAmount,
+//            @RequestParam("selectCheckIn") String selectCheckInStr,
+//            @RequestParam("selectCheckOut") String selectCheckOutStr,
+//            @RequestParam("roomTypeId") Integer roomTypeId,
+//            Model model, HttpSession httpSession) {
+//
+//        try {
+//            LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
+////            List<RoomPromotionVO> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
+////            httpSession.setAttribute("roomTypeName", roomTypeName);
+////            System.out.println(httpSession.getAttribute(roomTypeName));
+//            // 將查詢結果和其他參數添加到模型中
+//            model.addAttribute("roomTypeName", roomTypeName);
+//            model.addAttribute("roomGuestAmount", roomGuestAmount);
+//            model.addAttribute("roomSize", roomSize);
+//            model.addAttribute("roomPrice", roomAmount);
+//            model.addAttribute("selectCheckIn", selectCheckInStr);
+//            model.addAttribute("selectCheckOut", selectCheckOutStr);
+//            model.addAttribute("roomTypeId", roomTypeId);
+//            System.out.println(roomTypeName);
+//
+//            String email = (String)httpSession.getAttribute("account");
+//
+//            MemberVO memberVO = memSvc.findByEmail(email);
+//            model.addAttribute("memberVO",memberVO);
+//            model.addAttribute("roomPromotionVO",getRoomPromotion);
+//
+//
+//            return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
+//        } catch (DateTimeParseException e) {
+//            e.printStackTrace();
+//            model.addAttribute("errorMessage", "Invalid date format.");
+//            return "/front_end/room/roomTypeFront";  // 當日期解析出錯時，返回到主頁面
+//        }
+//    }
 
 }

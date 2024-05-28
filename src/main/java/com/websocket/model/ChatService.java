@@ -1,4 +1,4 @@
-//package com.websocket.chat.model;
+package com.websocket.model;//package com.websocket.chat.model;
 //
 //import com.google.gson.Gson;
 //import org.springframework.beans.factory.annotation.Autowired;

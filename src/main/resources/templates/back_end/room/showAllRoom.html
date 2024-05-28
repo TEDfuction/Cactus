@@ -183,9 +183,10 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="roomPrice" class="col-form-label">促銷折扣:</label>
+                                            <label for="roomPrice" class="col-form-label">房間價格:</label>
                                             <textarea type="text" class="form-control"
                                                       id="roomPrice" name="roomPrice" th:text="${room.roomPrice}"></textarea>
+<!--                                            <span  th:if="${#fields.hasErrors('roomPrice')}" th:errors="*{roomPrice}" class="error" id="roomPrice.errors"></span>-->
                                         </div>
 
 
