@@ -1,6 +1,7 @@
 package com.activities_order.model;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,39 @@ public class ActivityOrderService {
         return optional.orElse(null);// public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
     }
 
-    public List<ActivityOrderVO> getAll(){
-        return activityOrderRepository.findAll();
+//    public ActivityOrderVO getOneOrder(Integer activityOrderId){
+//        Optional<ActivityOrderVO> optional = activityOrderRepository.findById(activityOrderId);
+//        ActivityOrderVO activityOrderVO = optional.orElse(null);
+//        if (activityOrderVO != null) {
+//            updateOrderStateIfExpired(activityOrderVO);
+//        }
+//        return activityOrderVO;
+//    }
+
+//    public List<ActivityOrderVO> getAll(){
+//
+//        return activityOrderRepository.findAll();
+//    }
+    public List<ActivityOrderVO> getAll() {
+        List<ActivityOrderVO> list = activityOrderRepository.findAll();
+        list.forEach(this::updateOrderStateIfExpired);
+        return list;
+    }
+
+    private void updateOrderStateIfExpired(ActivityOrderVO activityOrderVO) {
+        java.sql.Date orderTime = activityOrderVO.getSessionVO().getActivityDate();
+        LocalDate orderDate = convertToLocalDate(orderTime);
+        LocalDate currentDate = LocalDate.now();
+
+        // 如果現在的日期超過場次日期一天並且狀態為0
+        if (currentDate.isAfter(orderDate.plusDays(0)) && activityOrderVO.getOrderState() == 0) {
+            activityOrderVO.setOrderState(2);
+            activityOrderRepository.save(activityOrderVO); // 更新DB中的狀態
+        }
+    }
+
+    private LocalDate convertToLocalDate(java.sql.Date dateToConvert) {
+        return dateToConvert.toLocalDate();
     }
 
     public List<ActivityOrderVO> getOrderTimeBetween(Date start, Date end){
