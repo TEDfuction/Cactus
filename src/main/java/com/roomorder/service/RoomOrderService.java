@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public interface RoomOrderService {
 
+    RoomOrderVO getOneRoomOrderById(Integer roomOrderId);
+
+    void updateOneRoomOrder(RoomOrderVO roomOrderVO);
+
     List<RoomOrderVO> getAllRoomOrder();
 
     List<RoomOrderVO> getOneRoomOrder(Integer memberId) throws Exception;

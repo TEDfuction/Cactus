@@ -1,6 +1,7 @@
 package com.activities_order.model;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,39 @@ public class ActivityOrderService {
         return optional.orElse(null);// public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
     }
 
-    public List<ActivityOrderVO> getAll(){
-        return activityOrderRepository.findAll();
+//    public ActivityOrderVO getOneOrder(Integer activityOrderId){
+//        Optional<ActivityOrderVO> optional = activityOrderRepository.findById(activityOrderId);
+//        ActivityOrderVO activityOrderVO = optional.orElse(null);
+//        if (activityOrderVO != null) {
+//            updateOrderStateIfExpired(activityOrderVO);
+//        }
+//        return activityOrderVO;
+//    }
+
+//    public List<ActivityOrderVO> getAll(){
+//
+//        return activityOrderRepository.findAll();
+//    }
+    public List<ActivityOrderVO> getAll() {
+        List<ActivityOrderVO> list = activityOrderRepository.findAll();
+        list.forEach(this::updateOrderStateIfExpired);
+        return list;
+    }
+
+    private void updateOrderStateIfExpired(ActivityOrderVO activityOrderVO) {
+        java.sql.Date orderTime = activityOrderVO.getSessionVO().getActivityDate();
+        LocalDate orderDate = convertToLocalDate(orderTime);
+        LocalDate currentDate = LocalDate.now();
+
+        // 如果現在的日期超過場次日期一天並且狀態為0
+        if (currentDate.isAfter(orderDate.plusDays(0)) && activityOrderVO.getOrderState() == 0) {
+            activityOrderVO.setOrderState(2);
+            activityOrderRepository.save(activityOrderVO); // 更新DB中的狀態
+        }
+    }
+
+    private LocalDate convertToLocalDate(java.sql.Date dateToConvert) {
+        return dateToConvert.toLocalDate();
     }
 
     public List<ActivityOrderVO> getOrderTimeBetween(Date start, Date end){
@@ -61,31 +93,14 @@ public class ActivityOrderService {
     }
 
     //------------------------------綠界金流方法---------------------------------//
-    public String ecpayCheckout(ActivityOrderVO activityOrderVO) {
+    public String ecpayCheckout(ActivityOrderVO activityOrderVO,String paymentDescription) {
 
 
     	AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
-        
-       String paymentDescription = activityOrderVO.getSessionVO().getItemVO().getActivityName();
-       
-//       String singleProductDetail = new StringBuilder(paymentDescription)
-//				.append(activityOrderVO.getEnrollNumber().toString())
-//				.append("X")
-//				.append(activityOrderVO.getSessionVO().getItemVO().getActivityPrice().toString())
-//				.append("=$")
-//				.append(activityOrderVO.getEnrollNumber()* activityOrderVO.getSessionVO().getItemVO().getActivityPrice() )
-//				.toString();
-        
-        
-      //將訂單時間(當前時間)轉為字串放入，以避免編號重複的問題
-      Date date = new Date();
-      SimpleDateFormat formatter1 = new SimpleDateFormat("yyyyMMddHHmmss");
-      String orderDateString = formatter1.format(date);	
-        
 
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( orderDateString + activityOrderVO.getActivityOrderId());
+        obj.setMerchantTradeNo( "Member"  + activityOrderVO.getActivityOrderId() + "test" );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(activityOrderVO.getOrderTime()) );

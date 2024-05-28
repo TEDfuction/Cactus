@@ -26,6 +26,17 @@ public class RoomOrderImpl implements RoomOrderService {
 //	@Autowired
 //	private ModelMapper modelMapper;
 
+	@Override
+	public RoomOrderVO getOneRoomOrderById(Integer roomOrderId) {
+		Optional<RoomOrderVO> optional = roomOrderRepository.findById(roomOrderId);
+		return optional.orElse(null);
+	}
+
+	@Override
+	public void updateOneRoomOrder(RoomOrderVO roomOrderVO){
+		roomOrderRepository.save(roomOrderVO);
+	}
+
 
 	@Override
 	public List<RoomOrderVO> getAllRoomOrder() {

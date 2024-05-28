@@ -40,7 +40,7 @@ import com.shoporderdetail.model.ShopOrderDetailVO;
 public class CartController {
 
 	@Autowired
-	CartService cartSvc;
+	CartService CartSvc;
 
 	@Autowired
 	ShopOrderService shopOrderSvc;
@@ -71,7 +71,7 @@ public class CartController {
 		cart.setProductName(productVO.getProductName());
 
 		// 將一筆購物項目(訂單明細DTO)和會員ID放進購物車
-		return cartSvc.addToCart(cart, memberId);
+		return CartSvc.addToCart(cart, memberId);
 	}
 
 	// 導入購物車頁面
@@ -89,7 +89,7 @@ public class CartController {
 		String email = (String) session.getAttribute("account");
 		Integer memberId = memSvc.findByEmail(email).getMemberId();
 		
-		return cartSvc.findAllItem(memberId);
+		return CartSvc.findAllItem(memberId);
 	}
 
 	@ResponseBody
@@ -101,14 +101,14 @@ public class CartController {
 		Integer memberId = memSvc.findByEmail(email).getMemberId();
 				
 		if (memberId != null) {
-//			System.out.println("開始");
+			System.out.println("開始");
 			//找出對應商品
 			ProductVO productVO = productSvc.findById(cart.getProductId());
 			cart.setPrice(productVO.getProductPrice());
 			cart.setProductName(productVO.getProductName());
 
-			cartSvc.updateOneItem(memberId, cart);
-//			System.out.println("結束");
+			CartSvc.updateOneItem(memberId, cart);
+			System.out.println("結束");
 		} else {
 			return "沒找到Id";
 		}
@@ -126,9 +126,9 @@ public class CartController {
 				
 		if (memberId != null) {
 
-//			System.out.println("開始");
-			cartSvc.removeOneItem(productId, memberId);
-//			System.out.println("結束");
+			System.out.println("開始");
+			CartSvc.removeOneItem(productId, memberId);
+			System.out.println("結束");
 
 		} else {
 			return "沒找到Id";
@@ -153,19 +153,19 @@ public class CartController {
 		
 		if (memberId != null) {
 			MemberVO memberVO = memSvc.findByPK(memberId);
-			List<Cart> cart = cartSvc.findAllItem(memberId);
+			List<Cart> cart = CartSvc.findAllItem(memberId);
 
 			shopOrderVO.setMember(memberVO);
 			shopOrderVO.setOrderStatus(1);
 			
 			//先將訂單做新增
 			shopOrderSvc.addOrder(shopOrderVO);
-//			System.out.println("訂單新增成功");
+			System.out.println("訂單新增成功");
 
 
 			
 			//成功後再新增訂單明細資料
-//			Integer count = 0;
+			Integer count = 0;
 			if (cart != null) {
 				for (Cart item : cart) {
 					ShopOrderDetailVO shopOrderDetailVO = new ShopOrderDetailVO();
@@ -178,14 +178,14 @@ public class CartController {
 
 					shopOrderDetailSvc.addShopOrderDetail(shopOrderDetailVO);
 					
-//					System.out.println("明細新增success");
+					System.out.println("明細新增success");
 					
-//					count++;
+					count++;
 
 				}
 			} 
 			
-//			System.out.println("訂單明細資料共新增"+count+"筆");
+			System.out.println("訂單明細資料共新增"+count+"筆");
 			
 			Date date = new Date();
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -195,7 +195,7 @@ public class CartController {
 			notiSvc.orderSuccess(memberId, 2,
 					"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+nowTime+"成功成立，非常感謝您的支持!!");
 
-//			System.out.println("message has send");
+			System.out.println("message has send");
 			
 			
 			
@@ -203,7 +203,7 @@ public class CartController {
 		    String ecpayCheckout = shopOrderSvc.ecpayCheckout(shopOrderVO.getShopOrderId());
 	        model.addAttribute("ecpayCheckout", ecpayCheckout);
 	        
-	        cartSvc.cleanAllCart(memberId);
+	        CartSvc.cleanAllCart(memberId);
 		}
 		return "front_end/product/success";
 	}
@@ -217,24 +217,8 @@ public class CartController {
 		Integer memberId = memSvc.findByEmail(email).getMemberId();	
 		
 		if (memberId != null) {
-			cartSvc.cleanAllCart(memberId);
+			CartSvc.cleanAllCart(memberId);
 		}
 		return "/product/listAllProduct";
 	}
-	
-	@ResponseBody
-	@GetMapping("/cartTotalNumber")
-	public Integer cartTotalNumber(HttpSession session) {
-		
-		String email = (String)session.getAttribute("account");
-		
-		if(email == null) {
-			return 0;
-		}else {
-			MemberVO memberVO = memSvc.findByEmail(email);
-			Integer memberId = memberVO.getMemberId();
-			return cartSvc.getCartNumber(memberId);	
-		}		
-	}
-	
 }

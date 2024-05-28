@@ -2,6 +2,7 @@ package com.roomorder.controller;
 
 
 import com.member.model.MemberService;
+import com.member.model.MemberVO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomorder.service.impl.RoomOrderImpl;
@@ -21,10 +22,15 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +40,100 @@ public class RoomOrderController {
 
 
     @Autowired
+    RoomService roomService;
+
+    @Autowired
     private RoomOrderImpl roomOrderImpl;
 
     @Autowired
     private RoomOrderRepository roomOrderRepository;
+
+    @Autowired
+    private MemberService memSvc;
+
+    @Autowired
+    private RoomPromotionService roomPromotionSvc;
+
+    @Autowired
+    private RoomTypeImpl roomTypeImpl;
+
+
+    @GetMapping("/showCheckIn")
+    public String showCheckIN(Model model) {
+        List<RoomOrderVO> roomOrders = roomOrderImpl.getAllRoomOrder();
+        model.addAttribute("roomOrders", roomOrders);
+        return "back_end/roomorder/showCheckIN";
+    }
+
+    @PostMapping("/uploadImage")
+    public String checkIn(@RequestParam ("roomOrderId") Integer roomOrderId
+            ,@RequestParam("image") MultipartFile image
+            ,Model model) {
+
+        String contentType = image.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            model.addAttribute("message", "檔案不是圖片！請重新確認");
+            RoomOrderVO roomOrder = roomOrderImpl.getOneRoomOrderById(roomOrderId);
+            model.addAttribute("roomOrder", roomOrder);
+            return "back_end/roomorder/showOneCheck";
+        }
+
+//        try {
+//            BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+//            if (bufferedImage == null) {
+//                model.addAttribute("message", "檔案不是有效的图片！");
+//                return "back_end/roomorder/showCheckIN";
+//            }
+//        } catch (IOException e) {
+//            model.addAttribute("message", "文件读取失败！");
+//            return "back_end/roomorder/showCheckIN";
+//        }
+
+        RoomOrderVO roomOrder = roomOrderImpl.getOneRoomOrderById(roomOrderId);
+        if (roomOrder != null) {
+            try {
+                byte[] bytes = image.getBytes();
+                roomOrder.setIdConfirm(bytes);
+                roomOrderImpl.updateOneRoomOrder(roomOrder);
+                RoomVO roomVO = roomOrder.getRoomOrderList().getRoomVO();
+                roomVO.setRoomSaleStatus((byte) 1);
+                roomService.updateRoom(roomVO);
+                model.addAttribute("message", "圖片上傳成功！");
+            }catch (Exception e){
+                e.printStackTrace();
+                model.addAttribute("message", "圖片上傳失敗！");
+                List<RoomOrderVO> roomOrders = roomOrderImpl.getAllRoomOrder();
+                model.addAttribute("roomOrders", roomOrders);
+                return "back_end/roomorder/showCheckIN";
+            }
+        }
+        RoomOrderVO roomOrder1 = roomorderImpl.getOneRoomOrderById(roomOrderId);
+        model.addAttribute("roomOrder", roomOrder1);
+        return "back_end/roomorder/showOneCheck";
+
+    }
+
+    @GetMapping("/getImage")
+    @ResponseBody
+    public String getImage(@RequestParam("roomOrderId") Integer roomOrderId) {
+        RoomOrderVO roomOrder = roomOrderImpl.getOneRoomOrderById(roomOrderId);
+        if (roomOrder != null && roomOrder.getIdConfirm() != null) {
+            return Base64.getEncoder().encodeToString(roomOrder.getIdConfirm());
+        } else {
+            return "";
+        }
+    }
+
+    @PostMapping("/checkOut")
+    public String checkOut(@RequestParam ("roomOrderId") Integer roomOrderId,Model model) {
+        RoomOrderVO roomOrder = roomOrderImpl.getOneRoomOrderById(roomOrderId);
+        model.addAttribute("roomOrder", roomOrder);
+        RoomVO roomVO = roomOrder.getRoomOrderList().getRoomVO();
+        roomVO.setRoomSaleStatus((byte) 2);
+        roomService.updateRoom(roomVO);
+        model.addAttribute("message", "CheckOut完成!");
+        return "back_end/roomorder/showOneCheck";
+    }
 
 
 
@@ -45,6 +141,7 @@ public class RoomOrderController {
     @GetMapping("/listAllRoomOrder")
     public String getAllRoomOrder(Model model,RoomOrderVO roomOrderVO) {
         List<RoomOrderVO> allRoomOrder = roomOrderRepository.findAll();
+
 
         model.addAttribute("allRoomOrder", allRoomOrder);
 
