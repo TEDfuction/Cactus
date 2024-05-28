@@ -115,11 +115,8 @@ public class MemberController {
 		}
     	
     	return jsonString;
-		
 	}
-	
-	
-	
+
 	
 	@GetMapping("/getSessionAccount")
 	@ResponseBody
