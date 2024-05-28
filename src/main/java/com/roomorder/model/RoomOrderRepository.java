@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 使用JPA完成資料庫增刪改查
@@ -34,5 +35,8 @@ public interface RoomOrderRepository extends JpaRepository<RoomOrderVO, Integer>
     @Modifying
     @Query(value = "from RoomOrderVO where roomOrderDate between :ROstart and :ROend")
     List<RoomOrderVO>findByRoomOrderDate(@Param("ROstart") LocalDate ROstart, @Param("ROend") LocalDate ROend);
+
+//    @Query(value = "from  RoomOrderVO where roomOrderId=?1")
+//    Optional<RoomOrderVO> findById(Integer roomOrderId);
 
 }

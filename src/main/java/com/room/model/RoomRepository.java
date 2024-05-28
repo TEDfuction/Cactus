@@ -9,4 +9,7 @@ public interface RoomRepository extends JpaRepository<RoomVO, Integer> {
 
     @Query(value = "from  RoomVO where roomTypeVO.roomTypeId=?1")
     List<RoomVO> findByRoomTypeId(Integer roomTypeId);
+
+
+    public RoomVO findByRoomPrice(Integer roomPrice);
 }

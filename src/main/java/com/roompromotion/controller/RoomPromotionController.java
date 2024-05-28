@@ -109,45 +109,45 @@ public class RoomPromotionController {
 //        return "/member/showAllPromotions";
 //    }
 
-//    @PostMapping("/OrderList")
-//    public String getRoomPromotion(
-//            @RequestParam("roomTypeName") String roomTypeName,
-//            @RequestParam("roomGuestAmount") String roomGuestAmount,
-//            @RequestParam("roomSize") String roomSize,
-//            @RequestParam("roomAmount") Integer roomAmount,
-//            @RequestParam("selectCheckIn") String selectCheckInStr,
-//            @RequestParam("selectCheckOut") String selectCheckOutStr,
-//            @RequestParam("roomTypeId") Integer roomTypeId,
-//            Model model, HttpSession httpSession) {
-//
-//        try {
-//            LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
-////            List<RoomPromotionVO> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
-////            httpSession.setAttribute("roomTypeName", roomTypeName);
-////            System.out.println(httpSession.getAttribute(roomTypeName));
-//            // 將查詢結果和其他參數添加到模型中
-//            model.addAttribute("roomTypeName", roomTypeName);
-//            model.addAttribute("roomGuestAmount", roomGuestAmount);
-//            model.addAttribute("roomSize", roomSize);
-//            model.addAttribute("roomPrice", roomAmount);
-//            model.addAttribute("selectCheckIn", selectCheckInStr);
-//            model.addAttribute("selectCheckOut", selectCheckOutStr);
-//            model.addAttribute("roomTypeId", roomTypeId);
+    @PostMapping("/OrderList")
+    public String getRoomPromotion(
+            @RequestParam("roomTypeName") String roomTypeName,
+            @RequestParam("roomGuestAmount") String roomGuestAmount,
+            @RequestParam("roomSize") String roomSize,
+            @RequestParam("roomAmount") Integer roomAmount,
+            @RequestParam("selectCheckIn") String selectCheckInStr,
+            @RequestParam("selectCheckOut") String selectCheckOutStr,
+            @RequestParam("roomTypeId") Integer roomTypeId,
+            Model model, HttpSession httpSession) {
+
+        try {
+            LocalDate selectCheckIn = LocalDate.parse(selectCheckInStr);
+            List<RoomPromotionVO> getRoomPromotion = roomPromotionService.findByCheckInDate(selectCheckIn);
+//            httpSession.setAttribute("roomTypeName", roomTypeName);
+//            System.out.println(httpSession.getAttribute(roomTypeName));
+            // 將查詢結果和其他參數添加到模型中
+            model.addAttribute("roomTypeName", roomTypeName);
+            model.addAttribute("roomGuestAmount", roomGuestAmount);
+            model.addAttribute("roomSize", roomSize);
+            model.addAttribute("roomPrice", roomAmount);
+            model.addAttribute("selectCheckIn", selectCheckInStr);
+            model.addAttribute("selectCheckOut", selectCheckOutStr);
+            model.addAttribute("roomTypeId", roomTypeId);
 //            System.out.println(roomTypeName);
-//
-//            String email = (String)httpSession.getAttribute("account");
-//
-//            MemberVO memberVO = memSvc.findByEmail(email);
-//            model.addAttribute("memberVO",memberVO);
-//            model.addAttribute("roomPromotionVO",getRoomPromotion);
-//
-//
-//            return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
-//        } catch (DateTimeParseException e) {
-//            e.printStackTrace();
-//            model.addAttribute("errorMessage", "Invalid date format.");
-//            return "/front_end/room/roomTypeFront";  // 當日期解析出錯時，返回到主頁面
-//        }
-//    }
+
+            String email = (String)httpSession.getAttribute("account");
+
+            MemberVO memberVO = memSvc.findByEmail(email);
+            model.addAttribute("memberVO",memberVO);
+            model.addAttribute("roomPromotionVO",getRoomPromotion);
+
+
+            return "/front_end/room/roomOrderFront";  // 確保這個路徑正確
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Invalid date format.");
+            return "/front_end/room/roomTypeFront";  // 當日期解析出錯時，返回到主頁面
+        }
+    }
 
 }

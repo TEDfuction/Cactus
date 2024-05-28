@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "room_order", schema = "cactus")
+@Table(name = "room_order")
 public class RoomOrderVO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,16 +53,8 @@ public class RoomOrderVO {
     @Column(name = "room_order_id_req", length = 1000)
     private String roomOrderIdReq;
 
-    @OneToOne (mappedBy = "roomOrder")
+    @OneToOne(mappedBy = "roomOrder")
     private RoomOrderListVO roomOrderList;
-
-    public RoomOrderListVO getRoomOrderList() {
-        return roomOrderList;
-    }
-
-    public void setRoomOrderList(RoomOrderListVO roomOrderList) {
-        this.roomOrderList = roomOrderList;
-    }
 
     public Integer getRoomOrderId() {
         return roomOrderId;
@@ -160,4 +152,11 @@ public class RoomOrderVO {
         this.roomOrderIdReq = roomOrderIdReq;
     }
 
+    public RoomOrderListVO getRoomOrderList() {
+        return roomOrderList;
+    }
+
+    public void setRoomOrderList(RoomOrderListVO roomOrderList) {
+        this.roomOrderList = roomOrderList;
+    }
 }
