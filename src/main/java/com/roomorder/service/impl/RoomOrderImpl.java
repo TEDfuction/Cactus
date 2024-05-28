@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static groovyjarjarantlr4.v4.gui.Trees.save;
 
 // 搭配 JSP / Thymeleaf 後端渲染畫面，將交易動作至於 view filter
 
@@ -60,12 +57,6 @@ public class RoomOrderImpl implements RoomOrderService {
 	public List<RoomOrderVO> getOrderDateRO(LocalDate ROstart, LocalDate ROend) throws Exception{
 		List<RoomOrderVO> findByRoomOrderDate = roomOrderRepository.findByRoomOrderDate(ROstart,ROend);
 		return findByRoomOrderDate;
-	}
-
-	@Override
-	public List<RoomOrderVO> addRoomOrder(RoomOrderVO roomOrderVO) {
-		List<RoomOrderVO> insertRoomOrder = Collections.singletonList(roomOrderRepository.save(roomOrderVO));
-		return insertRoomOrder;
 	}
 
 }

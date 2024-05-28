@@ -18,6 +18,4 @@ public interface RoomOrderService {
     List<RoomOrderVO> getDateRO(LocalDate start, LocalDate end) throws Exception;
 
     List<RoomOrderVO> getOrderDateRO(LocalDate ROstart, LocalDate ROend) throws Exception;
-
-    List <RoomOrderVO> addRoomOrder(RoomOrderVO roomOrderVO);
 }

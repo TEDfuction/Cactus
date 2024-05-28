@@ -135,8 +135,8 @@
             <span th:if="${promotion.promotionState} eq 1" class="badge bg-success">上架</span>
             </td>
 
-            <td th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 100, 0, 0)} + '折'"></td>
-
+            <td th:if="${promotion.promotionDiscount >= 0.1}" th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 10, 0, 0)} + '折'"></td>
+            <td th:unless="${promotion.promotionDiscount >= 0.1}" th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 100, 0, 0)} + '折'"></td>
 
             <td th:text="${promotion.promotionStarted+'~'+promotion.promotionEnd}"></td>
             <td>

@@ -1,7 +1,7 @@
 <div th:replace="~{/back_end/include/include_top}"></div>
 
 <style>
-    /* 在這裡添加您的樣式 */
+        /* 在這裡添加您的樣式 */
 </style>
 </head>
 <body>
@@ -14,63 +14,60 @@
     <div align="center"> <h2>房間促銷新增</h2>
         <h3><a class="navbar-brand" th:href="@{/roomPromotion/getAllRoomPromotion}">回查詢頁</a></h3></div>
 
-    <div align="center">
+<div align="center">
 
 
-        <form th:action="@{insertRoomPromotion}" method="post" th:object="${roomPromotionVO}">
+    <form th:action="@{insertRoomPromotion}" method="post" th:object="${roomPromotionVO}">
 
 
 
-            <div>
-                <label>促銷標題:</label>
-                <input type="text" th:field="*{promotionTitle}" onclick="hideContent('promotionTitle');" /><br/>
-                <span  th:if="${#fields.hasErrors('promotionTitle')}" th:errors="*{promotionTitle}" class="error" id="promotionTitle.errors"></span>
-            </div>
+        <div>
+            <label>促銷標題:</label>
+            <input type="text" th:field="*{promotionTitle}" onclick="hideContent('promotionTitle');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionTitle')}" th:errors="*{promotionTitle}" class="error" id="promotionTitle.errors"></span>
+        </div>
 
-            <div>
-                <label th:for="${#ids.next('promotionContent')}" class="label">促銷敘述:</label>
-                <textarea rows="5" cols="50" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');"></textarea><br/>
-                <span  th:if="${#fields.hasErrors('promotionContent')}" th:errors="*{promotionContent}" class="error" id="promotionContent.errors"></span>
-            </div>
+        <div>
+            <label th:for="${#ids.next('promotionContent')}" class="label">促銷敘述:</label>
+            <textarea rows="5" cols="50" th:field="*{promotionContent}" onclick="hideContent('promotionContent.errors');"></textarea><br/>
+            <span  th:if="${#fields.hasErrors('promotionContent')}" th:errors="*{promotionContent}" class="error" id="promotionContent.errors"></span>
+        </div>
 
-            <div>
-                <label>促銷狀態:</label>
-                <select th:field="*{promotionState}">
-                    <option value="1">上架</option>
-                    <option value="0">下架</option>
-                </select>
-            </div>
+        <div>
+            <label>促銷狀態:</label>
+            <select th:field="*{promotionState}">
+                <option value="1">上架</option>
+                <option value="0">下架</option>
+            </select>
+        </div>
 
-            <div>
-                <label>促銷折扣:</label>
-                <input type="text" th:field="*{promotionDiscount}" onclick="hideContent('promotionDiscount.errors');" /><br/>
-                <span  th:if="${#fields.hasErrors('promotionDiscount')}" th:errors="*{promotionDiscount}" class="error" id="promotionDiscount.errors"></span>
-            </div>
-            <div>
-                <span th:if="${#fields.hasErrors('promotionDiscount')}" th:errors="*{promotionDiscount}" class="error" id="promotionDiscount.errors"></span>
-            </div>
+        <div>
+            <label>促銷折扣:</label>
+            <input type="text" th:field="*{promotionDiscount}" onclick="hideContent('promotionDiscount.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionDiscount')}" th:errors="*{promotionDiscount}" class="error" id="promotionDiscount.errors"></span>
+        </div>
 
-            <div>
-                <label>促銷時間起:</label>
-                <input type="date" name="promotionStarted" th:field="*{promotionStarted}" th:value="@{promotionStarted}" onclick="hideContent('promotionStarted.errors');" /><br/>
-                <span  th:if="${#fields.hasErrors('promotionStarted')}" th:errors="*{promotionStarted}" class="error" id="promotionStarted.errors"></span>
-            </div>
+        <div>
+            <label>促銷時間起:</label>
+            <input type="date" name="promotionStarted" th:field="*{promotionStarted}" th:value="@{promotionStarted}" onclick="hideContent('promotionStarted.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionStarted')}" th:errors="*{promotionStarted}" class="error" id="promotionStarted.errors"></span>
+        </div>
 
-            <div>
-                <label>促銷時間迄:</label>
-                <input type="date" name="promotionEnd" th:field="*{promotionEnd}" th:value="@{promotionEnd}" onclick="hideContent('promotionEnd.errors');" /><br/>
-                <span  th:if="${#fields.hasErrors('promotionEnd')}" th:errors="*{promotionEnd}" class="error" id="promotionEnd.errors"></span>
-            </div>
+        <div>
+            <label>促銷時間迄:</label>
+            <input type="date" name="promotionEnd" th:field="*{promotionEnd}" th:value="@{promotionEnd}" onclick="hideContent('promotionEnd.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionEnd')}" th:errors="*{promotionEnd}" class="error" id="promotionEnd.errors"></span>
+        </div>
 
 
-            <div>
-                <div></div>
-                <div><button type="submit" id="submit"> 送出新增 </button></div>
-                <div></div>
-            </div>
-        </form>
+        <div>
+            <div></div>
+            <div><button type="submit" id="submit"> 送出新增 </button></div>
+            <div></div>
+        </div>
+    </form>
 
-    </div>
+</div>
 
 </div>
 
