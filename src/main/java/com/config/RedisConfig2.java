@@ -28,4 +28,3 @@
 //        stringRedisTemplate.setConnectionFactory(connectionFactory);
 //        return stringRedisTemplate;
 //    }
-//}

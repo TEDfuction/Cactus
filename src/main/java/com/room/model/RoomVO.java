@@ -95,5 +95,4 @@ public class RoomVO {
     public void setRoomPrice(Integer roomPrice) {
         this.roomPrice = roomPrice;
     }
-
 }

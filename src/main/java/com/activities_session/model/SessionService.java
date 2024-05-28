@@ -127,8 +127,7 @@ public class SessionService {
 		}
 		System.out.println("dateList" + dateList);
 		return dateList;
-
-
 	}
 
 }
+

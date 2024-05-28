@@ -13,35 +13,35 @@ import com.google.gson.JsonObject;
 import redis.clients.jedis.Jedis;
 @Component
 public class CartService {
-	
-	public String addToCart(Cart cartItem, Integer memberId) {
-		
-		// 拿到前端的購物項 先轉成JSON物件
+
+    public String addToCart(Cart cartItem, Integer memberId) {
+
+        // 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
 //        System.out.println(dtoString);
-        
+
         JsonObject newItem = gson.fromJson(dtoString, JsonObject.class);
 
-        
-        
+
+
         Jedis jedis = null;
         try {
             jedis = new Jedis("localhost", 6379);
 
-            
+
             // 確認是否已有購物車存在(以會員ID判斷)
             String cartStr = jedis.get("memberId:" + memberId);
 
-            
+
             JsonArray cart = null;
             if (cartStr == null) {
                 // 如果購物車不存在
                 cart = new JsonArray();
-                
+
                 // 把購物項加入
                 cart.add(newItem);
-                
+
                 // 購物車包成一個字串
                 cartStr = cart.toString();
 
@@ -49,7 +49,7 @@ public class CartService {
                 jedis.set("memberId:" + memberId, cartStr);
             } else {
                 // 如果購物車存在
-            	
+
                 //  String cartStr變成JSONArray
                 cart = gson.fromJson(cartStr, JsonArray.class);
 
@@ -94,35 +94,35 @@ public class CartService {
         return "成功加入";
 
     }
-	
-	
-	
-	public List<Cart> findAllItem(Integer memberId){
-		List<Cart> responseList = new ArrayList<>();
-		Jedis jedis = null;
-		Gson gson = new Gson();
-		
-		try {
-			jedis = new Jedis("localhost", 6379);
-			
-			// 確認是否已有購物車存在(以會員ID判斷)
-			String cartStr = jedis.get("memberId:" + memberId);
-			
-			//如果購物車存在
-			if(cartStr != null) {
-				JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
-				
-				// 取出裡面每個JsonObject
+
+
+
+    public List<Cart> findAllItem(Integer memberId){
+        List<Cart> responseList = new ArrayList<>();
+        Jedis jedis = null;
+        Gson gson = new Gson();
+
+        try {
+            jedis = new Jedis("localhost", 6379);
+
+            // 確認是否已有購物車存在(以會員ID判斷)
+            String cartStr = jedis.get("memberId:" + memberId);
+
+            //如果購物車存在
+            if(cartStr != null) {
+                JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
+
+                // 取出裡面每個JsonObject
                 for (JsonElement element : cart) {
                     JsonObject oldItem = element.getAsJsonObject();
-                    
+
                     // 迴圈每次都建立一個新物件
                     Cart cartObject = new Cart();
                     cartObject.setProductId(oldItem.get("productId").getAsInt());
                     cartObject.setProductName(oldItem.get("productName").getAsString());
                     cartObject.setQuantity(oldItem.get("quantity").getAsInt());
                     cartObject.setPrice(oldItem.get("price").getAsInt());
-                    
+
                     // 加進要回應的List裡
                     responseList.add(cartObject);
                 }
@@ -136,13 +136,13 @@ public class CartService {
 
         return responseList;
     }
-	
-	
-	
-	
-	
-	public void updateOneItem(Integer memberId, Cart cartItem) {
-		
+
+
+
+
+
+    public void updateOneItem(Integer memberId, Cart cartItem) {
+
         // 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
@@ -154,7 +154,7 @@ public class CartService {
         try {
             jedis = new Jedis("localhost", 6379);
 
-			// 確認是否已有購物車存在(以會員ID判斷)
+            // 確認是否已有購物車存在(以會員ID判斷)
             String cartStr = jedis.get("memberId:" + memberId);
 
             JsonArray cart = null;
@@ -162,10 +162,10 @@ public class CartService {
             if (cartStr == null) {
                 // 如果購物車不存在
                 cart = new JsonArray();
-                
+
                 // 把購物項加入
                 cart.add(newItem);
-                
+
                 // 購物車包成一個字串
                 cartStr = cart.toString();
 
@@ -173,7 +173,7 @@ public class CartService {
                 jedis.set("memberId:" + memberId, cartStr);
             } else {
                 // 如果購物車存在
-            	
+
                 //  String cartStr變成JSONArray
                 cart = gson.fromJson(cartStr, JsonArray.class);
 
@@ -213,32 +213,32 @@ public class CartService {
         }
 
     }
-	
-	
-	
-	
-	
-	public void removeOneItem(Integer productId, Integer memberId) {
-		
+
+
+
+
+
+    public void removeOneItem(Integer productId, Integer memberId) {
+
         Gson gson = new Gson();
 
         Jedis jedis = null;
         try {
             jedis = new Jedis("localhost", 6379);
 
-			// 確認是否已有購物車存在(以會員ID判斷)
+            // 確認是否已有購物車存在(以會員ID判斷)
             String cartStr = jedis.get("memberId:" + memberId);
 
 
             if (cartStr != null) {
                 // 如果購物車存在
-            	
+
                 //  String cartStr變成JSONArray
                 JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
 
                 // 檢查商品是不是已經在購物車
                 for (JsonElement element : cart) {
-                	
+
                     // 取出購物車原有的購物項
                     JsonObject oldItem = element.getAsJsonObject();
 
@@ -262,19 +262,19 @@ public class CartService {
             }
         }
     }
-	
-	
-	
-	
-	
-	public void cleanAllCart(Integer memberId) {
-		
+
+
+
+
+
+    public void cleanAllCart(Integer memberId) {
+
         // 找出會員的購物車，把JsonArray裡的物件清空
         Jedis jedis = null;
         try {
             jedis = new Jedis("localhost", 6379);
 
-			// 確認是否已有購物車存在(以會員ID判斷)
+            // 確認是否已有購物車存在(以會員ID判斷)
             jedis.del("memberId:" + memberId);
 
         } finally {
@@ -284,28 +284,28 @@ public class CartService {
         }
 
     }
-	
-	//拿取總數
-	public Integer getCartNumber(Integer memberId){
-		Jedis jedis = null;
-		Gson gson = new Gson();
-		
-		Integer count = 0;
-		
-		try {
-			jedis = new Jedis("localhost", 6379);
-			
-			// 確認是否已有購物車存在(以會員ID判斷)
-			String cartStr = jedis.get("memberId:" + memberId);
-			
-			//如果購物車存在
-			if(cartStr != null) {
-				JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
-				
-				// 取出裡面每個JsonObject
+
+    //拿取總數
+    public Integer getCartNumber(Integer memberId){
+        Jedis jedis = null;
+        Gson gson = new Gson();
+
+        Integer count = 0;
+
+        try {
+            jedis = new Jedis("localhost", 6379);
+
+            // 確認是否已有購物車存在(以會員ID判斷)
+            String cartStr = jedis.get("memberId:" + memberId);
+
+            //如果購物車存在
+            if(cartStr != null) {
+                JsonArray cart = gson.fromJson(cartStr, JsonArray.class);
+
+                // 取出裡面每個JsonObject
                 for (JsonElement element : cart) {
-                	//每取出一個便+1
-                	count++;
+                    //每取出一個便+1
+                    count++;
                 }
             }
 

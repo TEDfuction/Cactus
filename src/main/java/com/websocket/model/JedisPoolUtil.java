@@ -1,4 +1,4 @@
-//package com.websocket.chat.model;
+package com.websocket.model;//package com.websocket.chat.model;
 //
 //import redis.clients.jedis.JedisPool;
 //import redis.clients.jedis.JedisPoolConfig;

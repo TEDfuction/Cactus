@@ -1,4 +1,4 @@
-//package com.websocket.chat.model;
+package com.websocket.model;//package com.websocket.chat.model;
 //
 //public class ChatClientModel {
 //

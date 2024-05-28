@@ -1,0 +1,240 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+
+<style>
+
+    thead tr > th{
+        text-align: center !important;
+        white-space: nowrap;
+    }
+
+    .unique{
+        text-align:center;
+    }
+
+    /*.display{*/
+    /*    font-size:15px;*/
+    /*    table-layout: fixed;*/
+    /*    word-break: break-all;*/
+    /*    word-wrap: break-word;*/
+    /*    width:100%;*/
+    /*      		height:70%;*/
+
+    /*}*/
+
+    /*.display td,th{*/
+    /*    border: 1px solid black;*/
+    /*}*/
+
+    .display thead{
+        background-color:lightcyan
+    }
+
+    .display tbody{
+        background-color:ivory;
+    }
+    .display img{
+        width:100%;
+        height:100%;
+    }
+
+    .btn-primary, .btn-secondary {
+        font-size: 13px;
+        border-radius: 15px;
+        width: 90px;
+        height: 40px;
+    }
+
+    .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-secondary {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+</style>
+
+</head>
+
+
+
+
+
+
+<body>
+
+<div th:replace="~{/back_end/include/include_body}"></div>
+
+
+<!-- =========================================================================================== -->
+
+
+<!-- 主欄位 -->
+<div class="unique">
+
+    <br>
+    <h3 th:if="${message}" th:text="${message}"></h3>
+    <br>
+
+
+
+    <table  id="xxx" class="display">
+        <thead>
+        <tr>
+            <th>訂單編號</th>
+            <th>會員</th>
+            <th>訂單日期</th>
+            <th>訂單狀態</th>
+            <th>房間狀態</th>
+            <th>訂單總金額</th>
+            <th>促銷金額</th>
+            <th>實付金額</th>
+            <th>入住日期</th>
+            <th>退房日期</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <th:block th:each="roomOrder : ${roomOrders}">
+            <tr>
+
+                <td th:text="${roomOrder.roomOrderId}"></td>
+
+                <td th:text="${roomOrder.memberId.memberName}"></td>
+
+                <td th:text="${roomOrder.roomOrderDate}"></td>
+
+                <td>
+                    <span th:if="${roomOrder.roomOrderStatus}" class="badge bg-success">正常</span>
+                    <span th:if="${!roomOrder.roomOrderStatus}" class="badge bg-danger">訂單取消</span>
+                </td>
+
+<!--                <td>-->
+<!--                     <span th:text="${roomOrder.roomOrderList.}" >000</span>-->
+
+
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 0" class="badge bg-secondary">未入住</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 1" class="badge bg-primary">已入住</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 2" class="badge bg-warning">待清潔</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 3" class="badge bg-danger">逾期</span>
+                    <span th:if="${roomOrder.roomOrderList.room.roomSaleStatus} eq 4" class="badge bg-danger">異常</span>
+                </td>
+
+
+                <td th:text="${roomOrder.roomAmount}"></td>
+
+                <td th:text="${roomOrder.promotionPrice}"></td>
+
+                <td th:text="${roomOrder.payAmount}"></td>
+
+                <td th:text="${roomOrder.checkInDate}"></td>
+
+                <td th:text="${roomOrder.checkOutDate}"></td>
+
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkInModal"
+                            th:data-roomOrderId="${roomOrder.roomOrderId}">
+                        Check In
+                    </button>
+                    <form th:action="@{/roomOrder/checkOut}" method="post">
+                        <input type="hidden" name="roomOrderId" th:value="${roomOrder.roomOrderId}"/>
+                        <button type="submit" class="btn btn-secondary">Check Out</button>
+                    </form>
+                </td>
+
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="checkInModal" tabindex="-1" aria-labelledby="checkInModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkInModalLabel">上傳圖片</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="checkInForm" th:action="@{/roomOrder/uploadImage}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="imageUpload" class="form-label">選擇圖片</label>
+                        <input type="file" class="form-control" id="imageUpload" name="image" required>
+                    </div>
+                    <input type="hidden" id="modalRoomOrderId" name="roomOrderId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary" form="checkInForm" id="uploadBtn" disabled>上傳</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+
+<!----------- ●● jquery datatables 設定 ---------------------->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+
+<script>
+    $(document).ready(function() {
+        $('#xxx').DataTable({
+            "lengthMenu": [5, 10],
+            "searching": true,  //搜尋功能, 預設是開啟
+            "paging": true,     //分頁功能, 預設是開啟
+            "ordering": true,   //排序功能, 預設是開啟
+            "language": {
+                "processing": "處理中...",
+                "loadingRecords": "載入中...",
+                "lengthMenu": "顯示 _MENU_ 筆結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+                "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+                "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+                "infoPostFix": "",
+                "search": "搜尋:",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
+                "aria": {
+                    "sortAscending":  ": 升冪排列",
+                    "sortDescending": ": 降冪排列"
+                }
+            }
+        });
+        $('#checkInModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var roomOrderId = button.data('roomorderid'); // Extract info from data-* attributes
+            var modal = $(this);
+            modal.find('#modalRoomOrderId').val(roomOrderId);
+            $('#checkInForm')[0].reset();
+            $('#uploadBtn').prop('disabled', true);
+        });
+
+        $('#imageUpload').on('change', function() {
+            var fileInput = $(this);
+            var uploadBtn = $('#uploadBtn');
+            if (fileInput.val()) {
+                uploadBtn.prop('disabled', false);
+            } else {
+                uploadBtn.prop('disabled', true);
+            }
+        });
+
+    });
+
+
+</script>
+
+

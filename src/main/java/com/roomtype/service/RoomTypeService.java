@@ -33,4 +33,7 @@ public interface RoomTypeService {
     Optional<RoomTypeVO> getRoomTypeIdByName(String roomTypeName);
 
     List<Integer> getRoomGuestAmounts(Integer getRoomTypeId);
+
+    RoomTypeVO findByPK(Integer roomTypeId);
+
 }

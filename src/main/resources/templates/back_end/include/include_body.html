@@ -240,11 +240,13 @@
 						<div id="collapseSix" class="accordion-collapse collapse " aria-labelledby="headingSix" data-bs-parent="#accordionExample">
 							<div class="accordion-body2">
 								<ul class="list2">
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
-									<li class="list-set2"><a class="changecolor" href="">管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/roomOrder/selectRO}">房務訂單管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/room/getAllRoom}">房間管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/room/addRoom}">新增房間</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/roomType/listAllRoomType}">房型管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/roomPromotion/getAllRoomPromotion}">房間促銷管理</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/roomPromotion/addRoomPromotion}">房間促銷新增</a></li>
+									<li class="list-set2"><a class="changecolor" th:href="@{/roomOrder/showCheckIn}">CheckIn&Out</a></li>
 								</ul>
 							</div>
 						</div>

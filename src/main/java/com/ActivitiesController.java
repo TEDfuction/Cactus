@@ -53,10 +53,6 @@ public class ActivitiesController {
 	AttendeesService attendeesService;
 	
 
-//	@GetMapping("/chatIndex")
-//	public String ChatController(){
-//		return "chatIndex";
-//	}
 	
 	@GetMapping("/category/select_category")
 	public String selectCategory(Model model) {

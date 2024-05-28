@@ -37,4 +37,6 @@ public interface RoomTypeRepository extends JpaRepository<RoomTypeVO, Integer> {
                                           @Param("roomGuestAmount") Integer roomGuestAmount);
 
     Optional<RoomTypeVO> findByRoomTypeName(@Param("roomTypeName") String roomTypeName);
+
+    public  RoomTypeVO findByRoomTypeId(Integer roomTypeId);
 }
