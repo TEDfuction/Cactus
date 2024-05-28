@@ -34,14 +34,21 @@
             <span  th:if="${#fields.hasErrors('productDescribtion')}" th:errors="*{productDescribtion}" class="error" id="productDescribtion.errors"></span>
         </div>
 
-        <!-- 商品价格 -->
-        <div class="mb-3">
-            <label for="productPrice" class="form-label">商品價格</label>
-            <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="請輸入商品價格">
-        	<span  th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-        </div>
+        <!-- 商品價格 -->
+<!--         <div class="mb-3"> -->
+<!--             <label for="productPrice" class="form-label">商品價格</label> -->
+<!--             <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="請輸入商品價格"> -->
+<!--         	<span  th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span> -->
+<!--         </div> -->
 
-        <!-- 商品名称 -->
+		<!-- 商品價格，前端驗證 -->
+		<div class="mb-3">
+    		<label for="productPrice" class="form-label">商品價格</label>
+    		<input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="請輸入商品價格" pattern="^[0-9]+$" title="商品價格: 只能輸入數字">
+    		<span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+		</div>
+
+        <!-- 商品名稱 -->
         <div class="mb-3">
             <label for="productName" class="form-label">商品名稱</label>
             <input type="text" class="form-control" id="productName" th:field="*{productName}" placeholder="請輸入商品名稱">
@@ -60,12 +67,22 @@
         </div>
 
         <!-- 照片上传 -->
+<!--         <div class="mb-3"> -->
+<!--             <label for="productPhoto" class="form-label">商品照片</label> -->
+<!--             <input type="file" class="form-control" th:field="*{productPhoto}" multiple="multiple" onchange="previewImage()"> -->
+<!--             <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> -->
+<!--             <div id="blob_holder" class="mt-2"></div> -->
+<!--         </div> -->
+        
+        <!-- 老師範例 -->
         <div class="mb-3">
-            <label for="productPhoto" class="form-label">商品照片</label>
-            <input type="file" class="form-control" id="productPhoto" th:field="*{productPhoto}" multiple onchange="previewImage()">
-            <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span>
-            <div id="blob_holder" class="mt-2"></div>
-        </div>
+			 <label for="productPhoto" class="form-label">商品照片</label>
+			<input type="file" class="form-control" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" />
+<!-- 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
+			<span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span>
+<!-- 			<h2 id="errorMessage">${errorMessage}</h2>  -->
+			<div id="blob_holder" class="mt-2"></div>
+			</div>
 
         <!-- 提交按钮 -->
         <button type="submit" class="btn btn-primary">提交新增</button>

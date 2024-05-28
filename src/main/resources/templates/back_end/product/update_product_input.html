@@ -31,24 +31,36 @@
                         th:text="${productCategoryVO.productCategoryName}">
                 </option>
             </select>
+            <span th:if="${#fields.hasErrors('productCategoryVO.productCategoryId')}" th:errors="*{productCategoryVO.productCategoryId}" class="error" id="productCategoryVO.productCategoryId.errors"></span>
         </div>
 
         <!-- 商品簡述 -->
         <div class="mb-3">
             <label for="productDescription" class="form-label">商品簡述:</label>
             <textarea class="form-control" id="productDescription" th:field="*{productDescribtion}" rows="3"></textarea>
+        	<span  th:if="${#fields.hasErrors('productDescribtion')}" th:errors="*{productDescribtion}" class="error" id="productDescribtion.errors"></span>
         </div>
 
-        <!-- 商品價格 -->
-        <div class="mb-3">
-            <label for="productPrice" class="form-label">商品價格:</label>
-            <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}">
-        </div>
+<!--         商品價格 -->
+<!--         <div class="mb-3"> -->
+<!--             <label for="productPrice" class="form-label">商品價格:</label> -->
+<!--             <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}"> -->
+<!--             <span  th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span> -->
+<!--         </div> -->
+        
+        <!-- 商品價格，前端驗證 -->
+		<div class="mb-3">
+		    <label for="productPrice" class="form-label">商品價格</label>
+		    <input type="text" class="form-control" id="productPrice" th:field="*{productPrice}" placeholder="請輸入商品價格" pattern="^[0-9]+$" title="商品價格: 只能輸入數字">
+		    <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+		</div>
+
 
         <!-- 商品名稱 -->
         <div class="mb-3">
             <label for="productName" class="form-label">商品名稱:</label>
             <input type="text" class="form-control" id="productName" th:field="*{productName}">
+            <span  th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
         </div>
 
         <!-- 商品上下架 -->
@@ -66,17 +78,19 @@
         <div class="mb-3">
             <label for="productPhoto" class="form-label">照片:</label>
             <input type="file" class="form-control" id="productPhoto" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple">
+<!--             <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> -->
             <div id="blob_holder" class="mt-2"><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></div>
         </div>
 
         <!-- 提交按钮 -->
-        <div class="mb-3" th:if="${getOne_For_Update}">
-            <button type="submit" class="btn btn-primary" id="submit">送出新增</button>
-        </div>
+<!--         <div class="mb-3" th:if="${getOne_For_Update}"> -->
+<!--             <button type="submit" class="btn btn-primary" id="submit">送出</button> -->
+<!--         </div> -->
         
-         <div class="mb-3" th:if="${getOnehistory_For_Update}">
-            <button type="submit" class="btn btn-primary" id="submit">送出修改</button>
-        </div>
+<!--          <div class="mb-3" th:if="${getOnehistory_For_Update}"> -->
+<!--             <button type="submit" class="btn btn-primary" id="submit">送出修改</button> -->
+<!--         </div> -->
+         <button type="submit" class="btn btn-primary" id="submit">送出</button>
     </form>
 </div>
 </div>
