@@ -66,14 +66,14 @@
 
 <div class="unique">
 
-		 <div align="center"> <h2>活動圖片管理 - select_photo.html</h2>
-		 <h3><a class="navbar-brand" th:href="@{/activity/activityPhoto}">回index.html</a></h3></div>
+		 <div align="center"> <h2>活動圖片管理</h2>
+		 <h3><a class="navbar-brand" th:href="@{/activity/activityPhoto}">回首頁</a></h3></div>
 
 
 	<h4><span>資料查詢:</span></h4>
 	<!-- 錯誤表列 -->
 	<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
-	<div class="a">
+	<div class="a" style="background-color: transparent;">
 	  <ul>
 		<li><h5><a href='listAllPhoto'>List</a> all photo. <br><br></h5></li>
 
@@ -118,7 +118,7 @@
 	
       <h4><span>活動項目管理</span></h4>
 	  <ul>
-		  <li><h5><a href='addPhoto'>Add</a> a new Emp.</h5></li>
+		  <li><h5><a href='addPhoto'>Add</a> a new Photo.</h5></li>
 	  </ul>
 	</div>
     
