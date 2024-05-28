@@ -1,29 +1,39 @@
 package com.roomorder.controller;
 
 
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomorder.service.impl.RoomOrderImpl;
 import com.roomorder.model.RoomOrderRepository;
 import com.roomorder.model.RoomOrderVO;
+import com.roomorderlist.model.RoomOrderListVO;
+import com.roompromotion.model.RoomPromotionService;
+import com.roompromotion.model.RoomPromotionVO;
+import com.roomtype.service.impl.RoomTypeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
 @RequestMapping("/roomOrder")
 public class RoomOrderController {
+
 
     @Autowired
     RoomService roomService;
@@ -33,6 +43,15 @@ public class RoomOrderController {
 
     @Autowired
     private RoomOrderRepository roomOrderRepository;
+
+    @Autowired
+    private MemberService memSvc;
+
+    @Autowired
+    private RoomPromotionService roomPromotionSvc;
+
+    @Autowired
+    private RoomTypeImpl roomTypeImpl;
 
 
     @GetMapping("/showCheckIn")
@@ -44,15 +63,15 @@ public class RoomOrderController {
 
     @PostMapping("/uploadImage")
     public String checkIn(@RequestParam ("roomOrderId") Integer roomOrderId
-                         ,@RequestParam("image") MultipartFile image
-                         ,Model model) {
+            ,@RequestParam("image") MultipartFile image
+            ,Model model) {
 
         String contentType = image.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
-            model.addAttribute("message", "檔案不是圖片！");
-            List<RoomOrderVO> roomOrders = roomorderImpl.getAllRoomOrder();
-            model.addAttribute("roomOrders", roomOrders);
-            return "back_end/roomorder/showCheckIN";
+            model.addAttribute("message", "檔案不是圖片！請重新確認");
+            RoomOrderVO roomOrder = roomorderImpl.getOneRoomOrderById(roomOrderId);
+            model.addAttribute("roomOrder", roomOrder);
+            return "back_end/roomorder/showOneCheck";
         }
 
 //        try {
@@ -84,10 +103,21 @@ public class RoomOrderController {
                 return "back_end/roomorder/showCheckIN";
             }
         }
-        List<RoomOrderVO> roomOrders = roomorderImpl.getAllRoomOrder();
-        model.addAttribute("roomOrders", roomOrders);
-        return "back_end/roomorder/showCheckIN";
+        RoomOrderVO roomOrder1 = roomorderImpl.getOneRoomOrderById(roomOrderId);
+        model.addAttribute("roomOrder", roomOrder1);
+        return "back_end/roomorder/showOneCheck";
 
+    }
+
+    @GetMapping("/getImage")
+    @ResponseBody
+    public String getImage(@RequestParam("roomOrderId") Integer roomOrderId) {
+        RoomOrderVO roomOrder = roomorderImpl.getOneRoomOrderById(roomOrderId);
+        if (roomOrder != null && roomOrder.getIdConfirm() != null) {
+            return Base64.getEncoder().encodeToString(roomOrder.getIdConfirm());
+        } else {
+            return "";
+        }
     }
 
     @PostMapping("/checkOut")
@@ -100,7 +130,6 @@ public class RoomOrderController {
         model.addAttribute("message", "CheckOut完成!");
         return "back_end/roomorder/showOneCheck";
     }
-
 
 
 
@@ -198,4 +227,48 @@ public class RoomOrderController {
 
         return "redirect:/roomOrder/findOneRoomOrder";
     }
+
+//    @PostMapping("/roomOrderTotalList")
+//    public String roomOrderTotalList(@Valid @ModelAttribute RoomOrderVO roomOrderVO,
+//                                     @RequestParam("roomTypeName") String roomTypeName,
+//                                     @RequestParam("roomGuestAmount") String roomGuestAmount,
+//                                     @RequestParam("roomSize") String roomSize,
+//                                     @RequestParam("roomAmount") String roomPrice,
+//                                     @RequestParam("selectCheckIn") String selectCheckInStr,
+//                                     @RequestParam("selectCheckOut") String selectCheckOutStr,
+////                                     @RequestParam("roomTypeId") Integer roomTypeId,
+//                                     @RequestParam("promotionTitle") String promotionTitle,
+//                                     @RequestParam("promotionPrice")Integer  promotionPrice,
+//                                     @RequestParam("emails")String emails,
+//                                     HttpSession session, ModelMap model) {
+//
+//        // 從Session中取得會員資料
+////        String email = (String) session.getAttribute("account");
+//        Integer memberId = memSvc.findByEmail(emails).getMemberId();
+//        System.out.println(memberId);
+//        Integer findPromotionId = roomPromotionSvc.getByPromotionTitle(promotionTitle);
+//
+//        Integer roomTypeId =  roomTypeImpl.getRoomTypeIdByName(roomTypeName).get().getRoomTypeId();
+//
+//        if (memberId != null) {
+//            // 創建新的訂單實體
+//            RoomOrderVO roomOrder = new RoomOrderVO();
+//            roomOrder.setMemberId(memSvc.findByPK(memberId));
+//            roomOrder.setPromotionId(roomPromotionSvc.findByPK(findPromotionId));
+//            roomOrder.setRoomOrderDate(LocalDate.now());
+//            roomOrder.setRoomOrderStatus(Boolean.TRUE);
+//            roomOrder.setRoomAmount(Integer.valueOf(roomPrice));
+//            roomOrder.setPromotionPrice(promotionPrice);
+//            roomOrder.setCheckInDate(LocalDate.parse(selectCheckInStr));
+//            roomOrder.setCheckOutDate(LocalDate.parse(selectCheckOutStr));
+//            // 儲存訂單
+//            roomorderImpl.addRoomOrder(roomOrder);
+//
+//            // 重定向到成功頁面
+//            return "redirect:/orderSuccess";
+//        } else {
+//            model.addAttribute("error", "無法驗證會員身份");
+//            return "front_end/room/roomFront"; // 返回到表單頁面並顯示錯誤
+//        }
+//    }
 }
