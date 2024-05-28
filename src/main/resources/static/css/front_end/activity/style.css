@@ -1110,6 +1110,14 @@ h6,
 
   /* 活動後台頁面End*/
 
+.dropdown-menu-green {
+    color: #2c2d2d;
+    background-color: rgb(249, 253, 253);
+    min-width: 4rem !important;
+    border: none;
+    border-radius: 3px;
+}
+
 
  
   

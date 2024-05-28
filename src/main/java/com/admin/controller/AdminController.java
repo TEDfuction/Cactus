@@ -208,7 +208,7 @@ public class AdminController {
 	public String setAdminLocation(HttpSession session, @RequestBody Map<String, String> jsonData ) {
         
 		String location = jsonData.get("admin_location");
-        System.out.println("Received string from frontend: " + location);
+//        System.out.println("Received string from frontend: " + location);
         session.setAttribute("admin_location", location);
 		
 		return location;

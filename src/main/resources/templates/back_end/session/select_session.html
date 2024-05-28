@@ -1,137 +1,186 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>活動場次管理</title>
-    <!-- <head th:insert="~{/back_end/item/included-fragment}"></head> --> <!-- 使用included-fragment.html網頁的全部 -->
-    <style type="text/css">
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+<title>活動場次搜尋</title>
 
-        button {
-            padding: 5px;
+    <style >
+
+        .selectform {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 4rem !important;
+
         }
-        form {
-            display: table;
+        .selectform1-1 {
+            border-radius: 7px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 9.2rem !important;
+
         }
-        form div {
-            display: table-row;
+
+        .selectform2 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 10.5rem !important;
+
+
         }
-        label, input, span, select {
-            display: table-cell;
-            margin: 2px;
-            text-align: left;
+        .selectform2-1 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 14rem !important;
+
+
         }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 2px;
+        .selectform2-2 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 12rem !important;
+
+
         }
-        form div div {
-            display: table-cell;
+        .selectform2-3 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 13.5rem !important;
+
+
         }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
+        .selectform3 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 3.5rem !important;
+
+
         }
-        span {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            font-weight: bold;
+        .selectform4 {
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 14.5rem !important;
+
+
         }
-        div.a {
-            display: inline-block;
-            width: 50%;
-            height: auto;
-            padding: 5px;
-            border: 0px solid blue;
-            background-color: white;
+        .selectform-area{
+            border-radius: 4px;
+            border: 0.5px solid #c2c2c2;
+            padding-right: 22rem !important;
         }
-        div.b {
-            position: absolute;
-            bottom: 1%;
-            right: 2%;
-            width: 45%;
-            padding: 5px;
-            border: 1px solid blue;
+
+        .iblock {
+            margin-right: 1rem;
         }
     </style>
 </head>
 <body>
 
-<div align="center"> <h2>活動場次管理</h2>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <div>
+        <h2 class="hc-2">活動場次搜尋</h2>
+    </div>
 
-    <h4><span>資料查詢:</span></h4>
-    <h5><a href='listAllSession'>全部活動場次</a> (All Activity Sessions) <br><br></h5>
+
+    <form method="get" th:action="@{sessionBetweenDates}">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="date" class="form-control selectform1-1" id="floatingInput" name="start" th:value="${start}" />
+                <label for="floatingInput">場次開始日期 </label>
+            </div>
+            <div class="form-floating">
+                <input type="date" class="form-control selectform1-1" id="floatingInput" name="end" th:value="${end}" />
+                <label for="floatingInput">場次結束日期 </label>
+            </div>
+            <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2-1"> 搜尋 </button>
+
+        </div>
+    </form>
+
+    <form method="get" th:action="@{sessionSignDates}">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="datetime-local" class="form-control selectform" id="floatingInput" name="enrollEnd" th:value="${enrollEnd}" />
+                <label for="floatingInput">場次開始報名日期 </label>
+            </div>
+            <div class="form-floating">
+                <input type="datetime-local" class="form-control selectform" id="floatingInput" name="enrollStarted" th:value="${enrollStarted}" />
+                <label for="floatingInput">場次結束報名日期 </label>
+            </div>
+            <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2-1"> 搜尋 </button>
+
+        </div>
+    </form>
+    <hr class="hr-1">
+
+<!--            <form method="get" th:action="@{timePeriodsByActivityDate}">-->
+<!--                <label for="start">活動場次時段:</label>-->
+<!--                <input type="date" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}"/>-->
+
+<!--                <button type="submit">搜尋</button>-->
+<!--            </form>-->
+
+
+    <form method="post" th:action="@{listSession_ByCompositeQuery}">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="text" class="form-control selectform" id="floatingInput" name="activitySessionId" value=""
+                       placeholder="例如：1">
+                <label for="floatingInput">活動場次編號 </label>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <select class="form-select selectform3 " id="floatingSelect"  th:field="*{itemVO.activityId}"
+                        aria-label="Floating label select example">
+                    <option selected value="">請選擇</option>
+                    <option th:each="itemVO : ${itemListData}" th:value="${itemVO.activityId}"
+                            th:text="${itemVO.activityName}"/>
+                </select>
+                <label for="floatingSelect">活動項目名稱</label>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="text" class="form-control selectform" id="floatingInput" name="duration" value=""
+                       placeholder="">
+                <label for="floatingInput">活動時長 </label>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <select class="form-select selectform2-3 " id="floatingSelect" name="activitySessionState"
+                        aria-label="Floating label select example">
+                    <option selected value="">請選擇</option>
+                    <option value="0" th:text="正常舉辦"></option>
+                    <option value="1" th:text="取消"></option>
+                    <option value="2" th:text="延期"></option>
+                </select>
+                <label for="floatingSelect">活動場次狀態</label>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <textarea class="form-control selectform-area" placeholder="Leave a comment here" id="floatingTextarea" name="activityNote" value=""></textarea>
+                <label for="floatingTextarea">備註說明</label>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div class="btn_area">
+
+                <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/session/listAllSession'">返回</button>
+                <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 搜尋 </button>
+            </div>
+        </div>
+
+    </form>
+
+
+
+
 </div>
-<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
-
-<div class="a">
-    <ul>
-        <li><form method="post" th:action="@{getOne_For_Display}">
-            選擇活動場次編號:
-            <select name="activitySessionId">
-                <option value=""/>
-                <option th:each="sessionVO : ${sessionListData}" th:value="${sessionVO.activitySessionId}" th:text="${sessionVO.activitySessionId}" />
-            </select>
-            <input type="submit" value="送出">
-        </form><br>
-        </li>
-
-        <li>
-            <form method="get" th:action="@{sessionBetweenDates}">
-                <label for="start">活動場次時間:</label>
-                <input type="date" id="start" name="start" th:value="${start}"/>
-
-                <label for="end"> ~ </label>
-                <input type="date" id="end" name="end" th:value="${end}"/>
-
-                <button type="submit">搜尋</button>
-            </form>
-        </li>
-        <li>
-            <form method="get" th:action="@{timePeriodsByActivityDate}">
-                <label for="start">活動場次時段:</label>
-                <input type="date" id="activityDate" name="activityDate" th:value="${sessionVO.activityDate}"/>
-
-                <button type="submit">搜尋</button>
-            </form>
-        </li>
-
-
-
-<!--        <li><form method="post" th:action="@{getOne_For_Display}">-->
-<!--            選擇活動項目名稱:-->
-<!--            <select th:field="*{itemVO.activityId}">-->
-<!--                <option value=""/>-->
-<!--                <option th:each="itemVO : ${itemListData2}" th:value="${itemVO.activityId}" th:text="${itemVO.activityName}" />-->
-<!--            </select>-->
-<!--            <input type="submit" value="送出">-->
-<!--        </form><br>-->
-<!--        </li>-->
-    </ul>
-</div>
-<ul>
-    <li><h5><a href='selectTime'>test</a> </h5></li>
-</ul>
-<ul>
-    <li><h5><a href='selectTime2'>test2</a> </h5></li>
-</ul>
-
-<ul>
-    <li><h5><a href='addSession'>新增活動場次</a> (create a new Activity Item)</h5></li>
-</ul>
-</div>
-
-<!-- 旗標getOne_For_Display見EmpnoControllerne_For_Display見EmpnoController.java的第74行-->
-<div class="b" th:if="${getOne_For_Display}">
-   <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
-    <div th:insert="~{/back_end/session/listOneSession :: listOneSession-div}"></div>
-</div>
-<div class="b" th:if="${timePeriodsByActivityDate}">
-    <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
-    <div th:insert="~{/back_end/session/selectTime :: selectTime-div}"></div>
-</div>
-
-
-</body>
-</html>
+<div th:replace="~{/back_end/include/include_bottom}"></div>

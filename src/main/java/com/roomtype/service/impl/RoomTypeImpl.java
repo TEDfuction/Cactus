@@ -2,17 +2,24 @@ package com.roomtype.service.impl;
 
 
 
+import com.activities_order.model.ActivityOrderRepository;
+import com.activities_order.model.ActivityOrderVO;
+import com.member.model.MemberVO;
 import com.room.model.RoomRepository;
 import com.room.model.RoomVO;
+import com.roomorderlist.model.RoomOrderListVO;
 import com.roomtype.dto.RoomTypeUpdate;
 import com.roomtype.dto.RoomTypeVORequest;
 import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.RoomTypeService;
+import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -22,12 +29,14 @@ public class RoomTypeImpl implements RoomTypeService {
     @Autowired
     private RoomTypeRepository roomTyperepository;
 
-
     @Autowired
     private RoomRepository roomRepository;
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    ActivityOrderRepository activityOrderRepository;
 
 
     @Override
@@ -42,8 +51,6 @@ public class RoomTypeImpl implements RoomTypeService {
         modelMapper.map(roomTypeVORequest, roomTypeVO);
         roomTyperepository.save(roomTypeVO);
     }
-
-
 
 
     @Override
@@ -128,4 +135,10 @@ public class RoomTypeImpl implements RoomTypeService {
         }
         return guestAmounts;
     }
+
+    public RoomTypeVO findByPK(Integer roomTypeId) {
+        Optional<RoomTypeVO> roomTypeVO = Optional.ofNullable(roomTyperepository.findByRoomTypeId(roomTypeId));
+        return roomTypeVO.orElse(null);
+    }
+
 }

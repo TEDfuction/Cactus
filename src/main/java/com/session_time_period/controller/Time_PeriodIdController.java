@@ -45,6 +45,4 @@ public class Time_PeriodIdController {
         return list;
     }
 
-
-
 }

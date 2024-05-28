@@ -18,6 +18,8 @@ public class RoomTypePicImpl implements RoomTypePicService {
     @Autowired
     RoomTypePicRepository roomTypePicRepository;
 
+    @Override
+    public void updateRoomTypePic(RoomTypePicVO roomTypePicVO) {roomTypePicRepository.save(roomTypePicVO);}
 
     public RoomTypePicVO getOneRoomPic(Integer roomTypeId) throws Exception {
         Optional<RoomTypePicVO> optional = roomTypePicRepository.findByRoomTypeId(roomTypeId);

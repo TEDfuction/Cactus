@@ -5,7 +5,7 @@ import com.roomtype.model.RoomTypeVO;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "room_type_pic", schema = "cactus")
+@Table(name = "room_type_pic")
 public class RoomTypePicVO {
 
     @Id

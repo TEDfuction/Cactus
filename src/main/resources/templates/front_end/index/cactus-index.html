@@ -1,4 +1,10 @@
 <div th:replace="~{/front_end/index/include/include_top}"></div>
+<style>
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; /* Adjust for a smoother transition */
+    }
+</style>
 
 <body>
 <!-- Spinner Start -->
@@ -19,9 +25,21 @@
         </div>
         <div class="col-lg-5 px-5 text-end">
             <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                <a class="text-white px-2" href="">English ｜</a>
-                <a class="text-white px-2" href="">日本語 ｜</a>
-                <a class="text-white px-2" th:href="@{/member/memberLogin}">會員中心</a>
+                <th:block th:if="${session.memberVO}">
+                    <img th:src="@{/member/ShowPic} + '?memberId=' + ${session.memberVO.memberId}" width="35px"
+                         height="35px">
+                    &nbsp;&nbsp;<span class="text-white px-2" th:text="${session.memberVO.memberName}"></span>
+                </th:block>
+                <a class="text-white px-2" th:href="@{/admin/adminLogin}">｜ English ｜</a>
+<!--                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>-->
+                <div class="dropdown">
+                    <a class="text-white px-2 dropdown-toggle" href="#" role="button" id="memberDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        會員中心
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-green" aria-labelledby="memberDropdown">
+                        <li><a class="dropdown-item" th:href="@{/member/memberRegistory}">會員註冊</a></li>
+                    </ul>
+                </div>
 
             </div>
 
@@ -43,13 +61,13 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
             <!-- 原本輸入內容:Home -->
-            <a href="index.html" class="nav-item nav-link active">最新消息</a>
+            <a href="#" class="nav-item nav-link active">最新消息</a>
             <div class="nav-item dropdown">
                 <!-- 原本輸入內容:Pages -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
                 <div class="dropdown-menu border-0 m-0">
                     <a href="about_cactus" class="dropdown-item">凱克特司</a>
-                    <a href="project.html" class="dropdown-item">周邊特色</a>
+                    <!--                     <a href="project.html" class="dropdown-item">周邊特色</a> -->
                     <a href="contactus_cactus" class="dropdown-item">常見問題</a>
 
                 </div>
@@ -68,8 +86,9 @@
             </div>
 
             <a href="activity/activityPhoto" class="nav-item nav-link">特色活動</a>
-            <a th:href="@{/product/listAllProduct}" class="nav-item nav-link shoppingCart"><i class="fa-solid fa-cart-shopping" me-2
-                                                                style="color: #01b2a6;"></i> 購物商城</a>
+            <a th:href="@{/product/listAllProduct}" class="nav-item nav-link shoppingCart"><i
+                    class="fa-solid fa-cart-shopping" me-2
+                    style="color: #01b2a6;"></i> 購物商城</a>
         </div>
 
         <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
@@ -148,7 +167,7 @@
 </div>
 <!-- Carousel End -->
 <!-- 天氣 -->
-<div class="hero">
+<div class="hero" style="margin-top: 48px">
     <div class="container">
         <div class="row align-items-center bg-wh">
             <div class="row col-lg-2">
@@ -164,32 +183,27 @@
                 <div class="intro-wrap">
                     <div class="row">
                         <div class="col-12">
-                            <form class="form">
+                            <form class="form" id="selectroom" action="/roomType/selectRoomType" method="post" onsubmit="saveData()">
                                 <div class="row mb-4">
-                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2 ">
+                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
                                         <label>
-                                            <select name="" id="" class="form-control custom-select">
-                                                <option value="">選擇房型</option>
-                                                <option value="">Peru</option>
-                                                <option value="">Japan</option>
-                                                <option value="">Thailand</option>
-                                                <option value="">Brazil</option>
-                                                <option value="">United States</option>
-                                                <option value="">Israel</option>
-                                                <option value="">China</option>
-                                                <option value="">Russia</option>
+                                            <select name="roomTypeName" class="form-control custom-select" id="roomTypeSelect" required>
+                                                <option value="" class="selectRoom">選擇房型</option>
+                                                <option th:each="roomTypeVO : ${listAllRTFront}" th:value="${roomTypeVO.roomTypeName}" th:text="${roomTypeVO.roomTypeName}"></option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                        <input type="date" class="form-control" name="daterange">
+                                        <input type="date" class="form-control selectRoom" name="selectCheckIn" id="selectCheckIn" th:value="${selectCheckIn}" onchange="updateCheckoutMinDate()" required>
                                     </div>
                                     <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-                                        <input type="date" class="form-control" name="daterange">
+                                        <input type="date" class="form-control selectRoom" name="selectCheckOut" id="selectCheckOut" th:value="${selectCheckOut}" required>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
-                                        <input type="text" class="form-control" placeholder="人數">
-                                    </div>
+                                    <label class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
+                                        <select class="form-control selectRoom" name="roomGuestAmount" id="selectRoomAmount" th:value="${roomGuestAmount}">
+                                            <option value="" disabled selected>選擇房間人數</option>
+                                        </select>
+                                    </label>
                                     <div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-2">
                                         <input type="submit" class="btn btn-primary btn-block" value="Search">
                                     </div>
@@ -216,10 +230,10 @@
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
                         <div class="bg-white text-center h-100 p-4 p-xl-1-2">
                             <div class="image-container-lg-4">
-                                <img class="img-fluid mb-4 " src="https://picsum.photos/400/400?random=10" alt="">
+                                <img class="img-fluid mb-4 " th:src="@{/img/front_end/index/66-1.png}" alt="">
                             </div>
-                            <h4 class="mb-3">熱門精選</h4>
-                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <h4 class="mb-3">活動特惠</h4>
+                            <p class="mb-4 mx-4 text-start">慶祝老闆八十大壽！！　即日起至8月8號，凡報名參加活動，即可享折扣優惠，越多人報名，特惠更多喔～</p>
                             <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
                         </div>
                     </div>
@@ -229,10 +243,10 @@
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
                         <div class="bg-white text-center h-100 p-4 p-xl-1-2">
                             <div class="image-container-lg-4">
-                                <img class="img-fluid mb-4" src="https://picsum.photos/400/400?random=11" alt="">
+                                <img class="img-fluid mb-4" th:src="@{/img/front_end/index/seafirework.jpg}" alt="">
                             </div>
-                            <h4 class="mb-3">熱門精選</h4>
-                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <h4 class="mb-3">熱門特惠</h4>
+                            <p class="mb-4 mx-4 text-start">超取299免運，宅配599免運</p>
                             <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
                         </div>
                     </div>
@@ -242,10 +256,10 @@
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
                         <div class="bg-white text-center h-100 p-4 p-xl-1-2">
                             <div class="image-container-lg-4">
-                                <img class="img-fluid mb-4" src="https://picsum.photos/400/400?random=12" alt="">
+                                <img class="img-fluid mb-4" th:src="@{/img/front_end/index/roompromotion.png}" alt="">
                             </div>
-                            <h4 class="mb-3">熱門精選</h4>
-                            <p class="mb-4">超取299免運，宅配599免運</p>
+                            <h4 class="mb-3">住宿特惠</h4>
+                            <p class="mb-4 mx-4 text-start">超取299免運，宅配599免運</p>
                             <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="#">Read More</a>
                         </div>
                     </div>
@@ -300,72 +314,68 @@
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-1.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/ocean.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" th:src="@{/img/front_end/index/icons/diving.png}" alt="Icon">
                             <h3 class="mb-3">體驗潛水</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <p class="mb-4 text-start">體驗潛水是一個「不會游泳」也可以參加的活動，讓凱克特司的專業教練們，帶您一同潛入湛藍大海中享受屬於澎湖的美。</p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-2.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/surf.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" th:src="@{/img/front_end/index/icons/wakeboarding.png}" alt="Icon">
                             <h3 class="mb-3">寬板滑水</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <p class="mb-4 text-start">由專業寬板划水教練完整教學，一次一人踏上滑水板，帥氣拉上握把。隨著快艇奔馳過海面，滑出一道帥氣的水痕，全場焦點非你莫屬！</p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-3.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/SUP.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" th:src="@{/img/front_end/index/icons/surfing.png}" alt="Icon">
                             <h3 class="mb-3">SUP 立式划槳</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <p class="mb-4 text-start">踏上SUP立槳，在專業教練的趣味教學下，享受划水的樂趣，體驗從海中看陸地之美，並欣賞美麗的海岸線，吸收海洋的氣息感受心靈的放鬆。</p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-4.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/fireworkvis.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" th:src="@{/img/front_end/index/icons/firework.png}" alt="Icon">
-                            <h3 class="mb-3">夜划花火</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <h3 class="mb-3 ">夜划花火</h3>
+                            <p class="mb-4 text-start">2024澎湖花火節限定！花火夜划個人板SUP、龍舟板SUP，在海上以不同視角欣賞夜空煙火秀！</p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-5.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/cactusgroung.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" th:src="@{/img/front_end/index/icons/cactus-9.png}" alt="Icon">
                             <h3 class="mb-3">仙人掌園區導覽</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <p class="mb-4 text-start">園區蒐集來自世界各地的多肉植物共八千餘種，有拇指大的可愛石蓮花和幾公尺高的仙人掌，春天紫藤花開，夏天仙人掌花季，秋冬是多肉轉紅的季節，還有許多市面罕見的品種喔。</p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" th:src="@{/img/front_end/index/service-6.jpg}" alt="">
+                        <img class="bg-img" th:src="@{/img/front_end/index/BBQ.jpg}" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4 iconcolor" th:src="@{/img/front_end/index/icons/barbecue.png}" alt="Icon">
                             <h3 class="mb-3">BBQ 晚餐吃到飽</h3>
-                            <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam
-                                stet diam sed stet.</p>
+                            <p class="mb-4 text-start">三五好友大啖美味燒烤，享受夏日夜晚。
+                                沁涼飲品搭配新鮮海鮮、肉品，無限量任您享用，提供舒適的用餐環境。
+                                </p>
                             <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                         </div>
                     </div>
@@ -425,19 +435,19 @@
                     <div class="row g-3">
                         <div class="col-6 text-end">
                             <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.1s"
-                                 src="https://picsum.photos/300/200?random=10" style="margin-top: 25%;">
+                                 th:src="@{/img/front_end/room/room1.jpg}" style="margin-top: 25%; width: 300px;height:200px;">
                         </div>
                         <div class="col-6 text-start">
-                            <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.3s"
-                                 src="https://picsum.photos/300/200?random=10">
+                            <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.3s" style="width: 280px;height:265px"
+                                 th:src="@{/img/front_end/room/room2.jpg}">
                         </div>
                         <div class="col-6 text-end">
-                            <img class="img-fluid rounded w-50 wow zoomIn" data-wow-delay="0.5s"
-                                 src="https://picsum.photos/300/200?random=10">
+                            <img class="img-fluid rounded w-50 wow zoomIn" data-wow-delay="0.5s" style="width: 300px;height:200px"
+                                 th:src="@{/img/front_end/room/room3.jpg}">
                         </div>
                         <div class="col-6 text-start">
-                            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.7s"
-                                 src="https://picsum.photos/300/200?random=10">
+                            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.7s" style="width: 300px;height:200px"
+                                 th:src="@{/img/front_end/room/room4.jpg}">
                         </div>
                     </div>
                 </div>
@@ -529,5 +539,107 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var memberDropdown = document.getElementById('memberDropdown');
+        memberDropdown.addEventListener('click', function (event) {
+            var isDropdownShown = memberDropdown.getAttribute('aria-expanded') === 'true';
+            if (!isDropdownShown) {
+                window.location.href = '/member/memberOnlyWeb';
+            }
+        });
+    });
 
+    $(document).ready(function() {
+        $('#roomTypeSelect').change(function() {
+            var selectedRoomType = $(this).val();
+            if (selectedRoomType) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/roomType/getRoomGuestAmounts',
+                    data: { roomTypeName: selectedRoomType },
+                    success: function(response) {
+                        $('#selectRoomAmount').empty(); // Clear existing options
+                        $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>'); // Add default option
+
+                        if (response && response.length > 0) {
+                            response.forEach(function(amount) {
+                                $('#selectRoomAmount').append('<option value="' + amount + '">' + amount + '位</option>');
+                            });
+                        } else {
+                            // If the response is null or empty, reset to default
+                            $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching room guest amounts:', error);
+                        // Reset to default if there's an error
+                        $('#selectRoomAmount').empty(); // Clear existing options
+                        $('#selectRoomAmount').append('<option value="" disabled selected>選擇房間人數</option>'); // Add default option
+                    }
+                });
+            }
+        });
+    });
+
+    function saveData() {
+        const roomType = document.getElementById('roomTypeSelect').value;
+        const checkInDate = document.getElementById('selectCheckIn').value;
+        const checkOutDate = document.getElementById('selectCheckOut').value;
+        const roomGuestAmount = document.getElementById('selectRoomAmount').value;
+
+        sessionStorage.setItem('roomType', roomType);
+        sessionStorage.setItem('checkInDate', checkInDate);
+        sessionStorage.setItem('checkOutDate', checkOutDate);
+        sessionStorage.setItem('roomGuestAmount', roomGuestAmount);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkIn = document.getElementById('selectCheckIn');
+        const checkOut = document.getElementById('selectCheckOut');
+        const today = getTodayDate(); // 獲取台灣當地的今日日期
+
+        checkIn.value = today;
+        checkIn.min = today;
+
+        checkOut.min = getNextDay(today);
+
+        checkIn.addEventListener('change', function() {
+            checkOut.min = getNextDay(checkIn.value);
+            if (checkOut.value <= checkIn.value) {
+                checkOut.value = getNextDay(checkIn.value);
+            }
+        });
+    });
+
+    // 獲取台灣當地的今日日期
+    function getTodayDate() {
+        const now = new Date();
+        const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+        const taiwanTime = new Date(utcNow.setHours(utcNow.getHours() + 8));
+
+        return formatDate(taiwanTime);
+    }
+
+    // 獲取指定日期的次日
+    function getNextDay(dateStr) {
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + 1);
+        return formatDate(date);
+    }
+
+    // 格式化日期為YYYY-MM-DD
+    function formatDate(date) {
+        let month = '' + (date.getMonth() + 1),
+            day = '' + date.getDate(),
+            year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+</script>
     <div th:replace="~{/front_end/index/include/include_bottom}"></div>

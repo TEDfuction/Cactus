@@ -27,7 +27,7 @@ public class RoomOrderListVO {
     private RoomOrderVO roomOrder;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomTypeVO roomTypeVO;
 
@@ -55,11 +55,11 @@ public class RoomOrderListVO {
         this.roomOrder = roomOrder;
     }
 
-    public RoomTypeVO getRoomType() {
+    public RoomTypeVO getRoomTypeVO() {
         return roomTypeVO;
     }
 
-    public void setRoomType(RoomTypeVO roomType) {
+    public void setRoomTypeVO(RoomTypeVO roomTypeVO) {
         this.roomTypeVO = roomTypeVO;
     }
 }

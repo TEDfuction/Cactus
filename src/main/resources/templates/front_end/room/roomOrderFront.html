@@ -49,11 +49,12 @@
         padding: 20px;
         border: 1.5px solid #f98267;
         border-radius: 10px;
-        margin: 40px 40px;
+        margin: 65px 65px;
     }
 
     .reservation-header {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
+        margin-left: 80px;
     }
 
     .reservation-options {
@@ -64,7 +65,7 @@
     .room-info {
         width: 60%;
         padding: 20px;
-        border: 1px solid #ddd;
+        border: 1px solid #919191;
         border-radius: 10px;
     }
 
@@ -84,17 +85,20 @@
     .charges-container {
         width: 35%;
         padding: 20px;
-        border: 1px solid #ddd;
+        border: 1px solid #919191;
         border-radius: 10px;
     }
 
     .charges-container h4 {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 
     .charges-container ul {
         list-style: none;
-        padding: 0;
+        width: 320px;
+        padding: 10px;
+        margin: 30px 40px 60px 30px;
+        font-size: 17px;
     }
 
     .charges-container ul li {
@@ -134,14 +138,30 @@
         padding-right: 160px;
         padding-top: 20px;
     }
+
+    .checkOrder{
+        background-color: #f98267;
+        color: white;
+        border: none;
+        padding: 9px 120px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;;
+        margin-top: 20px;
+    }
+
+    .checkOrder:hover {
+        background-color: #ed7240;
+    }
+
 </style>
 
 
     <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="//icons/icon-12.png" alt="Icon">
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/index/icons/icon-12.png}"
+             alt="Icon">
     </div>
     <!-- Spinner End -->
 
@@ -150,24 +170,28 @@
     <div class="container-fluid green-bg p-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="row gx-0 d-none d-lg-flex">
             <div class="col-lg-7 px-5 text-start">
-                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
-                <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
-                <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
-                <!-- </div> -->
+
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2" href="">English ｜</a>
-                    <a class="text-white px-2" href="">日本語 ｜</a>
-                    <a class="text-white px-2" href="">加入會員</a>
+                    <th:block th:if="${session.memberVO}">
+                        <img th:src="@{/member/ShowPic} + '?memberId=' + ${session.memberVO.memberId}" width="35px"
+                             height="35px">
+                        &nbsp;&nbsp;<span class="text-white px-2" th:text="${session.memberVO.memberName}"></span>
+                    </th:block>
+                    <a class="text-white px-2" th:href="@{/admin/adminLogin}">｜ English ｜</a>
+                    <!--                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>-->
+                    <div class="dropdown">
+                        <a class="text-white px-2 dropdown-toggle" href="#" role="button" id="memberDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            會員中心
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-green" aria-labelledby="memberDropdown">
+                            <li><a class="dropdown-item" th:href="@{/member/memberRegistory}">會員註冊</a></li>
+                        </ul>
+                    </div>
 
                 </div>
-                <!-- <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
-                </div> -->
+
             </div>
         </div>
     </div>
@@ -175,35 +199,29 @@
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="text2-primary2 m-0"><img class="me-1" src="/img/icons/LOGO.png" alt="Icon"><img class="me-3"
-                                                                                                       src="//member/cactus_name2.png"
-                                                                                                       alt="Name"></h1>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <a href="/" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="text2-primary2 m-0"><img class="me-1" th:src="@{/img/front_end/index/icons/LOGO.png}" alt="Icon"><img
+                    class="me-3" th:src="@{/img/front_end/index/cactus_name2.png}" alt="Name"></h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <!-- 原本輸入內容:Home -->
-
-                <a href="index.html" class="nav-item nav-link active">最新消息</a>
+                <a href="#" class="nav-item nav-link active">最新消息</a>
                 <div class="nav-item dropdown">
                     <!-- 原本輸入內容:Pages -->
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
                     <div class="dropdown-menu border-0 m-0">
-                        <a href="feature.html" class="dropdown-item">凱克特司</a>
-                        <a href="project.html" class="dropdown-item">周邊特色</a>
-                        <a href="team.html" class="dropdown-item">常見問題</a>
-                        <!-- <a href="appointment.html" class="dropdown-item">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a> -->
+                        <a th:href="@{/about_cactus}" class="dropdown-item">凱克特司</a>
+                        <!--                     <a href="project.html" class="dropdown-item">周邊特色</a> -->
+                        <a th:href="@{/contactus_cactus}" class="dropdown-item">常見問題</a>
                     </div>
                 </div>
                 <!-- 原本輸入內容:About，要改成下拉式選單 -->
-                <a href="about.html" class="nav-item nav-link">房型介紹</a>
+                <a th:href="@{/roomType/roomTypeFront}" class="nav-item nav-link">房型介紹</a>
                 <div class="dropdown-menu border-0 m-0">
                     <!-- <a href="feature.html" class="dropdown-item">緣起</a>
                     <a href="project.html" class="dropdown-item">特色設施</a>
@@ -214,14 +232,13 @@
 
                     <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
                 </div>
-                <!-- 原本輸入內容:Services -->
-                <a href="service.html" class="nav-item nav-link">特色活動</a>
 
-                <!-- 原本輸入內容:Contact -->
-                <a href="contact.html" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping" me-2
-                                                                    style="color: #01b2a6;"></i> 購物商城</a>
+                <a th:href="@{/activity/activityPhoto}" class="nav-item nav-link">特色活動</a>
+                <a th:href="@{/product/listAllProduct}" class="nav-item nav-link shoppingCart"><i
+                        class="fa-solid fa-cart-shopping" me-2
+                        style="color: #01b2a6;"></i> 購物商城</a>
             </div>
-            <!-- 原本輸入內容:Appointment -->
+
             <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
                                                                               style="color: #f2f1f1;"></i> 線上訂房</a>
 
@@ -230,32 +247,36 @@
     <!-- Navbar End -->
 
     <div class="RO-container">
-        <div id="orderRoomType" class="reservation-header">
-            <h2 th:text="${roomTypeName} + ', RoomType'"></h2>
-        </div>
+        <form th:action="@{/roomType/roomOrderTotalList}" method="post">
+            <div id="orderRoomType" class="reservation-header">
+                <h3 th:text="${roomTypeName}" ></h3>
+                <input type="hidden" th:value="${roomTypeName}" name="roomTypeName">
+            </div>
         <div class="reservation-options">
             <div class="room-info" >
                 <h5>輸入訂購人資料</h5>
                 <div style=" margin-top: 18px;">
                     <div >
-                        <span>會員姓名:&nbsp;&emsp;</span>
-                        <input type="text" >
+                        <span style="color: red;">*</span><span >會員姓名:&nbsp;&emsp;</span>
+                        <input type="text" th:value="${memberVO.getMemberName()}" required>
                     </div>
                     <div style=" margin-top: 18px;">
-                        <span>電子信箱:&nbsp;&emsp;</span>
-                        <input type="email" >
+                        <span style="color: red;">*</span><span >電子信箱:&nbsp;&emsp;</span>
+                        <input type="email" th:value="${memberVO.getEmail()}" name="emails" required>
                     </div>
                     <div style=" margin-top: 18px; height: 30px">
-                        <span>請輸入電話:&nbsp;</span>
-                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  >
+                        <span style="color: red;">*</span><span >請輸入電話:&nbsp;</span>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required >
                     </div>
                     <div class="ROdetail-container">
                         <div class="ROdetail-left">
                             <div id="orderCount">
-                                <span th:text="'入住人數: ' + ${roomGuestAmount} + ' 位'"></span>
+                                入住人數:<span th:text="${roomGuestAmount}" name="roomGuestAmount" ></span>位
+                                <input type="hidden" th:value="${roomGuestAmount}" name="roomGuestAmount">
                             </div>
                             <div id="orderSize">
-                                <span th:text="'Size: ' + ${roomSize}"></span>
+                                Size: <span th:text="${roomSize}" name="roomSize"></span>
+                                <input type="hidden" th:value="${roomSize}" name="roomSize">
                             </div>
                         </div>
                         <div class="ROdetail-right">
@@ -271,12 +292,26 @@
                         <div class="btn-group" style="margin: 5px;text-align: center;">
                             <label ><strong >促銷優惠:</strong></label>
                                 <div >
-                                    <select class="btn btn-outline-secondary" style="margin-left: 20px; width: 300px; color: darkslategrey;">
-                                        <option>當季優惠活動</option>
-                                        <th:block th:each="roomPromotionVO : ${getRoomPromotion}">
-                                            <option th:text="${#strings.length(roomPromotionVO) > 20 ? #strings.substring(roomPromotionVO, 0, 20) + '...' : roomPromotionVO}"></option>
+<!--                                    <select class="btn btn-outline-dark" style="margin-left: 20px; width: 300px; background: white; color: black" id="roomDiscount" th:onchange="updateDiscountRight()">-->
+<!--                                        <option>當季優惠活動</option>-->
+<!--                                        <th:block th:each="roomPromotionVO : ${roomPromotionVO}" >-->
+<!--                                            <option th:text="${#strings.length(roomPromotionVO.getPromotionTitle()) > 20 ?-->
+<!--                                            #strings.substring(roomPromotionVO.getPromotionTitle(), 0, 20) + '...' :-->
+<!--                                            roomPromotionVO.getPromotionTitle()}"-->
+<!--                                                    th:value="${roomPromotionVO.getPromotionDiscount()}" name=" "></option>-->
+<!--                                        </th:block>-->
+<!--                                    </select>-->
+                                    <select class="btn btn-outline-dark" style="margin-left: 20px; width: 300px; background: white; color: black"
+                                            id="roomDiscount" th:onchange="updateDiscountRight()">
+                                        <option value="0">當季優惠活動</option>
+                                        <th:block th:each="roomPromotionVO : ${roomPromotionVO}">
+                                            <option th:text="${#strings.length(roomPromotionVO.getPromotionTitle()) > 20 ?
+                                                     #strings.substring(roomPromotionVO.getPromotionTitle(), 0, 20) + '...' :
+                                                     roomPromotionVO.getPromotionTitle()}"
+                                                    th:value="${roomPromotionVO.getPromotionDiscount()}"></option>
                                         </th:block>
                                     </select>
+
                                 </div>
                         </div>
                         <small class="form-text text-muted" style="margin-left: 100px">(優惠活動詳情請至首頁參考</small>
@@ -291,22 +326,46 @@
                             <input class="form-check-input" type="checkbox" value="" id="airportTransfer" style="margin-left: 20px">
                             <label class="form-check-label" for="extraBed" style="margin-left: 42px">機場專車接送</label>
                         </div>
-                        <textarea class="form-control" id="specialRequests" rows="3" placeholder="例如: 需要機場專車接送"></textarea>
+                        <textarea class="form-control" id="specialRequests" rows="3" placeholder="例如: 需要機場專車接送"
+                        name="roomOrderIdReq"></textarea>
                     </div>
                 </div>
             </div>
             <div class="charges-container">
-                <h4>Room charge</h4>
-                <ul>
-                    <li><span>CheckIn日期:</span><span th:text="${selectCheckIn}"></span></li>
-                    <li><span>CheckOut日期:</span><span th:text="${selectCheckOut}"></span></li>
-                    <li><span>訂單金額</span><span th:text="${roomPrice}"></span></li>
-                    <li><strong>折扣優惠</strong></li>
-                    <li><span>折扣金額</span><span>42,840 TW</span></li>
-                    <li><strong>合計金額</strong><span>246,840 TW</span></li>
-                </ul>
+                <h4 style="text-align: center; margin-top: 40px">【 訂單金額明細 】</h4>
+                    <ul style="margin-top: 40px; margin-left: 10px">
+                        <li><img th:src="@{/img/front_end/room/calendar.png}" style="width: 15px" height="23px;">
+                            <span style="margin-right: 74px;margin-bottom: 13px; ">CheckIn日期:</span><span th:text="${selectCheckIn}" name="selectCheckIn"></span></li>
+                        <li><img th:src="@{/img/front_end/room/calendar.png}" style="width: 15px" height="23px">
+                            <span style="margin-right: 60px;margin-bottom: 13px; ">CheckOut日期:</span><span th:text="${selectCheckOut}" name="selectCheckOut"></span></li>
+                        <li>
+                            <span style="margin-bottom: 13px">訂單金額: <span id="roomAmount" th:text="${roomPrice}" style="margin-left: 134px;"></span>TWD</span>
+                            <input type="hidden" id="roomAmountInput" th:value="${roomPrice}" name="roomAmount">
+                        </li>
+
+                        <li style="margin-bottom: 13px"><strong>折扣優惠</strong>&ensp;&nbsp;&ensp;&ensp;<span id="discountRight" ></span></li>
+                        <li>
+                            <span style="margin-right: 0px">折扣金額: </span>
+                            <span id="promotionPrice">0</span>
+                            <input type="hidden" id="promotionPriceInput" name="promotionPrice" value="0">
+                            <input type="hidden" th:value="${roomSize}" name="roomSize">
+                        </li>
+
+                        <li style="margin-bottom: 13px">
+                            <strong>合計金額:</strong>
+                            <span id="payAmount"></span>
+                            <input type="hidden" id="payAmountInput" name="payAmount" th:value="payAmount">
+                        </li>
+                        <li><span ></span></li>
+                        <input type="hidden" th:value="${selectCheckIn}" name="selectCheckIn">
+                        <input type="hidden" th:value="${selectCheckOut}" name="selectCheckOut">
+                        <input type="hidden" id="promotionTitleInput" name="promotionTitle">
+                        <input type="hidden" th:value="${roomTypeId}" name="roomTypeId">
+                        <input type="submit" id="modify-search" value="完成訂房" class="checkOrder">
+                    </ul>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
         <!-- Room Information Section -->
@@ -419,7 +478,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Footer End -->
 
@@ -450,18 +508,84 @@
             const checkboxTransfer = document.getElementById('airportTransfer');
             const textarea = document.getElementById('specialRequests');
 
-            checkboxBed.addEventListener('change', function() {
-                if (this.checked) {
-                    textarea.value += (textarea.value ? "\n" : "") + "需要額外加床";
+            // 函数用于添加或删除请求信息
+            function updateTextarea(checkbox, text) {
+                let lines = textarea.value.split("\n"); // 将文本区域的内容按行分割为数组
+                if (checkbox.checked) {
+                    // 当复选框被选中时，添加文本
+                    if (!lines.includes(text)) { // 避免重复添加
+                        textarea.value += (textarea.value ? "\n" : "") + text;
+                    }
+                } else {
+                    // 当复选框取消选中时，移除文本
+                    lines = lines.filter(line => line !== text); // 删除对应的行
+                    textarea.value = lines.join("\n"); // 重新合并行为新的文本
                 }
+            }
+
+            // 绑定加床复选框的变更事件处理程序
+            checkboxBed.addEventListener('change', function() {
+                updateTextarea(this, "需要額外加床");
             });
 
+            // 绑定接送复选框的变更事件处理程序
             checkboxTransfer.addEventListener('change', function() {
-                if (this.checked) {
-                    textarea.value += (textarea.value ? "\n" : "") + "需要機場專車接送";
-                }
+                updateTextarea(this, "需要機場專車接送");
             });
         });
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const roomTypeName = sessionStorage.getItem('roomTypeName');
+            const roomGuestAmount = sessionStorage.getItem('roomGuestAmount');
+            const roomSize = sessionStorage.getItem('roomSize');
+            const checkInDate = sessionStorage.getItem('checkInDate');
+            const checkOutDate = sessionStorage.getItem('checkOutDate');
+            const roomPrice = sessionStorage.getItem('roomPrice');
+
+            document.getElementById('roomType').textContent = roomTypeName;
+            document.getElementById('roomGuestAmount').textContent = roomGuestAmount;
+            document.getElementById('roomSize').textContent = roomSize;
+            document.getElementById('checkInDate').textContent = checkInDate;
+            document.getElementById('checkOutDate').textContent = checkOutDate;
+            document.getElementById('roomPrice').textContent = roomPrice;
+        });
+
+        function updateDiscountRight() {
+            var roomDiscount = parseFloat(document.getElementById("roomDiscount").value) || 0;
+            var roomAmount = parseFloat(document.getElementById("roomAmountInput").value) || 0;
+
+            var discountRightValue = (Math.floor(roomDiscount * 10) + '折優惠');
+            if (roomDiscount === 0) {
+                document.getElementById("discountRight").style.display = 'none';
+            } else {
+                document.getElementById("discountRight").textContent = discountRightValue;
+                document.getElementById("discountRight").style.display = 'block';
+            }
+
+            var promotionPrice = roomAmount * (roomDiscount / 10);
+            var payAmount = roomAmount - promotionPrice;
+
+            // 更新顯示的折扣金額和隱藏的 input 的值，用於提交表單
+            var roundedPromotionPrice = Math.floor(promotionPrice);
+            document.getElementById("promotionPrice").textContent = roundedPromotionPrice + " TWD";
+            document.getElementById("promotionPriceInput").value = roundedPromotionPrice;
+
+            // 更新支付金額和隱藏的 input，用於提交表單
+            var roundedPayAmount = Math.floor(payAmount);
+            document.getElementById("payAmount").textContent = roundedPayAmount + " TWD";
+            document.getElementById("payAmountInput").value = roundedPayAmount;
+
+            // 更新隱藏的 input，用於提交表單
+            var selectedOption = document.querySelector('#roomDiscount option:checked').text;
+            document.getElementById("promotionTitleInput").value = selectedOption;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            updateDiscountRight();
+        });
+
+
 
     </script>
 

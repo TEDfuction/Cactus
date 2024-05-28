@@ -62,25 +62,20 @@
 
     #room-checkOut, #room-checkIn {
         border: 1px solid #f98267;
-        padding: 8px 30px;
+        padding: 12px 30px;
         margin-right: 30px;
-        font-size: 14px;
+        font-size: 18px;
         color: #666;
 
-    }
-
-    .roomAmount{
-        border: 1px solid #f98267;
-        padding: 8px ;
-        margin-right: 30px;
-        font-size: 14px;
-        color: #666;
     }
 
     .roomType-select {
-        width: 120px;
+        width: 190px;
         margin-right: 27px;
-        margin-left: 110px;
+        margin-left: 60px;
+        font-size: 18px;
+        Font-weight: 600;
+        padding: 12px 5px 12px 31px;
         border: 1px solid #f98267;
         background: white !important;
     }
@@ -124,7 +119,7 @@
     .roomBack{
         background: #f9f9f9;
         padding: 60px 20px;
-        border: 1px solid #f98267;
+        border: 1.5px solid #f98267;
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         width: 90%;
         max-width: 1000px;
@@ -157,7 +152,7 @@
         display: flex;
         align-items: center;
         position: absolute;
-        left: 20px;
+        left: 25px;
         top: 26px;
     }
 
@@ -168,7 +163,7 @@
     }
 
     .roomPrice {
-        padding: 7px 20px;
+        padding: 9px 20px;
         background-color: #B8A68C;
         color: white;
         font-size: 16px;
@@ -176,26 +171,28 @@
         text-align: center;
         border-radius: 4px;
         position: absolute;
-        right: 170px;
+        right: 180px;
         bottom: 20px;
     }
 
-    .NoRoom{
+    .roomAmount{
         border: 1px solid #f98267;
-        padding: 8px 30px;
+        padding: 14px 10px 15px 0px;
         margin-right: 30px;
-        font-size: 14px;
+        font-size: 16px;
         color: #666;
+        text-align: center;
 
     }
 </style>
 
 
     <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="//icons/icon-12.png" alt="Icon">
+        <img class="position-absolute top-50 start-50 translate-middle" th:src="@{/img/front_end/index/icons/icon-12.png}"
+             alt="Icon">
     </div>
     <!-- Spinner End -->
 
@@ -204,24 +201,28 @@
     <div class="container-fluid green-bg p-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="row gx-0 d-none d-lg-flex">
             <div class="col-lg-7 px-5 text-start">
-                <!-- <div class="h-100 d-inline-flex align-items-center py-3 me-3"> -->
-                <!-- <a class="text-body px-2" href="tel:+0123456789"><i class="fa fa-phone-alt text-white me-2"></i>+012 345 6789</a>
-                <a class="text-body px-2" href="mailto:info@example.com"><i class="fa fa-envelope-open text-gold me-2"></i>info@example.com</a> -->
-                <!-- </div> -->
+
             </div>
             <div class="col-lg-5 px-5 text-end">
                 <div class="h-100 d-inline-flex align-items-center py-3 me-2">
-                    <a class="text-white px-2" href="">English ｜</a>
-                    <a class="text-white px-2" href="">日本語 ｜</a>
-                    <a class="text-white px-2" href="">加入會員</a>
+                    <th:block th:if="${session.memberVO}">
+                        <img th:src="@{/member/ShowPic} + '?memberId=' + ${session.memberVO.memberId}" width="35px"
+                             height="35px">
+                        &nbsp;&nbsp;<span class="text-white px-2" th:text="${session.memberVO.memberName}"></span>
+                    </th:block>
+                    <a class="text-white px-2" th:href="@{/admin/adminLogin}">｜ English ｜</a>
+                    <!--                <a class="text-white px-2" th:href="@{/member/memberOnlyWeb}">會員中心</a>-->
+                    <div class="dropdown">
+                        <a class="text-white px-2 dropdown-toggle" href="#" role="button" id="memberDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            會員中心
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-green" aria-labelledby="memberDropdown">
+                            <li><a class="dropdown-item" th:href="@{/member/memberRegistory}">會員註冊</a></li>
+                        </ul>
+                    </div>
 
                 </div>
-                <!-- <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-1" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-sm-square btn-outline-body me-0" href=""><i class="fab fa-instagram"></i></a>
-                </div> -->
+
             </div>
         </div>
     </div>
@@ -229,35 +230,29 @@
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="text2-primary2 m-0"><img class="me-1" src="/img/icons/LOGO.png" alt="Icon"><img class="me-3"
-                                                                                                      src="//member/cactus_name2.png"
-                                                                                                      alt="Name"></h1>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <a href="/" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="text2-primary2 m-0"><img class="me-1" th:src="@{/img/front_end/index/icons/LOGO.png}" alt="Icon"><img
+                    class="me-3" th:src="@{/img/front_end/index/cactus_name2.png}" alt="Name"></h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <!-- 原本輸入內容:Home -->
-
-                <a href="index.html" class="nav-item nav-link active">最新消息</a>
+                <a href="#" class="nav-item nav-link active">最新消息</a>
                 <div class="nav-item dropdown">
                     <!-- 原本輸入內容:Pages -->
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">關於我們</a>
                     <div class="dropdown-menu border-0 m-0">
-                        <a href="feature.html" class="dropdown-item">凱克特司</a>
-                        <a href="project.html" class="dropdown-item">周邊特色</a>
-                        <a href="team.html" class="dropdown-item">常見問題</a>
-                        <!-- <a href="appointment.html" class="dropdown-item">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a> -->
+                        <a th:href="@{/about_cactus}" class="dropdown-item">凱克特司</a>
+                        <!--                     <a href="project.html" class="dropdown-item">周邊特色</a> -->
+                        <a th:href="@{/contactus_cactus}" class="dropdown-item">常見問題</a>
                     </div>
                 </div>
                 <!-- 原本輸入內容:About，要改成下拉式選單 -->
-                <a href="about.html" class="nav-item nav-link">房型介紹</a>
+                <a th:href="@{/roomType/roomTypeFront}" class="nav-item nav-link">房型介紹</a>
                 <div class="dropdown-menu border-0 m-0">
                     <!-- <a href="feature.html" class="dropdown-item">緣起</a>
                     <a href="project.html" class="dropdown-item">特色設施</a>
@@ -268,14 +263,13 @@
 
                     <a href="404.html" class="dropdown-item">常見問題(聯絡我們)</a> -->
                 </div>
-                <!-- 原本輸入內容:Services -->
-                <a href="service.html" class="nav-item nav-link">特色活動</a>
 
-                <!-- 原本輸入內容:Contact -->
-                <a href="contact.html" class="nav-item nav-link"><i class="fa-solid fa-cart-shopping" me-2
-                                                                    style="color: #01b2a6;"></i> 購物商城</a>
+                <a th:href="@{/activity/activityPhoto}" class="nav-item nav-link">特色活動</a>
+                <a th:href="@{/product/listAllProduct}" class="nav-item nav-link shoppingCart"><i
+                        class="fa-solid fa-cart-shopping" me-2
+                        style="color: #01b2a6;"></i> 購物商城</a>
             </div>
-            <!-- 原本輸入內容:Appointment -->
+
             <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block"><i class="fa-solid fa-calendar-days" me-2
                                                                               style="color: #f2f1f1;"></i> 線上訂房</a>
 
@@ -286,9 +280,9 @@
         <hr class="col-lg-12" style="height: 2px; color: gray">
         <div class="booking-form">
             <form class="dateFormFst" th:action="@{/roomType/selectRoomType}" method="post">
-                <select class="form-control roomType-select" name="roomTypeName">
-                    <option disabled selected>選擇房型</option>
-                    <option th:value="${roomTypeName}"></option>
+                <select class="form-control roomType-select" name="roomTypeName" id="roomType">
+<!--                    <option disabled selected>選擇房型</option>-->
+<!--                    <option th:value="${roomTypeName}"></option>-->
                 </select>
                 <div class="date-checkIn">
                     <input type="date" id="room-checkIn" th:value="${selectCheckIn}" name="selectCheckIn">
@@ -341,22 +335,23 @@
         <div class="roomIntro">
             <div class="roomBack">
                     <h1 th:text="${roomTypeVO[0]}" class="roomTypeName" id="PageRTName">
-                        <span class="arrow"></span>
+<!--                        <span class="arrow"></span>-->
                     </h1>
-                    <div class="hotel-details" style="margin-top: 16px;margin-left: 10px; font-size: 16px; color: #666;">
+                    <div><img th:src="@{/img/front_end/room/beach.png}" style="width: 220px;position: absolute;right: 2px;top: 0px; opacity:0.1"></div>
+                    <div class="hotel-details" style="margin-top: 16px;margin-left: 17px; font-size: 19px; color: #4F4F4F;">
                         <span class="PageRTBed">
                             <span th:text="${roomTypeVO[3] / 2} + ' 張特大雙人床'"></span>
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3] / 2)}">
-                                <img src="//img/front_end/room/double-bed.png" class="bed-icon" alt="Double Bed">
+                                <img th:src="@{/img/front_end/room/double-bed.png}" class="bed-icon" alt="Double Bed">
                             </span>
                             <span th:if="${roomTypeVO[3] % 2 != 0}">
-                                <img src="//img/front_end/room/single-bed.png" class="bed-icon" alt="Single Bed">
+                               <img th:src="@{/img/front_end/room/single-bed.png}" class="bed-icon" alt="Single Bed">
                             </span>
                         </span>
                         <span class="separator">|</span>
                         <span class="roomGuestAmount">
                             <span th:each="i : ${#numbers.sequence(1, roomTypeVO[3])}">
-                                <img src="//img/front_end/room/peoplecount.png" style="width: 15px;height: 15px" alt="Guest">
+                                <img th:src="@{/img/front_end/room/peoplecount.png}" style="width: 16px;height: 16px" alt="Guest">
                             </span>
                         </span>
                         <span class="separator">|</span><br>
@@ -365,22 +360,28 @@
                             <span th:if="${roomTypeVO[3] == 4}">80~90 ㎡</span>
                             <span th:if="${roomTypeVO[3] == 6}">140~150 ㎡</span>
                         </div>
-                        <div style="margin-top: 10px; font-size: 12px">
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;浴缸&淋浴
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;免費盥洗用品
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;咖啡沖泡設備
-                            <img th:src="@{/img/icons/check.png}" style="width: 15px; height: 15px">&ensp;簡易廚房
+                        <div style="margin-top: 10px; font-size: 14px">
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;浴缸&淋浴
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;免費盥洗用品
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;咖啡沖泡設備
+                            <img th:src="@{/img/front_end/room/check.png}" style="width: 15px; height: 15px">&ensp;簡易廚房
                         </div>
-                        <span th:text="'NT ' + ${roomTypeVO[2]} + ' $'" id="roomPrice" class="roomPrice"></span><br>
+<!--                        <div>-->
+<!--                            <img th:src="@{/img/front_end/room/aquatic.png}" style="width: 70px;position: absolute;right: 350px;bottom: 5px; opacity:0.1">-->
+<!--                        </div>-->
+                        <span th:text="'NTD ' + ${roomTypeVO[2]} + ' $'" id="roomPrice" class="roomPrice"></span><br>
                         <div>
                             <form class="dateFormSec" id="dateFormSec" th:action="@{/roomPromotion/OrderList}" method="POST" onsubmit="storeRoomData(this); return true;">
-                                <input type="hidden" name="roomTypeName" id="hiddenRoomTypeName">
-                                <input type="hidden" name="roomGuestAmount" id="hiddenRoomGuestAmount">
-                                <input type="hidden" name="roomSize" id="hiddenRoomSize">
-                                <input type="hidden" name="roomPrice" id="hiddenRoomPrice">
+                                <input type="hidden" name="roomTypeName"  th:value="${roomTypeVO[0]}" id="hiddenRoomTypeName">
+                                <input type="hidden" name="roomGuestAmount" th:value="${roomTypeVO[3]}" id="hiddenRoomGuestAmount">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 2}" value="55~60 ㎡" id="hiddenRoomSizeS">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 4}" value="80~90 ㎡" id="hiddenRoomSizeM">
+                                <input type="hidden" name="roomSize" th:if="${roomTypeVO[3] == 6}" value="140~150 ㎡" id="hiddenRoomSizeL">
+                                <input type="hidden" name="roomAmount" th:value="${roomTypeVO[2]}" id="hiddenRoomPrice">
                                 <input type="hidden" name="selectCheckIn" id="selectCheckIn">
                                 <input type="hidden" name="selectCheckOut" id="selectCheckOut">
-                                <input type="submit" class="room-button" value="預定房間">
+                                <input type="hidden" name="roomTypeId" th:value="${roomTypeVO[1]}">
+                                <button type="button" class="room-button roomFormButton">預定房間</button>
                             </form>
                         </div>
                     </div>
@@ -504,12 +505,74 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var session_acount="";
+    	console.log("session_acount =" + session_acount);
+
+            //查看session是否有存著account值
+            $.ajax({
+                url: '/member/getSessionAccount',
+                type: 'GET',
+                success: function(response) {
+
+                    session_acount = response;
+                console.log("response Session Account:", session_acount);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+
+
+
+            $(document).on("click",".roomFormButton",function(e){
+                e.preventDefault();
+                if ( session_acount!="" ) {
+                    e.target.closest("form.dateFormSec").submit();
+
+
+                } else {// 如果沒有值
+
+                    var location = "/roomType/roomTypeFront";
+                    var dataToSend = { location: location };
+
+                    //將欲前往頁面存入供跳轉
+                    $.ajax({
+                        url: '/member/setLocation', // 替换成你的后端路由
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataToSend),
+                        success: function(response) {
+                            //確認是否儲存成功
+//                         console.log("Location setting success", response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+
+                    swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+
+                        .then(function(){
+                            window.location.href = '/member/memberLogin';
+                        })
+                }
+
+            });
+        });
+    </script>
+
 
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
             // 從 sessionStorage 獲取保存的數據
-            const roomType = sessionStorage.getItem('roomTypeName');
+            const roomType = sessionStorage.getItem('roomType');
             const checkInDate = sessionStorage.getItem('checkInDate');
             const checkOutDate = sessionStorage.getItem('checkOutDate');
             const roomGuestAmount = sessionStorage.getItem('roomGuestAmount');
@@ -527,10 +590,13 @@
             // 如果有保存的日期，更新日期輸入框
             if (checkInDate) {
                 document.getElementById('room-checkIn').value = checkInDate;
-                document.getElementById('selectCheckIn').value = checkInDate;
+                $(document).find('input#selectCheckIn').val(checkInDate)
+                // document.querySelectorAll('input#selectCheckIn').value = checkInDate;
             }
             if (checkOutDate) {
                 document.getElementById('room-checkOut').value = checkOutDate;
+                $(document).find('input#selectCheckOut').val(checkOutDate);
+                // document.querySelectorAll('input#selectCheckOut').value = checkOutDate;
             }
 
             // 如果有保存的人數，更新下拉選單
@@ -583,34 +649,27 @@
             return getLocalDate(date);
         }
         function getLocalDate(date) {
-            const offset = 8; // 台灣是UTC+8
+            const offset = 2; // 台灣是UTC+8
             date.setHours(date.getHours() + offset - date.getTimezoneOffset() / 60);
             return date.toISOString().split('T')[0];
         }
 
         function storeRoomData(form) {
             const roomIntro = form.closest('.roomIntro');
-            const roomTypeName = roomIntro.querySelector('.roomTypeName').textContent;
+            const roomTypeName = roomIntro.querySelector('.roomTypeName').value;
+            console.log(roomTypeName)
             const roomGuestAmount = roomIntro.querySelector('.roomGuestAmount').textContent.match(/\d+/)[0];
             const roomSize = roomIntro.querySelector('.PageRTSize').textContent;
-            const checkInDate = document.getElementById('selectCheckIn').value;
-            const checkOutDate = document.getElementById('selectCheckOut').value;
+            const checkInDate = document.querySelector('.selectCheckIn').value;
+            const checkOutDate = document.querySelector('.selectCheckOut').value;
             const roomPrice = roomIntro.querySelector('.roomPrice').textContent;
 
-            // 設置隱藏字段的值
-            document.getElementById('hiddenRoomTypeName').value = roomTypeName;
-            document.getElementById('hiddenRoomGuestAmount').value = roomGuestAmount;
-            document.getElementById('hiddenRoomSize').value = roomSize;
-            document.getElementById('hiddenRoomPrice').value = roomPrice;
-            document.getElementById('selectCheckIn').value = checkInDate;
-            document.getElementById('selectCheckOut').value = checkOutDate;
-
-            console.log('RoomTypeName:', roomTypeName);
-            console.log('RoomGuestAmount:', roomGuestAmount);
-            console.log('RoomSize:', roomSize);
-            console.log('Check-inDate:', checkInDate);
-            console.log('Check-outDate:', checkOutDate);
-            console.log('RoomPrice:', roomPrice);
+            localStorage.setItem('roomTypeName', JSON.stringify({ roomTypeName: roomTypeName }));
+            localStorage.setItem('roomGuestAmount', JSON.stringify({roomGuestAmount}));
+            localStorage.setItem('roomSize', JSON.stringify({roomSize}));
+            localStorage.setItem('checkInDate', JSON.stringify({checkInDate}));
+            localStorage.setItem('checkOutDate', JSON.stringify({checkOutDate}));
+            localStorage.setItem('roomPrice', JSON.stringify({roomPrice}));
 
             return true; // 允許表單提交
         }
@@ -632,6 +691,7 @@
     <script src="/js/room/main.js"></script>
     <!-- Kit Icon -->
     <script src="https://kit.fontawesome.com/8366d3754a.js" crossorigin="anonymous"></script>
+
 
 </body>
 </html>

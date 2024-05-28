@@ -3,12 +3,135 @@
 <div th:replace="~{/front_end/member/include/include_top}"></div>
   	
   	
-  	<style>
-  		.left_item{
+ <style>
+ 
+ 	.left_item{
 			text-align:center;
   		}
-  		
-  	</style>
+
+	.unique{
+			text-align:center;
+	}
+	
+ 	.display{ 
+		font-size:15px;
+/*  		table-layout: fixed;  */
+		word-break: break-all; 
+		word-wrap: break-word; 
+ 		width:100%; 
+  		height:200px;  
+		
+ 	} 
+ 	
+ 	.display .timeTD{
+ 	
+ 	}
+	
+ 	.display td,th{ 
+ 		border: 1px solid black; 
+ 	} 
+	
+ 	.display thead{ 
+ 		background-color:lightcyan 
+ 	} 
+
+ 	.display tbody{ 
+ 		background-color:ivory; 
+ 	} 
+ 	
+ 	
+ 	.no-data{
+ 		font-size:3rem;
+ 	}
+ 	
+ 	div.lightbox{
+ 		padding:15px 0 15px 0 ;
+ 		z-index:1;	
+ 		border:1px solid blue;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		background-color: hsla(0, 0%, 0%, .5);
+		overflow-y:hidden;
+/*  		display: none;  */
+ 	}
+ 	
+ 	div.innerBlock {
+ 		padding:15px 0 15px 0;
+ 		z-index:2;
+ 		font-size:1.3rem;
+		background-color: white;
+		height:100%;
+		width: 100%;
+		max-width: 650px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px #ddd;
+		padding: 10px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		overflow-x:hidden;
+		overflow-y:auto;
+		text-align:left;
+	}
+	
+	div.innerBlock h3{
+		margin-top:10px;
+		text-align:center;
+		
+	}
+	
+	div.innerBlock div{
+		margin-left:10px;
+	}
+	
+	button.closeButton{
+		z-index:3;
+		background-color: white;
+		width:20px;
+		font-size:1.3rem;
+		border:none;
+		position: absolute;
+		top: 2%;
+		right: 27%;
+	}
+	
+	.-none{
+		display:none;
+	}
+	
+	input.submitButton{
+		border:2px solid black;
+	}
+	
+	#cancel{
+		border:2px solid black;
+		background-color:red;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	#success{
+		border:2px solid black;
+		background-color:green;
+		color:white;
+		display:inline-block;
+		width:75px;
+		height:32px;
+		
+	}
+	
+	
+	
+
+</style>
+
   	
 </head>
 
@@ -17,14 +140,226 @@
 
 <div th:replace="~{/front_end/member/include/include_body}"></div>
 
+<input type="hidden" id="status" th:value="${status}">
 
    
         <!-- 主欄位 -->
-	    <div class="unique">
-	    
-	    <p>ActivityRoomDetail</p>
 	    	
-        </div>
+	<div class="unique">
+			<h3>---搜尋的通知資料結果---</h3>
+			<br>
+		
+			<br>
+		
+		<div th:if="${roomOrderList != null}">
+			<table  id="xxx" class="display">
+				
+				<thead>
+					<tr>
+						<th>訂單編號</th>
+						<th>訂單日期</th>
+						<th>訂單狀態</th>
+						<th>是否有促銷折扣</th>
+						<th>操作</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<th:block th:each="roomOrderVO : ${roomOrderList}">
+						<tr>
+					
+							<td th:text="${roomOrderVO.roomOrderId}" class="id" name="orderId"></td>
+							
+							<td class="timeTD" th:text="${roomOrderVO.roomOrderDate}"></td>
+							
+							
+							<td class="showStatus1" th:if="!${roomOrderVO.roomOrderStatus}"></th:if><span class="StatusClass1">取消訂單</span></td>
+							<td class="showStatus1" th:if="${roomOrderVO.roomOrderStatus}"></th:if><span class="StatusClass1">正常</span></td>
+							
+							
+							<td th:if="${roomOrderVO.promotionId}">是</td>
+							<td th:if="${roomOrderVO.promotionId == null}">否</td>
+							
+
+							
+							<td>
+								<form method="post" th:action="@{/member/showRoomOrderDetail}">
+									<input type="hidden" name="roomOrderId" class="roomOrderId" th:value="${roomOrderVO.roomOrderId}">
+									<input class="submitButton" type="submit" value="顯示詳情">
+								</form>
+							</td>
+							
+							
+							<td>
+								<div class="cancelBlock">
+									<form id="myForm" method="post" th:action="@{/member/cancelRoomOrder}">
+										<input type="hidden" name="roomOrderId" class="roomOrderId" th:value="${roomOrderVO.roomOrderId}">
+	  									<button type="button" class="cancelButton">取消訂單</button>
+									</form>
+								</div>
+							</td>
+
+						</tr>
+					</th:block>
+				</tbody>
+				
+			</table>
+			
+			<div class="lightbox" th:if="${showRoomOrderDetail}">
+				<button class="closeButton">X</button>
+				<div class="innerBlock">
+					<div th:insert="~{/front_end/member/showRoomOrderDetail :: detail-div}"></div>
+				</div>			
+			</div>
+		</div>
+		
+		
+		
+		<div th:if="${roomOrderList == null}">
+		    <p class="no-data">您目前沒有任何訂單喔~ </p>
+		</div>
+		
+
+	</div>
+	
+	
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>     
+<!-- 前端sweet alert錯誤判斷用 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>   
+
+
+
+<script>
+
+var status = $("#status").val();
+if(status == "cancelOrderSuccess"){
+	swal("成功","該筆訂單已取消","success");
+}
+
+</script>	 	                           
+	
+	<script th:inline="javascript">
+	    $(document).ready(function () {
+	    	
+	    	status_color1();
+	    	
+	    	
+	    	function status_color1() {
+	 	    	var statusText1 = $(document).find(".StatusClass1")
+	 				
+	 	    	$.each(statusText1, (i, value) => {
+	 	    		if(statusText1[i].hasAttribute("id")){
+	 	    			statusText1[i].removeAttribute("id");
+	 	    		}
+//	  		    	console.log(statusText[i].innerHTML);
+
+	 		    	switch (statusText1[i].innerHTML) {
+	                     
+	                 case '取消訂單':
+	                 	statusText1[i].setAttribute('id', 'cancel');
+	                     return;
+	                     
+	                 case '正常':
+	                 	statusText1[i].setAttribute('id', 'success');
+	                     return;
+	                     
+	                 default:
+	                 	
+	                     return;
+	             	}
+	 	    	});
+	 	    }
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	//取消訂單按鈕
+	    	
+	    	var statusText = $(document).find(".StatusClass1");
+	    	
+	    	$.each(statusText, (i, value) => {
+
+	    		if(statusText[i].innerHTML != "正常"){
+	    			var cancel_block = statusText[i].closest("tr").querySelectorAll("div.cancelBlock");
+	    			var cancel_HTML = `<span>該筆訂單無法取消</span>`;
+	    			
+	    			for (var j = 0; j < cancel_block.length; j++) {
+	    		        cancel_block[j].innerHTML = "<span>該筆訂單無法取消</span>";
+	    		    }
+	    		}
+	    		
+	    		
+	    		
+	    	});
+	    	
+	    	
+	    	$('.cancelButton').click(function() {
+	        	
+	            var form = $(this).closest('form#myForm');
+	            
+	            swal({
+	        		title:"訂單取消",
+	        		text:"您確定要取消訂單嗎??!",
+	        		icon:"warning",
+	        		buttons:{
+	        			cancel: {
+	        		        text: "我再想想好了..",
+	        		        visible: true
+	        		      },
+	        		      confirm: {
+	        		        text: "是的我要取消訂單",
+	        		        visible: true
+	        		      }
+	        		}
+	        	}).then(function(confirm){
+	        		if(confirm){
+	        			swal({
+	        				title:"訂單取消",
+	        				text:"您真的真的確定要取消訂單嗎??!?!!",
+	        				icon:"warning",
+	        				buttons:{
+	        					cancel: {
+	        				        text: "還是不要好了..",
+	        				        visible: true
+	        				      },
+	        				      confirm: {
+	        				        text: "是的沒錯!!",
+	        				        visible: true
+	        				      }
+	        				}
+	        			}).then(function(confirm){
+	        				if(confirm){
+	        					form.submit();
+	        				}
+	        			})
+	        		}
+	        	})
+	            
+	        });
+
+	    });
+	    
+ 
+	</script>
+	
+	
+	
+	
+
+	<!-- 前端sweet alert錯誤判斷用 -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	<script>
+	//燈箱XX按鈕
+ 		$(document).on("click","button.closeButton",function(){
+ 			$(document).find(".lightbox").addClass("-none");
+ 		})
+	
+	</script>
+
+	
         
 <div th:replace="~{/front_end/member/include/include_bottom}"></div>
         

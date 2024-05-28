@@ -1,7 +1,6 @@
 /********** Template CSS **********/
 body{
-    background-image: url("//img/front_end/room/background.jpg");
-    background-repeat: no-repeat;
+    background-image: url(../../../img/front_end/room/background.jpg);
     background-size: contain;
 }
 /* div.container-fluid.text-body.footer{
@@ -381,20 +380,26 @@ h6,
   }
 
 
-#selectroom {
-    position: relative;
-    -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    z-index: 9;
-    padding: 30px;
-    background: #ffffff;}
+/*#selectroom {*/
+/*    position: relative;*/
+/*    -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);*/
+/*    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3);*/
+/*    border-radius: 10px;*/
+/*    z-index: 9;*/
+/*    padding: 30px;*/
+/*    background: #ffffff;}*/
 
 .btn.btn-primary.btn-block {
     margin-left: 25px; /* 調整左偏移量 */
 
+}
 
-
+.dropdown-menu-green {
+    color: #2c2d2d;
+    background-color: rgb(249, 253, 253);
+    min-width: 4rem !important;
+    border: none;
+    border-radius: 3px;
 }
 
  

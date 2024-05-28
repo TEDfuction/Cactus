@@ -4,25 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.admin.model.AdminAuthService;
 import com.admin.model.AdminAuthVO;
@@ -125,20 +117,50 @@ public class AdminAuthController {
 	public String authChange(ModelMap model,
 			HttpSession session,
 			@RequestParam("adminId") Integer adminId,
-			@RequestParam("adminAuthorizationId")List<Integer> adminAuthorizationIds) {
+			@RequestParam(value = "adminAuthorizationId", required = false)List<Integer> adminAuthorizationIds) {
+		
+		//若沒選任何權限，就刪除所有權限
+		if(adminAuthorizationIds == null) {
+			
+			List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
+			if(!list.isEmpty()) {
+				adminAuthSvc.emptyAuth(adminId);
+//				System.out.println("刪除成功");
+				model.addAttribute("status","successAuth");
+				
+				List<AdminVO> list1 = adminSvc.getAll();
+				model.addAttribute("adminList", list1);
+				
+				List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
+				model.addAttribute("adminAuthorizationList", list2);
+				
+				return "/back_end/admin/authSetting";
+			}else {
+				model.addAttribute("status","confirmAuth");
+				
+				List<AdminVO> list1 = adminSvc.getAll();
+				model.addAttribute("adminList", list1);
+				
+				List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
+				model.addAttribute("adminAuthorizationList", list2);
+				
+				return "/back_end/admin/authSetting";
+			}
+				
+			
+		}
 		
 		
-		//先刪除所有權限
-		
+		//先刪除員工底下所有權限
 		List<AdminAuthVO> list = adminAuthSvc.findByAdminId(adminId);
 
 		if(!list.isEmpty()) {
 			adminAuthSvc.emptyAuth(adminId);
-			System.out.println("刪除成功");
+//			System.out.println("刪除成功");
 		}
 		
-		//設定權限
-		Integer count = 0;
+		//再做權限設定
+//		Integer count = 0;
 		
 		for(Integer aaoId : adminAuthorizationIds) {
 			AdminAuthVO adminAuthVO = new AdminAuthVO();
@@ -153,12 +175,12 @@ public class AdminAuthController {
 			adminAuthVO.setAdminVO(aVO);
 			
 			adminAuthSvc.addAdminAuth(adminAuthVO);
-			count++;
-			System.out.println("新增成功");
+//			count++;
+//			System.out.println("新增成功");
 
 		}
 		
-		System.out.println("共新增"+count+"筆權限");
+//		System.out.println("共新增"+count+"筆權限");
 		
 	
 		List<AdminVO> list1 = adminSvc.getAll();
@@ -167,31 +189,45 @@ public class AdminAuthController {
 		List<AdminAuthorizationVO> list2 = adminAuthorizationSvc.getAll();
 		model.addAttribute("adminAuthorizationList", list2);
 		
+		model.addAttribute("status","successAuth");
 		return "/back_end/admin/authSetting";
+	}
+	
+	@PostMapping("/resetPassword")
+	public String resetPassword(ModelMap model,@RequestParam("adminId")Integer adminId) {
+		AdminVO adminVO = adminSvc.findById(adminId).get();
+		adminVO.setAdminPassword("abc123");
+		
+		adminSvc.updateAdmin(adminVO);
+		model.addAttribute("status", "resetSuccess");
+		
+		List<AdminVO> list = adminSvc.getAll();
+		model.addAttribute("adminList",list);
+		return "/back_end/admin/listAlladmin";
 	}
 	
 	
 	
-	//捕捉MissingServletRequestParameterException做處理
-		@ExceptionHandler(value = { MissingServletRequestParameterException.class })
-		public ModelAndView handleError(
-				HttpServletRequest req,
-				ConstraintViolationException e,
-				Model model) {
-			
-			//將錯誤訊息收集
-		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-		    
-		    StringBuilder strBuilder = new StringBuilder();
-		    
-		    for (ConstraintViolation<?> errorSet : violations ) {
-		    	//把錯誤訊息串接 
-		    	strBuilder.append(errorSet.getMessage() + "<br>");
-		    }
-		    
-			String message = strBuilder.toString();
-		    return new ModelAndView("back_end/adminAuth/authSetting", "errorMessage", "請修正以下錯誤:<br>"+message);
-		}
+//	//捕捉MissingServletRequestParameterException做處理
+//		@ExceptionHandler(value = { MissingServletRequestParameterException.class })
+//		public ModelAndView handleError(
+//				HttpServletRequest req,
+//				ConstraintViolationException e,
+//				Model model) {
+//			
+//			//將錯誤訊息收集
+//		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+//		    
+//		    StringBuilder strBuilder = new StringBuilder();
+//		    
+//		    for (ConstraintViolation<?> errorSet : violations ) {
+//		    	//把錯誤訊息串接 
+//		    	strBuilder.append(errorSet.getMessage() + "<br>");
+//		    }
+//		    
+//			String message = strBuilder.toString();
+//		    return new ModelAndView("back_end/adminAuth/authSetting", "errorMessage", "請修正以下錯誤:<br>"+message);
+//		}
 	
 	
 }

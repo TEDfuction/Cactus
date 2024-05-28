@@ -25,4 +25,6 @@ public interface CategoryServiceIf {
 	
 //	List<CategoryVO> getCategoryVOsByCompositeQuery(Map<String, String[]> map);
 
+
 }
+

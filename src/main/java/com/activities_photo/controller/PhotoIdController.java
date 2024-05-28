@@ -27,7 +27,6 @@ import com.activities_item.model.ItemService;
 import com.activities_item.model.ItemVO;
 import com.activities_photo.model.PhotoVO;
 
-
 @Controller
 @Validated
 @RequestMapping("/activity")

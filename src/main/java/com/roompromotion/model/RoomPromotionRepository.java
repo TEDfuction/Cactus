@@ -9,7 +9,12 @@ import java.util.List;
 
 public interface RoomPromotionRepository extends JpaRepository<RoomPromotionVO, Integer> {
 
-    @Query(value = "SELECT rp.promotion_title FROM room_promotion rp\n" +
-            "WHERE :selectCheckIn BETWEEN rp.promotion_started AND rp.promotion_end;", nativeQuery = true)
-    List<String> findBySelectCheckIn(@Param("selectCheckIn") LocalDate selectCheckIn);
+    @Query(value = "SELECT * FROM room_promotion rp " +
+            "WHERE :selectCheckIn BETWEEN rp.promotion_started AND rp.promotion_end " +
+            "AND rp.promotion_state = 1", nativeQuery = true)
+    List<RoomPromotionVO> findBySelectCheckIn(@Param("selectCheckIn") LocalDate selectCheckIn);
+
+    @Query("SELECT rp.promotionId FROM RoomPromotionVO rp WHERE rp.promotionTitle = :promotionTitle")
+    Integer findPromotionIdByTitle(@Param("promotionTitle") String promotionTitle);
 }
+

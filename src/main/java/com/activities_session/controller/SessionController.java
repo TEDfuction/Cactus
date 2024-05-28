@@ -301,13 +301,13 @@ public class SessionController {
      * This method will be called on select_session.html form submission, handling POST request
      *複合查詢
      */
-//	@PostMapping("listSession_ByCompositeQuery")
-//	public String listAllSession(HttpServletRequest req, Model model) {
-//		Map<String, String[]> map = req.getParameterMap();//複合請求
-//		List<SessionVO> list = sessionService.getAll(map); //搜尋的範圍列出
-//		model.addAttribute("sessionListData", list);
-//		return "back_end/session/listAllSession";
-//	}
+	@PostMapping("listSession_ByCompositeQuery")
+	public String listAllSession(HttpServletRequest req, Model model) {
+		Map<String, String[]> map = req.getParameterMap();//複合請求
+		List<SessionVO> list = sessionService.getAll(map); //搜尋的範圍列出
+		model.addAttribute("sessionListData", list);
+		return "back_end/session/listAllSession";
+	}
 
     @GetMapping("sessionBetweenDates")
     public String getSessionBetweenDates(
@@ -320,6 +320,21 @@ public class SessionController {
 
         List<SessionVO> dateBetween = sessionService.getActivityDateBetween(start, end);
         model.addAttribute("sessionListData", dateBetween);
+        return "back_end/session/listAllSession";
+
+    }
+
+    @GetMapping("sessionSignDates")
+    public String getSessionSignDates(
+            @RequestParam("enrollStarted") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Timestamp enrollStarted,
+            @RequestParam("enrollEnd") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Timestamp enrollEnd,
+            Model model) {
+
+        model.addAttribute("enrollStarted", enrollStarted);
+        model.addAttribute("enrollEnd", enrollEnd);
+
+        List<SessionVO> list = sessionService.getSingStartedAndEnd(enrollStarted, enrollEnd);
+        model.addAttribute("sessionListData", list);
         return "back_end/session/listAllSession";
 
     }
@@ -422,7 +437,6 @@ public class SessionController {
                 .collect(Collectors.toList());
     }
 
-
     /*
      * Method used to populate the List Data in view. 如 :
      * <form:select path="deptno" id="deptno" items="${deptListData}" itemValue="deptno" itemLabel="dname" />
@@ -461,5 +475,6 @@ public class SessionController {
 //		}
 //		return result2;
 //	}
+
 
 }

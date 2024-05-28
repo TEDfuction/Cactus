@@ -1,160 +1,139 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>活動項目管理</title>
-<!-- <head th:insert="~{/back_end/item/included-fragment}"></head> --> <!-- 使用included-fragment.html網頁的全部 -->
-<style type="text/css">
+<div th:replace="~{/back_end/include/include_top}" xmlns="http://www.w3.org/1999/html"></div>
+<title>活動項目搜尋</title>
 
-	button {
-		padding: 5px;
-	}
-	form {
-		display: table;
-	}
-	form div {
-		display: table-row;
-	}
-	label, input, span, select {
-		display: table-cell;
-		margin: 2px;
-		text-align: left;		
-	}
-	input[type=text], input[type=password], select, textarea {
-		width: 200px;
-		margin: 2px;
-	}
-	form div div {
-		display: table-cell;
-	}
-	.center {
-        margin-left: auto;
-        margin-right: auto;
+<style>
+
+    .selectform {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 4rem !important;
+
     }
-    span {
-		display: inline-block;
-		width: 150px;
-		text-align: left;
-		font-weight: bold;
-	}
-	div.a {
-        display: inline-block;
-        width: 50%;
-        height: auto;
-        padding: 5px;
-        border: 0px solid blue;    
-        background-color: white; 
+
+    .selectform2 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 10.5rem !important;
+
+
     }
-    div.b {
-        position: absolute; 
-        bottom: 1%; 
-        right: 2%; 
-        width: 45%;
-        padding: 5px; 
-        border: 1px solid blue;
+    .selectform3 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 3.5rem !important;
+
+
     }
+    .selectform4 {
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 14.5rem !important;
+
+
+    }
+    .selectform-area{
+        border-radius: 4px;
+        border: 0.5px solid #c2c2c2;
+        padding-right: 22rem !important;
+    }
+
+    .iblock {
+        margin-right: 1rem;
+    }
+
 </style>
 </head>
 <body>
+<div th:replace="~{/back_end/include/include_body}"></div>
+<div class="unique">
+    <div>
+        <h2 class="hc-2">活動項目搜尋</h2>
+    </div>
 
-<div align="center"> <h2>活動項目管理</h2>
 
-<h4><span>資料查詢:</span></h4>
-<h5><a href='listAllItem'>全部活動項目</a> (All Activity Items) <br><br></h5>
+    <!--    <div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div>-->
+
+    <!--  複合查詢 -->
+
+    <form method="post" th:action="@{listItem_ByCompositeQuery}">
+
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <input type="text" class="form-control selectform" id="floatingInput" name="activityId" value=""
+                       placeholder="例如：1">
+                <label for="floatingInput">活動項目編號 </label>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <select class="form-select selectform2 " id="floatingSelect" th:field="*{categoryVO.activityCategoryId}"
+                        aria-label="Floating label select example">
+                    <option selected value="">請選擇</option>
+                    <option th:each="categoryVO : ${categoryListData2}" th:value="${categoryVO.activityCategoryId}"
+                            th:text="${categoryVO.activityCategoryName}"/>
+                </select>
+                <label for="floatingSelect">活動類別名稱</label>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <select class="form-select selectform3 " id="floatingSelect" name="activityName"
+                        aria-label="Floating label select example">
+                    <option selected value="">請選擇</option>
+                    <option th:each="itemVO : ${itemListData}" th:value="${itemVO.activityName}"
+                            th:text="${itemVO.activityName}"/>
+                </select>
+                <label for="floatingSelect">活動項目名稱</label>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <select class="form-select selectform4 " id="floatingSelect" name="activityState"
+                        aria-label="Floating label select example">
+                    <option selected value="">請選擇</option>
+                    <option value="true" th:text="上架"></option>
+                    <option value="false" th:text="下架"></option>
+                </select>
+                <label for="floatingSelect">活動狀態</label>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <textarea class="form-control selectform-area" placeholder="Leave a comment here" id="floatingTextarea" name="activityDescription" value=""></textarea>
+                <label for="floatingTextarea">活動簡述</label>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mb-4">
+            <i class="fa-solid fa-pause fa-2xl iblock" style="color: #020e67;"></i>
+            <div class="form-floating">
+                <textarea class="form-control selectform-area" placeholder="Leave a comment here" id="floatingTextarea" name="activityInfo" value=""></textarea>
+                <label for="floatingTextarea">活動說明</label>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div class="btn_area">
+
+                <button type="button" class="btn btn-secondary cu-2" onclick="window.location.href='/item/listAllItem'">返回</button>
+                <button type="submit" id="submit" class=" btn btn-outline-success2 cu-2"> 搜尋 </button>
+            </div>
+        </div>
+
+    </form>
+
+
+    <!--    <div class="b" th:if="${getOne_For_Display}">-->
+    <!--       -->
+    <!--        <div th:insert="~{/back_end/item/listOneItem :: listOneItem-div}"></div>-->
+    <!--    </div>-->
 </div>
-<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
-
-<div class="a">
-	  <ul>
-		
-
-		<li>
-			<form method="post" th:action="@{getOne_For_Display}">
-				輸入活動項目編號:
-				<input type="text" name="activityId" th:value="${param.activityId}" > 
-				<input type="submit" value="送出"> (輸入編號如:1)
-			</form><br>
-		</li>
-		
-		<li><form method="post" th:action="@{getOne_For_Display}">
-				選擇活動項目編號:
-				<select name="activityId">
-				     <option th:each="itemVO : ${itemListData}" th:value="${itemVO.activityId}" th:text="${itemVO.activityId}" />
-			    </select>
-				<input type="submit" value="送出">
-			</form><br>
-		</li>
-		
-		<li><form method="post" th:action="@{getOne_For_Display}">
-				選擇活動項目名稱:
-				<select name="activityId">
-				     <option th:each="itemVO : ${itemListData}" th:value="${itemVO.activityId}" th:text="${itemVO.activityName}" />
-			    </select>
-				<input type="submit" value="送出">
-			</form><br>
-		</li>
-		
-		<!--  複合查詢 -->
-  
-		  <li>   
-		    <form method="post" th:action="@{listItem_ByCompositeQuery}">
-		        <font color=blue>複合查詢:</font><br>
-		        輸入活動項目編號: 
-		        <input type="text" name="activityId" value="" placeholder="1"><br>
-		           
-<!-- 		        輸入活動項目名稱:  -->
-<!-- 		        <input type="text" name="activityName" value="" placeholder="體驗潛水"><br> -->
-		        
-		        輸入活動簡述:
-		        <input type="text" name="activityDescription" value=""><br>
-		        
-		        輸入活動說明:
-		        <input type="text" name="activityInfo" value=""><br>
-		        
-		        
-		         
-		        選擇活動類別名稱: 
-		  		<select th:field="*{categoryVO.activityCategoryId}">
-				<option value="">
-				<option th:each="categoryVO : ${categoryListData2}" th:value="${categoryVO.activityCategoryId}" th:text="${categoryVO.activityCategoryName}" />
-				</select><br>
-				
-		      
-		         選擇活動項目名稱: 
-		  		<!-- <select th:field="*{itemVO.activityId}">-->
-		  		<select name="activityName">
-					<option value="">
-					<option  th:each="itemVO : ${itemListData}" th:value="${itemVO.activityName}" th:text="${itemVO.activityName}" />
-				</select><br>
-				
-				
-				上/下架: 
-		  		<!--<select th:field="*{activityState}"> -->
-				<select name="activityState">
-				 <option value="" >
-				<option value="true" th:text="上架"></option>
-				<option value="false" th:text="下架"></option>
-				</select><br>
-				
-				
-				 
-				<input type="submit" value="送出">
-			</form>
-		</li>
-	</ul>
-	
-	 <ul>
-		  <li><h5><a href='addItem'>新增活動項目</a> (create a new Activity Item)</h5></li>
-	  </ul>
-	</div>
-	
-	<!-- 旗標getOne_For_Display見EmpnoController.java的第74行 -->
-    <div class="b" th:if="${getOne_For_Display}">  
-        <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
-        <div th:insert="~{/back_end/item/listOneItem :: listOneItem-div}"></div>
-      </div>  
-   
-
-</body>
-</html>
+<div th:replace="~{/back_end/include/include_bottom}"></div>

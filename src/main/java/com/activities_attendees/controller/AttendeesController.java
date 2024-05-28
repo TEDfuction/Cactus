@@ -2,6 +2,7 @@ package com.activities_attendees.controller;
 
 import com.activities_attendees.model.AttendeesVO;
 import com.activities_attendees.model.AttendeesService;
+import com.activities_item.model.ItemVO;
 import com.activities_order.model.ActivityOrderService;
 import com.activities_order.model.ActivityOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/attendees")
@@ -174,6 +177,14 @@ public class AttendeesController {
 
     }
 
+    @PostMapping("listAttendees_ByCompositeQuery")
+    public String listAllAttendees(HttpServletRequest req, Model model) {
+        Map<String, String[]> map = req.getParameterMap();
+        List<AttendeesVO> list = attendeesService.getAll(map);
+        model.addAttribute("attendeesListData", list);
+        return "back_end/attendees/listAllAttendees";
+    }
+
     @PostMapping("getAttendeesName")
     public String getAttendeesName(@RequestParam("attendeesName") String attendeesName, ModelMap model){
         //開始查詢資料
@@ -196,8 +207,6 @@ public class AttendeesController {
         List<ActivityOrderVO> list = activityOrderService.getAll();
         return list;
     }
-
-
 
 
 }

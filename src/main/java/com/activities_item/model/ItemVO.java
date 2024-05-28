@@ -135,6 +135,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 	public void setSessionVOs(Set<SessionVO> sessionVOs) {
 		this.sessionVOs = sessionVOs;
 	}
+
 }
 
 

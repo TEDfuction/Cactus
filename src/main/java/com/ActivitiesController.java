@@ -236,7 +236,6 @@ public class ActivitiesController {
 		return "back_end/session/selectTime2";
 	}
 
-
 }
 
 

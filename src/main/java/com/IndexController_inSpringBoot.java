@@ -3,6 +3,9 @@ package com;
 import java.util.Arrays;
 import java.util.List;
 
+import com.roomtype.model.RoomTypeRepository;
+import com.roomtype.model.RoomTypeVO;
+import com.roomtype.service.impl.RoomTypeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -60,6 +63,10 @@ public class IndexController_inSpringBoot {
 
 	@Autowired
 	AttendeesService attendeesService;
+
+	@Autowired
+	RoomTypeImpl roomTypeImpl;
+
 	
     // inject(注入資料) via application.properties
     @Value("${welcome.message}")
@@ -90,8 +97,7 @@ public class IndexController_inSpringBoot {
         return "/front_end/activity/addAttendees"; //view
     }
     
-    
-    
+
     
   
     
@@ -224,6 +230,8 @@ public class IndexController_inSpringBoot {
 	/*       前往各自前端首頁的連結     */
 	@GetMapping("/")
 	public String cactusIndex(Model model) {
+		List<RoomTypeVO> listAllRTFront = roomTypeImpl.getRTStatus();
+		model.addAttribute("listAllRTFront", listAllRTFront);
 		return "front_end/index/cactus-index";
 	}
 

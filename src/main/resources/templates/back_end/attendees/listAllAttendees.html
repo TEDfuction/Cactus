@@ -6,15 +6,18 @@
     <title>活動參加人員資訊</title>
 
     <style>
-        label input[type="search"]{
-            margin-bottom :  1.5rem;
+        label input[type="search"] {
+            margin-bottom: 1.5rem;
         }
+
         table.dataTable {
             margin-bottom: 1rem !important;
         }
+
         table.dataTable thead th {
             text-align: center !important;
         }
+
         th:first-child {
             border-top-left-radius: 6px;
 
@@ -24,10 +27,12 @@
             border-top-right-radius: 6px;
 
         }
+
         table.dataTable > thead > tr > th {
             padding-top: 25px !important;
             padding-bottom: 25px !important;
         }
+
         .t-t-2 th:nth-child(8)::before,
         .t-t-2 th:nth-child(9)::before {
             display: none !important;
@@ -38,6 +43,11 @@
             display: none !important;
         }
 
+        .dataTables_wrapper .dataTables_length {
+            margin-left: 2rem;
+            float: right !important;
+        }
+
 
     </style>
 
@@ -45,72 +55,84 @@
 <body>
 <div th:replace="~{/back_end/include/include_body}"></div>
 <div class="unique">
-<input type="hidden" id="success" th:value="${success}">
-<div>
-    <h2 class="hc-1">活動參加人員資訊</h2>
-</div>
-<div class="controls">
-    <div class="button-container">
-        <button class="btn btn-primary bttn2" onclick="document.getElementById('link').click()">新增參加人員</button>
-        <a id="link" href='addAttendees'></a>
+    <input type="hidden" id="success" th:value="${success}">
+    <div>
+        <h2 class="hc-1">活動參加人員資訊</h2>
     </div>
+    <div class="controls">
+        <div class="buttons-wrapper">
+            <div class="button-container">
+                <button class="btn btn-primary bttn2" onclick="document.getElementById('link').click()">新增參加人員
+                </button>
+                <a id="link" href='addAttendees'></a>
+            </div>
+            <div class="button-container">
+                <button class="btn btn-outline-secondary bttn-select"
+                        onclick="document.getElementById('link-select').click()">進階搜尋
+                </button>
+                <a id="link-select" href='select_attendees'></a>
+            </div>
+        </div>
 
-<table id="example" class="display tr-line tl">
-    <thead class="t-t-1">
-    <tr class="t-t-2">
+        <table id="example" class="display tr-line tl">
+            <thead class="t-t-1">
+            <tr class="t-t-2">
 
-        <th class="th-w6 tp-1">人員編號</th>
-        <th class="th-w6">訂單編號</th>
-        <th class="th-w9">人員姓名</th>
-        <th class="th-w6">性別</th>
-        <th class="th-w2-1">身分證字號</th>
-        <th class="th-w2-1">手機號碼</th>
-        <th>E-mail</th>
-        <th class="th-w5">編輯</th>
-        <th class="th-w1">刪除</th>
-    </tr>
-    </thead>
+                <th class="th-w6 tp-1">人員編號</th>
+                <th class="th-w6">訂單編號</th>
+                <th class="th-w9">人員姓名</th>
+                <th class="th-w6">性別</th>
+                <th class="th-w2-1">身分證字號</th>
+                <th class="th-w2-1">手機號碼</th>
+                <th>E-mail</th>
+                <th class="th-w5">編輯</th>
+                <th class="th-w1">刪除</th>
+            </tr>
+            </thead>
 
-    <tbody>
-    <th:block th:each="attendeesVO : ${attendeesListData}">
-        <tr>
-            <td class="th-w4" th:text="${attendeesVO.activityAttendeesId}"></td>
-            <td class="th-w4" th:text="${attendeesVO.activityOrderVO.activityOrderId}"></td>
-            <td th:text="${attendeesVO.attendeesName}"></td>
-            <td class="th-w4" th:switch="${attendeesVO.memberGender}">
-                <span th:case="0">男</span>
-                <span th:case="1">女</span>
-                <span th:case="2">其他</span>
-            </td>
-            <td th:text="${attendeesVO.attendeesIdNumber}"></td>
-            <td class="th-w4" th:text="${attendeesVO.attendeesPhone}"></td>
-            <td th:text="${attendeesVO.attendeesEmail}"></td>
-            <td>
+            <tbody>
+            <th:block th:each="attendeesVO : ${attendeesListData}">
+                <tr>
+                    <td class="th-w4" th:text="${attendeesVO.activityAttendeesId}"></td>
+                    <td class="th-w4" th:text="${attendeesVO.activityOrderVO.activityOrderId}"></td>
+                    <td th:text="${attendeesVO.attendeesName}"></td>
+                    <td class="th-w4" th:switch="${attendeesVO.memberGender}">
+                        <span th:case="0">男</span>
+                        <span th:case="1">女</span>
+                        <span th:case="2">其他</span>
+                    </td>
+                    <td th:text="${attendeesVO.obfuscatedIdNumber}"></td>
+                    <td class="th-w4" th:text="${attendeesVO.attendeesPhone}"></td>
+                    <td th:text="${attendeesVO.attendeesEmail}"></td>
+                    <td>
 
-                <form method="post" th:action="@{/attendees/getOne_For_Update}" style="margin-bottom: 0px;">
-                    <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
-                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}">
-                </form>
+                        <form method="post" th:action="@{/attendees/getOne_For_Update}" style="margin-bottom: 0px;">
+                            <input type="submit" class="btn btn-outline-success2 cu-4" value="編輯">
+                            <input type="hidden" name="activityAttendeesId"
+                                   th:value="${attendeesVO.activityAttendeesId}">
+                        </form>
 
-            </td>
-            <td>
-                <form method="post" th:action="@{/attendees/delete}" style="margin-bottom: 0px;" onsubmit="return confirmDelete(this);">
-                    <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
-                    <input type="hidden" name="activityAttendeesId" th:value="${attendeesVO.activityAttendeesId}" onclick="confirmDelete(this.form)">
-                </form>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{/attendees/delete}" style="margin-bottom: 0px;"
+                              onsubmit="return confirmDelete(this);">
+                            <input type="submit" class="btn btn-outline-secondary cu-5" value="刪除">
+                            <input type="hidden" name="activityAttendeesId"
+                                   th:value="${attendeesVO.activityAttendeesId}" onclick="confirmDelete(this.form)">
+                        </form>
 
-            </td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
-</div>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:inline="javascript">
     // 在页面加载完成后执行
-    window.onload = function() {
+    window.onload = function () {
         /*<![CDATA[*/
         // 獲取隱藏內容的值
         var successValue = /*[[${success}]]*/ '';
@@ -125,6 +147,7 @@
         }
         /*]]>*/
     };
+
     function confirmDelete(form) {
         Swal.fire({
             title: '確定要刪除嗎？',
@@ -154,13 +177,15 @@
 
 <div th:replace="~{/back_end/include/include_bottom}"></div>
 
-<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!--●●css for jquery datatables 用 -->
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css"/>
+<!--●●css for jquery datatables 用 -->
 
 
 <!-- ●● jquery datatables 設定 -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#example').DataTable({
             "lengthMenu": [5, 10, 15, 20, 25, 50, 100],
             "searching": true,  //搜尋功能, 預設是開啟
@@ -183,7 +208,7 @@
                     "last": "最後一頁"
                 },
                 "aria": {
-                    "sortAscending":  ": 升冪排列",
+                    "sortAscending": ": 升冪排列",
                     "sortDescending": ": 降冪排列"
                 }
             }

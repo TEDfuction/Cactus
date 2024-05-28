@@ -17,6 +17,7 @@
             height: 0;
         }
 
+
     </style>
 </head>
 <body>
@@ -73,14 +74,14 @@
         </div>
         <div class="mb-4">
             <div class="mb-4">
-                <h5 class="f-w">活動場次日期 <span >(不可編輯)</span></h5>
+                <h5 class="f-w">活動場次日期 </h5>
             </div>
 <!--            <select class="selectric2" th:field="*{sessionVO.activitySessionId}">-->
 <!--                <option th:each="sessionVO : ${sessionListData}"-->
 <!--                        th:value="${sessionVO.activitySessionId}"-->
 <!--                        th:text="${sessionVO.activityDate}"/>-->
 <!--            </select>-->
-            <input type="text" class="form_element6" readonly th:value="*{sessionVO.activityDate}"
+            <input type="text" class="form_element6 readonly-field" readonly th:value="*{sessionVO.activityDate}"
                    onclick="hideContent('sessionVO.activityDate.errors');"/>
             <input type="hidden" th:field="*{sessionVO.activitySessionId}"/>
             <div th:if="${#fields.hasErrors('sessionVO.activityDate')}" class="error" id="sessionVO.activityDate.errors">
@@ -90,15 +91,16 @@
         </div>
         <div class="mb-4">
             <div class="mb-4">
-                <h5 class="f-w">場次時段 <span>(不可編輯)</span></h5>
+                <h5 class="f-w">場次時段 </h5>
             </div>
 
-            <select class="selectric2" th:field="*{time_PeriodVO.sessionTimePeriodId}"  disabled>
+            <select class="selectric2 readonly-field" th:field="*{time_PeriodVO.sessionTimePeriodId}"   disabled>
                 <option value="">請選擇</option>
                 <option th:each="time_PeriodVO : ${timePeriodListData}"
                         th:value="${time_PeriodVO.sessionTimePeriodId}"
-                        th:text="${time_PeriodVO.timePeriod}" readonly/>
+                        th:text="${#dates.format(time_PeriodVO.timePeriod, 'HH:mm')}" />
             </select>
+            <input type="hidden" th:field="*{time_PeriodVO.sessionTimePeriodId}"/>
             <div th:if="${#fields.hasErrors('time_PeriodVO.sessionTimePeriodId')}"
                  class="error"
                  id="time_PeriodVO.timePeriod.errors">
@@ -124,40 +126,43 @@
         </div>
         <div class="mb-4">
             <div class="mb-4">
-                <h5 class="f-w">訂單總金額 <span>(不可編輯)</span></h5>
+                <h5 class="f-w">訂單總金額 </h5>
             </div>
             <span class="nt-u2 f-z">NT$&nbsp;</span>
             <!-- 使用 th:value="${defaultOrderAmount}" 來設置預設值 -->
-            <input type="text" class="form_element5 nt-u2 orderAmount" th:field="*{orderAmount}"
+            <input type="text" class="form_element7-1 nt-u2 orderAmount readonly-field" th:field="*{orderAmount}"
                    th:value="${defaultOrderAmount}" readonly onclick="hideContent('orderAmount.errors');"/>
-            <div th:if="${#fields.hasErrors('orderAmount')}" class="error" id="orderAmount.errors">
-                <span th:errors="*{orderAmount}"></span>
-                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
-            </div>
+            <span class="nt-u2 f-z">元</span>
+<!--            <div th:if="${#fields.hasErrors('orderAmount')}" class="error" id="orderAmount.errors">-->
+<!--                <span th:errors="*{orderAmount}"></span>-->
+<!--                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>-->
+<!--            </div>-->
         </div>
         <div class="mb-4">
             <div class="mb-4">
-                <h5 class="f-w">促銷金額 <span>(不可編輯)</span></h5>
+                <h5 class="f-w">促銷金額 </h5>
             </div>
             <span class="nt-u2 f-z">NT$&nbsp;</span>
-            <input type="text" class="form_element5 nt-u2 promotionPrice" th:field="*{promotionPrice}" readonly
+            <input type="text" class="form_element7-1 nt-u2 promotionPrice readonly-field" th:field="*{promotionPrice}" readonly
                    onclick="hideContent('promotionPrice.errors');"/>
-            <div th:if="${#fields.hasErrors('promotionPrice')}" class="error" id="promotionPrice.errors">
-                <span th:errors="*{promotionPrice}"></span>
-                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
-            </div>
+            <span class="nt-u2 f-z">元</span>
+<!--            <div th:if="${#fields.hasErrors('promotionPrice')}" class="error" id="promotionPrice.errors">-->
+<!--                <span th:errors="*{promotionPrice}"></span>-->
+<!--                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>-->
+<!--            </div>-->
         </div>
         <div class="mb-4">
             <div class="mb-4">
-                <h5 class="f-w">實付金額 <span>(不可編輯)</span></h5>
+                <h5 class="f-w">實付金額 </h5>
             </div>
             <span class="nt-u2 f-z">NT$&nbsp;</span>
-            <input type="text" class="form_element5 nt-u2 payAmount" th:field="*{payAmount}" readonly
+            <input type="text" class="form_element7-1 nt-u2 payAmount readonly-field" th:field="*{payAmount}" readonly
                    onclick="hideContent('payAmount.errors');"/>
-            <div th:if="${#fields.hasErrors('payAmount')}" class="error" id="payAmount.errors">
-                <span th:errors="*{payAmount}"></span>
-                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>
-            </div>
+            <span class="nt-u2 f-z">元</span>
+<!--            <div th:if="${#fields.hasErrors('payAmount')}" class="error" id="payAmount.errors">-->
+<!--                <span th:errors="*{payAmount}"></span>-->
+<!--                <i class="fa-solid fa-circle-exclamation" style="color: #dc3545;"></i>-->
+<!--            </div>-->
         </div>
         <div class="mb-4">
             <div class="mb-4">
@@ -183,7 +188,7 @@
                 <option value="0">無須退款</option>
                 <option value="1">尚未退款</option>
                 <option value="2">退款中</option>
-                <option value="2">完成退款</option>
+                <option value="3">完成退款</option>
             </select>
             <div th:if="${#fields.hasErrors('refundState')}" class="error" id="refundState.errors">
                 <span th:errors="*{refundState}"></span>

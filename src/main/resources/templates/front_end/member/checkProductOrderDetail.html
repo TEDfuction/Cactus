@@ -147,6 +147,7 @@
 		
 	}
 
+
 </style>
 
   	
@@ -157,6 +158,7 @@
 
 <div th:replace="~{/front_end/member/include/include_body}"></div>
 
+<input type="hidden" id="status" th:value="${status}">
 
    
         <!-- 主欄位 -->
@@ -204,10 +206,12 @@
 							</td>
 							
 							<td>
-								<form id="myForm" method="post" th:action="@{/member/cancelShopOrder}">
-									<input type="hidden" name="shopOrderId" class="shopOrderId" th:value="${shopOrderVO.shopOrderId}">
-  									<button type="button" class="cancelButton">取消訂單</button>
-								</form>
+								<div class="cancelBlock">
+									<form id="myForm" method="post" th:action="@{/member/cancelShopOrder}">
+										<input type="hidden" name="shopOrderId" class="shopOrderId" th:value="${shopOrderVO.shopOrderId}">
+	  									<button type="button" class="cancelButton">取消訂單</button>
+									</form>
+								</div>
 							</td>
 
 						</tr>
@@ -239,9 +243,36 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
+
+
+var status = $("#status").val();
+if(status == "cancelOrderSuccess"){
+	swal("成功","該筆訂單已取消","success");
+}
+
+
 //取消訂單按鈕
 
 $(document).ready(function() {
+	var statusText = $(document).find(".StatusClass");
+	
+	$.each(statusText, (i, value) => {
+
+		if(statusText[i].innerHTML != "已成立"){
+			var cancel_block = statusText[i].closest("tr").querySelectorAll("div.cancelBlock");
+			var cancel_HTML = `<span>該筆訂單無法取消</span>`;
+			
+			for (var j = 0; j < cancel_block.length; j++) {
+		        cancel_block[j].innerHTML = "<span>該筆訂單無法取消</span>";
+		    }
+		}
+		
+		
+		
+	});
+	
+	
+	
     $('.cancelButton').click(function() {
     	
         var form = $(this).closest('form#myForm');

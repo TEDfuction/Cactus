@@ -29,4 +29,5 @@ public class StringToSqlTimeConverter implements Converter<String, Time> {
             return null;
         }
     }
+
 }

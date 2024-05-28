@@ -33,8 +33,6 @@ public class PhotoVO implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "activity_id", referencedColumnName ="activity_id")
 	private ItemVO activityPh;
-	
-	
 
 	public ItemVO getActivityPh() {
 		return activityPh;

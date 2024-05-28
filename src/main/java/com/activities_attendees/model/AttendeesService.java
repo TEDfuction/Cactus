@@ -1,10 +1,12 @@
 package com.activities_attendees.model;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -12,6 +14,8 @@ public class AttendeesService {
 
     @Autowired
     AttendeesRepository attendeesRepository;
+    @Autowired
+    private SessionFactory sessionFactory;
 
 
     public void addAttendees(AttendeesVO attendeesVO){
@@ -45,6 +49,10 @@ public class AttendeesService {
         return attendeesRepository.findAll();
     }
 
+    public List<AttendeesVO> getAll(Map<String ,String[]> map ){
+        return Attendees_Compositegory.getAllAttendeesVOs(map, sessionFactory.openSession());
+    }
+
     public List<AttendeesVO> getAttendeesName(String attendeesName){
         return attendeesRepository.findByName(attendeesName);
     }
@@ -52,5 +60,6 @@ public class AttendeesService {
     public List<AttendeesVO> getAttendeesEmail(String attendeesEmail){
         return attendeesRepository.findByEmail(attendeesEmail);
     }
+
 }
 

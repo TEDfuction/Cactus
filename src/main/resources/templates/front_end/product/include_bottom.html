@@ -30,7 +30,34 @@
 	
 
         $(document).ready(function () {
+        	cartTotalNumber();
         	
+        	function cartTotalNumber(){
+       //=============================================================//
+	        	//抓購物車裡的數量
+	        	$.ajax({
+	                url: '/shopCart/cartTotalNumber', 
+	                type: 'GET',
+	                success: function(response) {   
+// 	                    console.log("shopNumber"+response);
+	                    $("span.cartnumber").text(response);
+	                    if(response == "0"){
+	                    	$("span.cartnumber").addClass("-cartnone")
+	                    }else{
+	                    	$("span.cartnumber").removeClass("-cartnone")
+	                    }
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("Error:", error);
+	                }
+	            });
+	    //=============================================================//
+        	}
+        	
+        	
+        	
+        	
+        
         	var session_acount="";
 //         	console.log("session_acount =" + session_acount);
             
@@ -41,7 +68,7 @@
                 success: function(response) {
                     
                     session_acount = response;
-                    console.log("response Session Account:", session_acount);
+//                     console.log("response Session Account:", session_acount);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error:", error);
@@ -73,7 +100,7 @@
                             data: JSON.stringify(dataToSend),
                             success: function(response) {
                                 //確認是否儲存成功
-                                console.log("Location setting success", response);
+//                                 console.log("Location setting success", response);
                             },
                             error: function(xhr, status, error) {
                                 console.error("Error:", error);
@@ -111,7 +138,7 @@
                         data: JSON.stringify(dataToSend),
                         success: function(response) {
                             //確認是否儲存成功
-                            console.log("Location setting success", response);
+//                             console.log("Location setting success", response);
                         },
                         error: function(xhr, status, error) {
                             console.error("Error:", error);

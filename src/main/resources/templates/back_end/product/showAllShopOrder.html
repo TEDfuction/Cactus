@@ -346,8 +346,8 @@
 			
 			var orderId = $(this).closest("tr").find("td.id").text();
 			var orderStatus = $(this).closest("tr").find("select").val();
-				console.log(orderId);
-				console.log(orderStatus);
+// 				console.log(orderId);
+// 				console.log(orderStatus);
 			
 			//更新狀態資訊
 			$.ajax({
@@ -356,7 +356,7 @@
 				contentType: "application/json",
 	            data: JSON.stringify({orderId: orderId,orderStatus: orderStatus}),
 	            success: function (response) {
-	                console.log(response);
+// 	                console.log(response);
 	            },
 	            error: function (xhr, status, error) {
 	                console.error(error);

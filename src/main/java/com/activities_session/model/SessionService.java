@@ -1,6 +1,7 @@
 package com.activities_session.model;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,12 +46,16 @@ public class SessionService {
 		return sessionRepository.findAll();
 	}
 	
-//	public List<SessionVO> getAll(Map<String, String[]> map){
-//		return Session_Compositegory.getAllSessionVOs(map, sessionFactory.openSession());
-//	}
+	public List<SessionVO> getAll(Map<String, String[]> map){
+		return Session_Compositegory.getAllSessionVOs(map, sessionFactory.openSession());
+	}
 
 	public List<SessionVO> getActivityDateBetween(Date start, Date end){
 		return sessionRepository.findByActivityDateBetween(start, end);
+	}
+
+	public List<SessionVO> getSingStartedAndEnd(Timestamp enrollStarted, Timestamp enrollEnd){
+		return sessionRepository.findBySignStartedAndEnd(enrollStarted, enrollEnd);
 	}
 
 //	public List<Time> getTimePeriodByActivityDate(Date activityDate){
@@ -111,9 +116,18 @@ public class SessionService {
 	}
 
 
+	//透過活動Id取得所有的日期
+	public List<Date> getAllDate(Integer activityId){
+		List<SessionVO> list =  sessionRepository.findSessionVOs(activityId);
+		List<Date> dateList = new ArrayList<>();
 
-
-
-
+		for(SessionVO sessionVO : list){
+			sessionVO.getActivityDate();
+			dateList.add(sessionVO.getActivityDate());
+		}
+		System.out.println("dateList" + dateList);
+		return dateList;
+	}
 
 }
+

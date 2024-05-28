@@ -88,6 +88,20 @@ public class AttendeesVO implements Serializable {
         return attendeesIdNumber;
     }
 
+    public String getObfuscatedIdNumber() {
+
+        int length = attendeesIdNumber.length();
+        String visibleStart = attendeesIdNumber.substring(0, 3); // 前三位
+        String visibleEnd = attendeesIdNumber.substring(length - 1); // 最後一位
+
+        StringBuilder obfuscatedPart = new StringBuilder();
+        for (int i = 3; i < length - 1; i++) {
+            obfuscatedPart.append('*');
+        }
+
+        return visibleStart + obfuscatedPart.toString() + visibleEnd;
+    }
+
     public void setAttendeesIdNumber(String attendeesIdNumber) {
         this.attendeesIdNumber = attendeesIdNumber;
     }
@@ -120,5 +134,6 @@ public class AttendeesVO implements Serializable {
                 ", attendeesEmail='" + attendeesEmail + '\'' +
                 '}';
     }
+
 }
 
