@@ -41,6 +41,11 @@ import com.member.model.MemberVO;
 import com.member.model.TaiwanCity;
 import com.notification.model.NotificationService;
 import com.notification.model.NotificationVO;
+import com.roomorder.model.RoomOrderRepository;
+import com.roomorder.model.RoomOrderVO;
+import com.roomorder.service.impl.RoomOrderImpl;
+import com.roomorderlist.model.RoomOrderListRepository;
+import com.roomorderlist.model.RoomOrderListVO;
 import com.shoporder.model.ShopOrderService;
 import com.shoporder.model.ShopOrderVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
@@ -52,151 +57,134 @@ public class MemberController {
 
 	@Autowired
 	MemberService memSvc;
-	
+
 	@Autowired
 	NotificationService notiSvc;
-	
+
 	@Autowired
 	ShopOrderService shopOrderSvc;
-	
+
 	@Autowired
 	ActivityOrderService activityOrderSvc;
-	
+
+	@Autowired
+	RoomOrderRepository roomOrderRepository;
+
+	@Autowired
+	RoomOrderListRepository roomOrderListRepository;
+
+	@Autowired
+	RoomOrderImpl roomOrderSvc;
+
 	Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-	
-	
+
 	@GetMapping("/LoginTest")
 	public String LoginTest(ModelMap model) {
-		return "/front_end/member/TestUse" ;
+		return "/front_end/member/TestUse";
 	}
-	
-	
+
 	@GetMapping("/splitAddress")
 	@ResponseBody
 	public String splitAddress(HttpSession session) {
-		String email = (String)session.getAttribute("account");
+		String email = (String) session.getAttribute("account");
 		MemberVO memberVO = memSvc.findByEmail(email);
 		String address = memberVO.getAddress();
 		String[] addressSplit = address.split("-");
-		
-		Map<String,String> map = new HashMap<String,String>();
+
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("memcity", addressSplit[0]);
 		map.put("memtown", addressSplit[1]);
 		map.put("memroad", addressSplit[2]);
-		
+
 		String mapJsonString = gson.toJson(map);
-		
-		return mapJsonString ;
+
+		return mapJsonString;
 	}
-	
-	
+
 	@GetMapping("/getEnums")
 	@ResponseBody
 	public String getEnums() {
-		
-		List< Map<String,Object> > list = new ArrayList();	
-    	for(TaiwanCity tc : TaiwanCity.values()) {
-    		Map<String,Object> map = new HashMap();
 
-    		map.put("city", tc.getcity());
-    		map.put("towns", tc.getTownships());
-    		
-    		list.add(map);
-    	}
-    	
+		List<Map<String, Object>> list = new ArrayList();
+		for (TaiwanCity tc : TaiwanCity.values()) {
+			Map<String, Object> map = new HashMap();
+
+			map.put("city", tc.getcity());
+			map.put("towns", tc.getTownships());
+
+			list.add(map);
+		}
+
 //    	System.out.println(list);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = null;
-    	try {
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonString = null;
+		try {
 			jsonString = objectMapper.writeValueAsString(list);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-    	
-    	return jsonString;
+
+		return jsonString;
 	}
 
-	
 	@GetMapping("/getSessionAccount")
 	@ResponseBody
 	public String getSessionAccount(HttpSession session) {
-		String account = (String)session.getAttribute("account");
-		
-		if(account == null) {
+		String account = (String) session.getAttribute("account");
+
+		if (account == null) {
 			return null;
-		}else {
+		} else {
 			return account;
 		}
 	}
-	
-	
+
 	@PostMapping("/setLocation")
 	@ResponseBody
-	public String setLocation(HttpSession session, @RequestBody Map<String, String> jsonData ) {
-        
+	public String setLocation(HttpSession session, @RequestBody Map<String, String> jsonData) {
+
 		String location = jsonData.get("location");
-        System.out.println("Received string from frontend: " + location);
-        session.setAttribute("location", location);
-		
+		System.out.println("Received string from frontend: " + location);
+		session.setAttribute("location", location);
+
 		return location;
 	}
-	
-	
-	
-	
-	
+
 	@GetMapping("/memberSearch")
 	public String searchingPage(ModelMap model) {
 		return "/back_end/member/memberSearch";
 	}
-	
-	
-	
-	@PostMapping("/findByName")
-	public String findByName(
-			/**** 1.接收請求參數 - 輸入格式的錯誤處理 ****/
-			@RequestParam("memberName") String memberName, 
-			ModelMap model) {
 
-			/**** 2.開始查詢資料 ****/
-			List<MemberVO> list = memSvc.findByName("%" + memberName + "%");
-			model.addAttribute("memberList", list);
-	
-			return "/back_end/member/memberNameSearch";
+	@PostMapping("/findByName")
+	public String findByName(/**** 1.接收請求參數 - 輸入格式的錯誤處理 ****/
+	@RequestParam("memberName") String memberName, ModelMap model) {
+
+		/**** 2.開始查詢資料 ****/
+		List<MemberVO> list = memSvc.findByName("%" + memberName + "%");
+		model.addAttribute("memberList", list);
+
+		return "/back_end/member/memberNameSearch";
 
 	}
 
-	
-	
-	
-	
-	
-	
 	@GetMapping("/listOneMember")
-	public String showOneData(
-			HttpServletRequest req,
-			ModelMap model) {
-		
+	public String showOneData(HttpServletRequest req, ModelMap model) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
-		MemberVO memberVO = memSvc.findByEmail(email);	
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
-		model.addAttribute("UnreadCount",count);
-		
+
+		MemberVO memberVO = memSvc.findByEmail(email);
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
-		
+
 		return "/front_end/member/listOneMember";
 	}
-	
-	
-	
-	
-	
-	
+
 	@GetMapping("/memberRegistory")
 	public String registory(ModelMap model) {
 		MemberVO memberVO = new MemberVO();
@@ -205,450 +193,537 @@ public class MemberController {
 		return "/front_end/member/memberRegistory";
 	}
 
-	
-	//練習建構子的錯誤驗證
+	// 練習建構子的錯誤驗證
 	@PostMapping("/addMember")
-	public String addMember(
-			@Valid MemberVO memberVO, 
-			//類似0201之errorMsg區塊，作錯誤訊息的收集用
-			BindingResult result, 
-			ModelMap model,
-			@RequestParam("memberPic") MultipartFile[] parts,
-			@RequestParam("city")String city,
-			@RequestParam("town")String town) throws IOException {
-		
+	public String addMember(@Valid MemberVO memberVO,
+			// 類似0201之errorMsg區塊，作錯誤訊息的收集用
+			BindingResult result, ModelMap model, @RequestParam("memberPic") MultipartFile[] parts,
+			@RequestParam("city") String city, @RequestParam("town") String town) throws IOException {
 
 		/**** 1.接收請求參數 - 輸入格式的錯誤處理 ****/
-		// 去除BindingResult中圖片上傳欄位的FieldError紀錄 
+		// 去除BindingResult中圖片上傳欄位的FieldError紀錄
 		result = removeFieldError(memberVO, result, "memberPic");
-		
-		//圖片不為必填欄位，故不做錯誤處理
-		if(!parts[0].isEmpty()) {
-			for(MultipartFile multipartFile :parts) {
+
+		// 圖片不為必填欄位，故不做錯誤處理
+		if (!parts[0].isEmpty()) {
+			for (MultipartFile multipartFile : parts) {
 				byte[] b = multipartFile.getBytes();
 				memberVO.setMemberPic(b);
 			}
 		}
-		
-		
-		//錯誤訊息內容集合
+
+		// 錯誤訊息內容集合
 //		for (ObjectError object :result.getAllErrors()) {
 //			System.out.println(object.toString());
 //		}
-		
+
 		if (result.hasErrors()) {
 //			model.addAttribute("memberVO" , memberVO);
 			model.addAttribute("status", "failed");
 
 			return "/front_end/member/memberRegistory";
 		}
-		
+
 		if (StringUtils.isEmpty(city) || StringUtils.isEmpty(town)) {
 			model.addAttribute("status", "addressEmpty");
 			return "/front_end/member/memberRegistory";
-        }
-		
+		}
+
 		List<MemberVO> list = memSvc.getAll();
-		for(MemberVO dbMemberVO : list) {
+		for (MemberVO dbMemberVO : list) {
 			String dbEmail = dbMemberVO.getEmail();
 			String inputEmail = memberVO.getEmail();
-			
-			if(dbEmail.equals(inputEmail)) {
+
+			if (dbEmail.equals(inputEmail)) {
 				model.addAttribute("status", "sameEmail");
 				return "/front_end/member/memberRegistory";
 			}
-			
+
 		}
-		
-		
+
 		/**** 2.開始新增資料 ****/
 		String address = city + "-" + town + "-" + memberVO.getAddress();
 		System.out.println(address);
 		memberVO.setAddress(address);
-		
+
 		memSvc.addMember(memberVO);
 
-		
-		
 		/**** 3.新增完成,準備轉交(Send the Success view) ****/
 
 //		List<MemberVO> list = memSvc.getAll();
 //		model.addAttribute("memList", list);
 //		model.addAttribute("success","- (新增成功)");
-		
+
 		model.addAttribute("status", "success");
 		return "front_end/member/memberLogin";
 	}
 
-	
-
-	
-	
-	
-	
 	@GetMapping("/UpdateMember")
-	public String updateMember(HttpServletRequest req,ModelMap model) {
-		
+	public String updateMember(HttpServletRequest req, ModelMap model) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
+
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
+
+		// 供WebSocket隨時調用
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
-		
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
-		
+
 		return "/front_end/member/UpdateMember";
 	}
-	
-	//同新增
+
+	// 同新增
 	@PostMapping("/update")
-	public String update(
-			HttpServletRequest req,
-			@Valid MemberVO memberVO,
-			BindingResult result,
-			ModelMap model,
-			@RequestParam("memberPic") MultipartFile[] parts,
-			@RequestParam("city") String city,
-			@RequestParam("town") String town
-			) throws IOException {
-			
-		
+	public String update(HttpServletRequest req, @Valid MemberVO memberVO, BindingResult result, ModelMap model,
+			@RequestParam("memberPic") MultipartFile[] parts, @RequestParam("city") String city,
+			@RequestParam("town") String town) throws IOException {
+
 		String address = city + "-" + town + "-" + memberVO.getAddress();
 		System.out.println(address);
 		memberVO.setAddress(address);
-		
-		
-		//去除BindingResult中upFiles欄位的FieldError紀錄 
+
+		// 去除BindingResult中upFiles欄位的FieldError紀錄
 		result = removeFieldError(memberVO, result, "memberPic");
-				
-		
-		//有傳圖就改圖,不傳圖就抓原本的圖
-		if(!parts[0].isEmpty()) {
-			for(MultipartFile multipartFile :parts) {
+
+		// 有傳圖就改圖,不傳圖就抓原本的圖
+		if (!parts[0].isEmpty()) {
+			for (MultipartFile multipartFile : parts) {
 				byte[] b = multipartFile.getBytes();
 				memberVO.setMemberPic(b);
 			}
-		}else {
+		} else {
 			byte[] b = memSvc.findByPK(memberVO.getMemberId()).getMemberPic();
 			memberVO.setMemberPic(b);
 		}
-		
-		if(city == null || town == null) {
-			result.addError(new FieldError("memberVO","city","請選擇完整地址"));
+
+		if (city == null || town == null) {
+			result.addError(new FieldError("memberVO", "city", "請選擇完整地址"));
 		}
-		
+
 		if (result.hasErrors()) {
 			return "front_end/member/UpdateMember";
 		}
-		
+
 		memSvc.updateMember(memberVO);
-		
-		//供WebSocket隨時調用
+
+		// 供WebSocket隨時調用
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
-		
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
 		HttpSession session = req.getSession();
 		session.setAttribute("account", memberVO.getEmail());
-		
+
 		return "/front_end/member/listOneMember";
 	}
-	
-	
-	
 
 	@GetMapping("/memberOnlyWeb")
 	public String memberOnlyWeb(ModelMap model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
+
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
+
+		// 供WebSocket隨時調用
 		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
-		
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
 
 		return "/front_end/member/memberOnlyWeb";
 	}
 
-	
-	
-/*************************************************************************/	
+	/*************************************************************************/
 
-	
-	
 	@GetMapping("/checkActivityOrderDetail")
-	public String checkActivityOrderDetail(HttpServletRequest req,ModelMap model) {
-		
+	public String checkActivityOrderDetail(HttpServletRequest req, ModelMap model) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
+
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
-		model.addAttribute("UnreadCount",count);
-		
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
-		
+
 		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberVO.getMemberId());
-		
-		if(activityOrderList.isEmpty()) {
+
+		if (activityOrderList.isEmpty()) {
 			model.addAttribute("activityOrderList", null);
 			return "/front_end/member/checkActivityOrderDetail";
 		}
-		
+
 		model.addAttribute("activityOrderList", activityOrderList);
-		
+
 		return "/front_end/member/checkActivityOrderDetail";
-	}	
-	
-	
-	
-	@PostMapping("/showActivityOrderDetail")  //顯示訂單詳情內容
-	public String showActivityOrderDetail(ModelMap model,
-			@RequestParam("activityOrderId") Integer activityOrderId,
+	}
+
+	@PostMapping("/showActivityOrderDetail") // 顯示訂單詳情內容
+	public String showActivityOrderDetail(ModelMap model, @RequestParam("activityOrderId") Integer activityOrderId,
 			HttpServletRequest req) {
-		
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
 		MemberVO memberVO = memSvc.findByEmail(email);
 		Integer memberId = memberVO.getMemberId();
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
-		model.addAttribute("UnreadCount",count);
-		
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
 		ActivityOrderVO activityOrderVO = activityOrderSvc.getOneOrder(activityOrderId);
 		model.addAttribute("activityOrderVO", activityOrderVO);
-		
+
 		Set<AttendeesVO> attendeesSet = activityOrderVO.getAttendeesVO();
-		model.addAttribute("attendeesSet",attendeesSet);
-		
+		model.addAttribute("attendeesSet", attendeesSet);
+
 		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberId);
-				
-		if(activityOrderList.isEmpty()) {
+
+		if (activityOrderList.isEmpty()) {
 			model.addAttribute("activityOrderList", null);
 			return "/front_end/member/checkActivityOrderDetail";
 		}
-		
+
 		model.addAttribute("activityOrderList", activityOrderList);
 		model.addAttribute("memberVO", memberVO);
-		
+
 		model.addAttribute("showActivityOrderDetail", "true");
 
 		return "/front_end/member/checkActivityOrderDetail";
 	}
-	
-	
-	
-/*************************************************************************/	
-	
-	
-	
+
+	/*************************************************************************/
+
 	@GetMapping("/checkProductOrderDetail")
-	public String checkProductOrderDetail(HttpServletRequest req,ModelMap model) {
-		
+	public String checkProductOrderDetail(HttpServletRequest req, ModelMap model) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
+
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
-		model.addAttribute("UnreadCount",count);
-		
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
 		model.addAttribute("memberVO", memberVO);
-		
+
 		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberVO.getMemberId());
-		
-		if(shopOrderList.isEmpty()) {
+
+		if (shopOrderList.isEmpty()) {
 			model.addAttribute("shopOrderList", null);
 			return "/front_end/member/checkProductOrderDetail";
 		}
-		
+
 		model.addAttribute("shopOrderList", shopOrderList);
-		
+
 		return "/front_end/member/checkProductOrderDetail";
-	}	
-	
-	@PostMapping("/showShopOrderDetail")  //顯示訂單詳情內容
-	public String showShopOrderDetail(ModelMap model,
-			@RequestParam("shopOrderId") Integer shopOrderId,
+	}
+
+	@PostMapping("/showShopOrderDetail") // 顯示訂單詳情內容
+	public String showShopOrderDetail(ModelMap model, @RequestParam("shopOrderId") Integer shopOrderId,
 			HttpServletRequest req) {
-		
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
 		MemberVO memberVO = memSvc.findByEmail(email);
 		Integer memberId = memberVO.getMemberId();
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
-		model.addAttribute("UnreadCount",count);
-		
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
 		ShopOrderVO shopOrderVO = shopOrderSvc.findById(shopOrderId).get();
 		model.addAttribute("shopOrderVO", shopOrderVO);
-		
+
 		Set<ShopOrderDetailVO> shopOrderDetailSet = shopOrderVO.getShopOrderDetailVO();
-		model.addAttribute("shopOrderDetailSet",shopOrderDetailSet);
-		
+		model.addAttribute("shopOrderDetailSet", shopOrderDetailSet);
+
 		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberId);
-				
-		if(shopOrderList.isEmpty()) {
+
+		if (shopOrderList.isEmpty()) {
 			model.addAttribute("shopOrderList", null);
 			return "/front_end/member/checkProductOrderDetail";
 		}
-		
+
 		model.addAttribute("shopOrderList", shopOrderList);
 		model.addAttribute("memberVO", memberVO);
-		
+
 		model.addAttribute("showShopOrderDetail", "true");
 
 		return "/front_end/member/checkProductOrderDetail";
 	}
-	
-	
+
 	@PostMapping("/cancelShopOrder")
-	public String cancelShopOrder(ModelMap model,
-			@RequestParam("shopOrderId") Integer shopOrderId,
-			HttpServletRequest req){
-		
-		
+	public String cancelShopOrder(ModelMap model, @RequestParam("shopOrderId") Integer shopOrderId,
+			HttpServletRequest req) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
 		MemberVO memberVO = memSvc.findByEmail(email);
 		Integer memberId = memberVO.getMemberId();
-		
-		
+
 		ShopOrderVO shopOrderVO = shopOrderSvc.findById(shopOrderId).get();
 		shopOrderVO.setOrderStatus(0);
 		shopOrderSvc.updateOrder(shopOrderVO);
-			
+
 		model.addAttribute("memberVO", memberVO);
-		
+
 		List<ShopOrderVO> shopOrderList = shopOrderSvc.findByMemberId(memberVO.getMemberId());
-		
-		if(shopOrderList.isEmpty()) {
+
+		if (shopOrderList.isEmpty()) {
 			model.addAttribute("shopOrderList", null);
 			return "/front_end/member/checkProductOrderDetail";
 		}
-		
+
 		model.addAttribute("shopOrderList", shopOrderList);
-		
+
 		Date date = new Date();
 		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String nowTime = formatter1.format(date);
-		
-		//發送通知給會員
-		notiSvc.orderCancel(memberId, 2,
-				"親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+ nowTime +"取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		// 發送通知給會員
+		notiSvc.orderCancel(memberId, 2, "親愛的" + memberVO.getMemberName() + "，您好，您的訂單(編號:"
+				+ shopOrderVO.getShopOrderId() + ")已於" + nowTime + "取消，希望能再次為您服務，造成您的不便敬請見諒!");
 
 		System.out.println("message has send");
-		
+
 //		try {
 //			Thread.sleep(1000);
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());	
-		model.addAttribute("UnreadCount",count);
-		
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		model.addAttribute("status", "cancelOrderSuccess");
+
 		return "/front_end/member/checkProductOrderDetail";
 
 	}
-	
-	
-	
-/*************************************************************************/	
-	
-	
-	
-	@GetMapping("/checkRoomOrderDetail")
-	public String checkRoomOrderDetail(HttpServletRequest req,ModelMap model) {
-		
-		HttpSession session = req.getSession();
-		String email = (String) session.getAttribute("account");
-		
-		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
-		
-		model.addAttribute("memberVO", memberVO);
-		
-		return "/front_end/member/checkRoomOrderDetail";
-	}	
-	
-	
-	
-	
-/*************************************************************************/	
 
-	
-	
-	@GetMapping("/checkNotification")
-	public String checkNotification(HttpServletRequest req,ModelMap model) {
-		
+	@PostMapping("/cancelActivityOrder")
+	public String cancelActivityOrder(ModelMap model, @RequestParam("activityOrderId") Integer activityOrderId,
+			HttpServletRequest req) {
+
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		//供WebSocket隨時調用
-		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
-		model.addAttribute("UnreadCount",count);
-		
-		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
-		model.addAttribute("notiList", notiList);
-		
+		Integer memberId = memberVO.getMemberId();
+
+		ActivityOrderVO activityOrderVO = activityOrderSvc.getOneOrder(activityOrderId);
+		activityOrderVO.setOrderState(1);
+		activityOrderSvc.updateOrder(activityOrderVO);
+
 		model.addAttribute("memberVO", memberVO);
-		
+
+		List<ActivityOrderVO> activityOrderList = activityOrderSvc.findByMemberId(memberVO.getMemberId());
+
+		if (activityOrderList.isEmpty()) {
+			model.addAttribute("activityOrderList", null);
+			return "/front_end/member/checkActivityOrderDetail";
+		}
+
+		model.addAttribute("activityOrderList", activityOrderList);
+
+		Date date = new Date();
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowTime = formatter1.format(date);
+
+		// 發送通知給會員
+		notiSvc.orderCancel(memberId, 1, "親愛的" + memberVO.getMemberName() + "，您好，您的訂單(編號:"
+				+ activityOrderVO.getActivityOrderId() + ")已於" + nowTime + "取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		System.out.println("message has send");
+
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		model.addAttribute("status", "cancelOrderSuccess");
+
+		return "/front_end/member/checkActivityOrderDetail";
+
+	}
+
+	/*************************************************************************/
+
+	@GetMapping("/checkRoomOrderDetail")
+	public String checkRoomOrderDetail(HttpServletRequest req, ModelMap model) throws Exception {
+
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+
+		MemberVO memberVO = memSvc.findByEmail(email);
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		model.addAttribute("memberVO", memberVO);
+
+		List<RoomOrderVO> roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
+
+		if (roomOrderList.isEmpty()) {
+			model.addAttribute("roomOrderList", null);
+			return "/front_end/member/checkRoomOrderDetail";
+		}
+
+		model.addAttribute("roomOrderList", roomOrderList);
+
+		return "/front_end/member/checkRoomOrderDetail";
+	}
+
+	@PostMapping("/showRoomOrderDetail") // 顯示訂單詳情內容
+	public String showRoomOrderDetail(ModelMap model, @RequestParam("roomOrderId") Integer roomOrderId,
+			HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		RoomOrderVO roomOrderVO = roomOrderRepository.findById(roomOrderId).get();
+		model.addAttribute("roomOrderVO", roomOrderVO);
+
+		RoomOrderListVO roomOrderListVO = roomOrderListRepository.findByRoomOrderId(roomOrderId);
+		model.addAttribute("roomOrderListVO", roomOrderListVO);
+
+		model.addAttribute("memberVO", memberVO);
+
+		model.addAttribute("showRoomOrderDetail", "true");
+
+		List<RoomOrderVO> roomOrderList;
+
+		try {
+			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("roomOrderList", null);
+			return "/front_end/member/checkRoomOrderDetail";
+		}
+
+		model.addAttribute("roomOrderList", roomOrderList);
+
+		return "/front_end/member/checkRoomOrderDetail";
+	}
+
+	@PostMapping("/cancelRoomOrder")
+	public String cancelRoomOrder(ModelMap model, @RequestParam("roomOrderId") Integer roomOrderId,
+			HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+		MemberVO memberVO = memSvc.findByEmail(email);
+		Integer memberId = memberVO.getMemberId();
+
+		RoomOrderVO roomOrderVO = roomOrderRepository.getById(roomOrderId);
+		roomOrderVO.setRoomOrderStatus(false);
+		roomOrderRepository.save(roomOrderVO);
+
+		model.addAttribute("memberVO", memberVO);
+
+		List<RoomOrderVO> roomOrderList;
+		try {
+			roomOrderList = roomOrderSvc.getOneRoomOrder(memberVO.getMemberId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("roomOrderList", null);
+			return "/front_end/member/checkRoomOrderDetail";
+		}
+
+		model.addAttribute("roomOrderList", roomOrderList);
+
+		Date date = new Date();
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String nowTime = formatter1.format(date);
+
+		// 發送通知給會員
+		notiSvc.orderCancel(memberId, 0, "親愛的" + memberVO.getMemberName() + "，您好，您的訂單(編號:"
+				+ roomOrderVO.getRoomOrderId() + ")已於" + nowTime + "取消，希望能再次為您服務，造成您的不便敬請見諒!");
+
+		System.out.println("message has send");
+
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		model.addAttribute("status", "cancelOrderSuccess");
+
+		return "/front_end/member/checkRoomOrderDetail";
+
+	}
+
+	/*************************************************************************/
+
+	@GetMapping("/checkNotification")
+	public String checkNotification(HttpServletRequest req, ModelMap model) {
+
+		HttpSession session = req.getSession();
+		String email = (String) session.getAttribute("account");
+
+		MemberVO memberVO = memSvc.findByEmail(email);
+
+		// 供WebSocket隨時調用
+		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());
+		model.addAttribute("UnreadCount", count);
+
+		List<NotificationVO> notiList = notiSvc.findByMemberId(memberVO.getMemberId());
+		model.addAttribute("notiList", notiList);
+
+		model.addAttribute("memberVO", memberVO);
+
 		return "/front_end/member/checkNotification";
 	}
-	
-	
-	
-	
-/*************************************************************************/	
-	
-	
-	
+
+	/*************************************************************************/
+
 	@GetMapping("/ajaxUpdateNoti")
 	@ResponseBody
-	public String ajaxUpdateNoti(HttpServletRequest req,ModelMap model) {
+	public String ajaxUpdateNoti(HttpServletRequest req, ModelMap model) {
 		HttpSession session = req.getSession();
 		String email = (String) session.getAttribute("account");
-		
+
 		MemberVO memberVO = memSvc.findByEmail(email);
-		
-		List<NotificationVO> notiList = notiSvc.findByMemberId( memberVO.getMemberId() );
-		
+
+		List<NotificationVO> notiList = notiSvc.findByMemberId(memberVO.getMemberId());
+
 		String jsonArray = gson.toJson(notiList);
-		return jsonArray ;
+		return jsonArray;
 	}
-	
-	
-	
-	
+
 	// 去除BindingResult中某個欄位的FieldError紀錄
-	public BindingResult removeFieldError(
-			MemberVO memberVO, 
-			BindingResult result, 
-			String removedFieldname) {
-		
+	public BindingResult removeFieldError(MemberVO memberVO, BindingResult result, String removedFieldname) {
+
 		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
 				.filter(fieldname -> !fieldname.getField().equals(removedFieldname)).collect(Collectors.toList());
-		
+
 		result = new BeanPropertyBindingResult(memberVO, "memberVO");
-		
+
 		for (FieldError fieldError : errorsListToKeep) {
 			result.addError(fieldError);
 		}

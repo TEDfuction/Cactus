@@ -42,6 +42,7 @@
 				<div class=" d-inline-flex align-items-center   height-1 border-dot">
 					<!-- <a class="text-white px-2" href="">English ｜</a>
                     <a class="text-white px-2" href="">日本語 ｜</a> -->
+                    <a class="text-white px-2 " th:href="@{/}"><i class="fa fa-home fa-lg icon-size"></i>&nbsp;&nbsp;首頁 &nbsp;</a>
 					<a class="text-white padding-set " th:href="@{/admin/adminUpdate}" th:text="${session.adminVO.adminName}"></a>
 					<input type="hidden" class="sessionadminId" th:value="${session.adminVO.adminId}"/>
 
