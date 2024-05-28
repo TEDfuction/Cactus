@@ -200,7 +200,7 @@ public class ProductController {
 		model.addAttribute("productCategoryListData", list);
 //		model.addAttribute("success", "- (新增成功)");
 //		System.out.println("成功新增");
-		return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+		return "redirect:/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
 	}
 	
 	//新增商品類別
@@ -212,7 +212,7 @@ public class ProductController {
 			    for (FieldError error : result.getFieldErrors()) {
 			        System.out.println(error.getField() + ": " + error.getDefaultMessage());
 			    }
-			    return "back-end/product/listAllProductCategory";
+			    return "back_end/product/listAllProductCategory";
 			}
 			
 			ProductCategorySvc.addProductCategory(productCategoryVO);
@@ -221,7 +221,7 @@ public class ProductController {
 			model.addAttribute("productCategoryListData", list);
 			model.addAttribute("success", "- (新增成功)");
 			System.out.println("成功新增");
-			return "back-end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+			return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
 		}
 	
 	
@@ -336,7 +336,7 @@ public class ProductController {
 			
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
 			if (result.hasErrors()) {
-				return "back-end/product/update_productCategory_input";
+				return "back_end/product/update_productCategory_input";
 			}
 			/***************************2.開始修改資料***************************************/
 //			ProductService productSvc = new ProductService();
