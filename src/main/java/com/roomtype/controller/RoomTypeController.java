@@ -3,6 +3,7 @@ package com.roomtype.controller;
 import com.cart.model.Cart;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.room.model.RoomVO;
 import com.roomorder.model.RoomOrderVO;
 import com.roomtype.dto.RoomTypeStatus;
 import com.roomtype.dto.RoomTypeUpdate;
@@ -11,6 +12,8 @@ import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.impl.RoomTypeImpl;
 import com.roomtypepic.model.RoomTypePicRepository;
+import com.roomtypepic.model.RoomTypePicVO;
+import com.roomtypepic.model.impl.RoomTypePicImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -18,14 +21,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/roomType")
@@ -40,7 +41,8 @@ public class RoomTypeController {
 
     @Autowired
     private RoomTypePicRepository roomTypePicRepository;
-
+    @Autowired
+    private RoomTypePicImpl roomTypePicImpl;
 
 
     // 獲取所有活動
@@ -200,5 +202,60 @@ public class RoomTypeController {
 
         return "front_end/room/roomFront";
     }
+
+//    @PostMapping("/uploadImage")
+//    public String checkIn(@RequestParam ("roomTypeId") Integer roomTypeId
+//            ,@RequestParam("image") MultipartFile image
+//            ,Model model) {
+//
+//        String contentType = image.getContentType();
+//        if (contentType == null || !contentType.startsWith("image/")) {
+//            model.addAttribute("message", "檔案不是圖片！請重新確認");
+//            RoomTypeVO roomTypeVO = roomTypeImpl.getRoomTypeById(roomTypeId);
+//            model.addAttribute("roomTypeId", roomTypeId);
+//            return "back_end/roomtype/listAllRoomType";
+//        }
+//
+////        try {
+////            BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+////            if (bufferedImage == null) {
+////                model.addAttribute("message", "檔案不是有效的图片！");
+////                return "back_end/roomorder/showCheckIN";
+////            }
+////        } catch (IOException e) {
+////            model.addAttribute("message", "文件读取失败！");
+////            return "back_end/roomorder/showCheckIN";
+////        }
+//
+//        RoomTypeVO roomTypeVO = roomTypeImpl.getRoomTypeById(roomTypeId);
+//        if (roomTypeVO != null) {
+//            try {
+//                byte[] bytes = image.getBytes();
+//                RoomTypePicVO roomTypePicVO = new RoomTypePicVO();
+//                roomTypePicVO.setRoomPic(bytes);
+//                roomTypePicImpl.updateRoomTypePic(roomTypePicVO);
+//                model.addAttribute("message", "圖片上傳成功！");
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                model.addAttribute("message", "圖片上傳失敗！");
+//                return "back_end/roomorder/showCheckIN";
+//            }
+//        }
+//        List<RoomTypeVO> allRoomTypes = roomTypeRepository.findAll();
+//        model.addAttribute("allRoomTypes", allRoomTypes);
+//        return "back_end/roomtype/listAllRoomType";
+//
+//    }
+
+//    @GetMapping("/getImage")
+//    @ResponseBody
+//    public String getImage(@RequestParam("roomOrderId") Integer roomOrderId) {
+//        RoomOrderVO roomOrder = roomorderImpl.getOneRoomOrderById(roomOrderId);
+//        if (roomOrder != null && roomOrder.getIdConfirm() != null) {
+//            return Base64.getEncoder().encodeToString(roomOrder.getIdConfirm());
+//        } else {
+//            return "";
+//        }
+//    }
 
 }

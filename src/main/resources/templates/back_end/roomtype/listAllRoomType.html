@@ -121,6 +121,7 @@
 					<th>房型價格說明</th>
 					<th>修改內容</th>
 					<th>更換房型狀態</th>
+					<th>上傳圖片</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -231,6 +232,39 @@
 								<button type="submit" class="btn btn-outline-dark btn-sm" onclick="submitForm(event)">更換房型狀態</button>
 							</form>
 						</td>
+
+						<td>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadImageModal"
+									th:data-roomTypeId="${roomTypeVO.roomTypeId}">
+								上傳圖片
+							</button>
+						</td>
+
+						<div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="uploadImageModalLabel">上傳圖片</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<form id="uploadImageForm" th:action="@{/roomType/uploadImage}" method="post" enctype="multipart/form-data">
+											<div class="mb-3">
+												<label for="imageUpload" class="form-label">選擇圖片</label>
+												<input type="file" class="form-control" id="imageUpload" name="image" required>
+											</div>
+											<input type="hidden" id="modalRoomTypeId" name="roomTypeId">
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+										<button type="submit" class="btn btn-primary" form="uploadImageForm" id="uploadBtn" disabled>上傳</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
 				</th:block>
 
 				</tbody>
@@ -361,6 +395,26 @@
 			event.preventDefault();
 		}
 	}
+
+
+	$('#uploadImageModal').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var roomTypeId = button.data('roomtypeid'); // Extract info from data-* attributes
+		var modal = $(this);
+		modal.find('#modalRoomTypeId').val(roomTypeId);
+		$('#uploadImageForm')[0].reset();
+		$('#uploadBtn').prop('disabled', true);
+	});
+
+	$('#imageUpload').on('change', function() {
+		var fileInput = $(this);
+		var uploadBtn = $('#uploadBtn');
+		if (fileInput.val()) {
+			uploadBtn.prop('disabled', false);
+		} else {
+			uploadBtn.prop('disabled', true);
+		}
+	});
 
 </script>
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static groovyjarjarantlr4.v4.gui.Trees.save;
 
@@ -25,6 +26,17 @@ public class RoomOrderImpl implements RoomOrderService {
 
 //	@Autowired
 //	private ModelMapper modelMapper;
+
+	@Override
+	public RoomOrderVO getOneRoomOrderById(Integer roomOrderId) {
+		Optional<RoomOrderVO> optional = roomOrderRepository.findById(roomOrderId);
+		return optional.orElse(null);
+	}
+
+	@Override
+	public void updateOneRoomOrder(RoomOrderVO roomOrderVO){
+		roomOrderRepository.save(roomOrderVO);
+	}
 
 
 	@Override
