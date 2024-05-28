@@ -21,9 +21,7 @@ public class GifRMReaderController {
 	@Autowired
 	RoomTypePicImpl roomTypePicImpl;
 	
-	/*
-	 * This method will serve as listOneEmp.html , listAllEmp.html handler.
-	 */
+
 	@GetMapping("DBGifReader")
 	public void DBGifReader(@RequestParam("roomTypeId") Integer roomTypeId,
 							HttpServletRequest req, HttpServletResponse res, Model model)

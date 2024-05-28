@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.product.model.*;
 import com.productcategory.model.ProductCategoryService;
@@ -149,10 +154,10 @@ public class ProductController {
 //		}
 		
 		if (result.hasErrors()) {
-		    System.out.println("驗證錯誤：");
-		    for (FieldError error : result.getFieldErrors()) {
-		        System.out.println(error.getField() + ": " + error.getDefaultMessage());
-		    }
+//		    System.out.println("驗證錯誤：");
+//		    for (FieldError error : result.getFieldErrors()) {
+//		        System.out.println(error.getField() + ": " + error.getDefaultMessage());
+//		    }
 		    return "back_end/product/addProduct";
 		}
 		/***************************2.開始新增資料***************************************/
@@ -303,6 +308,7 @@ public class ProductController {
 
 		/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
 		if (result.hasErrors()) {
+			model.addAttribute("updatehistroy", "true");
 			return "back_end/product/update_product_input";
 		}
 		/***************************2.開始修改資料***************************************/
@@ -326,7 +332,8 @@ public class ProductController {
 		@PostMapping("updateCategory")
 		public String update(@Valid ProductCategoryVO productCategoryVO, BindingResult result, ModelMap model) throws IOException {
 
-
+//			result = removeFieldError(ProductCategoryVO, result, "productPhoto");
+			
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
 			if (result.hasErrors()) {
 				return "back_end/product/update_productCategory_input";
@@ -337,7 +344,7 @@ public class ProductController {
 
 			/***************************3.修改完成,準備轉交(Send the Success view)***********/
 			model.addAttribute("success", "修改成功");
-			return "back_end/product/listAllProductCategory"; // 修改成功後轉交listOneEmp.jsp
+			return "redirect:/product/listAllProductCategory"; // 修改成功後轉交listOneEmp.jsp
 		}
 		
 		@PostMapping("delete")
@@ -427,7 +434,24 @@ public class ProductController {
 		
 		
 	/*******************************************************************/
-		
+		//方法及別驗證
+		@ExceptionHandler(value = { ConstraintViolationException.class })
+		//@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+		public ModelAndView handleError(HttpServletRequest req,ConstraintViolationException e,Model model) {
+		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+		    StringBuilder strBuilder = new StringBuilder();
+		    for (ConstraintViolation<?> violation : violations ) {
+		          strBuilder.append(violation.getMessage() + "<br>");
+		    }
+		    //==== 以下第80~85行是當前面第69行返回 /src/main/resources/templates/back-end/emp/select_page.html 第97行 與 第109行 用的 ====   
+//		    model.addAttribute("empVO", new EmpVO());
+//	    	EmpService empSvc = new EmpService();
+			List<ProductVO> list = productSvc.getAll();
+			model.addAttribute("empListData", list); // for select_page.html 第97 109行用
+			
+			String message = strBuilder.toString();
+		    return new ModelAndView("back-end/emp/select_page", "errorMessage", "請修正以下錯誤:<br>"+message);
+		}
 		
 //		@GetMapping("/listAllTest")
 //		public String listAllTest(ModelMap model) {

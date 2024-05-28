@@ -63,7 +63,7 @@
             <h2><span class="badge bg-success" style="text-align: center">新增房型 </span></h2>
             <a> (<span style="color: red;">*</span>表示為必填欄位)</a>
 
-            <form method="post" th:object="${roomTypeVORequest}" enctype="multipart/form-data" >
+            <form method="post" th:object="${roomTypeVORequest}" enctype="multipart/form-data" th:action="@{/roomType/addRoomTypeForm}">
                 <div class="mb-3 row " style="margin-top:20px">
                     <label for="roomTypeId" class="col-sm-4 col-form-label"><span style="color: red;">*</span>房型編號:</label>
                     <div class="col-sm-8 ">
