@@ -12,8 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 import com.productcategory.model.ProductCategoryVO;
 import com.shoporderdetail.model.ShopOrderDetailVO;
@@ -46,6 +49,8 @@ public class ProductVO {
 	
 	@Column(name = "product_price", nullable = false)
 	@NotNull(message="商品價格: 請勿空白")
+//	@Positive(message = "商品價格: 必須是正數")
+	@Digits(integer = 10, fraction = 0)
 	private Integer productPrice;
 	
 	@Column(name = "product_name", nullable = false)

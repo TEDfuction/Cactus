@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+	
+
+</style>
+</head>
+<body>
+
+<div th:fragment="detail-div">
+	
+	
+		<h3><span>詳細資料</span></h3><br>
+	
+	
+	
+	<div>
+		<span>訂單編號:<span th:text="${roomOrderVO.roomOrderId}"></span></span><br>
+		<span>訂單成立時間:<span th:text="${roomOrderVO.roomOrderDate}"></span></span><br>	
+	</div>	
+	
+	<hr>
+
+	
+	<div>
+		<span>入住房型:<span th:text="${roomOrderListVO.room.roomTypeVO.roomTypeName}"></span></span><br>
+		<span>CheckIn日期:<span th:text="${roomOrderVO.checkInDate}"></span></span><br>
+		<span>CheckOut日期:<span th:text="${roomOrderVO.checkOutDate}"></span></span><br>
+		<span>住房人數:<span th:text="${roomOrderListVO.room.roomGuestAmount}"></span></span><br>
+		<span>住客姓名:<span th:text="${roomOrderListVO.room.roomGuestName}"></span></span><br>
+	</div>
+			
+	<hr>
+	
+		<h3><span>促銷折扣資訊</span></h3><br>
+		
+	<div th:if="${roomOrderVO.promotionId}">
+		<span>促銷標題:<span th:text="${roomOrderVO.promotionId.promotionTitle}"></span></span><br>
+		<span>促銷折價:<span th:text="${roomOrderVO.promotionPrice}"></span></span><br>	
+	</div>
+	
+	<div th:if="${roomOrderVO.promotionId == null}">
+		<span>該筆活動沒有折價促銷活動喔!</span>
+	</div>
+	
+	<hr>
+	
+	<div>
+		<span>訂單總金額:<span th:text="${roomOrderVO.roomAmount}"></span></span><br>
+		<span>折扣後總金額:<span th:text="${roomOrderVO.payAmount}"></span></span><br>
+	</div>
+	
+	<hr>
+	
+	<div>
+		<span th:if="${roomOrderVO.roomOrderIdReq}">訂單備註:<span th:text="${roomOrderVO.roomOrderIdReq}"></span></span><br>
+		<span th:if="${roomOrderVO.roomOrderIdReq == null}">訂單備註:<span>無備註。</span></span><br>
+	</div>	
+	
+	
+</div>
+
+
+
+
+</body>
+</html>
