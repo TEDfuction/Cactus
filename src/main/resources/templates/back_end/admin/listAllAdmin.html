@@ -72,8 +72,8 @@
 						<th>員工編號</th>
 						<th>員工姓名</th>
 						<th>員工帳號</th>
-						<th>員工密碼</th>
 						<th>員工帳號狀態</th>
+						<th>操作</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -84,7 +84,6 @@
 						<td th:text="${adminVO.adminId}"></td>
 						<td th:text="${adminVO.adminName}"></td>
 						<td th:text="${adminVO.adminAccount}"></td>
-						<td th:text="${adminVO.adminPassword}"></td>
 						
 						<td class="showStatus" th:if="${adminVO.adminStatus} eq 0"><sapn class="StatusClass">停權</sapn></td>
 						<td class="showStatus" th:if="${adminVO.adminStatus} eq 1"><sapn class="StatusClass">正常</sapn></td>
@@ -98,6 +97,13 @@
 								<input type="hidden" name="adminName" class="adminName" th:value="${adminVO.adminName}">
 								<input type="hidden" name="adminStatus" class="adminStatus" th:value="${adminVO.adminStatus}">								
   								<button type="button" class="changeAdminStatusButton">更改狀態</button>
+							</form>
+						</td>
+						
+						<td>
+							<form id="resetPassword" method="post" th:action="@{/adminAuth/resetPassword}">
+								<input type="hidden" name="adminId" class="adminId" th:value="${adminVO.adminId}">
+								<button type="button" class="resetPassword">重設密碼</button>
 							</form>
 						</td>
 					</tr>
@@ -184,7 +190,7 @@
 //更改狀態按鈕
 
 $(document).ready(function() {
-    $('.changeAdminStatusButton').click(function() {
+    $('button.changeAdminStatusButton').click(function() {
     	
         var form = $(this).closest('form#myForm');
         
@@ -227,7 +233,41 @@ $(document).ready(function() {
     	})
         
     });
+    
+    
+  //重設密碼按鈕
+    $('button.resetPassword').click(function() {
+    	
+    	 var resetform = $(this).closest('form#resetPassword');
+    	
+    	 swal({
+     		title:"員工密碼重設",
+     		text:"您確定要重設此員工密碼嗎?",
+     		icon:"warning",
+     		buttons:{
+     			cancel: {
+     		        text: "NO",
+     		        visible: true
+     		      },
+     		      confirm: {
+     		        text: "YES",
+     		        visible: true
+     		      }
+     		}
+     	}).then(function(confirm){
+     		if(confirm){
+     			resetform.submit();
+     		}
+     		
+     	});
+ 	
+    });
+    
+
 });
+
+
+
 
 
 </script>
@@ -243,6 +283,9 @@ $(document).ready(function() {
 		status == "";
 	}else if (status == "openAdmin"){
 		swal("復權成功","該員工帳號已復權","success")
+		status == "";
+	}else if(status == "resetSuccess"){
+		swal("重設成功","你已成功將該員工密碼重設為預設值('abc123')，請員工盡速更改其密碼","success")
 		status == "";
 	}
 </script>

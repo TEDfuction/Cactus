@@ -1,6 +1,8 @@
 package com.member.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -32,6 +34,9 @@ import com.member.model.MemberService;
 import com.member.model.MemberVO;
 import com.member.model.RecaptchaResponse;
 import com.notification.model.NotificationService;
+import com.notification.model.NotificationVO;
+
+import redis.clients.jedis.Jedis;
 
 @Controller
 @Validated
@@ -45,10 +50,7 @@ public class MemberLoginController {
 	NotificationService notiSvc;
 
 	@Autowired
-	private JavaMailSender mailSender;
-
-	private String mailToken;
-	
+	private JavaMailSender mailSender;	
 	
 	@Value("${google.recaptcha.secret-key}")
     private String recaptchaSecretKey;
@@ -108,6 +110,20 @@ public class MemberLoginController {
     		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
     		model.addAttribute("UnreadCount",count);
     		
+    		NotificationVO notiVO = new NotificationVO();
+			notiVO.setMember(memberVO);
+			notiVO.setTitle("登入通知!");
+			notiVO.setType(3);
+			notiVO.setStatus(0);
+    		
+    		Date date = new Date();
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String nowTime = formatter1.format(date);
+			
+			//寄送會員登入通知
+			notiVO.setContent("親愛的貴賓"+memberVO.getMemberName()+"您好，您已於"+nowTime+"時登入專區!若您沒有印象有進行登入，請盡速變更您的密碼!並與客服聯繫!");
+			notiSvc.sendMsg(notiVO);
+    		
     		//檢查有無來源地址,若沒有就到會員專區頁面
     		try {
     			String location = (String) session.getAttribute("location");
@@ -164,6 +180,7 @@ public class MemberLoginController {
 			model.addAttribute("status", "failed");
 			return "front_end/member/forgetPassword";
 		}
+		
 
 		// 驗證碼產生--小吳Redis範例
 
@@ -184,7 +201,11 @@ public class MemberLoginController {
 			}
 		}
 
-		mailToken = sb.toString();
+		String mailToken = sb.toString();
+		
+		Jedis jedis = new Jedis("localhost", 6379);
+		jedis.set("changePasswordToken:"+memberVO.getMemberId(),mailToken);
+		jedis.expire("changePasswordToken:"+memberVO.getMemberId(),180);
 
 		
 		// 信件寄送
@@ -197,7 +218,8 @@ public class MemberLoginController {
 		helper.setSubject("忘記密碼驗證信");
 
 		String text = "<p>親愛的" + memberVO.getMemberName() + "貴賓您好!</p>" + "<p>此為您的驗證碼「<span style='color:red'>"
-				+ mailToken + "</span>」</p>" + "<p>請將此組密碼輸入後重新修改您的密碼!</p>";
+				+ mailToken + "</span>」</p>" + "<p>請將驗證碼輸入後重新修改您的密碼!</p>" 
+				+ "<p>該驗證碼的時效性為<span style='color:red'>3分鐘</span>，請在時效內進行驗證!</p>";
 
 		helper.setText(text, true);
 
@@ -205,19 +227,27 @@ public class MemberLoginController {
 		
 		
 		HttpSession session = req.getSession();
-		session.setAttribute("memberVO", memberVO);
+		session.setAttribute("memberVOchangePassword", memberVO);
 		model.addAttribute("status", "success");
 		return "front_end/member/forgetTokenConfirm";
 	}
 
 	@PostMapping("/forgetTokenConfirm")
-	public String forgetTokenConfirm(@RequestParam("token") String inputToken, ModelMap model) {
-
+	public String forgetTokenConfirm(@RequestParam("token") String inputToken, ModelMap model,HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVOchangePassword");
+		
+		Jedis jedis = new Jedis("localhost", 6379);
+		String mailToken = jedis.get("changePasswordToken:"+memberVO.getMemberId());
+		
 		//錯誤處理
-		if (!inputToken.equals(mailToken)) {
+		if (mailToken != null &&!inputToken.equals(mailToken)) {
 			model.addAttribute("status", "failed");
 			return "front_end/member/forgetTokenConfirm";
-		} else {
+		} else if(mailToken == null){
+			model.addAttribute("status", "timeout");
+			return "front_end/member/forgetTokenConfirm";
+		}else {
 			model.addAttribute("status", "success");
 			return "front_end/member/changePassword";
 		}
@@ -239,9 +269,25 @@ public class MemberLoginController {
 		
 			//密碼更改完成
 			HttpSession session = req.getSession();
-			MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+			MemberVO memberVO = (MemberVO)session.getAttribute("memberVOchangePassword");
 			memSvc.updatePassword(password, memberVO.getMemberId());
 			
+			//寄送通知給使用者
+			NotificationVO notiVO = new NotificationVO();
+			notiVO.setMember(memberVO);
+			notiVO.setTitle("您的密碼已被修改!");
+			notiVO.setType(3);
+			notiVO.setStatus(0);
+			
+			Date date = new Date();
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String nowTime = formatter1.format(date);
+			
+			//寄送更改密碼通知
+			notiVO.setContent("您的密碼已於"+nowTime+"時被修改!若您沒有印象有進行密碼修改請求，請盡速變更您的密碼!並與客服聯繫!");
+			notiSvc.sendMsg(notiVO);
+			
+			session.removeAttribute("memberVOchangePassword");
 			model.addAttribute("memberVO", memberVO);
 			model.addAttribute("status", "changeFinish");
 			return "front_end/member/memberLogin";

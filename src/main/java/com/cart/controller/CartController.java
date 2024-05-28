@@ -196,9 +196,7 @@ public class CartController {
                     "親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+nowTime+"成功成立，非常感謝您的支持!!");
 
 //			System.out.println("message has send");
-
-
-
+            
 //			// 綠界串流
             String ecpayCheckout = shopOrderSvc.ecpayCheckout(shopOrderVO.getShopOrderId());
             model.addAttribute("ecpayCheckout", ecpayCheckout);
@@ -208,35 +206,37 @@ public class CartController {
         return "front_end/product/success";
     }
 
-    @ResponseBody
-    @GetMapping("/cleanShopCart")
-    public String cleanShopCart(HttpSession session) {
 
-        //從Session中取得會員資料
-        String email = (String) session.getAttribute("account");
-        Integer memberId = memSvc.findByEmail(email).getMemberId();
 
-        if (memberId != null) {
-            cartSvc.cleanAllCart(memberId);
-        }
-        return "/product/listAllProduct";
-    }
-
-    @ResponseBody
-    @GetMapping("/cartTotalNumber")
-    public Integer cartTotalNumber(HttpSession session) {
-
-        String email = (String)session.getAttribute("account");
-//
+	@ResponseBody
+	@GetMapping("/cleanShopCart")
+	public String cleanShopCart(HttpSession session) {
+		
+		//從Session中取得會員資料
+		String email = (String) session.getAttribute("account");
+		Integer memberId = memSvc.findByEmail(email).getMemberId();	
+		
+		if (memberId != null) {
+			cartSvc.cleanAllCart(memberId);
+		}
+		return "/product/listAllProduct";
+	}
+	
+	@ResponseBody
+	@GetMapping("/cartTotalNumber")
+	public Integer cartTotalNumber(HttpSession session) {
+		
+		String email = (String)session.getAttribute("account");
+//		
 //		System.out.println("aaaaaaa");
-
-        if(email == null) {
-            return 0;
-        }else {
-            MemberVO memberVO = memSvc.findByEmail(email);
-            Integer memberId = memberVO.getMemberId();
-            return cartSvc.getCartNumber(memberId);
-        }
-    }
-
+		
+		if(email == null) {
+			return 0;
+		}else {
+			MemberVO memberVO = memSvc.findByEmail(email);
+			Integer memberId = memberVO.getMemberId();
+			return cartSvc.getCartNumber(memberId);	
+		}		
+	}
+	
 }
