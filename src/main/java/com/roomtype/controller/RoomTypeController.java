@@ -3,6 +3,7 @@ package com.roomtype.controller;
 import com.cart.model.Cart;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.room.model.RoomVO;
 import com.roomorder.model.RoomOrderVO;
 import com.roomtype.dto.RoomTypeStatus;
 import com.roomtype.dto.RoomTypeUpdate;
@@ -11,6 +12,8 @@ import com.roomtype.model.RoomTypeRepository;
 import com.roomtype.model.RoomTypeVO;
 import com.roomtype.service.impl.RoomTypeImpl;
 import com.roomtypepic.model.RoomTypePicRepository;
+import com.roomtypepic.model.RoomTypePicVO;
+import com.roomtypepic.model.impl.RoomTypePicImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -18,14 +21,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/roomType")
@@ -40,7 +41,8 @@ public class RoomTypeController {
 
     @Autowired
     private RoomTypePicRepository roomTypePicRepository;
-
+    @Autowired
+    private RoomTypePicImpl roomTypePicImpl;
 
 
     // 獲取所有活動
@@ -104,6 +106,8 @@ public class RoomTypeController {
         roomTypeVO.setRoomTypeContent(roomTypeVORequest.getRoomTypeContent());
         roomTypeVO.setRoomTypePrice(roomTypeVORequest.getRoomTypePrice());
         roomTypeVO.setRoomTypeStatus(Boolean.TRUE);
+
+        roomTypeRepository.save(roomTypeVO);
 
         return "redirect:/back_end/roomtype/listAllRoomType";
     }

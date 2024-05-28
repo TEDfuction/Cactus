@@ -93,31 +93,14 @@ public class ActivityOrderService {
     }
 
     //------------------------------綠界金流方法---------------------------------//
-    public String ecpayCheckout(ActivityOrderVO activityOrderVO) {
+    public String ecpayCheckout(ActivityOrderVO activityOrderVO,String paymentDescription) {
 
 
     	AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
-        
-       String paymentDescription = activityOrderVO.getSessionVO().getItemVO().getActivityName();
-       
-//       String singleProductDetail = new StringBuilder(paymentDescription)
-//				.append(activityOrderVO.getEnrollNumber().toString())
-//				.append("X")
-//				.append(activityOrderVO.getSessionVO().getItemVO().getActivityPrice().toString())
-//				.append("=$")
-//				.append(activityOrderVO.getEnrollNumber()* activityOrderVO.getSessionVO().getItemVO().getActivityPrice() )
-//				.toString();
-        
-        
-      //將訂單時間(當前時間)轉為字串放入，以避免編號重複的問題
-      Date date = new Date();
-      SimpleDateFormat formatter1 = new SimpleDateFormat("yyyyMMddHHmmss");
-      String orderDateString = formatter1.format(date);	
-        
 
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( orderDateString + activityOrderVO.getActivityOrderId());
+        obj.setMerchantTradeNo( "Member"  + activityOrderVO.getActivityOrderId() + "test" );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(activityOrderVO.getOrderTime()) );
