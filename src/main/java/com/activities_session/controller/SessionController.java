@@ -437,7 +437,6 @@ public class SessionController {
                 .collect(Collectors.toList());
     }
 
-
     /*
      * Method used to populate the List Data in view. 如 :
      * <form:select path="deptno" id="deptno" items="${deptListData}" itemValue="deptno" itemLabel="dname" />

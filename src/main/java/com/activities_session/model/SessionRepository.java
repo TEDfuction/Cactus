@@ -57,6 +57,4 @@ public interface SessionRepository extends JpaRepository<SessionVO, Integer>{
     @Query(value = "SELECT * FROM activity_session WHERE activity_id = ?1 AND activity_session_state = 0", nativeQuery = true)
     List<SessionVO> findSessionVOs(Integer activityId);
 
-
-
 }
