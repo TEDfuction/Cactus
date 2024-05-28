@@ -3,7 +3,17 @@ package com.roomtype.controller;
 import com.cart.model.Cart;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
+import com.room.model.RoomService;
+import com.room.model.RoomVO;
 import com.roomorder.model.RoomOrderVO;
+import com.roomorder.service.impl.RoomOrderImpl;
+import com.roomorderlist.model.RoomOrderListRepository;
+import com.roomorderlist.model.RoomOrderListVO;
+import com.roomorderlist.service.Impl.RoomOrderListImpl;
+import com.roompromotion.model.RoomPromotionService;
+import com.roomschedule.model.RoomScheduleRepository;
+import com.roomschedule.model.RoomScheduleVO;
+import com.roomschedule.service.Impl.RoomScheduleImpl;
 import com.roomtype.dto.RoomTypeStatus;
 import com.roomtype.dto.RoomTypeUpdate;
 import com.roomtype.dto.RoomTypeVORequest;
@@ -22,6 +32,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +53,29 @@ public class RoomTypeController {
     @Autowired
     private RoomTypePicRepository roomTypePicRepository;
 
+    @Autowired
+    private MemberService memSvc;
+
+    @Autowired
+    private RoomPromotionService roomPromotionSvc;
+
+    @Autowired
+    private RoomOrderImpl roomOrderImpl;
+
+    @Autowired
+    private RoomOrderListRepository roomOrderListRepository;
+
+    @Autowired
+    private RoomService roomSvc;
+
+    @Autowired
+    private RoomScheduleImpl roomScheduleImpl;
+
+    @Autowired
+    private RoomScheduleRepository roomScheduleRepository;
+
+    @Autowired
+    private RoomOrderListImpl roomOrderListImpl;
 
 
     // 獲取所有活動
@@ -89,7 +124,7 @@ public class RoomTypeController {
     }
 
 
-    @PostMapping("/addRoomType")
+    @PostMapping("/addRoomTypeForm")
     public String addRoomType(@Valid @ModelAttribute RoomTypeVORequest roomTypeVORequest,
                               BindingResult result, ModelMap model) {
 
@@ -199,6 +234,92 @@ public class RoomTypeController {
         model.addAttribute("select", getSelect);
 
         return "front_end/room/roomFront";
+    }
+
+
+    @PostMapping("/roomOrderTotalList")
+    public String roomTypeTotalList(@Valid @ModelAttribute RoomTypeVO roomTypeVO,
+                                    @RequestParam("roomTypeName") String roomTypeName,
+                                    @RequestParam("roomGuestAmount") String roomGuestAmount,
+                                    @RequestParam("roomSize") String roomSize,
+                                    @RequestParam("roomAmount") Integer roomAmount,
+                                    @RequestParam("payAmount") Integer payAmount,
+                                    @RequestParam("selectCheckIn") String selectCheckInStr,
+                                    @RequestParam("selectCheckOut") String selectCheckOutStr,
+                                    @RequestParam("roomTypeId") Integer roomTypeId,
+                                    @RequestParam(value = "promotionTitle", required = false) String promotionTitle,
+                                    @RequestParam(value = "promotionPrice", required = false) Integer promotionPrice,
+                                    @RequestParam("emails") String emails,
+                                    @RequestParam(value = "roomOrderIdReq", required = false) String roomOrderIdReq,
+                                    HttpSession session, ModelMap model) {
+
+        // 從Session中取得會員資料
+//        String email = (String) session.getAttribute("account");
+        Integer memberId = memSvc.findByEmail(emails).getMemberId();
+//            System.out.println(memberId);
+        Integer findPromotionId = roomPromotionSvc.getByPromotionTitle(promotionTitle);
+
+
+        if (memberId != null) {
+            // 創建新的訂單實體
+            RoomOrderVO roomOrder = new RoomOrderVO();
+            roomOrder.setMemberId(memSvc.findByPK(memberId));
+            if (findPromotionId != null) {
+                roomOrder.setPromotionId(roomPromotionSvc.findByPK(findPromotionId));
+            } else {
+                roomOrder.setPromotionId(null);
+            }
+            roomOrder.setRoomOrderDate(LocalDate.now());
+            roomOrder.setRoomOrderStatus(Boolean.TRUE);
+            roomOrder.setRoomAmount(roomAmount);
+            roomOrder.setPayAmount(payAmount);
+            roomOrder.setPromotionPrice(promotionPrice);
+            roomOrder.setCheckInDate(LocalDate.parse(selectCheckInStr));
+            roomOrder.setCheckOutDate(LocalDate.parse(selectCheckOutStr));
+            roomOrder.setRoomOrderIdReq(roomOrderIdReq);
+
+            // 存RoomOrder訂單
+            roomOrderImpl.addRoomOrder(roomOrder);
+            RoomOrderVO savedRoomOrder = (RoomOrderVO) roomOrderImpl.addRoomOrder(roomOrder);
+            System.out.println(savedRoomOrder);
+
+//            roomOrderList
+            RoomTypeVO saveRoomTypeId = roomTypeImpl.findByPK(roomTypeId);
+            System.out.println(saveRoomTypeId);
+            RoomVO saveRoomId = roomSvc.getByRoomPrice(roomAmount);
+
+//            roomSchedule
+            RoomTypeVO saveRoomScheduleRT = roomTypeImpl.getRoomTypeById(roomTypeId);
+            LocalDate checkInDate = (LocalDate.parse(selectCheckInStr));
+            LocalDate checkOutDate = (LocalDate.parse(selectCheckOutStr));
+
+
+            if (saveRoomTypeId != null) {
+                RoomOrderListVO roomOrderList = new RoomOrderListVO();
+                roomOrderList.setRoomOrder(savedRoomOrder);
+                roomOrderList.setRoomType(saveRoomTypeId);
+                roomOrderList.setRoomVO(saveRoomId);
+                roomOrderListRepository.save(roomOrderList);
+
+                long daysBetween = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+                for (int i = 0; i < daysBetween; i++) {
+                    RoomScheduleVO roomSchedule = new RoomScheduleVO();
+                    roomSchedule.setRoomType(saveRoomScheduleRT);
+                    roomSchedule.setRoomScheduleDate(checkInDate.plusDays(i));
+                    roomSchedule.setRoomScheduleAmount(Integer.valueOf(roomGuestAmount));
+                    roomScheduleRepository.save(roomSchedule);
+                }
+
+                String ecpayCheckout = roomOrderListImpl.roomEcpayCheckout(roomOrderList);
+                model.addAttribute("ecpayCheckout", ecpayCheckout);
+
+
+            } else {
+                model.addAttribute("error", "無法驗證會員身份");
+                return "front_end/room/roomFront"; // 返回到表單頁面並顯示錯誤
+            }
+        }
+        return "front_end/activity/success";
     }
 
 }

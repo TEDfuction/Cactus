@@ -41,6 +41,7 @@ public class RoomPromotionService {
     }
 
     public Integer getByPromotionTitle(String promotionTitle){
-        return roomPromotionRepository.findByPromotionTitle(promotionTitle);
+        Integer promotionId = roomPromotionRepository.findPromotionIdByTitle(promotionTitle);
+        return promotionId != null ? promotionId : null;
     }
 }

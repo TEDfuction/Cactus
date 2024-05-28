@@ -4,6 +4,7 @@ import com.roomorder.model.RoomOrderVO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomOrderService {
 
@@ -15,5 +16,7 @@ public interface RoomOrderService {
 
     List<RoomOrderVO> getOrderDateRO(LocalDate ROstart, LocalDate ROend) throws Exception;
 
-    List <RoomOrderVO> addRoomOrder(RoomOrderVO roomOrderVO);
+    RoomOrderVO addRoomOrder(RoomOrderVO roomOrderVO);
+
+    public RoomOrderVO getById(Integer roomOrderId);
 }

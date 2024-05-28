@@ -134,7 +134,7 @@ public class RoomPromotionController {
             model.addAttribute("selectCheckIn", selectCheckInStr);
             model.addAttribute("selectCheckOut", selectCheckOutStr);
             model.addAttribute("roomTypeId", roomTypeId);
-            System.out.println(roomTypeName);
+//            System.out.println(roomTypeName);
 
             String email = (String)httpSession.getAttribute("account");
 

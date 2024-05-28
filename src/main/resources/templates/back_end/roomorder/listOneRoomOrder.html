@@ -45,7 +45,6 @@
 </head>
 
 <style>
-
 	.header span, table th, table td {
 		vertical-align: middle;
 	}
@@ -54,8 +53,14 @@
 		width: 100%;
 		border-collapse: collapse;
 	}
-	th, td {
+	td {
 		padding: 20px;
+		text-align: center;
+		vertical-align: middle;
+		color: #6E6E6E;
+	}
+
+	th {
 		text-align: center;
 		vertical-align: middle;
 	}
@@ -72,9 +77,9 @@
 		margin-right: 15px
 	}
 
-	 #mainbox  {
-		 font-size: 12px; /* 調整字體大小 */
-	 }
+	#mainbox  {
+		font-size: 16px; /* 調整字體大小 */
+	}
 
 	.table-responsive {
 		margin-top: 30px;  /* 設定表格上方的間距 */
@@ -86,10 +91,11 @@
 		}
 
 		#mainbox thead {
-			background-color: #FFBB77;
+			background-color: #00B2B2;
 		}
 
 	}
+
 
 
 </style>
@@ -127,7 +133,8 @@
 					<td th:text="${roomOrderVO.memberId.memberId}"></td>
 					<td th:text="${roomOrderVO.checkInDate}"></td>
 					<td th:text="${roomOrderVO.checkOutDate}"></td>
-					<td th:text="${roomOrderVO.promotionId.promotionId}"></td>
+					<td th:if="${roomOrderVO.promotionId}"><span th:text="${roomOrderVO.promotionId.promotionId}"></span></td>
+					<td th:if="${roomOrderVO.promotionId == null}"></td>
 					<td th:text="${roomOrderVO.roomAmount}"></td>
 					<td th:text="${roomOrderVO.promotionPrice}"></td>
 					<td th:text="${roomOrderVO.payAmount}"></td>
@@ -136,11 +143,18 @@
 						<span th:if="${roomOrderVO.roomOrderStatus}" class="badge bg-success">使用中</span>
 						<span th:unless="${roomOrderVO.roomOrderStatus}" class="badge bg-danger">已取消</span>
 					</td>
-					<td th:text="${roomOrderVO.roomOrderIdReq}"></td>
 					<td>
-						<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-								data-bs-target="#exampleModal" th:data-roomtype-id="${roomOrderVO.roomOrderId}">修改
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+								th:data-updateROCON="${roomOrderVO.roomOrderIdReq}" name="ROReq" style="padding: 3px 5px"
+								onclick="fillFormContent(this.getAttribute('data-updateROCON'));">
+							額外需求
 						</button>
+					</td>
+					<td>
+						<form class="updateROForm" th:action="@{/roomOrder/updateRoomOrder}" method="post">
+							<input type="submit" class="btn btn-primary"  value="編輯"></input>
+							<input type="hidden" name="roomOrderId" th:value="roomOrderVO.roomOrderId">
+						</form>
 					</td>
 <!--					<td>-->
 <!--						<form method="post" th:action="@{/roomOrder/updateRTS}">-->
@@ -153,32 +167,30 @@
 				</tbody>
 			</table>
 		</div>
-
+		<!------- 房型說明Modal -------->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog ">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">額外需求</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div id="roomOrderContent" class="modal-body">
+					<div class="mb-2" >
+						<label for="updateRTCON" class="col-form-label"></label>
+						<textarea class="form-control" id="updateRTCON" readonly></textarea>
+					</div>
+					<input type="hidden" name="roomOrderId">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<!--										<button type="button" class="btn btn-primary">Understood</button>-->
+				</div>
+			</div>
+		</div>
 	</div>
-<!--	<select class="showcount custom-select-width form-select form-select-sm mt-5 shadow-sm" aria-label=".form-select-sm example">-->
-<!--		<option value="5">5筆</option>-->
-<!--		<option value="10">10筆</option>-->
-<!--		<option value="15">15筆</option>-->
-<!--		<option value="20">20筆</option>-->
-<!--		<option value="40">40筆</option>-->
-<!--	</select>-->
-<!--	<div class="fixed-bottom">-->
-<!--		<div class="container">-->
-<!--			<nav aria-label="Page navigation example">-->
-<!--				<ul class="pagination justify-content-center">-->
-<!--					<li class="page-item disabled">-->
-<!--						<a class="page-link">上一頁</a>-->
-<!--					</li>-->
-<!--					<li class="page-item">-->
-<!--						&lt;!&ndash;                <a class="page-link" href="#">1</a>&ndash;&gt;-->
-<!--					</li>-->
-<!--					<li class="page-item">-->
-<!--						<a class="page-link" href="#">下一頁</a>-->
-<!--					</li>-->
-<!--				</ul>-->
-<!--			</nav>-->
-<!--		</div>-->
-<!--	</div>-->
+
+
 
 </body>
 
@@ -233,14 +245,43 @@
 	});
 
 
-	function submitForm(update) {
-		var confirmChange = confirm("確定要更改房型上下架嗎?");
-		if (confirmChange) {
-			document.getElementById("updateForm").submit();
-		} else {
-			update.preventDefault();
-		}
+	$(document).ready(function() {
+		$('#staticBackdrop').on('show.bs.modal', function(event) {
+			var button = $(event.relatedTarget); // 触发事件的按钮
+			var recipient = button.data('updateROCON'); // 从按钮获取数据
+
+			// 获取当前模态框内的元素
+			var modal = $(this);
+			var modalTitle = modal.find('.modal-title');
+			var modalBodyTextarea = modal.find('.modal-body textarea');
+
+			// 更新模态框内容
+			modalTitle.text('额外需求');  // 设置模态框标题
+			modalBodyTextarea.val(recipient);  // 将获取的数据设置到textarea
+		});
+	});
+
+	// 在按钮点击事件中调用此函数来填充模态框
+	function fillFormContent(data) {
+		// 将获取的数据设置到模态框的 textarea
+		$('#updateRTCON').val(data);
 	}
+
+	$(document).ready(function() {
+		// 监听模态框的显示事件
+		$('#staticBackdrop').on('show.bs.modal', function(event) {
+			var button = $(event.relatedTarget); // 触发事件的按钮
+			var recipient = button.data('updateROCON'); // 获取按钮上的数据
+
+			// 调用 fillFormContent 函数来填充数据
+			fillFormContent(recipient);
+
+			// 更新模态框标题
+			var modalTitle = $(this).find('.modal-title');
+			modalTitle.text('额外需求');  // 设置模态框标题
+		});
+	});
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>

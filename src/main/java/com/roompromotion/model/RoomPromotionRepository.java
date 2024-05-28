@@ -14,6 +14,7 @@ public interface RoomPromotionRepository extends JpaRepository<RoomPromotionVO, 
             "AND rp.promotion_state = 1", nativeQuery = true)
     List<RoomPromotionVO> findBySelectCheckIn(@Param("selectCheckIn") LocalDate selectCheckIn);
 
-    Integer findByPromotionTitle(@Param("promotionTitle")String promotionTitle);
+    @Query("SELECT rp.promotionId FROM RoomPromotionVO rp WHERE rp.promotionTitle = :promotionTitle")
+    Integer findPromotionIdByTitle(@Param("promotionTitle") String promotionTitle);
 }
 

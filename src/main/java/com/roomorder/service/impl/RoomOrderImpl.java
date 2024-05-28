@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static groovyjarjarantlr4.v4.gui.Trees.save;
 
@@ -51,9 +51,13 @@ public class RoomOrderImpl implements RoomOrderService {
 	}
 
 	@Override
-	public List<RoomOrderVO> addRoomOrder(RoomOrderVO roomOrderVO) {
-		List<RoomOrderVO> insertRoomOrder = Collections.singletonList(roomOrderRepository.save(roomOrderVO));
+	public RoomOrderVO addRoomOrder(RoomOrderVO roomOrderVO) {
+		RoomOrderVO insertRoomOrder = roomOrderRepository.save(roomOrderVO);
 		return insertRoomOrder;
 	}
 
+	public RoomOrderVO getById(Integer roomOrderId) {
+		Optional<RoomOrderVO> optional= roomOrderRepository.findById(roomOrderId);
+		return optional.orElse(null);
+	}
 }

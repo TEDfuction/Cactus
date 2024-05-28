@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "room_type", schema = "cactus")
+@Table(name = "room_type")
 public class RoomTypeVO {
 
     @NotNull(message =  "房型編號為必填")
@@ -37,7 +37,7 @@ public class RoomTypeVO {
     @Column(name = "room_type_status")
     private Boolean roomTypeStatus = false;
 
-    @NotEmpty(message =  "房型價格說明為必填")
+//    @NotEmpty(message =  "房型價格說明為必填")
     @Size(max = 50)
     @Column(name = "room_type_price", length = 50)
     private String roomTypePrice;
