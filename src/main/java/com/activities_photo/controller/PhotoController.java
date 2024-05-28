@@ -2,7 +2,10 @@ package com.activities_photo.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +19,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.activities_attendees.model.AttendeesService;
@@ -27,8 +35,6 @@ import com.activities_order.model.ActivityOrderService;
 import com.activities_order.model.ActivityOrderVO;
 import com.activities_photo.model.PhotoService;
 import com.activities_photo.model.PhotoVO;
-import com.activities_promotion.model.PromotionService;
-import com.activities_promotion.model.PromotionVO;
 import com.activities_session.model.SessionService;
 import com.activities_session.model.SessionVO;
 import com.member.model.MemberService;
@@ -36,6 +42,7 @@ import com.member.model.MemberVO;
 import com.session_time_period.model.TimePeriodDTO;
 import com.session_time_period.model.Time_PeriodService;
 import com.session_time_period.model.Time_PeriodVO;
+
 
 
 @Controller
@@ -64,9 +71,6 @@ public class PhotoController {
 	@Autowired
     Time_PeriodService time_periodService;
 	
-	@Autowired
-    PromotionService promotionService;
-	
 	
 	
 
@@ -86,6 +90,7 @@ public class PhotoController {
 		public String listDetailPhoto(ModelMap model,
 				                       @RequestParam("activityId")Integer activityId,
 				                       @RequestParam("activityPhotoId")String activityPhotoId
+				                      
 				                     
 				                        ) {
 			model.addAttribute("sessionVO", new SessionVO());
@@ -131,17 +136,13 @@ public class PhotoController {
 		@GetMapping("listDetailAddAttendees")
 		public String listDetailAddAttendeesSuc(ModelMap model,
 				                               @RequestParam("activityId")Integer activityId,
-				                               @RequestParam("activityPhotoId")String activityPhotoId,
-						                       @RequestParam("sessionTimePeriodId")Integer timePeriodId
-                                
-				) {
+				                               @RequestParam("activityPhotoId")String activityPhotoId
+				                                ) {
+			
 			model.addAttribute("sessionVO", new SessionVO());
 	        List<SessionVO> list = sessionService.getAll();
 	        model.addAttribute("sessionListData", list);
 			/*************************** 2.開始查詢資料 *****************************************/
-	        
-	        Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId); 
-	        model.addAttribute("time_periodVO", time_periodVO);
 	        ItemVO itemVO = itemSvc.getOneItem(activityId);  
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
@@ -166,15 +167,12 @@ public class PhotoController {
 	    /********************** 3. 從 session 中獲取數據 **************************/
 	    AttendeesVO attendeesVO = (AttendeesVO) session.getAttribute("attendeesVO");
 	    ItemVO itemVO = (ItemVO) session.getAttribute("itemVO"); 
-	    Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
-	    Integer time_period = time_periodVO.getSessionTimePeriodId();
-	    Time_PeriodVO time_periodVOnew = time_periodService.getOneTimePeriod(time_period);
+
 	    /********************** 4.將數據儲存到 model 中，以便在下一頁使用 ************************/
 	    List<ActivityOrderVO> list2 = activityOrderService.getAll();
         model.addAttribute("activityOrderListData", list2);
 	    model.addAttribute("attendeesVO", attendeesVO);
 	    model.addAttribute("itemVO", itemVO);
-	    model.addAttribute("time_periodVO", time_periodVOnew);
 	    
 	    return "/front_end/activity/confirmAttendees"; // 返回到下一頁
 	}
@@ -194,7 +192,7 @@ public class PhotoController {
 		result = removeFieldError(photoVO, result, "activityPhoto");
 
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
-			model.addAttribute("errorMessage", "請上傳照片");
+			model.addAttribute("errorMessage", "員工照片: 請上傳照片");
 		} else {
 			for (MultipartFile multipartFile : parts) {
 				byte[] buf = multipartFile.getBytes();
@@ -225,26 +223,21 @@ public class PhotoController {
 	@PostMapping("insertDetailAddAttendees")
 	public String insertDetailAddAttendees(@Valid AttendeesVO attendeesVO, BindingResult result, ModelMap model,
 			                               @Valid ActivityOrderVO activityOrderVO,
-			                               @Valid Time_PeriodVO  time_periodVO,
-	                                       HttpSession session, 
-	                                       @RequestParam("activityId")Integer activityId,
-	                                       @RequestParam("sessionTimePeriodId") Integer timePeriodId){
+	                                       HttpSession session, @RequestParam("activityId")Integer activityId){
 		
 	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 	    if(result.hasErrors()){
 	    	ItemVO itemVO = itemSvc.getOneItem(activityId);  
-	    	Time_PeriodVO time_periodVO2 = time_periodService.getOneTimePeriod(timePeriodId);
 	        model.addAttribute("itemListData");
 	        model.addAttribute("itemVO",itemVO);
-	        model.addAttribute("time_periodVO", time_periodVO2);
 	        List<ActivityOrderVO> list = activityOrderService.getAll();
 	        model.addAttribute("activityOrderListData", list);
 	        System.out.println("資料有誤"); 
 	        return "front_end/activity/listDetailAddAttendees";
 	    }
 	    
-//	    System.out.println(activityOrderVO.getEnrollNumber());
-//	    System.out.println(activityOrderVO.getOrderTime());
+	    System.out.println(activityOrderVO.getEnrollNumber());
+	    System.out.println(activityOrderVO.getOrderTime());
 	    
 	    /********************* 2.存儲需要在下一頁使用的數據到 session 中 *********************/
 	    ItemVO itemVO = itemSvc.getOneItem(activityId); // 獲得itemVO对象
@@ -252,7 +245,6 @@ public class PhotoController {
 	    session.setAttribute("attendeesVO", attendeesVO);
 	    session.setAttribute("activityId", activityId);
 	    session.setAttribute("activityOrderVO", activityOrderVO);
-	    session.setAttribute("time_periodVO", time_periodVO);
 	    return "redirect:/activity/confirmAttendees"; // 重定向到下一頁
 	}
 		
@@ -271,45 +263,14 @@ public class PhotoController {
 	    MemberVO xxx = memSvc.findByEmail(email);
 	    
 //	    SessionVO sessionVO = new SessionVO(); 
-//	    sessionVO.setActivitySessionId(11);    
+//	    sessionVO.setActivitySessionId(11);
+	    
 	    SessionVO sessionVO = sessionService.getOneSession(sessionId) ;
 	     
-        Time_PeriodVO time_periodVO = (Time_PeriodVO)session.getAttribute("time_periodVO");
-//	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
-//	    time_periodVO.setSessionTimePeriodId(3);
-        
-        //取得活動日期
-        java.util.Date  sessiondate = sessionVO.getActivityDate() ;
-        System.out.println("sessiondate"+sessiondate);
-        List<PromotionVO> list3 = promotionService.getAll();
-        
-        Double promotionDiscount = 1.0;
-        Integer promotionCoupon = 0;
-        Integer promotionId = null;
-
-			for (PromotionVO promotion : list3) {
-				java.util.Date promotionStart = promotion.getPromotionStarted();
-				System.out.println("promotionStart" + promotionStart);
-				java.util.Date promotionEnd = promotion.getPromotionEnd();
-				System.out.println("promotionEnd" + promotionEnd);
-				Boolean promotionState = promotion.getPromotionState();
-				if ((sessiondate.after(promotionStart) || sessiondate.equals(promotionStart)) && (sessiondate.before(promotionEnd) || sessiondate.equals(promotionEnd)) && promotionState == true) {
-					System.out.println("aaaaaa");
-					promotionDiscount = promotion.getPromotionDiscount();
-					promotionCoupon = promotion.getPromotionCoupon();
-					promotionId = promotion.getPromotionId();
-				} else {
-					promotionDiscount = 1.0;
-					promotionCoupon = 0;
-				}
-
-			}
-
-	    System.out.println("promotionDiscount"+promotionDiscount);
-	    System.out.println("promotionCoupon"+promotionCoupon);
-	    System.out.println("promotionId"+promotionId);
-        
-        
+	    //Time_PeriodVO time_periodVO = time_periodService.getOneTimePeriod(timePeriodId);
+	    Time_PeriodVO time_periodVO = new Time_PeriodVO();
+	    time_periodVO.setSessionTimePeriodId(3);
+	    
 	    activityOrderVO.setMemberVO(xxx);
 	    activityOrderVO.setSessionVO(sessionVO);
 	    attendeesService.addAttendees(attendeesVO);
@@ -324,24 +285,17 @@ public class PhotoController {
 	    Integer activityPrice = itemVO.getActivityPrice();
 	    // activityOrderVO的人數以及訂單金額
 	    Integer EnrollNumber = activityOrderVO.getEnrollNumber();
-//	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
-//	    // 如果 promotionPrice 為空，則設為 0
-//	    if(promotionPrice == null) {
-//	    	promotionPrice = 0;
-//	    }
-	    // 活動項目價格*活動訂單人數-活動促銷價格
-	    Double OrderAmount = (promotionDiscount*(activityPrice * EnrollNumber))- promotionCoupon;
-	    System.out.println("OrderAmount"+OrderAmount);
-	    
-	    activityOrderVO.setOrderAmount(activityPrice * EnrollNumber);
-	    activityOrderVO.setPayAmount(OrderAmount.intValue());
-	    if(promotionId != null) {
-		    activityOrderVO.setPromotionVO(promotionService.getOnePromotion(promotionId));
+	    Integer promotionPrice = activityOrderVO.getPromotionPrice();
+	    // 如果 promotionPrice 為空，則設為 0
+	    if(promotionPrice == null) {
+	    	promotionPrice = 0;
 	    }
-	    Integer promotionPrice = (activityPrice * EnrollNumber) - (OrderAmount.intValue());
-	    activityOrderVO.setPromotionPrice(promotionPrice);
+	    // 活動項目價格*活動訂單人數-活動促銷價格
+	    int OrderAmount = (activityPrice * EnrollNumber)- promotionPrice;
+	    activityOrderVO.setOrderAmount(OrderAmount);
+	    activityOrderVO.setPayAmount(OrderAmount);
 	    activityOrderService.addOrder(activityOrderVO);
-          
+
 	    
 	    /********************* 新增完成,準備轉交  *********************/
 	    model.addAttribute("itemVO", itemVO);
@@ -352,34 +306,17 @@ public class PhotoController {
 	    model.addAttribute("success", "- (新增成功)");
 	    
 	    // 綠界串流
-	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO);
+	    String ecpayCheckout = activityOrderService.ecpayCheckout(activityOrderVO,"活動");
         model.addAttribute("ecpayCheckout", ecpayCheckout);
 	    return "front_end/activity/success"; // 重定向到成功頁面
 	}
-
-	//ajax
-	//透過活動id找場次日期
-	@GetMapping("/activityDatesByActivityId")
-	@ResponseBody
-	public List<Date> getActivityDatesByActivityId(String activityId) {
-
-//		System.out.println(activityId);
-
-		List<Date> activityDates = sessionService.getAllDate(Integer.valueOf(activityId));
-
-//		System.out.println(activityDates);
-		return activityDates;
-	}
-
-
+	
 	
 //ajax
 	//透過活動日期找場次時段
     @GetMapping("/timePeriodsByActivityDate")
     @ResponseBody
     public List<TimePeriodDTO> getTimePeriodsByActivityDate(HttpServletRequest req, HttpServletResponse res) {
-
-//		sessionService.getActivityDatesByActivityId(Integer activityId)
 
         //activityDate先轉為sql.Date
         Date actDate = java.sql.Date.valueOf(req.getParameter("activityDate"));
@@ -422,7 +359,7 @@ public class PhotoController {
         Integer totalEnrollNumber = 0;
 
         for(ActivityOrderVO orderVO : list){
-//            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
+            System.out.println("getEnrollNumber"+orderVO.getEnrollNumber());
             totalEnrollNumber += orderVO.getEnrollNumber();
         }
         return totalEnrollNumber;
@@ -445,8 +382,6 @@ public class PhotoController {
         Integer activityMaxPart = getActivityMaxPart(activitySessionId);
         //System.out.println(activityMaxPart);
 
-		Integer remainingSpots = activityMaxPart - totalEnrollNumber;
-
         //如果訂單總人數>=場次最大參加人數，得到True，就不要顯示時段
         if(totalEnrollNumber >= activityMaxPart){
             return true;
@@ -454,8 +389,6 @@ public class PhotoController {
             return false;
         }
     }
-
-
 
     //取得所有已建立的活動日期
     @GetMapping("/availableDates")

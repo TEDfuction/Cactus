@@ -1,6 +1,5 @@
 package com.activities_photo.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
