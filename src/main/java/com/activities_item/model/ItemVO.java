@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		@ManyToOne
 		@JsonManagedReference
 		@JoinColumn(name = "activity_category_id", referencedColumnName = "activity_category_id")
-		@NotNull(message = "活動類別必須擇一")
+//		@NotNull(message = "活動類別必須擇一")
 		private CategoryVO categoryVO;
 
 		//PK一對多
@@ -50,7 +50,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		private String activityInfo;
 		
 		@Column(name = "activity_price")
-		@NotNull(message="活動價格 請勿空白")
+		@NotNull(message="活動價格請勿空白")
 		@DecimalMin(value = "1", message = "金額: 不能小於{value}")
 //		@DecimalMax(value = "99999", message = "金額: 不能超過{value}")
 		private Integer activityPrice;

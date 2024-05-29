@@ -1194,6 +1194,18 @@ h2.hc-1{
     z-index:10;
     display: inline-block;
 }
+.bttn3{
+    /*float: right;*/
+    margin-left: 0.5rem;
+/*     width: 7rem; */
+    border-radius: 6px;
+
+    font-size: 0.9rem;
+    line-height: 2;
+    position:relative;
+    z-index:10;
+    display: inline-block;
+}
 .bttn-select{
     /*float: right;*/
 
