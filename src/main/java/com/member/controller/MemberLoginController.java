@@ -106,9 +106,6 @@ public class MemberLoginController {
     		session.setAttribute("memberVO", memberVO);
     		session.setAttribute("account", email);
     		
-    		//供WebSocket隨時調用
-    		Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
-    		model.addAttribute("UnreadCount",count);
     		
     		NotificationVO notiVO = new NotificationVO();
 			notiVO.setMember(memberVO);
@@ -120,10 +117,15 @@ public class MemberLoginController {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String nowTime = formatter1.format(date);
 			
+			
 			//寄送會員登入通知
 			notiVO.setContent("親愛的貴賓"+memberVO.getMemberName()+"您好，您已於"+nowTime+"時登入專區!若您沒有印象有進行登入，請盡速變更您的密碼!並與客服聯繫!");
 			notiSvc.sendMsg(notiVO);
     		
+			//供WebSocket隨時調用
+			Integer count = notiSvc.getNotiUnread(memberVO.getMemberId());		
+			model.addAttribute("UnreadCount",count);
+			
     		//檢查有無來源地址,若沒有就到會員專區頁面
     		try {
     			String location = (String) session.getAttribute("location");

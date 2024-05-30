@@ -33,7 +33,7 @@
     <form th:action="@{update}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
 
         <div>
-            <h2 class="hc-2">編輯活動項目&nbsp;<span th:text="${activityOrderVO.activityOrderId}" th:field="*{activityOrderId}" name="activityOrderId"></span></h2>
+            <h2 class="hc-2">編輯活動訂單&nbsp;<span th:text="${activityOrderVO.activityOrderId}" th:field="*{activityOrderId}" name="activityOrderId"></span></h2>
             <input type="hidden" th:field="*{activityOrderId}" />
         </div>
 
