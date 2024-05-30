@@ -124,10 +124,10 @@ public class ProductController {
 		result = removeFieldError(productVO, result, "productPhoto");
 		
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
-			System.out.println("上傳照片");
+//			System.out.println("上傳照片");
 			model.addAttribute("errorMessage", "商品照片: 請上傳照片");
 		} else {
-			System.out.println("圖片新增");
+//			System.out.println("圖片新增");
 			for (MultipartFile multipartFile : parts) {
 				byte[] buf = multipartFile.getBytes();
 				productVO.setProductPhoto(buf);
@@ -200,7 +200,7 @@ public class ProductController {
 		model.addAttribute("productCategoryListData", list);
 //		model.addAttribute("success", "- (新增成功)");
 //		System.out.println("成功新增");
-		return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+		return "redirect:/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
 	}
 	
 	//新增商品類別
@@ -212,7 +212,7 @@ public class ProductController {
 			    for (FieldError error : result.getFieldErrors()) {
 			        System.out.println(error.getField() + ": " + error.getDefaultMessage());
 			    }
-			    return "back-end/product/listAllProductCategory";
+			    return "back_end/product/listAllProductCategory";
 			}
 			
 			ProductCategorySvc.addProductCategory(productCategoryVO);
@@ -221,7 +221,7 @@ public class ProductController {
 			model.addAttribute("productCategoryListData", list);
 			model.addAttribute("success", "- (新增成功)");
 			System.out.println("成功新增");
-			return "back-end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
+			return "back_end/product/listAllProductCategory"; // 新增成功後轉交listAllProduct.jsp
 		}
 	
 	
@@ -336,7 +336,8 @@ public class ProductController {
 			
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
 			if (result.hasErrors()) {
-				return "back-end/product/update_productCategory_input";
+				System.out.println("updateCategory有出錯");
+				return "back_end/product/update_productCategory_input";
 			}
 			/***************************2.開始修改資料***************************************/
 //			ProductService productSvc = new ProductService();
@@ -435,23 +436,23 @@ public class ProductController {
 		
 	/*******************************************************************/
 		//方法及別驗證
-		@ExceptionHandler(value = { ConstraintViolationException.class })
-		//@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-		public ModelAndView handleError(HttpServletRequest req,ConstraintViolationException e,Model model) {
-		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-		    StringBuilder strBuilder = new StringBuilder();
-		    for (ConstraintViolation<?> violation : violations ) {
-		          strBuilder.append(violation.getMessage() + "<br>");
-		    }
-		    //==== 以下第80~85行是當前面第69行返回 /src/main/resources/templates/back-end/emp/select_page.html 第97行 與 第109行 用的 ====   
-//		    model.addAttribute("empVO", new EmpVO());
-//	    	EmpService empSvc = new EmpService();
-			List<ProductVO> list = productSvc.getAll();
-			model.addAttribute("empListData", list); // for select_page.html 第97 109行用
-			
-			String message = strBuilder.toString();
-		    return new ModelAndView("back-end/emp/select_page", "errorMessage", "請修正以下錯誤:<br>"+message);
-		}
+//		@ExceptionHandler(value = { ConstraintViolationException.class })
+//		//@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+//		public ModelAndView handleError(HttpServletRequest req,ConstraintViolationException e,Model model) {
+//		    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+//		    StringBuilder strBuilder = new StringBuilder();
+//		    for (ConstraintViolation<?> violation : violations ) {
+//		          strBuilder.append(violation.getMessage() + "<br>");
+//		    }
+//		    //==== 以下第80~85行是當前面第69行返回 /src/main/resources/templates/back-end/emp/select_page.html 第97行 與 第109行 用的 ====   
+////		    model.addAttribute("empVO", new EmpVO());
+////	    	EmpService empSvc = new EmpService();
+//			List<ProductVO> list = productSvc.getAll();
+//			model.addAttribute("empListData", list); // for select_page.html 第97 109行用
+//			
+//			String message = strBuilder.toString();
+//		    return new ModelAndView("back-end/emp/select_page", "errorMessage", "請修正以下錯誤:<br>"+message);
+//		}
 		
 //		@GetMapping("/listAllTest")
 //		public String listAllTest(ModelMap model) {

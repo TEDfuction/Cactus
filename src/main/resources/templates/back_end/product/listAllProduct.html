@@ -43,7 +43,13 @@
 				<td th:text="${productVO.productDescribtion}"></td>
 				<td th:text="${productVO.productPrice}"></td>
 				<td th:text="${productVO.productName}"></td>
-				<td th:text="${productVO.productStatus}"></td>
+<!-- 				<td class="badge bg-success">Success</span> -->
+<!-- 				<td class="badge bg-success" th:text="${productVO.productStatus} ? '上架' : '未上架'"></td> -->
+				<td>
+                    <span th:if="${productVO.productStatus} eq true" class="badge bg-success">上架</span>
+                     <span th:if="${productVO.productStatus} eq false" class="badge bg-danger">下架</span>
+                </td>
+				
 				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td>
 			<td>
 			  <form method="post" th:action="@{/product/getOne_For_Update}" style="margin-bottom: 0px;">
